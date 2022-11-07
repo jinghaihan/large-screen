@@ -1,7 +1,7 @@
 [
   {
     "title": "首页",
-    "icon": "",
+    "icon": "home",
     "target": "home",
     "activeRule": "/large-screen/",
     "children": []
@@ -14,14 +14,14 @@
     "children": [
       {
         "title": "数据源管理",
-        "icon": "",
+        "icon": "database",
         "target": "dataSource",
         "activeRule": "/large-screen/",
         "children": []
       },
       {
         "title": "模型管理",
-        "icon": "",
+        "icon": "deployment-unit",
         "target": "model",
         "activeRule": "/large-screen/",
         "children": []
@@ -30,13 +30,20 @@
   },
   {
     "title": "配置管理",
-    "icon": "",
+    "icon": "pie-chart",
     "target": "",
     "activeRule": "",
     "children": [
       {
+        "title": "模板中心",
+        "icon": "fund",
+        "target": "template",
+        "activeRule": "/large-screen/",
+        "children": []
+      },
+      {
         "title": "大屏配置",
-        "icon": "",
+        "icon": "fullscreen",
         "target": "largeScreen",
         "activeRule": "/large-screen/",
         "children": []

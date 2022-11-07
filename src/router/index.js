@@ -62,6 +62,7 @@ let routes = {
 // 动态路由表
 const routerMap = {
   'home': () => import('@/views/home/home.vue'),
+  'largeScreen': () => import('@/views/largeScreen/largeScreen'),
   'error': () => import('@/views/error/error.vue')
 }
 // 动态路由处理

@@ -63,8 +63,8 @@ export default {
       color: #fff;
     }
     .light-logo-container{
-      background: #1890ff;
-      color: #fff;
+      background: #fff;
+      color: #1890ff;
     }
     .nav-container{
       width: calc(~"100% - 660px");

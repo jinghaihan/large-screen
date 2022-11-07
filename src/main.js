@@ -10,7 +10,7 @@ import { initRouter } from './router/index'
 // 全局样式
 import '@/styles/global.less'
 // 微前端
-import { $shared, SharedContainer } from '@/micro/shared'
+// import { $shared, SharedContainer } from '@/micro/shared'
 import actions from '@/micro/actions'
 
 Vue.config.productionTip = false

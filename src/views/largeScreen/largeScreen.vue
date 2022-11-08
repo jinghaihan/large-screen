@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import configModal from '@/components/ConfigModal/configModal.vue'
+import configModal from '@/components/ConfigModal/modal.vue'
 
 export default {
   name: 'largeScreen',

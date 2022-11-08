@@ -34,7 +34,7 @@
             <a-button size="small" icon="fund" type="primary">模板库</a-button>
           </div>
           <div class="operation-container">
-            <a-switch checked-children="深色" un-checked-children="浅色" @change="onChangeTheme"/>
+            <a-switch checked-children="深色" un-checked-children="浅色" @change="onTheme"/>
             <div class="action"
                   v-for="icon in operation['navbar']"
                   :key="icon.key">
@@ -49,12 +49,12 @@
         <div class="config-container">
           <!-- 组件面板 -->
           <div class="component-container">
-
+            <ComponentPanel v-if="panelVisible" :layout="layout" :root="getRef()"></ComponentPanel>
           </div>
           <div class="paper-container">
             <!-- 画布 -->
             <div class="paper">
-              <Paper></Paper>
+              <Paper ref="paper" :layout="layout" @rendered="onPaperRendered"></Paper>
             </div>
             <!-- 表单面板 -->
             <div class="form-container" id="form-container">
@@ -74,10 +74,11 @@
 <script>
 import $ from 'jquery'
 import Paper from './paper'
+import ComponentPanel from './panel/component'
 
 export default {
   name: 'configModal',
-  components: { Paper },
+  components: { Paper, ComponentPanel },
   props: {
     modalData: {
       type: Object,
@@ -101,7 +102,9 @@ export default {
       },
       activeKey: 'chart',
       trigger: 'right',
-      theme: 'light'
+      theme: 'light',
+      layout: [],
+      panelVisible: false
     }
   },
   methods: {
@@ -118,7 +121,7 @@ export default {
         this.trigger = 'right'
       }
     },
-    onChangeTheme (value) {
+    onTheme (value) {
       let dom = this.$refs.container
       this.theme = value ? 'dark' : 'light'
       if (this.theme === 'dark') {
@@ -143,6 +146,12 @@ export default {
     },
     closeModal (refresh) {
       this.$emit('close', refresh)
+    },
+    onPaperRendered () {
+      this.panelVisible = true
+    },
+    getRef () {
+      return this
     }
   }
 }
@@ -208,7 +217,7 @@ export default {
             width: 100%;
           }
           .form-container{
-            z-index: 10;
+            z-index: 100;
             position: absolute;
             right: 0;
             height: 100%;
@@ -216,6 +225,7 @@ export default {
             background: var(--panel-color);
             box-shadow: 0px 3px 8px var(--shadow-color);
             .trigger-container{
+              z-index: 100;
               position: absolute;
               top: 0;
               bottom: 0;
@@ -230,6 +240,7 @@ export default {
               align-items: center;
               color: var(--icon-color);
               font-size: 18px;
+              box-shadow: 0px 3px 8px var(--shadow-color);
             }
           }
         }

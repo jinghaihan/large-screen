@@ -1,4 +1,5 @@
 import './ant-design-vue'
+import './vue-grid-layout'
 import './vue-ls'
 import './bus'
 import './component'

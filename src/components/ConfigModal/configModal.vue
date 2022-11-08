@@ -73,7 +73,7 @@
 
 <script>
 import $ from 'jquery'
-import Paper from '@/components/Paper'
+import Paper from './paper'
 
 export default {
   name: 'configModal',
@@ -124,17 +124,21 @@ export default {
       if (this.theme === 'dark') {
         dom.style.setProperty('--background-color', '#151515')
         dom.style.setProperty('--bar-color', '#151515')
-        dom.style.setProperty('--paper-color', '#151515')
+        dom.style.setProperty('--paper-container-color', '#151515')
+        dom.style.setProperty('--paper-color', '#080e15')
         dom.style.setProperty('--panel-color', '#24282e')
         dom.style.setProperty('--active-color', '#24282e')
         dom.style.setProperty('--icon-color', '#fff')
+        dom.style.setProperty('--shadow-color', '#080e15')
       } else {
         dom.style.setProperty('--background-color', '#fff')
         dom.style.setProperty('--bar-color', '#f5f5f5')
-        dom.style.setProperty('--paper-color', '#f5f5f5')
+        dom.style.setProperty('--paper-container-color', '#f5f5f5')
+        dom.style.setProperty('--paper-color', '#fff')
         dom.style.setProperty('--panel-color', '#fff')
         dom.style.setProperty('--active-color', '#fff')
         dom.style.setProperty('--icon-color', '#333')
+        dom.style.setProperty('--shadow-color', '#f0f0f0')
       }
     },
     closeModal (refresh) {
@@ -148,10 +152,12 @@ export default {
   #config-container{
     --background-color: #fff;
     --bar-color: #f5f5f5;
-    --paper-color: #f5f5f5;
+    --paper-container-color: #f5f5f5;
+    --paper-color: #fff;
     --panel-color: #fff;
     --active-color: #fff;
     --icon-color: #333;
+    --shadow-color: #f0f0f0;
   }
   /deep/.ant-modal-body{
     padding: 0;
@@ -195,18 +201,20 @@ export default {
           position: relative;
           height: 100%;
           width: calc(~"100% - 280px");
-          background: var(--paper-color);
+          background: var(--paper-container-color);
           display: flex;
           .paper{
             height: 100%;
             width: 100%;
           }
           .form-container{
+            z-index: 10;
             position: absolute;
             right: 0;
             height: 100%;
             width: 460px;
             background: var(--panel-color);
+            box-shadow: 0px 3px 8px var(--shadow-color);
             .trigger-container{
               position: absolute;
               top: 0;

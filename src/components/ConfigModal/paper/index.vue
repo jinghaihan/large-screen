@@ -7,7 +7,7 @@
          ref="paperPanel">
       <div :class="`drop-paper-${ratio} drop-paper`"
             :style="getStyle()">
-        <Layout :rowHeight="pixel" :layout="layout" ref="layout"></Layout>
+        <Layout :colNum="colNum" :rowHeight="rowHeight" :layout="layout" ref="layout"></Layout>
       </div>
     </div>
   </div>
@@ -19,11 +19,14 @@ import Layout from './layout/index.vue'
 
 export default {
   name: 'paper',
-  // eslint-disable-next-line vue/no-unused-components
   components: { TickMark, Layout },
   props: {
     layout: {
       type: Array,
+      required: true
+    },
+    colNum: {
+      type: Number,
       required: true
     }
   },
@@ -36,7 +39,7 @@ export default {
           linear-gradient(rgb(240, 240, 240) 5%, transparent 0)`,
         backgroundRepeat: `repeat`
       },
-      pixel: null
+      rowHeight: null
     }
   },
   mounted () {
@@ -46,8 +49,8 @@ export default {
   methods: {
     getStyle () {
       if (this.$refs.paperPanel) {
-        this.pixel = this.$refs.paperPanel.offsetWidth / 100
-        this.style.backgroundSize = `${this.pixel}px ${this.pixel}px`
+        this.rowHeight = this.$refs.paperPanel.offsetWidth / 100
+        this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
         return this.style
       } else {
         return {}

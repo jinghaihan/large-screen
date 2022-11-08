@@ -1,11 +1,10 @@
 <template>
   <grid-layout ref="gridLayout"
               :layout.sync="layout"
-              :col-num="100"
+              :col-num="colNum || 100"
               :row-height="rowHeight"
               :is-draggable="true"
               :is-resizable="true"
-              :responsive="false"
               :vertical-compact="false"
               :prevent-collision="true">
       <grid-item v-for="item in layout"
@@ -27,6 +26,7 @@ export default {
       type: Array,
       required: true
     },
+    colNum: null,
     rowHeight: null
   }
 }

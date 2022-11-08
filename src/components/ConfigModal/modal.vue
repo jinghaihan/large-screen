@@ -49,12 +49,19 @@
         <div class="config-container">
           <!-- 组件面板 -->
           <div class="component-container">
-            <ComponentPanel v-if="panelVisible" :layout="layout" :root="getRef()"></ComponentPanel>
+            <ComponentPanel v-if="panelVisible"
+                            :layout="layout"
+                            :colNum="colNum"
+                            :root="getRef()"
+                            @drop="onDrop"></ComponentPanel>
           </div>
           <div class="paper-container">
             <!-- 画布 -->
             <div class="paper">
-              <Paper ref="paper" :layout="layout" @rendered="onPaperRendered"></Paper>
+              <Paper ref="paper"
+                     :layout="layout"
+                     :colNum="colNum"
+                     @rendered="onPaperRendered"></Paper>
             </div>
             <!-- 表单面板 -->
             <div class="form-container" id="form-container">
@@ -73,6 +80,7 @@
 
 <script>
 import $ from 'jquery'
+import _ from 'lodash'
 import Paper from './paper'
 import ComponentPanel from './panel/component'
 
@@ -103,7 +111,10 @@ export default {
       activeKey: 'chart',
       trigger: 'right',
       theme: 'light',
+      // 画布
       layout: [],
+      colNum: 100,
+      // 面板
       panelVisible: false
     }
   },
@@ -149,6 +160,10 @@ export default {
     },
     onPaperRendered () {
       this.panelVisible = true
+    },
+    onDrop (layout) {
+      console.log('onDrop', layout)
+      this.layout = _.cloneDeep(layout)
     },
     getRef () {
       return this
@@ -205,6 +220,7 @@ export default {
           height: 100%;
           width: 280px;
           background: var(--panel-color);
+          padding: 8px;
         }
         .paper-container{
           position: relative;

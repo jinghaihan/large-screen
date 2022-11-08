@@ -81,8 +81,8 @@
 <script>
 import $ from 'jquery'
 import _ from 'lodash'
-import Paper from './paper'
-import ComponentPanel from './panel/component'
+import Paper from './paper/paper.vue'
+import ComponentPanel from './panel/component/dragEl.vue'
 
 export default {
   name: 'configModal',

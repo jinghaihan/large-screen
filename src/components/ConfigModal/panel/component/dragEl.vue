@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="drag-element-container">
     <div @drag="drag($event, conf)"
           @dragend="dragend($event, conf)"
           class="droppable-element"
@@ -12,7 +12,6 @@
       </a-card>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -40,10 +39,10 @@ export default {
     }
   },
   mounted () {
-    document.addEventListener('dragover', this.updateMouse, false)
+    this.ref.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
   },
   beforeDestroy () {
-    document.removeEventListener('dragover', this.updateMouse)
+    this.ref.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
   },
   methods: {
     drag: function (e, item) {
@@ -87,23 +86,16 @@ export default {
         mouseInGrid = true
       }
       if (mouseInGrid === true) {
+        // alert(`Dropped element props:\n${JSON.stringify(DragPos, ['x', 'y', 'w', 'h'], 2)}`)
         this.ref.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.layout = this.layout.filter(obj => obj.i !== 'drop')
 
-        alert(`Dropped element props:\n${JSON.stringify(DragPos, ['x', 'y', 'w', 'h'], 2)}`)
-
-        let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-        let maxPos = $chars.length
-        let key = ''
-        for (let i = 0; i < 32; i++) {
-          key += $chars.charAt(Math.floor(Math.random() * maxPos))
-        }
         this.layout.push({
           x: DragPos.x,
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: item.i + '-' + key
+          i: item.i + '-' + this.getKey()
         })
         this.$emit('drop', this.layout)
         try {
@@ -114,6 +106,15 @@ export default {
     updateMouse (e) {
       mouseXY.x = e.clientX
       mouseXY.y = e.clientY
+    },
+    getKey () {
+      let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+      let maxPos = $chars.length
+      let key = ''
+      for (let i = 0; i < 32; i++) {
+        key += $chars.charAt(Math.floor(Math.random() * maxPos))
+      }
+      return key
     }
   }
 }

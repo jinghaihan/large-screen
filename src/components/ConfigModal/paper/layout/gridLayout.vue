@@ -1,19 +1,24 @@
 <template>
   <grid-layout ref="gridLayout"
               :layout.sync="layout"
-              :col-num="colNum || 100"
+              :col-num="colNum"
+              :max-rows="maxH"
               :row-height="rowHeight"
               :is-draggable="true"
               :is-resizable="true"
               :vertical-compact="false"
-              :prevent-collision="true">
+              :prevent-collision="true"
+              :margin="[0, 0]"
+              @layout-updated="layoutUpdate">
       <grid-item v-for="item in layout"
                 :key="item.i"
                 :x="item.x"
                 :y="item.y"
                 :w="item.w"
                 :h="item.h"
-                :i="item.i">
+                :i="item.i"
+                :maxW="maxW"
+                :maxH="maxH">
           <span class="text">{{ item.i }}</span>
       </grid-item>
   </grid-layout>
@@ -26,8 +31,29 @@ export default {
       type: Array,
       required: true
     },
-    colNum: null,
-    rowHeight: null
+    colNum: {
+      type: Number,
+      required: true
+    },
+    rowHeight: {
+      type: Number,
+      required: true
+    },
+    ratio: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      maxW: this.colNum,
+      maxH: (this.colNum / this.ratio.width * this.ratio.height).toFixed(0)
+    }
+  },
+  methods: {
+    layoutUpdate (data) {
+      console.log(data)
+    }
   }
 }
 </script>

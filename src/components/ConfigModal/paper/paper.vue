@@ -5,9 +5,10 @@
     <!-- 画布 -->
     <div class="paper-panel"
          ref="paperPanel">
-      <div :class="`drop-paper-${ratio} drop-paper`"
-            :style="getStyle()">
-        <Layout :colNum="colNum" :rowHeight="rowHeight" :layout="layout" ref="layout"></Layout>
+      <div ref="dropPaper"
+          :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
+          :style="getStyle()">
+        <Layout :layout="layout" :colNum="colNum" :rowHeight="rowHeight" :ratio="ratio" ref="layout"></Layout>
       </div>
     </div>
   </div>
@@ -15,7 +16,7 @@
 
 <script>
 import TickMark from './tickMark/tickMark.vue'
-import Layout from './layout/index.vue'
+import Layout from './layout/gridLayout.vue'
 
 export default {
   name: 'paper',
@@ -32,7 +33,10 @@ export default {
   },
   data () {
     return {
-      ratio: '16-9',
+      ratio: {
+        width: 16,
+        height: 9
+      },
       style: {
         backgroundImage: 
           `linear-gradient(90deg, rgb(240, 240, 240) 5%,transparent 0),
@@ -48,8 +52,8 @@ export default {
   },
   methods: {
     getStyle () {
-      if (this.$refs.paperPanel) {
-        this.rowHeight = this.$refs.paperPanel.offsetWidth / 100
+      if (this.$refs.dropPaper) {
+        this.rowHeight = this.$refs.dropPaper.offsetWidth / 100
         this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
         return this.style
       } else {

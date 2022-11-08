@@ -10,7 +10,7 @@
     height="100%"
     wrapClassName="fullModalWithoutHeader"
   >
-    <div class="container">
+    <div ref="container" class="container" id="config-container">
       <!-- 侧边栏 -->
       <div class="side-bar">
         <div class="action">
@@ -34,6 +34,7 @@
             <a-button size="small" icon="fund" type="primary">模板库</a-button>
           </div>
           <div class="operation-container">
+            <a-switch checked-children="深色" un-checked-children="浅色" @change="onChangeTheme"/>
             <div class="action"
                   v-for="icon in operation['navbar']"
                   :key="icon.key">
@@ -52,13 +53,14 @@
           </div>
           <div class="paper-container">
             <!-- 画布 -->
-            <div class="paper"></div>
+            <div class="paper">
+              <Paper></Paper>
+            </div>
             <!-- 表单面板 -->
-            <div class="form-container" id="form-container">>
-              <div class="trigger-container">
+            <div class="form-container" id="form-container">
+              <div class="trigger-container" @click="onTrigger">
                 <tooltip-icon :icon="'double-' + trigger"
-                              :title="trigger === 'right' ? '收缩' : '展开'"
-                              @click="onTrigger">
+                              :title="trigger === 'right' ? '收缩' : '展开'" >
                 </tooltip-icon>
               </div>
             </div>
@@ -71,9 +73,11 @@
 
 <script>
 import $ from 'jquery'
+import Paper from '@/components/Paper'
 
 export default {
   name: 'configModal',
+  components: { Paper },
   props: {
     modalData: {
       type: Object,
@@ -91,11 +95,13 @@ export default {
         ],
         navbar: [
           { name: '下载', icon: 'cloud-download', key: 'download' },
+          { name: '清空', icon: 'delete', key: 'delete' },
           { name: '保存', icon: 'save', key: 'save' }
         ]
       },
       activeKey: 'chart',
-      trigger: 'right'
+      trigger: 'right',
+      theme: 'light'
     }
   },
   methods: {
@@ -112,6 +118,25 @@ export default {
         this.trigger = 'right'
       }
     },
+    onChangeTheme (value) {
+      let dom = this.$refs.container
+      this.theme = value ? 'dark' : 'light'
+      if (this.theme === 'dark') {
+        dom.style.setProperty('--background-color', '#151515')
+        dom.style.setProperty('--bar-color', '#151515')
+        dom.style.setProperty('--paper-color', '#151515')
+        dom.style.setProperty('--panel-color', '#24282e')
+        dom.style.setProperty('--active-color', '#24282e')
+        dom.style.setProperty('--icon-color', '#fff')
+      } else {
+        dom.style.setProperty('--background-color', '#fff')
+        dom.style.setProperty('--bar-color', '#f5f5f5')
+        dom.style.setProperty('--paper-color', '#f5f5f5')
+        dom.style.setProperty('--panel-color', '#fff')
+        dom.style.setProperty('--active-color', '#fff')
+        dom.style.setProperty('--icon-color', '#333')
+      }
+    },
     closeModal (refresh) {
       this.$emit('close', refresh)
     }
@@ -120,6 +145,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  #config-container{
+    --background-color: #fff;
+    --bar-color: #f5f5f5;
+    --paper-color: #f5f5f5;
+    --panel-color: #fff;
+    --active-color: #fff;
+    --icon-color: #333;
+  }
   /deep/.ant-modal-body{
     padding: 0;
   }
@@ -129,15 +162,15 @@ export default {
     .side-bar{
       height: 100%;
       width: 45px;
-      background: #151515;
-      color: #fff;
+      background: var(--bar-color);
+      color: var(--icon-color);
     }
     .content{
       height: 100%;
       width: calc(~"100% - 45px");
       .nav-bar{
         height: 45px;
-        background: #151515;
+        background: var(--bar-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -145,42 +178,49 @@ export default {
         .operation-container{
           height: 100%;
           display: flex;
-          color: #fff;
+          align-items: center;
+          color: var(--icon-color);
         }
       }
       .config-container{
         height: calc(~"100% - 45px");
-        background: #141414;
+        background: var(--background-color);
         display: flex;
         .component-container{
           height: 100%;
           width: 280px;
-          background: #24282e;
+          background: var(--panel-color);
         }
         .paper-container{
           position: relative;
           height: 100%;
           width: calc(~"100% - 280px");
+          background: var(--paper-color);
+          display: flex;
+          .paper{
+            height: 100%;
+            width: 100%;
+          }
           .form-container{
             position: absolute;
             right: 0;
             height: 100%;
             width: 460px;
-            background: #24282e;
+            background: var(--panel-color);
             .trigger-container{
               position: absolute;
               top: 0;
               bottom: 0;
               left: -25px;
               margin: auto;
-              background: #24282e;
+              background: var(--panel-color);
               width: 45px;
               height: 45px;
               border-radius: 50%;
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #fff;
+              color: var(--icon-color);
               font-size: 18px;
             }
           }
@@ -196,7 +236,7 @@ export default {
       font-size: 20px;
     }
     .action-active{
-      background: #24282e;
+      background: var(--active-color);
       color: #1890ff;
     }
   }

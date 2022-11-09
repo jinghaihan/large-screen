@@ -40,23 +40,17 @@ export default {
     layer: {
       type: Number,
       required: true
+    },
+    maxLayer: {
+      type: Number,
+      required: true
     }
   },
   components: { GridLayout },
-  watch: {
-    layout: {
-      deep: true,
-      immediate: true,
-      handler: function (data) {
-        console.log('layout change', data, this.layer)
-        this.$forceUpdate()
-      }
-    }
-  },
   methods: {
     getStyle (layer) {
       return {
-        'z-index': layer
+        'z-index': this.layer === layer ? layer + this.maxLayer : layer
       }
     }
   }

@@ -16,6 +16,7 @@
                               :rowHeight="rowHeight"
                               :ratio="ratio"
                               :layer="layer"
+                              :maxLayer="maxLayer"
                               ref="gridLayoutContainer">
         </GridLayoutContainer>
       </div>
@@ -40,6 +41,10 @@ export default {
       required: true
     },
     layer: {
+      type: Number,
+      required: true
+    },
+    maxLayer: {
       type: Number,
       required: true
     }

@@ -1,7 +1,19 @@
 <template>
   <div class="tool-container">
     <div class="layer-container">
-      <span class="layer">{{layout[layer].name}}</span>
+      <a-dropdown v-show="layout.length > 1">
+        <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+          <span class="layer">{{layout[layer].name}}</span><a-icon type="down" />
+        </a>
+        <a-menu slot="overlay">
+          <a-menu-item v-for="item in layout.filter((item, index) => index !== layer)"
+                      :key="item.key"
+                      @click="onChangeLayer(item)">
+            <a href="javascript:;">{{item.name}}</a>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+      <span class="layer" v-show="layout.length === 1">{{layout[layer].name}}</span>
     </div>
     <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
@@ -34,6 +46,9 @@ export default {
   methods: {
     onCreateLayer () {
       this.$emit('createLayer')
+    },
+    onChangeLayer (item) {
+      this.$emit('changeLayer', item.key) 
     }
   }
 }
@@ -43,10 +58,12 @@ export default {
   .tool-container{
     display: flex;
     align-items: center;
+    color: var(--icon-color);
     .layer-container{
       display: flex;
       align-items: center;
       .layer{
+        color: var(--icon-color);
         font-weight: bold;
         font-size: 15px;
       }

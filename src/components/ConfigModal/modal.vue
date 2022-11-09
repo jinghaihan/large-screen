@@ -37,7 +37,8 @@
             <Toolbox :layout="layout"
                      :layer="layer"
                      :scale="scale"
-                     @createLayer="onCreateLayer"></Toolbox>
+                     @createLayer="onCreateLayer"
+                     @changeLayer="onChangeLayer"></Toolbox>
           </div>
           <div class="operation-container">
             <a-switch checked-children="深色" un-checked-children="浅色" @change="onTheme"/>
@@ -67,6 +68,7 @@
               <Paper ref="paper"
                      :layout="layout"
                      :layer="layer"
+                     :maxLayer="maxLayer"
                      :scale="scale"
                      :colNum="colNum"
                      @rendered="panelVisible = true"></Paper>
@@ -123,6 +125,7 @@ export default {
       // 画布
       layout: [],
       layer: 0,
+      maxLayer: 5,
       scale: 1,
       colNum: 100,
       // 面板
@@ -174,12 +177,26 @@ export default {
       }
     },
     onCreateLayer () {
+      if (this.layout.length >= this.maxLayer) {
+        this.$notification.error({ message: '错误', description: '最多支持5个图层' })
+        return
+      }
       this.layout.push({
         key: getKey(),
         name: '图层' + (this.layout.length + 1),
         layout: []
       })
       this.layer = this.layout.length - 1
+    },
+    onChangeLayer (key) {
+      try {
+        this.layout.forEach((data, index) => {
+          if (data.key === key) {
+            this.layer = index
+            throw new Error()
+          }
+        })
+      } catch (error) {}
     },
     closeModal (refresh) {
       this.$emit('close', refresh)

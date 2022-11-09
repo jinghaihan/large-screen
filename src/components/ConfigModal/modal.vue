@@ -33,6 +33,12 @@
           <div class="template-container">
             <a-button size="small" icon="fund" type="primary">模板库</a-button>
           </div>
+          <div class="toolbox-container">
+            <Toolbox :layout="layout"
+                     :layer="layer"
+                     :scale="scale"
+                     @createLayer="onCreateLayer"></Toolbox>
+          </div>
           <div class="operation-container">
             <a-switch checked-children="深色" un-checked-children="浅色" @change="onTheme"/>
             <div class="action"
@@ -51,6 +57,7 @@
           <div class="component-container">
             <ComponentPanel v-if="panelVisible"
                             :colNum="colNum"
+                            :layer="layer"
                             :root="getRef()"
                             @drop="onDrop"></ComponentPanel>
           </div>
@@ -58,8 +65,11 @@
             <!-- 画布 -->
             <div class="paper">
               <Paper ref="paper"
+                     :layout="layout"
+                     :layer="layer"
+                     :scale="scale"
                      :colNum="colNum"
-                     @rendered="onPaperRendered"></Paper>
+                     @rendered="panelVisible = true"></Paper>
             </div>
             <!-- 表单面板 -->
             <div class="form-container" id="form-container">
@@ -79,11 +89,13 @@
 <script>
 import $ from 'jquery'
 import Paper from './paper/paper.vue'
+import Toolbox from './toolbox/toolbox.vue'
 import ComponentPanel from './panel/component/dragEl.vue'
+import { getKey } from './utils'
 
 export default {
   name: 'configModal',
-  components: { Paper, ComponentPanel },
+  components: { Paper, Toolbox, ComponentPanel },
   props: {
     modalData: {
       type: Object,
@@ -109,10 +121,20 @@ export default {
       trigger: 'right',
       theme: 'light',
       // 画布
+      layout: [],
+      layer: 0,
+      scale: 1,
       colNum: 100,
       // 面板
       panelVisible: false
     }
+  },
+  created () {
+    this.layout.push({
+      key: getKey(),
+      name: '图层1',
+      layout: []
+    })
   },
   methods: {
     onOperation (key) {
@@ -151,11 +173,16 @@ export default {
         dom.style.setProperty('--shadow-color', '#f0f0f0')
       }
     },
+    onCreateLayer () {
+      this.layout.push({
+        key: getKey(),
+        name: '图层' + (this.layout.length + 1),
+        layout: []
+      })
+      this.layer = this.layout.length - 1
+    },
     closeModal (refresh) {
       this.$emit('close', refresh)
-    },
-    onPaperRendered () {
-      this.panelVisible = true
     },
     getRef () {
       return this

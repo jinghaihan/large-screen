@@ -2,9 +2,10 @@
   <div class="grid-layout-container">
     <div class="grid-layout-inner-container"
           v-for="(data, index) in layout"
-          :key="index"
+          :key="data.key"
           :style="getStyle(index)">
       <GridLayout ref="layout"
+                  :layout="data.layout"
                   :colNum="colNum"
                   :rowHeight="rowHeight"
                   :ratio="ratio"
@@ -17,6 +18,7 @@
 
 <script>
 import GridLayout from './gridLayout.vue'
+
 export default {
   props: {
     layout: {
@@ -41,6 +43,16 @@ export default {
     }
   },
   components: { GridLayout },
+  watch: {
+    layout: {
+      deep: true,
+      immediate: true,
+      handler: function (data) {
+        console.log('layout change', data, this.layer)
+        this.$forceUpdate()
+      }
+    }
+  },
   methods: {
     getStyle (layer) {
       return {

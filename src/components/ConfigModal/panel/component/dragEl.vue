@@ -18,12 +18,17 @@
 
 <script>
 import config from './config'
+import { getKey } from '../../utils'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }
 
 export default {
   props: {
+    layer: {
+      type: Number,
+      required: true
+    },
     colNum: {
       type: Number,
       required: true
@@ -32,8 +37,20 @@ export default {
   },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.root.$refs.paper.layer],
+      ref: this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.layer],
       config
+    }
+  },
+  watch: {
+    layer: {
+      immediate: true,
+      handler: function () {
+        // 清空上个图层的dragover事件
+        this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
+        this.ref = this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.layer]
+        // 新增当前图层的dragover事件
+        this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+      }
     }
   },
   mounted () {
@@ -93,7 +110,7 @@ export default {
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: item.type + '-' + this.getKey()
+          i: item.type + '-' + getKey()
         })
         try {
           this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'
@@ -103,15 +120,6 @@ export default {
     updateMouse (e) {
       mouseXY.x = e.clientX
       mouseXY.y = e.clientY
-    },
-    getKey () {
-      let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-      let maxPos = $chars.length
-      let key = ''
-      for (let i = 0; i < 32; i++) {
-        key += $chars.charAt(Math.floor(Math.random() * maxPos))
-      }
-      return key
     }
   }
 }

@@ -31,7 +31,15 @@ export default {
   name: 'paper',
   components: { TickMark, GridLayoutContainer },
   props: {
+    layout: {
+      type: Array,
+      required: true
+    },
     colNum: {
+      type: Number,
+      required: true
+    },
+    layer: {
       type: Number,
       required: true
     }
@@ -52,10 +60,7 @@ export default {
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
-      },
-      // 画布
-      layout: [[]],
-      layer: 0
+      }
     }
   },
   mounted () {

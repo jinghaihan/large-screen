@@ -24,10 +24,6 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 
 export default {
   props: {
-    layout: {
-      type: Array,
-      required: true
-    },
     colNum: {
       type: Number,
       required: true
@@ -36,72 +32,71 @@ export default {
   },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.layout.$refs,
+      ref: this.root.$refs.paper.$refs.layout,
       config
     }
   },
   mounted () {
-    this.ref.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+    this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
   },
   beforeDestroy () {
-    this.ref.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
+    this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
   },
   methods: {
     drag: function (e, item) {
-      let parentRect = this.ref.gridLayout.$el.getBoundingClientRect()
+      let parentRect = this.ref.$refs.gridLayout.$el.getBoundingClientRect()
       let mouseInGrid = false
       if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
         mouseInGrid = true
       }
-      if (mouseInGrid === true && (this.layout.findIndex(item => item.i === 'drop')) === -1) {
-        this.layout.push({
-          x: (this.layout.length * 2) % (this.colNum || 100),
-          y: this.layout.length + (this.colNum || 100),
+      if (mouseInGrid === true && (this.ref.layout.findIndex(item => item.i === 'drop')) === -1) {
+        this.ref.layout.push({
+          x: (this.ref.layout.length * 2) % this.colNum,
+          y: this.ref.layout.length + this.colNum,
           w: item.w,
           h: item.h,
           i: 'drop'
         })
       }
-      let index = this.layout.findIndex(item => item.i === 'drop')
+      let index = this.ref.layout.findIndex(item => item.i === 'drop')
       if (index !== -1) {
         try {
-          this.ref.gridLayout.$children[this.layout.length].$refs.item.style.display = 'none'
+          this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'none'
         } catch (error) { }
-        let el = this.ref.gridLayout.$children[index]
+        let el = this.ref.$refs.gridLayout.$children[index]
         el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
         let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
         if (mouseInGrid === true) {
-          this.ref.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
-          DragPos.x = this.layout[index].x
-          DragPos.y = this.layout[index].y
+          this.ref.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
+          DragPos.x = this.ref.layout[index].x
+          DragPos.y = this.ref.layout[index].y
         }
         if (mouseInGrid === false) {
-          this.ref.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
-          this.layout = this.layout.filter(obj => obj.i !== 'drop')
+          this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
+          this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
         }
       }
     },
     dragend: function (e, item) {
-      let parentRect = this.ref.gridLayout.$el.getBoundingClientRect()
+      let parentRect = this.ref.$refs.gridLayout.$el.getBoundingClientRect()
       let mouseInGrid = false
       if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
         mouseInGrid = true
       }
       if (mouseInGrid === true) {
         // alert(`Dropped element props:\n${JSON.stringify(DragPos, ['x', 'y', 'w', 'h'], 2)}`)
-        this.ref.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
-        this.layout = this.layout.filter(obj => obj.i !== 'drop')
+        this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
+        this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
 
-        this.layout.push({
+        this.ref.layout.push({
           x: DragPos.x,
           y: DragPos.y,
           w: item.w,
           h: item.h,
           i: item.i + '-' + this.getKey()
         })
-        this.$emit('drop', this.layout)
         try {
-          this.ref.gridLayout.$children[this.layout.length].$refs.item.style.display = 'block'
+          this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'
         } catch (error) { }
       }
     },

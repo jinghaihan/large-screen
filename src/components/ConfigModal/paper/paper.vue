@@ -11,8 +11,7 @@
       <div ref="dropPaper"
           :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
           :style="getStyle()">
-        <Layout :layout="layout"
-                :colNum="colNum"
+        <Layout :colNum="colNum"
                 :rowHeight="rowHeight"
                 :ratio="ratio"
                 ref="layout">
@@ -30,10 +29,6 @@ export default {
   name: 'paper',
   components: { TickMark, Layout },
   props: {
-    layout: {
-      type: Array,
-      required: true
-    },
     colNum: {
       type: Number,
       required: true

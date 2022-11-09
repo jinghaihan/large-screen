@@ -8,8 +8,7 @@
               :is-resizable="true"
               :vertical-compact="false"
               :prevent-collision="true"
-              :margin="[0, 0]"
-              @layout-updated="layoutUpdate">
+              :margin="[0, 0]">
       <grid-item v-for="item in layout"
                 :key="item.i"
                 :x="item.x"
@@ -27,10 +26,6 @@
 <script>
 export default {
   props: {
-    layout: {
-      type: Array,
-      required: true
-    },
     colNum: {
       type: Number,
       required: true
@@ -46,14 +41,13 @@ export default {
   },
   data () {
     return {
+      layout: [],
       maxW: this.colNum,
       maxH: (this.colNum / this.ratio.width * this.ratio.height).toFixed(0)
     }
   },
   methods: {
-    layoutUpdate (data) {
-      console.log('layoutUpdate', data)
-    }
+    
   }
 }
 </script>

@@ -50,7 +50,6 @@
           <!-- 组件面板 -->
           <div class="component-container">
             <ComponentPanel v-if="panelVisible"
-                            :layout="layout"
                             :colNum="colNum"
                             :root="getRef()"
                             @drop="onDrop"></ComponentPanel>
@@ -59,7 +58,6 @@
             <!-- 画布 -->
             <div class="paper">
               <Paper ref="paper"
-                     :layout="layout"
                      :colNum="colNum"
                      @rendered="onPaperRendered"></Paper>
             </div>
@@ -80,7 +78,6 @@
 
 <script>
 import $ from 'jquery'
-import _ from 'lodash'
 import Paper from './paper/paper.vue'
 import ComponentPanel from './panel/component/dragEl.vue'
 
@@ -112,7 +109,6 @@ export default {
       trigger: 'right',
       theme: 'light',
       // 画布
-      layout: [],
       colNum: 100,
       // 面板
       panelVisible: false
@@ -160,9 +156,6 @@ export default {
     },
     onPaperRendered () {
       this.panelVisible = true
-    },
-    onDrop (layout) {
-      this.layout = _.cloneDeep(layout)
     },
     getRef () {
       return this

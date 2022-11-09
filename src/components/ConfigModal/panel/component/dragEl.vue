@@ -1,17 +1,19 @@
 <template>
-  <div class="drag-element-container">
-    <div @drag="drag($event, conf)"
-          @dragend="dragend($event, conf)"
-          class="droppable-element"
-          draggable="true"
-          unselectable="on"
-          v-for="conf in config"
-          :key="conf.name">
-      <a-card hoverable size="small" :title="conf.name">
-        <img slot="cover" :src="conf.image" />
-      </a-card>
-    </div>
-  </div>
+  <a-row :gutter="[4,4]">
+    <a-col v-for="conf in config"
+            :key="conf.name"
+            :span="conf.col">
+        <div @drag="drag($event, conf)"
+              @dragend="dragend($event, conf)"
+              class="droppable-element"
+              draggable="true"
+              unselectable="on">
+          <a-card hoverable size="small" :title="conf.name">
+            <img slot="cover" :src="conf.image" />
+          </a-card>
+        </div>
+    </a-col>
+  </a-row>
 </template>
 
 <script>

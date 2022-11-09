@@ -162,7 +162,6 @@ export default {
       this.panelVisible = true
     },
     onDrop (layout) {
-      console.log('onDrop', layout)
       this.layout = _.cloneDeep(layout)
     },
     getRef () {

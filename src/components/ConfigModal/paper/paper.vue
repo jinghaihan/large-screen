@@ -4,11 +4,19 @@
     <TickMark></TickMark>
     <!-- 画布 -->
     <div class="paper-panel"
-         ref="paperPanel">
+         ref="paperPanel"
+         @mousedown="onMouseDown"
+         @mousemove="onMouseMove"
+         @mouseup="onMouseUp">
       <div ref="dropPaper"
           :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
           :style="getStyle()">
-        <Layout :layout="layout" :colNum="colNum" :rowHeight="rowHeight" :ratio="ratio" ref="layout"></Layout>
+        <Layout :layout="layout"
+                :colNum="colNum"
+                :rowHeight="rowHeight"
+                :ratio="ratio"
+                ref="layout">
+        </Layout>
       </div>
     </div>
   </div>
@@ -43,7 +51,11 @@ export default {
           linear-gradient(rgb(240, 240, 240) 5%, transparent 0)`,
         backgroundRepeat: `repeat`
       },
-      rowHeight: null
+      rowHeight: null,
+      diffmove: {
+        start: { x: 0, y: 0 },
+        move: false
+      }
     }
   },
   mounted () {
@@ -58,6 +70,52 @@ export default {
         return this.style
       } else {
         return {}
+      }
+    },
+    onMouseDown (e) {
+      if (e.target === this.$refs.paperPanel) {
+        this.diffmove = {
+          start: {
+            x: e.clientX,
+            y: e.clientY
+          },
+          move: true
+        }
+        document.onselectstart = function () { return false }
+      }
+    },
+    onMouseMove (e) {
+      if (this.diffmove.move) {
+        const newX = e.clientX
+        const newY = e.clientY
+        let diffX = newX - this.diffmove.start.x
+        let diffY = newY - this.diffmove.start.y
+
+        let paperRect = this.$refs.dropPaper.getBoundingClientRect()
+        let panelRect = this.$refs.paperPanel.getBoundingClientRect()
+        let diffRectX = paperRect.left - panelRect.left
+        let diffRectY = paperRect.top - panelRect.top
+
+        this.$refs.dropPaper.style.left = diffRectX + diffX < 0 ? 0 : diffRectX + diffX + 'px'
+        this.$refs.dropPaper.style.top = diffRectY + diffY < 0 ? 0 : diffRectY + diffY + 'px'
+        this.$refs.dropPaper.style.right = 'auto'
+        this.$refs.dropPaper.style.bottom = 'auto'
+        this.$refs.dropPaper.style.margin = 0
+
+        this.diffmove = {
+          start: {
+            x: newX,
+            y: newY
+          },
+          move: true
+        }
+      }
+    },
+    onMouseUp (e) {
+      document.onselectstart = null
+      this.diffmove = {
+        start: { x: 0, y: 0 },
+        move: false
       }
     }
   }
@@ -76,17 +134,17 @@ export default {
       width: calc(~"100% - 50px");
       z-index: 1;
       background: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      cursor: pointer;
       .drop-paper{
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin: auto;
         background: var(--paper-color);
         width: 90%;
         box-shadow: 0 0 12px var(--shadow-color);
-        cursor: pointer;
       }
       .drop-paper-16-9{
         aspect-ratio: 16 / 9;

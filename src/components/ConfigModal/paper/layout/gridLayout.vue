@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     layoutUpdate (data) {
-      console.log(data)
+      console.log('layoutUpdate', data)
     }
   }
 }

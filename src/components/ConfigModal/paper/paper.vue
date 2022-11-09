@@ -1,13 +1,13 @@
 <template>
   <div class="paper-wrapper">
     <!-- 刻度尺 -->
-    <TickMark></TickMark>
+    <TickMark :scale="scale"></TickMark>
     <!-- 画布 -->
     <div class="paper-panel"
-         ref="paperPanel"
-         @mousedown="onMouseDown"
-         @mousemove="onMouseMove"
-         @mouseup="onMouseUp">
+        ref="paperPanel"
+        @mousedown="onMouseDown"
+        @mousemove="onMouseMove"
+        @mouseup="onMouseUp">
       <div ref="dropPaper"
           :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
           :style="getStyle()">
@@ -47,6 +47,10 @@ export default {
     maxLayer: {
       type: Number,
       required: true
+    },
+    scale: {
+      type: Number,
+      required: true
     }
   },
   data () {
@@ -65,16 +69,23 @@ export default {
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
+      },
+      showGrid: false
+    }
+  },
+  watch: {
+    scale: {
+      handler: function (scale) {
+        this.onScaleChange(scale)
       }
     }
   },
   mounted () {
-    this.$forceUpdate()
-    this.$emit('rendered')
+    this.onRendered()
   },
   methods: {
     getStyle () {
-      if (this.$refs.dropPaper) {
+      if (this.showGrid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / 100
         this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
         return this.style
@@ -127,6 +138,28 @@ export default {
         start: { x: 0, y: 0 },
         move: false
       }
+    },
+    onScaleChange (scale) {
+      let totalWidth = this.$refs.paperPanel.getBoundingClientRect().width
+      this.$refs.dropPaper.style.width = totalWidth * 0.9 * scale + 'px'
+    },
+    async onRendered () {
+      // 刷新画布网格
+      this.showGrid = true
+      // 通知父组件渲染完毕
+      this.$emit('rendered')
+      // 初始化画布位置
+      await this.$nextTick()
+      let paperRect = this.$refs.dropPaper.getBoundingClientRect()
+      let panelRect = this.$refs.paperPanel.getBoundingClientRect()
+      let diffRectX = paperRect.left - panelRect.left
+      let diffRectY = paperRect.top - panelRect.top
+
+      this.$refs.dropPaper.style.left = diffRectX + 'px'
+      this.$refs.dropPaper.style.top = diffRectY + 'px'
+      this.$refs.dropPaper.style.right = 'auto'
+      this.$refs.dropPaper.style.bottom = 'auto'
+      this.$refs.dropPaper.style.margin = 0
     }
   }
 }
@@ -136,6 +169,7 @@ export default {
   .paper-wrapper{
     position: relative;
     height: 100%;
+    overflow: hidden;
     .paper-panel{
       position: absolute;
       top: 50px;
@@ -145,6 +179,7 @@ export default {
       z-index: 1;
       background: transparent;
       cursor: pointer;
+      overflow: hidden;
       .drop-paper{
         position: absolute;
         top: 0;

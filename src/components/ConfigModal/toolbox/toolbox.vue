@@ -18,12 +18,14 @@
     <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
     <div class="scale-container">
-      <tooltip-icon class="icon" title="放大" icon="plus" placement="bottom"></tooltip-icon>
-      <span class="scale">{{scale * 100}}%</span>
-      <tooltip-icon class="icon" title="缩小" icon="minus" placement="bottom"></tooltip-icon>
+      <tooltip-icon class="icon" title="放大" icon="plus" placement="bottom" @click="onScale('up')"></tooltip-icon>
+      <span class="scale">{{(scale * 100).toFixed(0)}}%</span>
+      <tooltip-icon class="icon" title="缩小" icon="minus" placement="bottom" @click="onScale('down')"></tooltip-icon>
     </div>
     <a-divider type="virtical"></a-divider>
-    <tooltip-icon class="action" title="帮助" icon="question-circle" placement="bottom"></tooltip-icon>
+    <tooltip-icon class="action delete-action" title="清空" icon="delete" placement="bottom"></tooltip-icon>
+    <a-divider type="virtical"></a-divider>
+    <tooltip-icon class="action help-action" title="帮助" icon="question-circle" placement="bottom"></tooltip-icon>
   </div>
 </template>
 
@@ -44,6 +46,9 @@ export default {
     }
   },
   methods: {
+    onScale (direction) {
+      this.$emit('changeScale', direction)
+    },
     onCreateLayer () {
       this.$emit('createLayer')
     },
@@ -84,6 +89,12 @@ export default {
       color: #1890ff;
       font-size: 16px;
       margin: 0 8px;
+    }
+    .delete-action{
+      color: #f5222d;
+    }
+    .help-action{
+      color: #52c41a;
     }
   }
 </style>

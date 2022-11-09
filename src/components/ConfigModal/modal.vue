@@ -38,7 +38,8 @@
                      :layer="layer"
                      :scale="scale"
                      @createLayer="onCreateLayer"
-                     @changeLayer="onChangeLayer"></Toolbox>
+                     @changeLayer="onChangeLayer"
+                     @changeScale="onChangeScale"></Toolbox>
           </div>
           <div class="operation-container">
             <a-switch checked-children="深色" un-checked-children="浅色" @change="onTheme"/>
@@ -109,13 +110,12 @@ export default {
       visible: true,
       operation: {
         sidebar: [
-          { name: '图表', icon: 'area-chart', key: 'chart' },
-          { name: '图片', icon: 'picture', key: 'picture' },
+          { name: '可视化组件', icon: 'area-chart', key: 'chart' },
+          { name: '多媒体', icon: 'video-camera', key: 'multiMedia' },
           { name: '文本', icon: 'font-colors', key: 'text' }
         ],
         navbar: [
-          { name: '下载', icon: 'cloud-download', key: 'download' },
-          { name: '清空', icon: 'delete', key: 'delete' },
+          { name: '截图', icon: 'picture', key: 'screenshot' },
           { name: '保存', icon: 'save', key: 'save' }
         ]
       },
@@ -197,6 +197,17 @@ export default {
           }
         })
       } catch (error) {}
+    },
+    onChangeScale (direction) {
+      let scale = this.scale
+      if (direction === 'up') {
+        scale += 0.1
+      } else {
+        scale -= 0.1
+      }
+      if (scale < 0.5) scale = 0.5
+      if (scale > 1.5) scale = 1.5
+      this.scale = scale
     },
     closeModal (refresh) {
       this.$emit('close', refresh)

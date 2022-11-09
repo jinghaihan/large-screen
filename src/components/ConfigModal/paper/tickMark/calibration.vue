@@ -21,21 +21,21 @@ export default {
       observer: null
     }
   },
-  mounted () {
-    let _this = this
-    _this.init()
-    _this.observer = new ResizeObserver(function () {
-      _this.onResize()
-    })
-    _this.observer.observe(_this.$refs.calibration)
+  watch: {
+    scale: {
+      handler: function (scale) {
+        this.onScaleChange()
+      }
+    }
   },
-  beforeDestroy () {
-    this.observer.disconnect(this.$refs.calibration)
+  mounted () {
+    this.initElement()
   },
   methods: {
-    init () {
+    initElement () {
       this.calibration = this.$refs.calibration
-      let length = this.direction === 'up' ? this.calibration.offsetWidth : this.calibration.offsetHeight
+      let calibration = this.calibration.getBoundingClientRect()
+      let length = ((this.direction === 'up' ? calibration.width : calibration.height) / this.scale).toFixed(0)
       for (let i = 0; i < length / 5; i++) {
         if (i % 10 === 0) {
           this.generateElement(true, i)
@@ -43,7 +43,31 @@ export default {
           this.generateElement()
         }
       }
-      this.onResize()
+      this.initCalibration()
+    },
+    initCalibration () {
+      let arr = [...Array.from(this.calibration.querySelectorAll('.calibrationLine'))]
+      if (arr.length) {
+        if (this.direction === 'up') {
+          arr.forEach(el => {
+            let dom = [...Array.from(el.querySelectorAll('.calibrationNumber'))][0]
+            if (dom) {
+              dom.style.transform = `translate3d(-4px, 24px, 0px) scale(${(this.scale + 0.1).toFixed(
+                1
+              )})`
+            }
+          })
+        } else {
+          arr.forEach(el => {
+            let dom = [...Array.from(el.querySelectorAll('.calibrationNumber'))][0]
+            if (dom) {
+              dom.style.transform = `translate3d(2px, -8px, 0px) scale(${(this.scale + 0.1).toFixed(
+                1
+              )})`
+            }
+          })
+        }
+      }
     },
     generateElement (item, num) {
       let createSpan = document.createElement('div')
@@ -78,31 +102,11 @@ export default {
       }
       this.calibration.appendChild(createSpan)
     },
-    onResize () {
-      let arr = [...Array.from(this.calibration.querySelectorAll('.calibrationLine'))]
-      if (arr.length) {
-        if (this.direction === 'up') {
-          this.calibration.style.width = parseFloat(this.scale.toFixed(1)) * this.calibration.offsetWidth + 'px'
-          arr.forEach(el => {
-            let dom = [...Array.from(el.querySelectorAll('.calibrationNumber'))][0]
-            if (dom) {
-              dom.style.transform = `translate3d(-4px, 24px, 0px) scale(${(this.scale + 0.1).toFixed(
-                1
-              )})`
-            }
-          })
-        } else {
-          this.calibration.style.height = parseFloat(this.scale.toFixed(1)) * this.calibration.offsetHeight + 'px'
-          arr.forEach(el => {
-            let dom = [...Array.from(el.querySelectorAll('.calibrationNumber'))][0]
-            if (dom) {
-              dom.style.transform = `translate3d(2px, -8px, 0px) scale(${(this.scale + 0.1).toFixed(
-                1
-              )})`
-            }
-          })
-        }
-      }
+    onScaleChange () {
+      this.$refs.calibration.innerHTML = ''
+      this.$refs.calibration.style = ''
+      this.initElement()
+      this.initCalibration()
     }
   }
   
@@ -111,7 +115,7 @@ export default {
 
 <style lang="less" scoped>
   .calibration-up{
-    height: 100%;
+    width: 100%;
   }
   .calibration-left{
     height: 100%;

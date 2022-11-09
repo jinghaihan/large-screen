@@ -1,5 +1,5 @@
 <template>
-  <a-row :gutter="[4,4]">
+  <a-row :gutter="[8, 8]">
     <a-col v-for="conf in config"
             :key="conf.name"
             :span="conf.col">
@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.layout,
+      ref: this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.root.$refs.paper.layer],
       config
     }
   },
@@ -93,7 +93,7 @@ export default {
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: item.i + '-' + this.getKey()
+          i: item.type + '-' + this.getKey()
         })
         try {
           this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'

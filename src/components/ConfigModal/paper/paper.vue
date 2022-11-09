@@ -11,11 +11,13 @@
       <div ref="dropPaper"
           :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
           :style="getStyle()">
-        <Layout :colNum="colNum"
-                :rowHeight="rowHeight"
-                :ratio="ratio"
-                ref="layout">
-        </Layout>
+        <GridLayoutContainer :layout="layout"
+                              :colNum="colNum"
+                              :rowHeight="rowHeight"
+                              :ratio="ratio"
+                              :layer="layer"
+                              ref="gridLayoutContainer">
+        </GridLayoutContainer>
       </div>
     </div>
   </div>
@@ -23,11 +25,11 @@
 
 <script>
 import TickMark from './tickMark/tickMark.vue'
-import Layout from './layout/gridLayout.vue'
+import GridLayoutContainer from './layout/gridLayoutContainer.vue'
 
 export default {
   name: 'paper',
-  components: { TickMark, Layout },
+  components: { TickMark, GridLayoutContainer },
   props: {
     colNum: {
       type: Number,
@@ -50,7 +52,10 @@ export default {
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
-      }
+      },
+      // 画布
+      layout: [[]],
+      layer: 0
     }
   },
   mounted () {

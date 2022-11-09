@@ -4,8 +4,8 @@
               :col-num="colNum"
               :max-rows="maxH"
               :row-height="rowHeight"
-              :is-draggable="true"
-              :is-resizable="true"
+              :is-draggable="draggable"
+              :is-resizable="resizable"
               :vertical-compact="false"
               :prevent-collision="true"
               :margin="[0, 0]">
@@ -36,6 +36,14 @@ export default {
     },
     ratio: {
       type: Object,
+      required: true
+    },
+    resizable: {
+      type: Boolean,
+      required: true
+    },
+    draggable: {
+      type: Boolean,
       required: true
     }
   },

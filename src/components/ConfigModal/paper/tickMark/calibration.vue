@@ -114,19 +114,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .calibration-up{
-    width: 100%;
-  }
-  .calibration-left{
-    height: 100%;
-  }
-</style>
-
-<style>
-  .calibrationNumber{
-    font-size: 12px;
-    color: var(--icon-color);
-    opacity: .6;
-    white-space: nowrap;
-  }
+  
 </style>

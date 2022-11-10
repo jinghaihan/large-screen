@@ -1,0 +1,248 @@
+#config-container{
+  --primary-color: #fff;
+  --normal-color: #f5f5f5;
+  --shadow-color: #f0f0f0;
+  --font-color: #333;
+  --highlight-color: #ddd;
+}
+
+.config-container{
+  height: 100%;
+  display: flex;
+  .side-bar{
+    height: 100%;
+    width: 45px;
+    background: var(--normal-color);
+    color: var(--font-color);
+  }
+  .content{
+    height: 100%;
+    width: calc(~"100% - 45px");
+    .nav-bar{
+      height: 45px;
+      background: var(--normal-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      .toolbox-container{
+        display: flex;
+        align-items: center;
+        color: var(--font-color);
+        .layer-container{
+          display: flex;
+          align-items: center;
+          .layer{
+            color: var(--font-color);
+            font-weight: bold;
+            font-size: 15px;
+          }
+        }
+        .scale-container{
+          display: flex;
+          align-items: center;
+          .scale{
+            font-weight: bold;
+            font-size: 15px;
+          }
+          .icon{
+            margin: 0 8px;
+            font-size: 12px;
+          }
+        }
+        .action{
+          color: #1890ff;
+          font-size: 16px;
+          margin: 0 8px;
+        }
+        .delete-action{
+          color: #f5222d;
+        }
+        .help-action{
+          color: #52c41a;
+        }
+      }
+      .operation-container{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: var(--font-color);
+      }
+    }
+    .config-container{
+      height: calc(~"100% - 45px");
+      background: var(--background-color);
+      display: flex;
+      .component-container{
+        height: 100%;
+        width: 280px;
+        background: var(--primary-color);
+        padding: 8px;
+      }
+      .paper-container{
+        position: relative;
+        height: 100%;
+        width: calc(~"100% - 280px");
+        background: var(--normal-color);
+        display: flex;
+        .paper{
+          height: 100%;
+          width: 100%;
+          .paper-content-container{
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            .paper-panel{
+              position: absolute;
+              top: 50px;
+              left: 50px;
+              height: calc(~"100% - 50px");
+              width: calc(~"100% - 50px");
+              z-index: 1;
+              background: transparent;
+              cursor: pointer;
+              overflow: hidden;
+              .drop-paper{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                margin: auto;
+                background: var(--primary-color);
+                width: 90%;
+                box-shadow: 0 0 12px var(--shadow-color);
+                .grid-layout-container{
+                  position: relative;
+                  height: 100%;
+                  width: 100%;
+                  .grid-layout-layer-container{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    .vue-grid-layout{
+                      height: 100% !important;
+                    }
+                    .draggable-element{
+                      position: relative;
+                      height: 100%;
+                      .render-container{
+                        height: 100%;
+                      }
+                    }
+                    .draggable-element-selected{
+                      border: 1px solid var(--highlight-color);
+                      box-shadow: 0 0 6px var(--highlight-color);
+                      border-radius: 4px;
+                    }
+                  }
+                }
+              }
+              .drop-paper-16-9{
+                aspect-ratio: 16 / 9;
+              }
+              .drop-paper-32-9{
+                aspect-ratio: 32 / 9;
+              }
+            }
+            .tickMark {
+              overflow: hidden;
+              height: 100%;
+              position: relative;
+              flex: 1;
+              .tickMarkTop {
+                width: 100%;
+                height: 50px;
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+              .tickMarkLeft {
+                width: 50px;
+                height: calc(~"100% - 50px");
+                position: absolute;
+                bottom: 0;
+                left: 0;
+              }
+              .calibration-up{
+                width: 100%;
+              }
+              .calibration-left{
+                height: 100%;
+              }
+            }
+          }
+        }
+        .form-container{
+          z-index: 100;
+          position: absolute;
+          right: 0;
+          height: 100%;
+          width: 460px;
+          background: var(--primary-color);
+          box-shadow: 0px 3px 8px var(--shadow-color);
+          .trigger-container{
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -25px;
+            margin: auto;
+            background: var(--primary-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--font-color);
+            font-size: 18px;
+            box-shadow: 0px 3px 8px var(--shadow-color);
+          }
+        }
+      }
+    }
+  }
+  .action{
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+  .action-active{
+    background: var(--primary-color);
+    color: #1890ff;
+  }
+}
+
+.shortcut-container{
+  margin: 8px 0;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  .tag-container{
+    width: 280px;
+  }
+  .description{
+    color: #ccc;
+  }
+}
+
+.draggable-element-menu-item-container{
+  display: flex;
+  align-items: center;
+  .icon{
+    margin-right: 8px;
+  }
+}
+
+.calibrationNumber{
+  font-size: 12px;
+  color: var(--font-color);
+  opacity: .6;
+  white-space: nowrap;
+}

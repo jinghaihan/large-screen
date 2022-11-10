@@ -54,9 +54,7 @@ export default {
       type: Object,
       required: true
     },
-    root: {
-      required: true
-    }
+    root: null
   },
   components: { Renderer },
   data () {
@@ -81,7 +79,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .vue-grid-layout{
-    height: 100% !important;
-  }
+  
 </style>

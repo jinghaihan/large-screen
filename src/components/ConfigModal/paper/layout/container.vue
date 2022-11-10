@@ -51,9 +51,7 @@ export default {
       type: Object,
       required: true
     },
-    root: {
-      required: true
-    }
+    root: null
   },
   components: { GridLayout },
   methods: {
@@ -67,16 +65,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .grid-layout-container{
-    position: relative;
-    height: 100%;
-    width: 100%;
-  }
-  .grid-layout-layer-container{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-  }
+  
 </style>

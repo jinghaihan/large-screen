@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="toolbox-container">
     <!-- 图层 -->
     <div class="layer-container">
       <a-dropdown v-show="layout.length > 1">
@@ -94,56 +94,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .tool-container{
-    display: flex;
-    align-items: center;
-    color: var(--icon-color);
-    .layer-container{
-      display: flex;
-      align-items: center;
-      .layer{
-        color: var(--icon-color);
-        font-weight: bold;
-        font-size: 15px;
-      }
-    }
-    .scale-container{
-      display: flex;
-      align-items: center;
-      .scale{
-        font-weight: bold;
-        font-size: 15px;
-      }
-      .icon{
-        margin: 0 8px;
-        font-size: 12px;
-      }
-    }
-    .action{
-      color: #1890ff;
-      font-size: 16px;
-      margin: 0 8px;
-    }
-    .delete-action{
-      color: #f5222d;
-    }
-    .help-action{
-      color: #52c41a;
-    }
-  }
-</style>
 
-<style lang="less">
-  .shortcut-container{
-    margin: 8px 0;
-    width: 350px;
-    display: flex;
-    align-items: center;
-    .tag-container{
-      width: 280px;
-    }
-    .description{
-      color: #ccc;
-    }
-  }
 </style>

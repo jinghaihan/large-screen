@@ -1,6 +1,6 @@
 <template>
   <div ref="container"
-      class="container"
+      class="config-container"
       id="config-container">
     <!-- 侧边栏 -->
     <div class="side-bar">
@@ -33,7 +33,7 @@
                     @change-scale="onChangeScale"></Toolbox>
         </div>
         <div class="operation-container">
-          <a-switch checked-children="深色" un-checked-children="浅色" @change="onTheme"/>
+          <a-switch checked-children="深色" un-checked-children="浅色" @change="onSwitchTheme"/>
           <div class="action"
                 v-for="icon in operation['navbar']"
                 :key="icon.key">
@@ -65,6 +65,7 @@
                     :colNum="colNum"
                     :grid="grid"
                     :component="component"
+                    :theme="theme"
                     :root="getRootRef()"
                     @rendered="onPaperRenderd"></Paper>
           </div>
@@ -90,6 +91,7 @@ import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
 import ComponentPanel from './panel/component.vue'
 import { getKey } from './utils'
+import './theme.less'
 
 export default {
   components: { Paper, Toolbox, ComponentPanel },
@@ -144,29 +146,21 @@ export default {
         this.trigger = 'right'
       }
     },
-    onTheme (value) {
+    onSwitchTheme (value) {
       let dom = this.$refs.container
       this.theme = value ? 'dark' : 'light'
       if (this.theme === 'dark') {
-        dom.style.setProperty('--background-color', '#151515')
-        dom.style.setProperty('--bar-color', '#151515')
-        dom.style.setProperty('--paper-container-color', '#151515')
-        dom.style.setProperty('--paper-color', '#080e15')
-        dom.style.setProperty('--panel-color', '#24282e')
-        dom.style.setProperty('--active-color', '#24282e')
-        dom.style.setProperty('--icon-color', '#fff')
+        dom.style.setProperty('--primary-color', '#151515')
+        dom.style.setProperty('--normal-color', '#24282e')
         dom.style.setProperty('--shadow-color', '#080e15')
-        dom.style.setProperty('--selected-color', '#151515')
+        dom.style.setProperty('--font-color', '#fff')
+        dom.style.setProperty('--highlight-color', '#151515')
       } else {
-        dom.style.setProperty('--background-color', '#fff')
-        dom.style.setProperty('--bar-color', '#f5f5f5')
-        dom.style.setProperty('--paper-container-color', '#f5f5f5')
-        dom.style.setProperty('--paper-color', '#fff')
-        dom.style.setProperty('--panel-color', '#fff')
-        dom.style.setProperty('--active-color', '#fff')
-        dom.style.setProperty('--icon-color', '#333')
+        dom.style.setProperty('--primary-color', '#fff')
+        dom.style.setProperty('--normal-color', '#f5f5f5')
         dom.style.setProperty('--shadow-color', '#f0f0f0')
-        dom.style.setProperty('--selected-color', '#1890ff')
+        dom.style.setProperty('--font-color', '#333')
+        dom.style.setProperty('--highlight-color', '#ddd')
       }
     },
     onPaperRenderd () {
@@ -232,104 +226,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #config-container{
-    --background-color: #fff;
-    --bar-color: #f5f5f5;
-    --paper-container-color: #f5f5f5;
-    --paper-color: #fff;
-    --panel-color: #fff;
-    --active-color: #fff;
-    --icon-color: #333;
-    --shadow-color: #f0f0f0;
-    --selected-color: #ddd;
-  }
-  .container{
-    height: 100%;
-    display: flex;
-    .side-bar{
-      height: 100%;
-      width: 45px;
-      background: var(--bar-color);
-      color: var(--icon-color);
-    }
-    .content{
-      height: 100%;
-      width: calc(~"100% - 45px");
-      .nav-bar{
-        height: 45px;
-        background: var(--bar-color);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 24px;
-        .operation-container{
-          height: 100%;
-          display: flex;
-          align-items: center;
-          color: var(--icon-color);
-        }
-      }
-      .config-container{
-        height: calc(~"100% - 45px");
-        background: var(--background-color);
-        display: flex;
-        .component-container{
-          height: 100%;
-          width: 280px;
-          background: var(--panel-color);
-          padding: 8px;
-        }
-        .paper-container{
-          position: relative;
-          height: 100%;
-          width: calc(~"100% - 280px");
-          background: var(--paper-container-color);
-          display: flex;
-          .paper{
-            height: 100%;
-            width: 100%;
-          }
-          .form-container{
-            z-index: 100;
-            position: absolute;
-            right: 0;
-            height: 100%;
-            width: 460px;
-            background: var(--panel-color);
-            box-shadow: 0px 3px 8px var(--shadow-color);
-            .trigger-container{
-              z-index: 100;
-              position: absolute;
-              top: 0;
-              bottom: 0;
-              left: -25px;
-              margin: auto;
-              background: var(--panel-color);
-              width: 45px;
-              height: 45px;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: var(--icon-color);
-              font-size: 18px;
-              box-shadow: 0px 3px 8px var(--shadow-color);
-            }
-          }
-        }
-      }
-    }
-    .action{
-      height: 45px;
-      width: 45px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-    }
-    .action-active{
-      background: var(--active-color);
-      color: #1890ff;
-    }
-  }
+  
 </style>

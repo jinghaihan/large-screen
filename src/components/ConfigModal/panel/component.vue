@@ -131,5 +131,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+  /deep/.ant-card{
+    background: var(--primary-color);
+  }
+  /deep/.ant-card-head{
+    background: var(--normal-color);
+    color: var(--font-color);
+  }
+  /deep/.ant-card-bordered{
+    border-color: var(--highlight-color);
+  }
 </style>

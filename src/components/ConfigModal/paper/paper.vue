@@ -1,5 +1,5 @@
 <template>
-  <div class="paper-container">
+  <div class="paper-content-container">
     <!-- 刻度尺 -->
     <TickMark :scale="scale"></TickMark>
     <!-- 画布 -->
@@ -66,17 +66,27 @@ export default {
       type: Object,
       required: true
     },
-    root: {
+    theme: {
+      type: String,
       required: true
-    }
+    },
+    root: null
   },
   data () {
     return {
       style: {
-        backgroundImage: 
+        light: {
+          backgroundImage: 
           `linear-gradient(90deg, rgb(240, 240, 240) 5%,transparent 0),
           linear-gradient(rgb(240, 240, 240) 5%, transparent 0)`,
-        backgroundRepeat: `repeat`
+          backgroundRepeat: `repeat`
+        },
+        dark: {
+          backgroundImage: 
+          `linear-gradient(90deg, rgb(36, 40, 46) 5%,transparent 0),
+          linear-gradient(rgb(36, 40, 46) 5%, transparent 0)`,
+          backgroundRepeat: `repeat`
+        }
       },
       rowHeight: null,
       diffmove: {
@@ -115,8 +125,8 @@ export default {
     getDropPaperStyle () {
       if (this.grid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / 100
-        this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
-        return this.style
+        this.style[this.theme].backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
+        return this.style[this.theme]
       } else {
         return {}
       }
@@ -176,37 +186,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .paper-container{
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    .paper-panel{
-      position: absolute;
-      top: 50px;
-      left: 50px;
-      height: calc(~"100% - 50px");
-      width: calc(~"100% - 50px");
-      z-index: 1;
-      background: transparent;
-      cursor: pointer;
-      overflow: hidden;
-      .drop-paper{
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        margin: auto;
-        background: var(--paper-color);
-        width: 90%;
-        box-shadow: 0 0 12px var(--shadow-color);
-      }
-      .drop-paper-16-9{
-        aspect-ratio: 16 / 9;
-      }
-      .drop-paper-32-9{
-        aspect-ratio: 32 / 9;
-      }
-    }
-  }
+  
 </style>

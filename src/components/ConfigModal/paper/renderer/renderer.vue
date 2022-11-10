@@ -7,7 +7,7 @@
       </div>
       <a-menu slot="overlay">
         <a-menu-item v-for="item in operation" :key="item.key" @click="onOperation(item)">
-          <div class="menu-item-container">
+          <div class="draggable-element-menu-item-container">
             <a-icon class="icon" :type="item.icon"></a-icon>{{item.name}}
           </div>
         </a-menu-item>
@@ -28,9 +28,7 @@ export default {
       type: Object,
       required: true
     },
-    root: {
-      required: true
-    }
+    root: null
   },
   data () {
     return {
@@ -74,26 +72,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .draggable-element{
-    position: relative;
-    height: 100%;
-    .render-container{
-      height: 100%;
-    }
-  }
-  .draggable-element-selected{
-    border: 1px solid var(--selected-color);
-    box-shadow: 0 0 6px var(--selected-color);
-    border-radius: 4px;
-  }
-</style>
-
-<style lang="less">
-  .menu-item-container{
-    display: flex;
-    align-items: center;
-    .icon{
-      margin-right: 8px;
-    }
-  }
+  
 </style>

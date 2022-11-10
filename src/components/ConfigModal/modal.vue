@@ -60,8 +60,7 @@
             <ComponentPanel v-if="panelVisible"
                             :colNum="colNum"
                             :layer="layer"
-                            :root="getRef()"
-                            @drop="onDrop"></ComponentPanel>
+                            :root="getRef()"></ComponentPanel>
           </div>
           <div class="paper-container">
             <!-- 画布 -->
@@ -74,6 +73,8 @@
                      :ratio="ratio"
                      :colNum="colNum"
                      :grid="grid"
+                     :el="el"
+                     :root="getRef()"
                      @rendered="onPaperRenderd"></Paper>
             </div>
             <!-- 表单面板 -->
@@ -92,11 +93,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import $ from 'jquery'
 import keyboard from 'keyboardjs'
 import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
-import ComponentPanel from './panel/component/dragEl.vue'
+import ComponentPanel from './panel/componentPanel.vue'
 import { getKey } from './utils'
 
 export default {
@@ -133,6 +135,7 @@ export default {
       scale: 1,
       colNum: 100,
       grid: false,
+      el: {},
       // 面板
       panelVisible: false
     }
@@ -170,6 +173,7 @@ export default {
         dom.style.setProperty('--active-color', '#24282e')
         dom.style.setProperty('--icon-color', '#fff')
         dom.style.setProperty('--shadow-color', '#080e15')
+        dom.style.setProperty('--selected-color', '#151515')
       } else {
         dom.style.setProperty('--background-color', '#fff')
         dom.style.setProperty('--bar-color', '#f5f5f5')
@@ -179,6 +183,7 @@ export default {
         dom.style.setProperty('--active-color', '#fff')
         dom.style.setProperty('--icon-color', '#333')
         dom.style.setProperty('--shadow-color', '#f0f0f0')
+        dom.style.setProperty('--selected-color', '#1890ff')
       }
     },
     onPaperRenderd () {
@@ -230,6 +235,9 @@ export default {
       if (scale > 1.5) scale = 1.5
       this.scale = scale
     },
+    updateEl (el) {
+      this.el = _.cloneDeep(el)
+    },
     closeModal (refresh) {
       this.$emit('close', refresh)
     },
@@ -250,6 +258,7 @@ export default {
     --active-color: #fff;
     --icon-color: #333;
     --shadow-color: #f0f0f0;
+    --selected-color: #ddd;
   }
   /deep/.ant-modal-body{
     padding: 0;

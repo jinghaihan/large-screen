@@ -18,7 +18,7 @@
 
 <script>
 import config from './config'
-import { getKey } from '../../utils'
+import { getKey } from '../utils'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }
@@ -110,8 +110,13 @@ export default {
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: item.type + '-' + getKey()
+          i: item.type + '-' + getKey(),
+          props: {
+            name: item.name,
+            type: item.type
+          }
         })
+        this.$emit('drop')
         try {
           this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'
         } catch (error) { }

@@ -10,7 +10,9 @@
                   :rowHeight="rowHeight"
                   :ratio="ratio"
                   :resizable="index === layer"
-                  :draggable="index === layer">
+                  :draggable="index === layer"
+                  :el="el"
+                  :root="root">
       </GridLayout>
     </div>
   </div>
@@ -43,6 +45,13 @@ export default {
     },
     maxLayer: {
       type: Number,
+      required: true
+    },
+    el: {
+      type: Object,
+      required: true
+    },
+    root: {
       required: true
     }
   },

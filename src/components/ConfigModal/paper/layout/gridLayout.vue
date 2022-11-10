@@ -17,8 +17,10 @@
                 :h="item.h"
                 :i="item.i"
                 :maxW="maxW"
-                :maxH="maxH">
-          <Renderer :data="item"></Renderer>
+                :maxH="maxH"
+                @move="onMove(item)"
+                @reisize="onResize(item)">
+          <Renderer :data="item" :el="el" :root="root" @delete="onDelete"></Renderer>
       </grid-item>
   </grid-layout>
 </template>
@@ -47,6 +49,13 @@ export default {
     draggable: {
       type: Boolean,
       required: true
+    },
+    el: {
+      type: Object,
+      required: true
+    },
+    root: {
+      required: true
     }
   },
   components: { Renderer },
@@ -58,7 +67,15 @@ export default {
     }
   },
   methods: {
-    
+    onDelete (data) {
+      this.layout = this.layout.filter(item => item.key !== data.key)
+    },
+    onMove (data) {
+      this.root.updateEl(data)
+    },
+    onReisze (data) {
+      this.root.updateEl(data)
+    }
   }
 }
 </script>

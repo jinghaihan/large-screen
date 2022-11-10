@@ -17,6 +17,8 @@
                               :ratio="ratio"
                               :layer="layer"
                               :maxLayer="maxLayer"
+                              :el="el"
+                              :root="root"
                               ref="gridLayoutContainer">
         </GridLayoutContainer>
       </div>
@@ -58,6 +60,13 @@ export default {
     },
     grid: {
       type: Boolean,
+      required: true
+    },
+    el: {
+      type: Object,
+      required: true
+    },
+    root: {
       required: true
     }
   },

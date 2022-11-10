@@ -81,13 +81,13 @@ export default {
   },
   methods: {
     onScale (direction) {
-      this.$emit('changeScale', direction)
+      this.$emit('change-scale', direction)
     },
     onCreateLayer () {
-      this.$emit('createLayer')
+      this.$emit('create-layer')
     },
     onChangeLayer (item) {
-      this.$emit('changeLayer', item.key) 
+      this.$emit('change-layer', item.key) 
     }
   }
 }

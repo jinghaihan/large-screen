@@ -24,7 +24,7 @@ export default {
       type: Object,
       required: true
     },
-    el: {
+    component: {
       type: Object,
       required: true
     },
@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     getStyle () {
-      return this.el.i === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'
+      return this.component.i === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'
     },
     onClick () {
-      this.root.updateEl(this.data)
+      this.root.updateSelectedComponent(this.data)
     },
     onDelete () {
       this.$emit('delete', this.data)

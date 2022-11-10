@@ -1,17 +1,17 @@
 <template>
   <div class="grid-layout-container">
-    <div class="grid-layout-inner-container"
+    <div class="grid-layout-layer-container"
           v-for="(data, index) in layout"
           :key="data.key"
           :style="getStyle(index)">
-      <GridLayout ref="layout"
+      <GridLayout ref="layer"
                   :layout="data.layout"
                   :colNum="colNum"
                   :rowHeight="rowHeight"
                   :ratio="ratio"
                   :resizable="index === layer"
                   :draggable="index === layer"
-                  :el="el"
+                  :component="component"
                   :root="root">
       </GridLayout>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import GridLayout from './gridLayout.vue'
+import GridLayout from './layer.vue'
 
 export default {
   props: {
@@ -47,7 +47,7 @@ export default {
       type: Number,
       required: true
     },
-    el: {
+    component: {
       type: Object,
       required: true
     },
@@ -72,7 +72,7 @@ export default {
     height: 100%;
     width: 100%;
   }
-  .grid-layout-inner-container{
+  .grid-layout-layer-container{
     position: absolute;
     top: 0;
     left: 0;

@@ -1,26 +1,26 @@
 <template>
-  <div class="paper-wrapper">
+  <div class="paper-container">
     <!-- 刻度尺 -->
     <TickMark :scale="scale"></TickMark>
     <!-- 画布 -->
-    <div class="paper-panel"
-        ref="paperPanel"
+    <div ref="paperPanel"
+        class="paper-panel"
         @mousedown="onMouseDown"
         @mousemove="onMouseMove"
         @mouseup="onMouseUp">
       <div ref="dropPaper"
-          :class="`drop-paper-${ratio.width}-${ratio.height} drop-paper`"
-          :style="getStyle()">
-        <GridLayoutContainer :layout="layout"
-                              :colNum="colNum"
-                              :rowHeight="rowHeight"
-                              :ratio="ratio"
-                              :layer="layer"
-                              :maxLayer="maxLayer"
-                              :el="el"
-                              :root="root"
-                              ref="gridLayoutContainer">
-        </GridLayoutContainer>
+          :class="`drop-paper drop-paper-${ratio.width}-${ratio.height}`"
+          :style="getDropPaperStyle()">
+        <LayoutContainer ref="layoutContainer"
+                        :layout="layout"
+                        :colNum="colNum"
+                        :rowHeight="rowHeight"
+                        :ratio="ratio"
+                        :layer="layer"
+                        :maxLayer="maxLayer"
+                        :component="component"
+                        :root="root" >
+        </LayoutContainer>
       </div>
     </div>
   </div>
@@ -28,11 +28,11 @@
 
 <script>
 import TickMark from './tickMark/tickMark.vue'
-import GridLayoutContainer from './layout/gridLayoutContainer.vue'
+import LayoutContainer from './layout/container.vue'
 
 export default {
   name: 'paper',
-  components: { TickMark, GridLayoutContainer },
+  components: { TickMark, LayoutContainer },
   props: {
     layout: {
       type: Array,
@@ -62,7 +62,7 @@ export default {
       type: Boolean,
       required: true
     },
-    el: {
+    component: {
       type: Object,
       required: true
     },
@@ -88,7 +88,7 @@ export default {
   watch: {
     scale: {
       handler: function (scale) {
-        this.onScaleChange(scale)
+        this.onScale(scale)
       }
     }
   },
@@ -96,7 +96,23 @@ export default {
     this.onRendered()
   },
   methods: {
-    getStyle () {
+    async onRendered () {
+      // 通知父组件渲染完毕
+      this.$emit('rendered')
+      // 初始化画布位置
+      await this.$nextTick()
+      let paperRect = this.$refs.dropPaper.getBoundingClientRect()
+      let panelRect = this.$refs.paperPanel.getBoundingClientRect()
+      let diffRectX = paperRect.left - panelRect.left
+      let diffRectY = paperRect.top - panelRect.top
+
+      this.$refs.dropPaper.style.left = diffRectX + 'px'
+      this.$refs.dropPaper.style.top = diffRectY + 'px'
+      this.$refs.dropPaper.style.right = 'auto'
+      this.$refs.dropPaper.style.bottom = 'auto'
+      this.$refs.dropPaper.style.margin = 0
+    },
+    getDropPaperStyle () {
       if (this.grid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / 100
         this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
@@ -151,32 +167,16 @@ export default {
         move: false
       }
     },
-    onScaleChange (scale) {
+    onScale (scale) {
       let totalWidth = this.$refs.paperPanel.getBoundingClientRect().width
       this.$refs.dropPaper.style.width = totalWidth * 0.9 * scale + 'px'
-    },
-    async onRendered () {
-      // 通知父组件渲染完毕
-      this.$emit('rendered')
-      // 初始化画布位置
-      await this.$nextTick()
-      let paperRect = this.$refs.dropPaper.getBoundingClientRect()
-      let panelRect = this.$refs.paperPanel.getBoundingClientRect()
-      let diffRectX = paperRect.left - panelRect.left
-      let diffRectY = paperRect.top - panelRect.top
-
-      this.$refs.dropPaper.style.left = diffRectX + 'px'
-      this.$refs.dropPaper.style.top = diffRectY + 'px'
-      this.$refs.dropPaper.style.right = 'auto'
-      this.$refs.dropPaper.style.bottom = 'auto'
-      this.$refs.dropPaper.style.margin = 0
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  .paper-wrapper{
+  .paper-container{
     position: relative;
     height: 100%;
     overflow: hidden;

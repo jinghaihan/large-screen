@@ -3,11 +3,11 @@
     <a-col v-for="conf in config"
             :key="conf.name"
             :span="conf.col">
-        <div @drag="drag($event, conf)"
-              @dragend="dragend($event, conf)"
-              class="droppable-element"
-              draggable="true"
-              unselectable="on">
+        <div class="droppable-element"
+             @drag="drag($event, conf)"
+             @dragend="dragend($event, conf)"
+             draggable="true"
+             unselectable="on">
           <a-card hoverable size="small" :title="conf.name">
             <img slot="cover" :src="conf.image" />
           </a-card>
@@ -37,7 +37,7 @@ export default {
   },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.layer],
+      ref: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer],
       config
     }
   },
@@ -47,7 +47,7 @@ export default {
       handler: function () {
         // 清空上个图层的dragover事件
         this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
-        this.ref = this.root.$refs.paper.$refs.gridLayoutContainer.$refs.layout[this.layer]
+        this.ref = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
         // 新增当前图层的dragover事件
         this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
       }
@@ -101,7 +101,6 @@ export default {
         mouseInGrid = true
       }
       if (mouseInGrid === true) {
-        // alert(`Dropped element props:\n${JSON.stringify(DragPos, ['x', 'y', 'w', 'h'], 2)}`)
         this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
 
@@ -110,13 +109,14 @@ export default {
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: item.type + '-' + getKey(),
+          i: getKey(),
           props: {
             name: item.name,
             type: item.type
           }
         })
         this.$emit('drop')
+        this.root.updateSelectedComponent(this.ref.layout[this.ref.layout.length - 1])
         try {
           this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'
         } catch (error) { }

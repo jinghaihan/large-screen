@@ -20,7 +20,7 @@
                 :maxH="maxH"
                 @move="onMove(item)"
                 @reisize="onResize(item)">
-          <Renderer :data="item" :el="el" :root="root" @delete="onDelete"></Renderer>
+          <Renderer :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
       </grid-item>
   </grid-layout>
 </template>
@@ -50,7 +50,7 @@ export default {
       type: Boolean,
       required: true
     },
-    el: {
+    component: {
       type: Object,
       required: true
     },
@@ -68,13 +68,13 @@ export default {
   },
   methods: {
     onDelete (data) {
-      this.layout = this.layout.filter(item => item.key !== data.key)
+      this.layout = this.layout.filter(item => item.i !== data.i)
     },
     onMove (data) {
-      this.root.updateEl(data)
+      this.root.updateSelectedComponent(data)
     },
     onReisze (data) {
-      this.root.updateEl(data)
+      this.root.updateSelectedComponent(data)
     }
   }
 }

@@ -71,8 +71,8 @@ export default {
     onDelete (data) {
       let _this = this
       _this.$confirm({
-        title: '确认删除？',
-        content: '',
+        title: '您确定删除该组件吗？',
+        content: '该组件配置数据将一同删除',
         confirmLoading: true,
         okText: '确定',
         cancelText: '取消',

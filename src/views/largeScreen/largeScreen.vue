@@ -38,16 +38,16 @@
     </a-spin>
 
     <!-- 组件 -->
-    <config-modal v-if="configVisible" :modalData="modalData" @close="onModalClose"></config-modal>
+    <Configurator v-if="configVisible" :modalData="modalData" @close="onModalClose"></Configurator>
   </div>
 </template>
 
 <script>
-import configModal from '@/components/ConfigModal/modal.vue'
+import Configurator from '@/components/Configurator/modal.vue'
 
 export default {
   name: 'largeScreen',
-  components: { configModal },
+  components: { Configurator },
   data () {
     return {
       loading: false,

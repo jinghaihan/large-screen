@@ -115,8 +115,8 @@ export default {
     onClear () {
       let _this = this
       _this.$confirm({
-        title: '确认清空？',
-        content: '',
+        title: '您确定清空画布吗？',
+        content: '全部图层及组件配置数据将一同删除',
         confirmLoading: true,
         okText: '确定',
         cancelText: '取消',

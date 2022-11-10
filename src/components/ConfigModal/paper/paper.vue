@@ -55,6 +55,10 @@ export default {
     scale: {
       type: Number,
       required: true
+    },
+    grid: {
+      type: Boolean,
+      required: true
     }
   },
   data () {
@@ -69,8 +73,7 @@ export default {
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
-      },
-      showGrid: false
+      }
     }
   },
   watch: {
@@ -85,7 +88,7 @@ export default {
   },
   methods: {
     getStyle () {
-      if (this.showGrid) {
+      if (this.grid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / 100
         this.style.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
         return this.style
@@ -144,8 +147,6 @@ export default {
       this.$refs.dropPaper.style.width = totalWidth * 0.9 * scale + 'px'
     },
     async onRendered () {
-      // 刷新画布网格
-      this.showGrid = true
       // 通知父组件渲染完毕
       this.$emit('rendered')
       // 初始化画布位置

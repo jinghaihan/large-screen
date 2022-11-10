@@ -73,6 +73,7 @@
                      :scale="scale"
                      :ratio="ratio"
                      :colNum="colNum"
+                     :grid="grid"
                      @rendered="onPaperRenderd"></Paper>
             </div>
             <!-- 表单面板 -->
@@ -131,6 +132,7 @@ export default {
       ratio: { width: 16, height: 9 },
       scale: 1,
       colNum: 100,
+      grid: false,
       // 面板
       panelVisible: false
     }
@@ -181,14 +183,18 @@ export default {
     },
     onPaperRenderd () {
       this.panelVisible = true
+      this.grid = true
       this.initShortcutKey()
     },
     initShortcutKey () {
-      keyboard.bind('ctrl > up', (e) => {
+      keyboard.bind(['ctrl+shift > up', 'command+shift > up'], (e) => {
         this.onChangeScale('up')
       })
-      keyboard.bind('ctrl > down', (e) => {
+      keyboard.bind(['ctrl+shift > down', 'command+shift > down'], (e) => {
         this.onChangeScale('down')
+      })
+      keyboard.bind(['ctrl+shift > k', 'command+shift > k'], (e) => {
+        this.grid = !this.grid
       })
     },
     onCreateLayer () {

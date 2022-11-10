@@ -1,5 +1,6 @@
 <template>
   <div class="tool-container">
+    <!-- 图层 -->
     <div class="layer-container">
       <a-dropdown v-show="layout.length > 1">
         <a class="ant-dropdown-link" @click="e => e.preventDefault()">
@@ -17,15 +18,30 @@
     </div>
     <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
+    <!-- 缩放 -->
     <div class="scale-container">
       <tooltip-icon class="icon" title="放大" icon="plus" placement="bottom" @click="onScale('up')"></tooltip-icon>
       <span class="scale">{{(scale * 100).toFixed(0)}}%</span>
       <tooltip-icon class="icon" title="缩小" icon="minus" placement="bottom" @click="onScale('down')"></tooltip-icon>
     </div>
     <a-divider type="virtical"></a-divider>
+    <!-- 清空 -->
     <tooltip-icon class="action delete-action" title="清空" icon="delete" placement="bottom"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
-    <tooltip-icon class="action help-action" title="帮助" icon="question-circle" placement="bottom"></tooltip-icon>
+    <!-- 帮助 -->
+    <a-popover title="快捷键">
+      <template slot="content">
+        <div class="shortcut-container" v-for="key in shortcutKey" :key="key.description">
+          <!-- tag展示 -->
+          <div class="tag-container">
+            <a-tag v-for="tag in key.combo" :key="tag">{{tag}}</a-tag>
+          </div>
+          <!-- 描述 -->
+          <span class="description" v-if="key.description">{{key.description}}</span>
+        </div>
+      </template>
+      <a-icon class="action help-action" type="question-circle"></a-icon>
+    </a-popover>
   </div>
 </template>
 
@@ -43,6 +59,24 @@ export default {
     scale: {
       type: Number,
       required: true
+    }
+  },
+  data () {
+    return {
+      shortcutKey: [
+        {
+          combo: ['ctrl+shift > up', 'command+shift > up'],
+          description: '放大画布'
+        },
+        {
+          combo: ['ctrl+shift > down', 'command+shift > down'],
+          description: '缩小画布'
+        },
+        {
+          combo: ['ctrl+shift > k', 'command+shift > k'],
+          description: '画布网格线'
+        }
+      ]
     }
   },
   methods: {
@@ -95,6 +129,21 @@ export default {
     }
     .help-action{
       color: #52c41a;
+    }
+  }
+</style>
+
+<style lang="less">
+  .shortcut-container{
+    margin: 8px 0;
+    width: 350px;
+    display: flex;
+    align-items: center;
+    .tag-container{
+      width: 280px;
+    }
+    .description{
+      color: #ccc;
     }
   }
 </style>

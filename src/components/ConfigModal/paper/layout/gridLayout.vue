@@ -18,12 +18,14 @@
                 :i="item.i"
                 :maxW="maxW"
                 :maxH="maxH">
-          <span class="text">{{ item.i }}</span>
+          <Renderer :data="item"></Renderer>
       </grid-item>
   </grid-layout>
 </template>
 
 <script>
+import Renderer from '../renderer/renderer.vue'
+
 export default {
   props: {
     colNum: {
@@ -47,6 +49,7 @@ export default {
       required: true
     }
   },
+  components: { Renderer },
   data () {
     return {
       layout: [],

@@ -48,6 +48,10 @@ export default {
       type: Number,
       required: true
     },
+    ratio: {
+      type: Object,
+      required: true
+    },
     scale: {
       type: Number,
       required: true
@@ -55,10 +59,6 @@ export default {
   },
   data () {
     return {
-      ratio: {
-        width: 16,
-        height: 9
-      },
       style: {
         backgroundImage: 
           `linear-gradient(90deg, rgb(240, 240, 240) 5%,transparent 0),

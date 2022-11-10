@@ -71,8 +71,9 @@
                      :layer="layer"
                      :maxLayer="maxLayer"
                      :scale="scale"
+                     :ratio="ratio"
                      :colNum="colNum"
-                     @rendered="panelVisible = true"></Paper>
+                     @rendered="onPaperRenderd"></Paper>
             </div>
             <!-- 表单面板 -->
             <div class="form-container" id="form-container">
@@ -91,6 +92,7 @@
 
 <script>
 import $ from 'jquery'
+import keyboard from 'keyboardjs'
 import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
 import ComponentPanel from './panel/component/dragEl.vue'
@@ -111,8 +113,8 @@ export default {
       operation: {
         sidebar: [
           { name: '可视化组件', icon: 'area-chart', key: 'chart' },
-          { name: '多媒体', icon: 'video-camera', key: 'multiMedia' },
-          { name: '文本', icon: 'font-colors', key: 'text' }
+          { name: '多媒体组件', icon: 'video-camera', key: 'multiMedia' },
+          { name: '文本组件', icon: 'font-colors', key: 'text' }
         ],
         navbar: [
           { name: '截图', icon: 'picture', key: 'screenshot' },
@@ -126,6 +128,7 @@ export default {
       layout: [],
       layer: 0,
       maxLayer: 5,
+      ratio: { width: 16, height: 9 },
       scale: 1,
       colNum: 100,
       // 面板
@@ -175,6 +178,18 @@ export default {
         dom.style.setProperty('--icon-color', '#333')
         dom.style.setProperty('--shadow-color', '#f0f0f0')
       }
+    },
+    onPaperRenderd () {
+      this.panelVisible = true
+      this.initShortcutKey()
+    },
+    initShortcutKey () {
+      keyboard.bind('ctrl > up', (e) => {
+        this.onChangeScale('up')
+      })
+      keyboard.bind('ctrl > down', (e) => {
+        this.onChangeScale('down')
+      })
     },
     onCreateLayer () {
       if (this.layout.length >= this.maxLayer) {

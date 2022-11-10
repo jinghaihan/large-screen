@@ -126,7 +126,7 @@ module.exports = {
   },
 
   devServer: {
-    port: 8090,
+    port: 10000,
     open: true,
     inline: true, // 打开热更新
     // 关闭主机检查，使微应用可以被 fetch

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import config from './config'
+import Config from './config'
 import { getKey } from '../utils'
 
 let mouseXY = { 'x': null, 'y': null }
@@ -33,12 +33,17 @@ export default {
       type: Number,
       required: true
     },
+    type: {
+      type: String,
+      required: false,
+      default: 'chart'
+    },
     root: null
   },
   data () {
     return {
       ref: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer],
-      config
+      config: new Config(this.type).getConfig()
     }
   },
   watch: {
@@ -57,7 +62,9 @@ export default {
     this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
   },
   beforeDestroy () {
-    this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
+    if (this.ref.$refs.gridLayou) {
+      this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
+    }
   },
   methods: {
     drag: function (e, item) {

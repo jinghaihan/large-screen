@@ -122,6 +122,9 @@
                     left: 0;
                     height: 100%;
                     width: 100%;
+                    .layer-container{
+                      height: 100%;
+                    }
                     .vue-grid-layout{
                       height: 100% !important;
                     }
@@ -191,15 +194,59 @@
             left: -25px;
             margin: auto;
             background: var(--primary-color);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+            width: 26px;
+            height: 80px;
+            border-radius: 5px 0 0 5px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: var(--font-color);
-            font-size: 18px;
+            font-size: 14px;
             box-shadow: 0px 3px 8px var(--shadow-color);
+          }
+          .configure-container{
+            height: 100%;
+            display: flex;
+            .configure-form-container{
+              height: 100%;
+              width: calc(~"100% - 26px");
+              padding: 24px;
+              overflow-x: hidden;
+              overflow-y: auto;
+              .material-library{
+                cursor: pointer;
+                height: 160px;
+                border-radius: 4px;
+                border: 1px dashed var(--highlight-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            }
+            .tab-container{
+              width: 26px;
+              border-left: 1px solid var(--highlight-color);
+              display: flex;
+              flex-direction: column;
+              .tab{
+                cursor: pointer;
+                text-align: center;
+                padding: 12px 0;
+                color: var(--font-color);
+                font-size: 13px;
+              }
+              .tab-selected{
+                background: #1890ff;
+                color: #fff;
+              }
+            }
+            .marker{
+              position: absolute;
+              right: 0;
+              bottom: -40px;
+              color: var(--font-color);
+              opacity: .6;
+            }
           }
         }
       }

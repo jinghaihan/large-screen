@@ -71,11 +71,14 @@
           </div>
           <!-- 表单面板 -->
           <div class="form-container" id="form-container">
+            <!-- 操作按钮 -->
             <div class="trigger-container" @click="onTrigger">
               <tooltip-icon :icon="'double-' + trigger"
                             :title="trigger === 'right' ? '收缩' : '展开'" >
               </tooltip-icon>
             </div>
+            <!-- 表单内容 -->
+            <ConfigurePanel></ConfigurePanel>
           </div>
         </div>
       </div>
@@ -90,11 +93,12 @@ import keyboard from 'keyboardjs'
 import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
 import ComponentPanel from './panel/component.vue'
+import ConfigurePanel from './panel/configure.vue'
 import { getKey } from './utils'
 import './theme.less'
 
 export default {
-  components: { Paper, Toolbox, ComponentPanel },
+  components: { Paper, Toolbox, ComponentPanel, ConfigurePanel },
   data () {
     return {
       // 页面框架
@@ -190,12 +194,14 @@ export default {
         layout: []
       })
       this.layer = this.layout.length - 1
+      this.updateSelectedComponent({})
     },
     onChangeLayer (key) {
       try {
         this.layout.forEach((data, index) => {
           if (data.key === key) {
             this.layer = index
+            this.updateSelectedComponent({})
             throw new Error()
           }
         })

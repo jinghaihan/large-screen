@@ -1,28 +1,31 @@
 <template>
-  <grid-layout ref="gridLayout"
-              :layout.sync="layout"
-              :col-num="colNum"
-              :max-rows="maxH"
-              :row-height="rowHeight"
-              :is-draggable="draggable"
-              :is-resizable="resizable"
-              :vertical-compact="false"
-              :prevent-collision="true"
-              :margin="[0, 0]">
-      <grid-item v-for="item in layout"
-                :key="item.i"
-                :x="item.x"
-                :y="item.y"
-                :w="item.w"
-                :h="item.h"
-                :i="item.i"
-                :maxW="maxW"
-                :maxH="maxH"
-                @move="onMove(item)"
-                @reisize="onResize(item)">
+  <div class="layer-container" @click="onClick">
+    <grid-layout ref="gridLayout"
+                :layout.sync="layout"
+                :col-num="colNum"
+                :max-rows="maxH"
+                :row-height="rowHeight"
+                :is-draggable="draggable"
+                :is-resizable="resizable"
+                :vertical-compact="false"
+                :prevent-collision="true"
+                :margin="[0, 0]">
+        <grid-item v-for="item in layout"
+                  :key="item.i"
+                  :x="item.x"
+                  :y="item.y"
+                  :w="item.w"
+                  :h="item.h"
+                  :i="item.i"
+                  :maxW="maxW"
+                  :maxH="maxH"
+                  @move="onMove(item)"
+                  @resize="onResize(item)">
           <Renderer :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
-      </grid-item>
-  </grid-layout>
+        </grid-item>
+    </grid-layout>
+  </div>
+  
 </template>
 
 <script>
@@ -71,8 +74,14 @@ export default {
     onMove (data) {
       this.root.updateSelectedComponent(data)
     },
-    onReisze (data) {
+    onResize (data) {
       this.root.updateSelectedComponent(data)
+    },
+    onClick (e) {
+      let srcElement = e.srcElement
+      if (srcElement.getAttribute('class') === 'vue-grid-layout') {
+        this.root.updateSelectedComponent({})
+      }
     }
   }
 }

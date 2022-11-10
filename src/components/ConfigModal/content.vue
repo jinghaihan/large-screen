@@ -28,8 +28,10 @@
           <Toolbox :layout="layout"
                     :layer="layer"
                     :scale="scale"
+                    :root="getRootRef()"
                     @create-layer="onCreateLayer"
                     @change-layer="onChangeLayer"
+                    @edit-layer="onEditLayer"
                     @change-scale="onChangeScale"></Toolbox>
         </div>
         <div class="operation-container">
@@ -130,13 +132,17 @@ export default {
     }
   },
   created () {
-    this.layout.push({
-      key: getKey(),
-      name: '图层1',
-      layout: []
-    })
+    this.init()
   },
   methods: {
+    init () {
+      this.layout = []
+      this.layout.push({
+        key: getKey(),
+        name: '图层1',
+        layout: []
+      })
+    },
     onOperation (key) {
       this.activeKey = key
     },
@@ -173,24 +179,29 @@ export default {
       this.initShortcutKey()
     },
     initShortcutKey () {
-      keyboard.bind(['ctrl+shift > up', 'command+shift > up'], (e) => {
+      keyboard.bind(['ctrl > up', 'command > up'], (e) => {
         this.onChangeScale('up')
       })
-      keyboard.bind(['ctrl+shift > down', 'command+shift > down'], (e) => {
+      keyboard.bind(['ctrl > down', 'command > down'], (e) => {
         this.onChangeScale('down')
       })
       keyboard.bind(['ctrl+shift > k', 'command+shift > k'], (e) => {
         this.grid = !this.grid
       })
+      keyboard.bind(['ctrl > delete', 'command > delete'], (e) => {
+        if (this.component.props) {
+          this.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer].onDelete(this.component)
+        }
+      })
     },
-    onCreateLayer () {
+    onCreateLayer (data) {
       if (this.layout.length >= this.maxLayer) {
         this.$notification.error({ message: '错误', description: '最多支持5个图层' })
         return
       }
       this.layout.push({
         key: getKey(),
-        name: '图层' + (this.layout.length + 1),
+        name: data.name,
         layout: []
       })
       this.layer = this.layout.length - 1
@@ -202,6 +213,16 @@ export default {
           if (data.key === key) {
             this.layer = index
             this.updateSelectedComponent({})
+            throw new Error()
+          }
+        })
+      } catch (error) {}
+    },
+    onEditLayer (data) {
+      try {
+        this.layout.forEach((item, index) => {
+          if (item.key === data.key) {
+            this.layout[index].name = data.name
             throw new Error()
           }
         })

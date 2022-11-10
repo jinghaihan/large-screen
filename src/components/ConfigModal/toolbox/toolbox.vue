@@ -1,5 +1,6 @@
 <template>
   <div class="toolbox-container">
+    <tooltip-icon class="action" title="修改图层名称" icon="edit" placement="bottom" @click="onEditLayer"></tooltip-icon>
     <!-- 图层 -->
     <div class="layer-container">
       <a-dropdown v-show="layout.length > 1">
@@ -26,7 +27,7 @@
     </div>
     <a-divider type="virtical"></a-divider>
     <!-- 清空 -->
-    <tooltip-icon class="action delete-action" title="清空" icon="delete" placement="bottom"></tooltip-icon>
+    <tooltip-icon class="action delete-action" title="清空" icon="delete" placement="bottom" @click="onClear"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
     <!-- 帮助 -->
     <a-popover title="快捷键">
@@ -42,10 +43,14 @@
       </template>
       <a-icon class="action help-action" type="question-circle"></a-icon>
     </a-popover>
+
+    <LayerModal v-if="layerVisible" :modalData="modalData" @close="onModalClose"></LayerModal>
   </div>
 </template>
 
 <script>
+import LayerModal from './layerModal.vue'
+
 export default {
   props: {
     layout: {
@@ -59,24 +64,32 @@ export default {
     scale: {
       type: Number,
       required: true
-    }
+    },
+    root: null
   },
+  components: { LayerModal },
   data () {
     return {
       shortcutKey: [
         {
-          combo: ['ctrl+shift > up', 'command+shift > up'],
+          combo: ['ctrl > up', 'command > up'],
           description: '放大画布'
         },
         {
-          combo: ['ctrl+shift > down', 'command+shift > down'],
+          combo: ['ctrl > down', 'command > down'],
           description: '缩小画布'
         },
         {
           combo: ['ctrl+shift > k', 'command+shift > k'],
           description: '画布网格线'
+        },
+        {
+          combo: ['ctrl > delete', 'command > delete'],
+          description: '删除组件'
         }
-      ]
+      ],
+      modalData: {},
+      layerVisible: false
     }
   },
   methods: {
@@ -84,10 +97,50 @@ export default {
       this.$emit('change-scale', direction)
     },
     onCreateLayer () {
-      this.$emit('create-layer')
+      this.modalData.modalType = 'create'
+      this.modalData.name = '图层' + (this.layout.length + 1)
+      this.layerVisible = true
+    },
+    onEditLayer () {
+      this.modalData = {
+        modalType: 'edit',
+        name: this.layout[this.layer].name,
+        key: this.layout[this.layer].key
+      }
+      this.layerVisible = true
     },
     onChangeLayer (item) {
       this.$emit('change-layer', item.key) 
+    },
+    onClear () {
+      let _this = this
+      _this.$confirm({
+        title: '确认清空？',
+        content: '',
+        confirmLoading: true,
+        okText: '确定',
+        cancelText: '取消',
+        async onOk () {
+          _this.root.init()
+        },
+        onCancel () { }
+      })
+    },
+    onModalClose (data) {
+      if (data) {
+        switch (this.modalData.modalType) {
+          case 'create':
+            this.$emit('create-layer', data)
+            break
+          case 'edit':
+            this.$emit('edit-layer', data)
+            break
+          default:
+            break
+        }
+      }
+      this.modalData = {}
+      this.layerVisible = false
     }
   }
 }

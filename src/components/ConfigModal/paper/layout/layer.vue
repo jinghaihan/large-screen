@@ -69,7 +69,19 @@ export default {
   },
   methods: {
     onDelete (data) {
-      this.layout = this.layout.filter(item => item.i !== data.i)
+      let _this = this
+      _this.$confirm({
+        title: '确认删除？',
+        content: '',
+        confirmLoading: true,
+        okText: '确定',
+        cancelText: '取消',
+        onOk () {
+          _this.layout = _this.layout.filter(item => item.i !== data.i)
+          _this.root.updateSelectedComponent({})
+        },
+        onCancel () { }
+      })
     },
     onMove (data) {
       this.root.updateSelectedComponent(data)

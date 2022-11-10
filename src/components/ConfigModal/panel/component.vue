@@ -111,15 +111,18 @@ export default {
         this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
 
+        let key = getKey()
+
         this.ref.layout.push({
           x: DragPos.x,
           y: DragPos.y,
           w: item.w,
           h: item.h,
-          i: getKey(),
+          i: key,
           props: {
             name: item.name,
-            type: item.type
+            type: item.type,
+            key
           }
         })
         this.$emit('drop')

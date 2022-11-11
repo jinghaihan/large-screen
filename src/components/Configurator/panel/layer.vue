@@ -2,8 +2,8 @@
   <a-spin :spinning="loading">
     <div class="layer-panel-container">
       <div class="operator-container">
-        <a-button class="button" icon="plus-circle" type="primary" size="small" @click="onCreate">新增图层</a-button>
         <a-button class="button" icon="redo" size="small" @click="onRefresh">刷新预览</a-button>
+        <a-button class="button" icon="plus-circle" type="primary" size="small" @click="onCreate">新增图层</a-button>
         <a-button class="button" icon="save" type="danger" size="small" @click="onUpdate">更新配置</a-button>
       </div>
         <draggable
@@ -22,10 +22,16 @@
             >
             <a-card size="small" :title="element.name">
               <template slot="extra">
+                <tooltip-icon class="action"
+                              :icon="element.visible ? 'eye' : 'eye-invisible'"
+                              :title="element.visible ? '可见' : '不可见'"
+                              @click="element.visible = !element.visible">
+                </tooltip-icon>
                 <tooltip-icon class="action" icon="edit" title="修改名称" @click="onEdit(element)"></tooltip-icon>
                 <tooltip-icon class="action" icon="delete" title="删除图层" @click="onDelete(element)"></tooltip-icon>
               </template>
-              <img class="image" :src="element.image" alt="thumbnail">
+              <img v-if="element.image" class="image" :src="element.image" alt="thumbnail">
+              <a-empty v-else description="该图层不可见"></a-empty>
             </a-card>
             </li>
           </transition-group>
@@ -67,11 +73,19 @@ export default {
       modalVisible: false
     }
   },
+  watch: {
+    layout: {
+      deep: true,
+      handler: function () {
+        this.onRefresh()
+      }
+    }
+  },
   created () {
     this.handleList()
   },
   methods: {
-    handleList () {
+    handleList (isRefresh) {
       this.loading = true
       Promise.all(this.layout.map(async (item, index) => {
         const el = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[index].$el
@@ -81,15 +95,16 @@ export default {
           visible: item.visible,
           current: index === this.layer,
           layer: index,
-          image: await getThumbnail(el, 0.1)
+          image: item.visible ? await getThumbnail(el, 0.1) : ''
         }
       })).then(result => {
+        console.log(this.layout)
         this.list = _.cloneDeep(result)
         this.loading = false
       })
     },
     onRefresh () {
-      this.handleList()
+      this.handleList(true)
     },
     onCreate () {
       this.modalData.modalType = 'create'
@@ -116,11 +131,12 @@ export default {
           layer = index
         }
       })
-      let layout = keys.map(key => {
+      let layout = keys.map((key, order) => {
         let index = this.layout.findIndex(data => data.key === key)
         return {
           ...this.layout[index],
           key: getUUID(),
+          visible: this.list[order].visible,
           layout: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[index].layout
         }
       })

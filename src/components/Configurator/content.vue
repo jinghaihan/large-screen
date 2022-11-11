@@ -217,7 +217,7 @@ export default {
       this.layout.push({
         key: getUUID(),
         name: data.name,
-        visibile: true,
+        visible: true,
         layout: []
       })
       this.layer = this.layout.length - 1

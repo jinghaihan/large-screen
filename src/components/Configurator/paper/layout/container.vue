@@ -12,7 +12,8 @@
                   :resizable="index === layer"
                   :draggable="index === layer"
                   :component="component"
-                  :root="root">
+                  :root="root"
+                  v-show="data.visible">
       </GridLayout>
     </div>
   </div>

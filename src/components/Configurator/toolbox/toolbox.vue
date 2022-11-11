@@ -20,7 +20,8 @@
       <div class="layer-container">
         <a-dropdown v-show="layout.length > 1">
           <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-            <span class="layer">{{layout[layer].name}}</span><a-icon type="down" />
+            <span :class="layout[layer].visible ? 'layer' : 'layer invisible-layer'">{{layout[layer].name}}</span>
+            <a-icon type="down" />
           </a>
           <a-menu slot="overlay">
             <a-menu-item v-for="item in layout.filter((item, index) => index !== layer)"
@@ -30,7 +31,10 @@
             </a-menu-item>
           </a-menu>
         </a-dropdown>
-        <span class="layer" v-show="layout.length === 1">{{layout[layer].name}}</span>
+        <span :class="layout[layer].visible ? 'layer' : 'layer invisible-layer'"
+              v-show="layout.length === 1">
+          {{layout[layer].name}}
+        </span>
       </div>
       <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     </div>

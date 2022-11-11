@@ -34,6 +34,10 @@ import Renderer from '../renderer/renderer.vue'
 
 export default {
   props: {
+    colNum: {
+      type: Number,
+      required: true
+    },
     rowHeight: {
       type: Number,
       required: true
@@ -60,21 +64,11 @@ export default {
   data () {
     return {
       layout: [],
-      maxW: 0,
-      maxH: 0
+      maxW: this.colNum,
+      maxH: (this.colNum / this.ratio.width * this.ratio.height).toFixed(0)
     }
   },
-  created () {
-    this.initGridSize()
-  },
-  computed: {
-    ...mapGetters('configurator', [ 'colNum' ])
-  },
   methods: {
-    initGridSize () {
-      this.maxW = this.colNum
-      this.maxH = (this.colNum / this.ratio.width * this.ratio.height).toFixed(0)
-    },
     onDelete (data) {
       let _this = this
       _this.$confirm({

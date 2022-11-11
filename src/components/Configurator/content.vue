@@ -25,8 +25,9 @@
           <a-button size="small" icon="fund" type="primary">模板库</a-button>
         </div>
         <div class="toolbox-container">
-          <Toolbox  :layout="currConfig.layout"
-                    :layer="currConfig.layer"
+          <Toolbox  :layout="layout"
+                    :layer="layer"
+                    :scale="scale"
                     :root="getRootRef()"
                     @create-layer="onCreateLayer"
                     @change-layer="onChangeLayer"
@@ -50,16 +51,21 @@
         <!-- 组件面板 -->
         <div class="component-container">
           <ComponentPanel v-if="panelVisible"
-                          :layer="currConfig.layer"
+                          :colNum="colNum"
+                          :layer="layer"
                           :root="getRootRef()"></ComponentPanel>
         </div>
         <div class="paper-container">
           <!-- 画布 -->
           <div class="paper">
             <Paper ref="paper"
-                  :layout="currConfig.layout"
-                  :layer="currConfig.layer"
-                  :ratio="currConfig.ratio"
+                  :layout="layout"
+                  :layer="layer"
+                  :maxLayer="maxLayer"
+                  :scale="scale"
+                  :ratio="ratio"
+                  :colNum="colNum"
+                  :grid="grid"
                   :component="component"
                   :theme="theme"
                   :root="getRootRef()"
@@ -86,8 +92,6 @@
 import _ from 'lodash'
 import $ from 'jquery'
 import hotkeys from 'hotkeys-js'
-import { store } from '@/store'
-import { mapGetters } from 'vuex'
 import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
 import ComponentPanel from './panel/component.vue'
@@ -99,7 +103,6 @@ export default {
   components: { Paper, Toolbox, ComponentPanel, ConfigurePanel },
   data () {
     return {
-      uuid: getUUID(),
       // 页面框架
       operation: {
         sidebar: [
@@ -116,41 +119,28 @@ export default {
       trigger: 'right',
       theme: 'light',
       // 画布
+      layout: [],
+      layer: 0,
+      maxLayer: 5,
+      ratio: { width: 16, height: 9 },
+      scale: 1,
+      colNum: 100,
+      grid: false,
       component: {},
       // 面板
       panelVisible: false
     }
   },
-  computed: {
-    ...mapGetters('configurator', [
-      'config',
-      'currConfig',
-      'scale',
-      'grid',
-      'maxLayer',
-      'colNum',
-      'paper'
-    ])
-  },
   created () {
     this.initConfigurator(true)
   },
-  beforeDestroy () {
-    store.commit('configurator/SET_SCALE', 1)
-    store.commit('configurator/SET_GRID', false)
-  },
   methods: {
-    initConfigurator (isCreated) {
-      if (isCreated) store.commit('configurator/SET_PAPER', this.uuid)
-      store.commit('configurator/SET_CURRCONFIG', {})
-      store.commit('configurator/SET_CURRCONFIG', {
-        layout: [{
-          key: getUUID(),
-          name: '图层1',
-          layout: []
-        }],
-        layer: 0,
-        ratio: { width: 16, height: 9 }
+    initConfigurator () {
+      this.layout = []
+      this.layout.push({
+        key: getUUID(),
+        name: '图层1',
+        layout: []
       })
     },
     onOperation (key) {
@@ -185,7 +175,7 @@ export default {
     },
     onPaperRenderd () {
       this.panelVisible = true
-      store.commit('configurator/SET_GRID', true)
+      this.grid = true
       this.initHotKeys()
     },
     initHotKeys () {
@@ -196,7 +186,7 @@ export default {
         this.onChangeScale('down')
       })
       hotkeys('ctrl+shift+k, command+shift+k', (event, handler) => {
-        store.commit('configurator/SET_GRID', !this.grid)
+        this.grid = !this.grid
       })
       hotkeys('delete, backspace', (event, handler) => {
         if (this.component.props) {
@@ -209,28 +199,22 @@ export default {
         this.$notification.error({ message: '错误', description: `最多支持${this.maxLayer}个图层` })
         return
       }
-      let config = this.currConfig
-      config.layout = config.layout.concat([{
+      this.layout.push({
         key: getUUID(),
         name: data.name,
         layout: []
-      }])
-      config.layer = config.layout.length - 1
-      store.commit('configurator/SET_CURRCONFIG', config)
+      })
+      this.layer = this.layout.length - 1
       this.updateSelectedComponent({})
     },
     onChangeLayer (key) {
       let index = this.currConfig.layout.findIndex(data => data.key === key)
-      let config = this.currConfig
-      config.layer = index
-      store.commit('configurator/SET_CURRCONFIG', config)
+      this.layer = index
       this.updateSelectedComponent({})
     },
     onEditLayer (data) {
       let index = this.currConfig.layout.findIndex(item => item.key === data.key)
-      let config = this.currConfig
-      config.layout[index].name = data.name
-      store.commit('configurator/SET_CURRCONFIG', config)
+      this.layout[index].name = data.name
     },
     onChangeScale (direction) {
       let scale = this.scale
@@ -241,7 +225,7 @@ export default {
       }
       if (scale < 0.5) scale = 0.5
       if (scale > 1.5) scale = 1.5
-      store.commit('configurator/SET_SCALE', scale)
+      this.scale = scale
     },
     updateSelectedComponent (el) {
       this.component = _.cloneDeep(el)

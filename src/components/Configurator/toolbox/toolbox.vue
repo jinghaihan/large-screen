@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import LayerModal from './layerModal.vue'
 
 export default {
@@ -62,12 +61,13 @@ export default {
       type: Number,
       required: true
     },
+    scale: {
+      type: Number,
+      required: true
+    },
     root: null
   },
   components: { LayerModal },
-  computed: {
-    ...mapGetters('configurator', [ 'scale' ])
-  },
   data () {
     return {
       shortcutKey: [

@@ -30,6 +30,10 @@ export default {
       type: Number,
       required: true
     },
+    colNum: {
+      type: Number,
+      required: true
+    },
     type: {
       type: String,
       required: false,
@@ -53,9 +57,6 @@ export default {
         this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
       }
     }
-  },
-  computed: {
-    ...mapGetters('configurator', [ 'colNum' ])
   },
   mounted () {
     this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)

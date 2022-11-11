@@ -3,13 +3,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
   props: {
     direction: {
       type: String,
       required: true
+    },
+    scale: {
+      type: Number,
+      required: false,
+      default: 1
     }
   },
   data () {
@@ -24,9 +28,6 @@ export default {
         this.onScaleChange()
       }
     }
-  },
-  computed: {
-    ...mapGetters('configurator', [ 'scale' ])
   },
   mounted () {
     this.initElement()

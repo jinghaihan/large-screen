@@ -13,9 +13,11 @@
           :style="getDropPaperStyle()">
         <LayoutContainer ref="layoutContainer"
                         :layout="layout"
+                        :colNum="colNum"
                         :rowHeight="rowHeight"
                         :ratio="ratio"
                         :layer="layer"
+                        :maxLayer="maxLayer"
                         :component="component"
                         :root="root" >
         </LayoutContainer>
@@ -25,7 +27,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import TickMark from './tickMark/tickMark.vue'
 import LayoutContainer from './layout/container.vue'
 
@@ -37,12 +38,28 @@ export default {
       type: Array,
       required: true
     },
+    colNum: {
+      type: Number,
+      required: true
+    },
     layer: {
+      type: Number,
+      required: true
+    },
+    maxLayer: {
       type: Number,
       required: true
     },
     ratio: {
       type: Object,
+      required: true
+    },
+    scale: {
+      type: Number,
+      required: true
+    },
+    grid: {
+      type: Boolean,
       required: true
     },
     component: {
@@ -84,9 +101,6 @@ export default {
         this.onScale(scale)
       }
     }
-  },
-  computed: {
-    ...mapGetters('configurator', [ 'colNum', 'grid', 'scale' ])
   },
   mounted () {
     this.onRendered()

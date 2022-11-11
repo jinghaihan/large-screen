@@ -5,7 +5,7 @@
           :key="data.key"
           :style="getContainerStyle(index)">
       <GridLayout ref="layer"
-                  :layout="data.layout"
+                  :layoutData="data.layout"
                   :colNum="colNum"
                   :rowHeight="rowHeight"
                   :ratio="ratio"

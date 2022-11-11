@@ -82,7 +82,8 @@
               </tooltip-icon>
             </div>
             <!-- 表单内容 -->
-            <ConfigurePanel ref="ConfigurePanel"
+            <ConfigurePanel v-if="panelVisible"
+                           ref="ConfigurePanel"
                            :layout="layout"
                            :layer="layer"
                            :root="getRootRef()"></ConfigurePanel>
@@ -207,6 +208,7 @@ export default {
         }
       })
     },
+    // 图层
     onCreateLayer (data) {
       if (this.layout.length >= this.maxLayer) {
         this.$notification.error({ message: '错误', description: `最多支持${this.maxLayer}个图层` })
@@ -256,6 +258,10 @@ export default {
         },
         onCancel () { }
       })
+    },
+    onUpdateLayer (data) {
+      this.layout = _.cloneDeep(data.layout)
+      this.layer = data.layer
     },
     onChangeScale (direction) {
       let scale = this.scale

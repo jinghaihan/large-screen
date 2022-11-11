@@ -2,8 +2,8 @@
   <div class="configure-container">
     <!-- 表单配置 -->
     <div class="configure-form-container">
-      <FormModel v-show="activeKey !== 'layer'" :config="config"></FormModel>
-      <LayerPanel v-show="activeKey === 'layer'" :layout="layout" :layer="layer" :root="root"></LayerPanel>
+      <FormModel v-if="activeKey !== 'layer'" :config="config"></FormModel>
+      <LayerPanel v-else :layout="layout" :layer="layer" :root="root"></LayerPanel>
     </div>
     <!-- 切换 -->
     <div class="tab-container">

@@ -29,10 +29,15 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Renderer from '../renderer/renderer.vue'
 
 export default {
   props: {
+    layoutData: {
+      type: Array,
+      required: true
+    },
     colNum: {
       type: Number,
       required: true
@@ -60,14 +65,28 @@ export default {
     root: null
   },
   components: { Renderer },
+  watch: {
+    layoutData: {
+      deep: true,
+      immediate: true,
+      handler: function () {
+        this.onUpdate()
+      }
+    }
+  },
   data () {
     return {
       layout: [],
       maxW: this.colNum,
-      maxH: (this.colNum / this.ratio.width * this.ratio.height).toFixed(0)
+      maxH: (this.colNum / this.ratio.width * this.ratio.height).toFixed(0),
+      visible: false
     }
   },
   methods: {
+    onUpdate () {
+      this.layout = _.cloneDeep(this.layoutData)
+      this.$forceUpdate()
+    },
     onDelete (data) {
       let _this = this
       _this.$confirm({

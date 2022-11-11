@@ -1,35 +1,43 @@
 <template>
-  <div class="layer-panel-container">
-    <a-button class="button" icon="plus-circle" type="primary" size="small" @click="onCreate">新增图层</a-button>
-    <draggable
-      class="layer-list-group"
-      tag="ul"
-      v-model="list"
-      v-bind="dragOptions"
-      @start="drag = true"
-      @end="drag = false"
-    >
-      <transition-group type="transition" :name="!drag ? 'flip-list' : null">
-        <li class="list-group-item"
-            v-for="element in list"
-            :key="element.key"
+  <a-spin :spinning="loading">
+    <div class="layer-panel-container">
+      <div class="operator-container">
+        <a-button class="button" icon="plus-circle" type="primary" size="small" @click="onCreate">新增图层</a-button>
+        <a-button class="button" icon="redo" size="small" @click="onRefresh">刷新预览</a-button>
+        <a-button class="button" icon="save" type="danger" size="small" @click="onUpdate">更新配置</a-button>
+      </div>
+        <draggable
+          v-if="!loading"
+          class="layer-list-group"
+          tag="ul"
+          v-model="list"
+          v-bind="dragOptions"
+          @start="drag = true"
+          @end="drag = false"
         >
-        <a-card size="small" :title="element.name">
-          <template slot="extra">
-            <tooltip-icon class="action" icon="edit" title="修改名称" @click="onEdit(element)"></tooltip-icon>
-            <tooltip-icon class="action" icon="delete" title="删除图层" @click="onDelete"></tooltip-icon>
-          </template>
-          <a-empty></a-empty>
-        </a-card>
-        </li>
-      </transition-group>
-    </draggable>
-    <LayerModal v-if="modalVisible" :modalData="modalData" @close="onModalClose"></LayerModal>
-  </div>
+          <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+            <li class="list-group-item"
+                v-for="element in list"
+                :key="element.key"
+            >
+            <a-card size="small" :title="element.name">
+              <template slot="extra">
+                <tooltip-icon class="action" icon="edit" title="修改名称" @click="onEdit(element)"></tooltip-icon>
+                <tooltip-icon class="action" icon="delete" title="删除图层" @click="onDelete(element)"></tooltip-icon>
+              </template>
+              <img class="image" :src="element.image" alt="thumbnail">
+            </a-card>
+            </li>
+          </transition-group>
+        </draggable>
+      <LayerModal v-if="modalVisible" :modalData="modalData" @close="onModalClose"></LayerModal>
+    </div>
+  </a-spin>
 </template>
 
 <script>
 import LayerModal from '../toolbox/layerModal.vue'
+import { getUUID, getThumbnail } from '../utils'
 
 export default {
   props: {
@@ -46,6 +54,7 @@ export default {
   components: { LayerModal },
   data () {
     return {
+      loading: false,
       list: [],
       drag: false,
       dragOptions: {
@@ -58,27 +67,29 @@ export default {
       modalVisible: false
     }
   },
-  watch: {
-    layout: {
-      deep: true,
-      handler: function () {
-        this.handleList()
-      }
-    }
-  },
   created () {
     this.handleList()
   },
   methods: {
     handleList () {
-      this.list = _.cloneDeep(this.layout.map((item, index) => {
+      this.loading = true
+      Promise.all(this.layout.map(async (item, index) => {
+        const el = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[index].$el
         return { 
           name: item.name,
           key: item.key,
+          visible: item.visible,
           current: index === this.layer,
-          order: index + 1
+          layer: index,
+          image: await getThumbnail(el, 0.1)
         }
-      }))
+      })).then(result => {
+        this.list = _.cloneDeep(result)
+        this.loading = false
+      })
+    },
+    onRefresh () {
+      this.handleList()
     },
     onCreate () {
       this.modalData.modalType = 'create'
@@ -93,8 +104,28 @@ export default {
       }
       this.modalVisible = true
     },
-    onDelete () {
-      
+    onDelete (el) {
+      this.root.onDeleteLayer(el)
+    },
+    onUpdate () {
+      let keys = []
+      let layer
+      this.list.forEach((item, index) => {
+        keys.push(item.key)
+        if (item.current) {
+          layer = index
+        }
+      })
+      let layout = keys.map(key => {
+        let index = this.layout.findIndex(data => data.key === key)
+        return {
+          ...this.layout[index],
+          key: getUUID(),
+          layout: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[index].layout
+        }
+      })
+
+      this.root.onUpdateLayer({ layout, layer })
     },
     onModalClose (data) {
       if (data) {
@@ -118,7 +149,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  /deep/.ant-card-body{
+    padding: 4px 0;
+  }
   /deep/.ant-card-extra{
     display: flex;
+  }
+  /deep/.ant-card{
+    background: var(--primary-color);
+  }
+  /deep/.ant-card-head{
+    background: var(--normal-color);
+    color: var(--font-color);
+  }
+  /deep/.ant-card-bordered{
+    border-color: var(--highlight-color);
   }
 </style>

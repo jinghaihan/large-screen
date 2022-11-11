@@ -3,10 +3,9 @@
     <div class="grid-layout-layer-container"
           v-for="(data, index) in layout"
           :key="data.key"
-          :style="getStyle(index)">
+          :style="getContainerStyle(index)">
       <GridLayout ref="layer"
                   :layout="data.layout"
-                  :colNum="colNum"
                   :rowHeight="rowHeight"
                   :ratio="ratio"
                   :resizable="index === layer"
@@ -19,16 +18,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import GridLayout from './layer.vue'
 
 export default {
   props: {
     layout: {
       type: Array,
-      required: true
-    },
-    colNum: {
-      type: Number,
       required: true
     },
     rowHeight: {
@@ -43,10 +39,6 @@ export default {
       type: Number,
       required: true
     },
-    maxLayer: {
-      type: Number,
-      required: true
-    },
     component: {
       type: Object,
       required: true
@@ -54,8 +46,11 @@ export default {
     root: null
   },
   components: { GridLayout },
+  computed: {
+    ...mapGetters('configurator', [ 'maxLayer' ])
+  },
   methods: {
-    getStyle (layer) {
+    getContainerStyle (layer) {
       return {
         'z-index': this.layer === layer ? layer + this.maxLayer : layer
       }

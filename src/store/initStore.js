@@ -9,7 +9,7 @@ import {
   MENUS,
   KEEPALIVE
 } from './mutation-types'
-const { user, micro } = config
+const { user, micro, configurator } = config
 
 export default function initStore () {
   // user
@@ -21,4 +21,11 @@ export default function initStore () {
 
   // micro
   store.commit('micro/SET_KEEPALIVE', Vue.ss.get(KEEPALIVE, micro.keepAlive))
+
+  // configurator
+  store.commit('configurator/SET_CONFIG', configurator.config)
+  store.commit('configurator/SET_SCALE', configurator.scale)
+  store.commit('configurator/SET_GRID', configurator.grid)
+  store.commit('configurator/SET_PAPER', configurator.paper)
+  store.commit('configurator/SET_COMPONENT', configurator.component)
 }

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "echarts": "^5.4.0",
-    "keyboardjs": "^2.7.0",
+    "hotkeys-js": "^3.10.0",
     "less": "^2.7.3",
     "vue": "^2.6.11",
     "vue-grid-layout": "^2.4.0",

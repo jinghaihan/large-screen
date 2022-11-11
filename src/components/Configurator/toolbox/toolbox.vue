@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import LayerModal from './layerModal.vue'
 
 export default {
@@ -61,13 +62,12 @@ export default {
       type: Number,
       required: true
     },
-    scale: {
-      type: Number,
-      required: true
-    },
     root: null
   },
   components: { LayerModal },
+  computed: {
+    ...mapGetters('configurator', [ 'scale' ])
+  },
   data () {
     return {
       shortcutKey: [
@@ -84,7 +84,7 @@ export default {
           description: '画布网格线'
         },
         {
-          combo: ['ctrl > delete', 'command > delete'],
+          combo: ['delete', 'backsapce'],
           description: '删除组件'
         }
       ],
@@ -121,7 +121,7 @@ export default {
         okText: '确定',
         cancelText: '取消',
         async onOk () {
-          _this.root.init()
+          _this.root.initConfigurator()
         },
         onCancel () { }
       })

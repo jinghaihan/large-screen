@@ -1,4 +1,4 @@
-export function getKey () {
+export function getUUID () {
   let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
   let maxPos = $chars.length
   let key = ''

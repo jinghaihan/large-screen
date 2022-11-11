@@ -9,5 +9,13 @@ export default {
   },
   micro: {
     keepAlive: []
+  },
+  configurator: {
+    config: {},
+    scale: 1,
+    grid: false,
+    maxLayer: 5,
+    colNum: 100,
+    paper: null
   }
 }

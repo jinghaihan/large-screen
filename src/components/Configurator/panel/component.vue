@@ -18,7 +18,8 @@
 
 <script>
 import Config from './config'
-import { getKey } from '../utils'
+import { mapGetters } from 'vuex'
+import { getUUID } from '../utils'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }
@@ -26,10 +27,6 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 export default {
   props: {
     layer: {
-      type: Number,
-      required: true
-    },
-    colNum: {
       type: Number,
       required: true
     },
@@ -48,7 +45,6 @@ export default {
   },
   watch: {
     layer: {
-      immediate: true,
       handler: function () {
         // 清空上个图层的dragover事件
         this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
@@ -58,11 +54,14 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters('configurator', [ 'colNum' ])
+  },
   mounted () {
     this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
   },
   beforeDestroy () {
-    if (this.ref.$refs.gridLayou) {
+    if (this.ref.$refs.gridLayout) {
       this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
     }
   },
@@ -111,7 +110,7 @@ export default {
         this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
 
-        let key = getKey()
+        let key = getUUID()
 
         this.ref.layout.push({
           x: DragPos.x,

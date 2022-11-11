@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Renderer from '../renderer/renderer.vue'
 
 export default {

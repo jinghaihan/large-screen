@@ -1,23 +1,39 @@
 <template>
   <div class="toolbox-container">
-    <tooltip-icon class="action" title="修改图层名称" icon="edit" placement="bottom" @click="onEditLayer"></tooltip-icon>
     <!-- 图层 -->
-    <div class="layer-container">
-      <a-dropdown v-show="layout.length > 1">
+    <div class="layer-config-container">
+      <a-dropdown>
         <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-          <span class="layer">{{layout[layer].name}}</span><a-icon type="down" />
+          <a-icon class="action" type="ellipsis"></a-icon>
         </a>
         <a-menu slot="overlay">
-          <a-menu-item v-for="item in layout.filter((item, index) => index !== layer)"
+          <a-menu-item v-for="item in operation"
                       :key="item.key"
-                      @click="onChangeLayer(item)">
-            <a href="javascript:;">{{item.name}}</a>
+                      @click="onOperation(item)">
+            <div class="configurator-menu-item-container">
+              <a-icon class="icon" :type="item.icon"></a-icon>{{item.name}}
+            </div>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <span class="layer" v-show="layout.length === 1">{{layout[layer].name}}</span>
+      <!-- 图层 -->
+      <div class="layer-container">
+        <a-dropdown v-show="layout.length > 1">
+          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+            <span class="layer">{{layout[layer].name}}</span><a-icon type="down" />
+          </a>
+          <a-menu slot="overlay">
+            <a-menu-item v-for="item in layout.filter((item, index) => index !== layer)"
+                        :key="item.key"
+                        @click="onChangeLayer(item)">
+              <a href="javascript:;">{{item.name}}</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+        <span class="layer" v-show="layout.length === 1">{{layout[layer].name}}</span>
+      </div>
+      <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     </div>
-    <tooltip-icon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreateLayer"></tooltip-icon>
     <a-divider type="virtical"></a-divider>
     <!-- 缩放 -->
     <div class="scale-container">
@@ -32,7 +48,7 @@
     <!-- 帮助 -->
     <a-popover title="快捷键">
       <template slot="content">
-        <div class="shortcut-container" v-for="key in shortcutKey" :key="key.description">
+        <div class="shortcut-container" v-for="key in hotkeys" :key="key.description">
           <!-- tag展示 -->
           <div class="tag-container">
             <a-tag v-for="tag in key.combo" :key="tag">{{tag}}</a-tag>
@@ -70,7 +86,7 @@ export default {
   components: { LayerModal },
   data () {
     return {
-      shortcutKey: [
+      hotkeys: [
         {
           combo: ['ctrl > up', 'command > up'],
           description: '放大画布'
@@ -88,11 +104,35 @@ export default {
           description: '删除组件'
         }
       ],
+      operation: [
+        {
+          name: '修改名称',
+          icon: 'edit',
+          key: 'edit'
+        },
+        {
+          name: '删除图层',
+          icon: 'delete',
+          key: 'delete'
+        }
+      ],
       modalData: {},
       layerVisible: false
     }
   },
   methods: {
+    onOperation (data) {
+      switch (data.key) {
+        case 'edit':
+          this.onEditLayer()
+          break
+        case 'delete':
+          this.onDeleteLayer()
+          break
+        default:
+          break
+      }
+    },
     onScale (direction) {
       this.$emit('change-scale', direction)
     },
@@ -112,6 +152,9 @@ export default {
     onChangeLayer (item) {
       this.$emit('change-layer', item.key) 
     },
+    onDeleteLayer (item) {
+      this.$emit('delete-layer', this.layout[this.layer])
+    },
     onClear () {
       let _this = this
       _this.$confirm({
@@ -121,7 +164,7 @@ export default {
         okText: '确定',
         cancelText: '取消',
         async onOk () {
-          _this.root.initConfigurator()
+          _this.root.initConfigurator(true)
         },
         onCancel () { }
       })

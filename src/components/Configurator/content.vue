@@ -32,6 +32,7 @@
                     @create-layer="onCreateLayer"
                     @change-layer="onChangeLayer"
                     @edit-layer="onEditLayer"
+                    @delete-layer="onDeleteLayer"
                     @change-scale="onChangeScale"></Toolbox>
         </div>
         <div class="operation-container">
@@ -51,6 +52,7 @@
         <!-- 组件面板 -->
         <div class="component-container">
           <ComponentPanel v-if="panelVisible"
+                          ref="componentPanel"
                           :colNum="colNum"
                           :layer="layer"
                           :root="getRootRef()"></ComponentPanel>
@@ -80,7 +82,10 @@
               </tooltip-icon>
             </div>
             <!-- 表单内容 -->
-            <ConfigurePanel></ConfigurePanel>
+            <ConfigurePanel ref="ConfigurePanel"
+                           :layout="layout"
+                           :layer="layer"
+                           :root="getRootRef()"></ConfigurePanel>
           </div>
         </div>
       </div>
@@ -135,13 +140,21 @@ export default {
     this.initConfigurator(true)
   },
   methods: {
-    initConfigurator () {
-      this.layout = []
-      this.layout.push({
+    async initConfigurator (isClear) {
+      this.layout = _.cloneDeep([{
         key: getUUID(),
         name: '图层1',
+        visible: true,
         layout: []
-      })
+      }])
+      this.layer = 0
+
+      if (isClear) {
+        await this.$nextTick()
+        if (this.$refs.componentPanel) {
+          this.$refs.componentPanel.updateRef()
+        }
+      }
     },
     onOperation (key) {
       this.activeKey = key
@@ -195,26 +208,54 @@ export default {
       })
     },
     onCreateLayer (data) {
-      if (this.currConfig.layout.length >= this.maxLayer) {
+      if (this.layout.length >= this.maxLayer) {
         this.$notification.error({ message: '错误', description: `最多支持${this.maxLayer}个图层` })
         return
       }
       this.layout.push({
         key: getUUID(),
         name: data.name,
+        visibile: true,
         layout: []
       })
       this.layer = this.layout.length - 1
       this.updateSelectedComponent({})
     },
     onChangeLayer (key) {
-      let index = this.currConfig.layout.findIndex(data => data.key === key)
+      let index = this.layout.findIndex(data => data.key === key)
       this.layer = index
       this.updateSelectedComponent({})
     },
     onEditLayer (data) {
-      let index = this.currConfig.layout.findIndex(item => item.key === data.key)
+      let index = this.layout.findIndex(item => item.key === data.key)
       this.layout[index].name = data.name
+    },
+    onDeleteLayer (data) {
+      let _this = this
+      if (_this.layout.length === 1) {
+        _this.$notification.error({ message: '错误', description: `请至少配置1个图层` })
+        return
+      }
+
+      _this.$confirm({
+        title: `您确定删除${data.name}吗？`,
+        content: '该图层配置数据将一同删除',
+        confirmLoading: true,
+        okText: '确定',
+        cancelText: '取消',
+        onOk () {
+          let index = _this.layout.findIndex(item => item.key === data.key)
+          _this.layout = _this.layout.filter(item => item.key !== data.key)
+          if (index === _this.layer) {
+            if (!index) {
+              _this.layer = index + 1   
+            } else {
+              _this.layer = index - 1
+            }
+          }
+        },
+        onCancel () { }
+      })
     },
     onChangeScale (direction) {
       let scale = this.scale

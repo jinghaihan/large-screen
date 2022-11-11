@@ -18,7 +18,6 @@
 
 <script>
 import Config from './config'
-import { mapGetters } from 'vuex'
 import { getUUID } from '../utils'
 
 let mouseXY = { 'x': null, 'y': null }
@@ -50,11 +49,7 @@ export default {
   watch: {
     layer: {
       handler: function () {
-        // 清空上个图层的dragover事件
-        this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
-        this.ref = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
-        // 新增当前图层的dragover事件
-        this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+        this.updateRef()
       }
     }
   },
@@ -135,6 +130,15 @@ export default {
     updateMouse (e) {
       mouseXY.x = e.clientX
       mouseXY.y = e.clientY
+    },
+    updateRef () {
+      // 清空上个图层的dragover事件
+      try {
+        this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
+      } catch (error) { }
+      this.ref = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
+      // 新增当前图层的dragover事件
+      this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
     }
   }
 }

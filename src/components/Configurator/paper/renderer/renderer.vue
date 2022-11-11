@@ -7,7 +7,7 @@
       </div>
       <a-menu slot="overlay">
         <a-menu-item v-for="item in operation" :key="item.key" @click="onOperation(item)">
-          <div class="draggable-element-menu-item-container">
+          <div class="configurator-menu-item-container">
             <a-icon class="icon" :type="item.icon"></a-icon>{{item.name}}
           </div>
         </a-menu-item>

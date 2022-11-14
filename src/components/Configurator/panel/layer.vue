@@ -98,7 +98,6 @@ export default {
           image: item.visible ? await getThumbnail(el, 0.1) : ''
         }
       })).then(result => {
-        console.log(this.layout)
         this.list = _.cloneDeep(result)
         this.loading = false
       })
@@ -135,7 +134,6 @@ export default {
         let index = this.layout.findIndex(data => data.key === key)
         return {
           ...this.layout[index],
-          key: getUUID(),
           visible: this.list[order].visible,
           layout: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[index].layout
         }

@@ -9,7 +9,7 @@
   >
     <a-row :gutter="[8, 8]">
       <a-col v-for="conf in config" :key="conf.key">
-        <form-item :config="conf" :form="form"></form-item>
+        <form-item :config="conf" :form="form" :ratio="ratio" @change="onChange"></form-item>
       </a-col>
     </a-row>
   </a-form-model>
@@ -22,6 +22,10 @@ export default {
   props: {
     config: {
       type: Array,
+      required: true
+    },
+    ratio: {
+      type: Object,
       required: true
     },
     labelCol: {
@@ -43,12 +47,31 @@ export default {
     this.init()
   },
   methods: {
-    init () {
+    async init () {
+      let fields = []
       this.config.forEach(conf => {
-        this.form[conf.key] = conf.defaultValue || undefined
+        switch (conf.key) {
+          case 'ratio-width':
+            this.form[conf.key] = this.ratio.width
+            break
+          case 'ratio-height':
+            this.form[conf.key] = this.ratio.height
+            break
+          default:
+            this.form[conf.key] = conf.defaultValue || undefined
+            break
+        }
+        if (conf.defaultValue) fields.push(conf.key)
         this.rules[conf.key] = conf.rules
       })
       this.visible = true
+      await this.$nextTick()
+      this.$refs.form.validateField(fields)
+
+      console.log(this.rules)
+    },
+    onChange () {
+      this.$emit('change', this.form)
     }
   }
 }

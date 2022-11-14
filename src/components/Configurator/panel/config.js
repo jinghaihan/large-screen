@@ -47,64 +47,72 @@ const configure = {
       label: '名称',
       key: 'name',
       col: 24,
-      placeholder: '请输入名称',
-      disabled: false,
       defaultValue: null,
-      allowClear: true,
       rules: [
         { required: true, message: '请输入名称', whitespace: true }
-      ]
+      ],
+      props: {
+        placeholder: '请输入名称',
+        disabled: false,
+        allowClear: true
+      }
     },
     {
       type: 'input-number',
       label: '长比例',
       key: 'ratio-width',
       col: 24,
-      placeholder: '长比例',
-      disabled: false,
       defaultValue: null,
-      allowClear: true,
       rules: [
-        { required: true, message: '请输入长比例', whitespace: true }
-      ]
+        { required: true, message: '请输入长比例' }
+      ],
+      props: {
+        placeholder: '长比例',
+        disabled: false
+      }
     },
     {
       type: 'input-number',
       label: '宽比例',
-      key: 'ratio-width',
+      key: 'ratio-height',
       col: 24,
-      placeholder: '宽比例',
-      disabled: false,
       defaultValue: null,
-      allowClear: true,
       rules: [
-        { required: true, message: '请输入宽比例', whitespace: true }
-      ]
+        { required: true, message: '请输入宽比例' }
+      ],
+      props: {
+        placeholder: '宽比例',
+        disabled: false
+      }
     },
     {
       type: 'textarea',
       label: '描述',
       key: 'description',
       col: 24,
-      maxLength: 300,
-      placeholder: '请输入描述',
-      disabled: false,
       defaultValue: null,
-      allowClear: true,
       rules: [
-        { required: true, message: '请输入描述', whitespace: true }
-      ]
+        { required: false, message: '请输入描述', whitespace: true }
+      ],
+      props: {
+        maxLength: 300,
+        placeholder: '请输入描述',
+        disabled: false,
+        allowClear: true
+      }
     },
     {
       type: 'material-library',
       label: '背景',
       key: 'background',
       col: 24,
-      disabled: false,
       defaultValue: null,
       rules: [
-        { required: true, message: '请选择背景' }
-      ]
+        { required: false, message: '请选择背景' }
+      ],
+      props: {
+        disabled: false
+      }
     }
   ]
 }

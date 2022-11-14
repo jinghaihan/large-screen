@@ -9,7 +9,7 @@
         @mousemove="onMouseMove"
         @mouseup="onMouseUp">
       <div ref="dropPaper"
-          :class="`drop-paper drop-paper-${ratio.width}-${ratio.height}`"
+          class="drop-paper"
           :style="getDropPaperStyle()">
         <LayoutContainer ref="layoutContainer"
                         :layout="layout"
@@ -100,16 +100,26 @@ export default {
       handler: function (scale) {
         this.onScale(scale)
       }
+    },
+    ratio: {
+      deep: true,
+      handler: function (ratio) {
+        this.onRatioChange(ratio)
+      }
     }
   },
   mounted () {
     this.onRendered()
   },
   methods: {
-    async onRendered () {
+    onRendered () {
+      this.$refs.dropPaper.style['aspect-ratio'] = `${this.ratio.width} / ${this.ratio.height}`
       // 通知父组件渲染完毕
       this.$emit('rendered')
       // 初始化画布位置
+      this.initPaperPos()
+    },
+    async initPaperPos () {
       await this.$nextTick()
       let paperRect = this.$refs.dropPaper.getBoundingClientRect()
       let panelRect = this.$refs.paperPanel.getBoundingClientRect()
@@ -121,6 +131,15 @@ export default {
       this.$refs.dropPaper.style.right = 'auto'
       this.$refs.dropPaper.style.bottom = 'auto'
       this.$refs.dropPaper.style.margin = 0
+    },
+    onRatioChange (ratio) {
+      this.$refs.dropPaper.style['aspect-ratio'] = `${ratio.width} / ${ratio.height}`
+      this.$refs.dropPaper.style.left = 0
+      this.$refs.dropPaper.style.top = 0
+      this.$refs.dropPaper.style.right = 0
+      this.$refs.dropPaper.style.bottom = 0
+      this.$refs.dropPaper.style.margin = 'auto'
+      this.initPaperPos()
     },
     getDropPaperStyle () {
       if (this.grid) {
@@ -155,8 +174,8 @@ export default {
         let diffRectX = paperRect.left - panelRect.left
         let diffRectY = paperRect.top - panelRect.top
 
-        this.$refs.dropPaper.style.left = diffRectX + diffX < 0 ? 0 : diffRectX + diffX + 'px'
-        this.$refs.dropPaper.style.top = diffRectY + diffY < 0 ? 0 : diffRectY + diffY + 'px'
+        this.$refs.dropPaper.style.left = diffRectX + diffX + 'px'
+        this.$refs.dropPaper.style.top = diffRectY + diffY + 'px'
         this.$refs.dropPaper.style.right = 'auto'
         this.$refs.dropPaper.style.bottom = 'auto'
         this.$refs.dropPaper.style.margin = 0

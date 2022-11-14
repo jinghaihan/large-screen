@@ -2,7 +2,7 @@
   <div class="grid-layout-container">
     <div class="grid-layout-layer-container"
           v-for="(data, index) in layout"
-          :key="data.key"
+          :key="data.key + '-' + index"
           :style="getContainerStyle(index)">
       <GridLayout ref="layer"
                   :layoutData="data.layout"

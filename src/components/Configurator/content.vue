@@ -83,8 +83,9 @@
             </div>
             <!-- 表单内容 -->
             <ConfigurePanel v-if="panelVisible"
-                           ref="ConfigurePanel"
+                           ref="configurePanel"
                            :layout="layout"
+                           :ratio="ratio"
                            :layer="layer"
                            :root="getRootRef()"></ConfigurePanel>
           </div>

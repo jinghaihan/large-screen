@@ -2,7 +2,7 @@
   <div class="configure-container">
     <!-- 表单配置 -->
     <div class="configure-form-container">
-      <FormModel v-if="activeKey !== 'layer'" :config="config"></FormModel>
+      <FormModel v-if="activeKey !== 'layer'" :config="config" :ratio="ratio" @change="onModelChange"></FormModel>
       <LayerPanel v-else :layout="layout" :layer="layer" :root="root"></LayerPanel>
     </div>
     <!-- 切换 -->
@@ -28,6 +28,10 @@ export default {
       type: Array,
       required: true
     },
+    ratio: {
+      type: Object,
+      required: true
+    },
     layer: {
       type: Number,
       required: true
@@ -50,6 +54,19 @@ export default {
     onChange (tab) {
       this.activeKey = tab.key
       this.config = new Config(this.activeKey).getConfig() || []
+    },
+    onModelChange (data) {
+      console.log('onModelChange', data)
+      switch (this.activeKey) {
+        case 'basic':
+          this.root.ratio.width = data['ratio-width']
+          this.root.ratio.height = data['ratio-height']
+          break
+        case 'component':
+          break
+        default:
+          break
+      }
     }
   }
 }

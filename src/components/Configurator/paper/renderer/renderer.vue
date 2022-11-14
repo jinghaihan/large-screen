@@ -6,7 +6,7 @@
         {{data.i}}
       </div>
       <a-menu slot="overlay">
-        <a-menu-item v-for="item in operation" :key="item.key" @click="onOperation(item)">
+        <a-menu-item v-for="item in config.operation['renderer']" :key="item.key" @click="onOperation(item)">
           <div class="configurator-menu-item-container">
             <a-icon class="icon" :type="item.icon"></a-icon>{{item.name}}
           </div>
@@ -20,6 +20,10 @@
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     data: {
       type: Object,
       required: true
@@ -32,18 +36,7 @@ export default {
   },
   data () {
     return {
-      operation: [
-        {
-          name: '复制',
-          key: 'copy',
-          icon: 'copy'
-        },
-        {
-          name: '删除',
-          key: 'delete',
-          icon: 'delete'
-        }
-      ]
+
     }
   },
   methods: {

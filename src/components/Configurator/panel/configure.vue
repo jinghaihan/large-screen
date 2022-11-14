@@ -2,13 +2,23 @@
   <div class="configure-container">
     <!-- 表单配置 -->
     <div class="configure-form-container">
-      <FormModel v-if="activeKey !== 'layer'" :config="config" :ratio="ratio" @change="onModelChange"></FormModel>
-      <LayerPanel v-else :layout="layout" :layer="layer" :root="root"></LayerPanel>
+      <!-- 表单配置 -->
+      <FormModel v-if="activeKey !== 'layer'"
+                :config="formConfig"
+                :ratio="ratio"
+                @change="onModelChange">
+      </FormModel>
+      <!-- 图层配置 -->
+      <LayerPanel v-else
+                  :layout="layout"
+                  :layer="layer"
+                  :root="root">
+      </LayerPanel>
     </div>
     <!-- 切换 -->
     <div class="tab-container">
       <div :class="activeKey !== tab.key? 'tab' : 'tab tab-selected'"
-           v-for="tab in tabs"
+           v-for="tab in config.operation['configure']"
            :key="tab.key"
            @click="onChange(tab)">
         {{tab.name}}
@@ -18,12 +28,15 @@
 </template>
 
 <script>
-import Config from './config'
 import FormModel from '../form/formModel.vue'
 import LayerPanel from './layer.vue'
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     layout: {
       type: Array,
       required: true
@@ -41,19 +54,14 @@ export default {
   components: { FormModel, LayerPanel },
   data () {
     return {
-      config: new Config('basic').getConfig(),
-      tabs: [
-        { name: '基础配置', key: 'basic' },
-        { name: '图层配置', key: 'layer' },
-        { name: '组件配置', key: 'component' }
-      ],
+      formConfig: this.config['configure']['basic'],
       activeKey: 'basic'
     }
   },
   methods: {
     onChange (tab) {
       this.activeKey = tab.key
-      this.config = new Config(this.activeKey).getConfig() || []
+      this.formConfig = this.config['configure'][this.activeKey] || []
     },
     onModelChange (data) {
       console.log('onModelChange', data)

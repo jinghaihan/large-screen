@@ -12,6 +12,7 @@
           class="drop-paper"
           :style="getDropPaperStyle()">
         <LayoutContainer ref="layoutContainer"
+                        :config="config"
                         :layout="layout"
                         :colNum="colNum"
                         :rowHeight="rowHeight"
@@ -34,6 +35,10 @@ export default {
   name: 'paper',
   components: { TickMark, LayoutContainer },
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     layout: {
       type: Array,
       required: true

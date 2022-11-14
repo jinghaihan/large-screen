@@ -8,7 +8,7 @@
         <tooltip-icon icon="rollback" title="返回" placement="right" @click="closeModal"></tooltip-icon>
       </div>
       <div :class="activeKey === icon.key ? 'action action-active' : 'action'"
-            v-for="icon in operation['sidebar']"
+            v-for="icon in config.operation['sidebar']"
             :key="icon.key">
         <tooltip-icon :title="icon.name"
                       :icon="icon.icon"
@@ -25,7 +25,8 @@
           <a-button size="small" icon="fund" type="primary">模板库</a-button>
         </div>
         <div class="toolbox-container">
-          <Toolbox  :layout="layout"
+          <Toolbox  :config="config"
+                    :layout="layout"
                     :layer="layer"
                     :scale="scale"
                     :root="getRootRef()"
@@ -38,7 +39,7 @@
         <div class="operation-container">
           <a-switch checked-children="深色" un-checked-children="浅色" @change="onSwitchTheme"/>
           <div class="action"
-                v-for="icon in operation['navbar']"
+                v-for="icon in config.operation['navbar']"
                 :key="icon.key">
               <tooltip-icon :title="icon.name"
                             :icon="icon.icon"
@@ -53,6 +54,8 @@
         <div class="component-container">
           <ComponentPanel v-if="panelVisible"
                           ref="componentPanel"
+                          :type="activeKey"
+                          :config="config"
                           :colNum="colNum"
                           :layer="layer"
                           :root="getRootRef()"></ComponentPanel>
@@ -61,6 +64,7 @@
           <!-- 画布 -->
           <div class="paper">
             <Paper ref="paper"
+                  :config="config"
                   :layout="layout"
                   :layer="layer"
                   :maxLayer="maxLayer"
@@ -84,6 +88,7 @@
             <!-- 表单内容 -->
             <ConfigurePanel v-if="panelVisible"
                            ref="configurePanel"
+                           :config="config"
                            :layout="layout"
                            :ratio="ratio"
                            :layer="layer"
@@ -108,20 +113,14 @@ import './theme.less'
 
 export default {
   components: { Paper, Toolbox, ComponentPanel, ConfigurePanel },
+  props: {
+    config: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
-      // 页面框架
-      operation: {
-        sidebar: [
-          { name: '可视化组件', icon: 'area-chart', key: 'chart' },
-          { name: '多媒体组件', icon: 'video-camera', key: 'multiMedia' },
-          { name: '文本组件', icon: 'font-colors', key: 'text' }
-        ],
-        navbar: [
-          { name: '截图', icon: 'picture', key: 'screenshot' },
-          { name: '保存', icon: 'save', key: 'save' }
-        ]
-      },
       activeKey: 'chart',
       trigger: 'right',
       theme: 'light',

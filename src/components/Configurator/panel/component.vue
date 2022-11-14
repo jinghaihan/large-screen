@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="[8, 8]">
-    <a-col v-for="conf in config"
+    <a-col v-for="conf in config.component[type]"
             :key="conf.name"
             :span="conf.col">
         <div class="droppable-element"
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import Config from './config'
 import { getUUID } from '../utils'
 
 let mouseXY = { 'x': null, 'y': null }
@@ -25,6 +24,14 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
+    type: {
+      type: Object,
+      required: true
+    },
     layer: {
       type: Number,
       required: true
@@ -33,17 +40,11 @@ export default {
       type: Number,
       required: true
     },
-    type: {
-      type: String,
-      required: false,
-      default: 'chart'
-    },
     root: null
   },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer],
-      config: new Config(this.type).getConfig()
+      ref: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
     }
   },
   watch: {

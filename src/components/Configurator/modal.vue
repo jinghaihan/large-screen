@@ -10,12 +10,13 @@
     height="100%"
     wrapClassName="fullModalWithoutHeader"
   >
-    <Content @close="closeModal"></Content>
+    <Content :config="config" @close="closeModal"></Content>
   </a-modal>
 </template>
 
 <script>
 import Content from './content.vue'
+import Config from './config'
 
 export default {
   name: 'configModal',
@@ -24,11 +25,16 @@ export default {
     modalData: {
       type: Object,
       required: true
+    },
+    type: {
+      type: String,
+      required: true
     }
   },
   data () {
     return {
-      visible: true
+      visible: true,
+      config: new Config(this.type).getConfig()
     }
   },
   methods: {

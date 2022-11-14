@@ -7,7 +7,7 @@
           <a-icon class="action" type="ellipsis"></a-icon>
         </a>
         <a-menu slot="overlay">
-          <a-menu-item v-for="item in operation"
+          <a-menu-item v-for="item in config.operation['layer']"
                       :key="item.key"
                       @click="onOperation(item)">
             <div class="configurator-menu-item-container">
@@ -73,6 +73,10 @@ import LayerModal from './layerModal.vue'
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     layout: {
       type: Array,
       required: true
@@ -106,18 +110,6 @@ export default {
         {
           combo: ['delete', 'backsapce'],
           description: '删除组件'
-        }
-      ],
-      operation: [
-        {
-          name: '修改名称',
-          icon: 'edit',
-          key: 'edit'
-        },
-        {
-          name: '删除图层',
-          icon: 'delete',
-          key: 'delete'
         }
       ],
       modalData: {},

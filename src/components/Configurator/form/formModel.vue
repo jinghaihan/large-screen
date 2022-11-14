@@ -1,6 +1,6 @@
 <template>
   <a-form-model
-    v-if="visible"
+    v-if="visible && config.length"
     ref="form"
     :model="form"
     :rules="rules"
@@ -13,6 +13,9 @@
       </a-col>
     </a-row>
   </a-form-model>
+  <div class="empty-container" v-else>
+    <a-empty></a-empty>
+  </div>
 </template>
 
 <script>
@@ -65,8 +68,11 @@ export default {
         this.rules[conf.key] = conf.rules
       })
       this.visible = true
+      
       await this.$nextTick()
-      this.$refs.form.validateField(fields)
+      if (this.$refs.form) {
+        this.$refs.form.validateField(fields)
+      }
 
       console.log(this.rules)
     },

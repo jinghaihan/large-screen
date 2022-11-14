@@ -21,7 +21,7 @@
                   :maxH="maxH"
                   @move="onMove(item)"
                   @resize="onResize(item)">
-          <Renderer :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
+          <Renderer :config="config" :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
         </grid-item>
     </grid-layout>
   </div>
@@ -34,6 +34,10 @@ import Renderer from '../renderer/renderer.vue'
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     layoutData: {
       type: Array,
       required: true

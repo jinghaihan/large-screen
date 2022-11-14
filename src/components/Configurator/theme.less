@@ -85,6 +85,8 @@
         width: 280px;
         background: var(--primary-color);
         padding: 8px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       .paper-container{
         position: relative;
@@ -280,6 +282,12 @@
                 background: #1890ff;
                 color: #fff;
               }
+            }
+            .empty-container{
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
             .marker{
               position: absolute;

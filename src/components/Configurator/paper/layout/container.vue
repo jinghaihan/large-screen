@@ -5,6 +5,7 @@
           :key="data.key + '-' + index"
           :style="getContainerStyle(index)">
       <GridLayout ref="layer"
+                  :config="config"
                   :layoutData="data.layout"
                   :colNum="colNum"
                   :rowHeight="rowHeight"
@@ -24,6 +25,10 @@ import GridLayout from './layer.vue'
 
 export default {
   props: {
+    config: {
+      type: Object,
+      required: true
+    },
     layout: {
       type: Array,
       required: true

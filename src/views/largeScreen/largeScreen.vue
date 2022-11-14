@@ -38,7 +38,7 @@
     </a-spin>
 
     <!-- 组件 -->
-    <Configurator v-if="configVisible" :modalData="modalData" @close="onModalClose"></Configurator>
+    <Configurator v-if="configVisible" :modalData="modalData" type="largeScreen" @close="onModalClose"></Configurator>
   </div>
 </template>
 

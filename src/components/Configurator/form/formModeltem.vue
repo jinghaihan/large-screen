@@ -1,5 +1,6 @@
 <template>
-  <a-form-model-item :prop="config.key"
+  <a-form-model-item :ref="config.key"
+                     :prop="config.key"
                      :hasFeedback="!whitelist.includes(config.type)"
                      :title="getTitle(form[config.key], config)"
                      :label="config.label">
@@ -90,7 +91,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.init()
   },
   methods: {
@@ -99,6 +100,7 @@ export default {
       switch (this.config.type) {
         case 'color-picker':
           this.color = this.form[this.config.key]
+          this.$refs.colorHolder.style.background = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`
           break
         default:
           break
@@ -107,16 +109,11 @@ export default {
     getTitle () {
       return ''
     },
-    onChange () {
-      this.$forceUpdate()
-      this.$emit('change')
-    },
     onLibrary () {
       this.libraryVisible = true
     },
     onLibrarySubmit (image) {
       this.form[this.config.key] = image
-      this.$emit('change')
     },
     onModalClose () {
       this.libraryVisible = false
@@ -124,7 +121,6 @@ export default {
     onColorPicker (value) {
       this.$refs.colorHolder.style.background = value.hex
       this.form[this.config.key] = this.color.rgba
-      this.$emit('change')
     }
   }
 }

@@ -379,32 +379,6 @@ const basicConfigure = [
     }
   },
   {
-    type: 'input-number',
-    label: '长比例',
-    key: 'ratio-width',
-    defaultValue: null,
-    rules: [
-      { required: true, message: '请输入长比例' }
-    ],
-    props: {
-      placeholder: '长比例',
-      disabled: false
-    }
-  },
-  {
-    type: 'input-number',
-    label: '宽比例',
-    key: 'ratio-height',
-    defaultValue: null,
-    rules: [
-      { required: true, message: '请输入宽比例' }
-    ],
-    props: {
-      placeholder: '宽比例',
-      disabled: false
-    }
-  },
-  {
     type: 'textarea',
     label: '描述',
     key: 'description',
@@ -420,6 +394,44 @@ const basicConfigure = [
     }
   },
   {
+    type: 'input-number',
+    label: '长比例',
+    key: 'ratioWidth',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入长比例' }
+    ],
+    props: {
+      placeholder: '长比例',
+      disabled: false
+    }
+  },
+  {
+    type: 'input-number',
+    label: '宽比例',
+    key: 'ratioHeight',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入宽比例' }
+    ],
+    props: {
+      placeholder: '宽比例',
+      disabled: false
+    }
+  },
+  {
+    type: 'color-picker',
+    label: '网格线颜色',
+    key: 'gridColor',
+    defaultValue: null,
+    rules: [
+      { required: false, message: '请选择网格线颜色' }
+    ],
+    props: {
+      disabled: false
+    }
+  },
+  {
     type: 'material-library',
     libraryType: 'picture',
     label: '背景',
@@ -427,20 +439,6 @@ const basicConfigure = [
     defaultValue: null,
     rules: [
       { required: false, message: '请选择背景' }
-    ],
-    props: {
-      disabled: false
-    }
-  },
-  {
-    type: 'color-picker',
-    label: '网格颜色',
-    key: 'gridColor',
-    defaultValue: {
-      rgba: { r: 240, g: 240, b: 240, a: 1 }
-    },
-    rules: [
-      { required: false, message: '请选择网格颜色' }
     ],
     props: {
       disabled: false

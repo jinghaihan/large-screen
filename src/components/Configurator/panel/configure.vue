@@ -6,6 +6,7 @@
       <FormModel v-if="activeKey !== 'layer'"
                 :config="formConfig"
                 :ratio="ratio"
+                :gridColor="gridColor"
                 @change="onModelChange">
       </FormModel>
       <!-- 图层配置 -->
@@ -45,6 +46,10 @@ export default {
       type: Object,
       required: true
     },
+    gridColor: {
+      type: Object,
+      required: true
+    },
     layer: {
       type: Number,
       required: true
@@ -66,11 +71,16 @@ export default {
     onModelChange (data) {
       switch (this.activeKey) {
         case 'basic':
-          this.root.ratio.width = data['ratio-width']
-          this.root.ratio.height = data['ratio-height']
+          // 画布尺寸
+          if (data['ratioWidth'] && data['ratioHeight']) {
+            this.root.ratio.width = data['ratioWidth']
+            this.root.ratio.height = data['ratioHeight']
+          }
+          // 背景
           if (data['background']) {
             this.root.$refs.paper.updateBackground(data['background'])
           }
+          // 网格线颜色
           if (data['gridColor']) {
             this.root.gridColor = data['gridColor']
           }
@@ -86,5 +96,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+  /deep/.ant-form-item-label{
+    >label{
+      font-size: 13px;
+    }
+  }
 </style>

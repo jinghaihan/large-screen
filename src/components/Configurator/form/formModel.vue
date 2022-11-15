@@ -7,9 +7,13 @@
     :label-col="labelCol"
     :wrapper-col="wrapperCol"
   >
-    <a-row :gutter="[8, 8]">
+    <a-row>
       <a-col v-for="conf in config" :key="conf.key">
-        <form-item :config="conf" :form="form" :ratio="ratio" @change="onChange"></form-item>
+        <FormModelItem :config="conf"
+                       :form.sync="form"
+                       :ratio="ratio"
+                       :gridColor="gridColor">
+        </FormModelItem>
       </a-col>
     </a-row>
   </a-form-model>
@@ -19,7 +23,8 @@
 </template>
 
 <script>
-import formItem from './formItem.vue'
+import _ from 'lodash'
+import FormModelItem from './formModeltem.vue'
 
 export default {
   props: {
@@ -31,6 +36,10 @@ export default {
       type: Object,
       required: true
     },
+    gridColor: {
+      type: Object,
+      required: true
+    },
     labelCol: {
       default: { span: 5 }
     },
@@ -38,7 +47,7 @@ export default {
       default: { span: 18 }
     }
   },
-  components: { formItem },
+  components: { FormModelItem },
   data () {
     return {
       visible: false,
@@ -46,29 +55,53 @@ export default {
       rules: {}
     }
   },
+  watch: {
+    form: {
+      deep: true,
+      immediate: true,
+      handler: function (form) {
+        this.onChange()
+      }
+    }
+  },
   created () {
+    console.log(this.ratio.width)
     this.init()
   },
   methods: {
     async init () {
+      let form = {}
+      let rules = {}
       let fields = []
       this.config.forEach(conf => {
         switch (conf.key) {
-          case 'ratio-width':
-            this.form[conf.key] = this.ratio.width
+          case 'ratioWidth':
+            form[conf.key] = this.ratio.width
             break
-          case 'ratio-height':
-            this.form[conf.key] = this.ratio.height
+          case 'ratioHeight':
+            form[conf.key] = this.ratio.height
+            break
+          case 'gridColor':
+            form[conf.key] = this.gridColor
             break
           default:
-            this.form[conf.key] = conf.defaultValue || undefined
+            form[conf.key] = conf.defaultValue || undefined
             break
         }
-        if (conf.defaultValue) fields.push(conf.key)
-        this.rules[conf.key] = conf.rules
+
+        if (form[conf.key]) fields.push(conf.key)
+        // 规则
+        rules[conf.key] = conf.rules.map(rule => {
+          return {
+            ...rule,
+            trigger: ['change', 'blur']
+          }
+        })
       })
+      this.form = _.cloneDeep(form)
+      this.rules = _.cloneDeep(rules)
       this.visible = true
-      
+
       await this.$nextTick()
       if (this.$refs.form) {
         this.$refs.form.validateField(fields)

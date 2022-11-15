@@ -2,7 +2,9 @@
   <div :class="getStyle()"
        @click="onClick">
     <a-dropdown :trigger="['contextmenu']">
-      <div class="render-container" @click="e => e.preventDefault()">
+      <div ref="render"
+           class="render-container"
+           @click="e => e.preventDefault()">
         {{data.i}}
       </div>
       <a-menu slot="overlay">
@@ -36,10 +38,31 @@ export default {
   },
   data () {
     return {
-
+      chart: null
     }
   },
+  mounted () {
+    this.init()
+  },
+  beforeDestroy () {
+    this.observer.disconnect(this.$refs.render)
+  },
   methods: {
+    async init () {
+      let _this = this
+      if (!_this.data.props) return
+
+      _this.data.props.init(_this, _this.$refs.render, _this.data.props.option)
+      _this.observer = new ResizeObserver(function () {
+        _this.onResize()
+      })
+      _this.observer.observe(_this.$refs.render)
+    },
+    onResize () {
+      if (this.chart) {
+        this.chart.resize()
+      }
+    },
     getStyle () {
       return this.component.i === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'
     },

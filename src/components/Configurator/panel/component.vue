@@ -116,9 +116,11 @@ export default {
           h: item.h,
           i: key,
           props: {
+            key,
             name: item.name,
             type: item.type,
-            key
+            init: item.init,
+            option: item.option
           }
         })
         this.$emit('drop')

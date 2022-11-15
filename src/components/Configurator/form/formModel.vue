@@ -73,8 +73,6 @@ export default {
       if (this.$refs.form) {
         this.$refs.form.validateField(fields)
       }
-
-      console.log(this.rules)
     },
     onChange () {
       this.$emit('change', this.form)

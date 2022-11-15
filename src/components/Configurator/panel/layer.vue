@@ -95,7 +95,7 @@ export default {
           visible: item.visible,
           current: index === this.layer,
           layer: index,
-          image: item.visible ? await getThumbnail(el, 0.1) : ''
+          image: item.visible ? await getThumbnail(el, 0.5) : ''
         }
       })).then(result => {
         this.list = _.cloneDeep(result)

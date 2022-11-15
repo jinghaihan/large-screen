@@ -452,6 +452,7 @@ const config = {
         },
         {
           type: 'material-library',
+          libraryType: 'picture',
           label: '背景',
           key: 'background',
           col: 12,

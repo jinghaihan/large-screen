@@ -45,7 +45,9 @@ export default {
     this.init()
   },
   beforeDestroy () {
-    this.observer.disconnect(this.$refs.render)
+    try {
+      this.observer.disconnect(this.$refs.render)
+    } catch (error) { }
   },
   methods: {
     async init () {

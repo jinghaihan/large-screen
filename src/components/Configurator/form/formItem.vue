@@ -26,13 +26,24 @@
                     @change="onChange" />
     <!-- 素材库 -->
     <div v-if="config.type === 'material-library'"
-         class="material-library">
+         class="material-library"
+         @click="onLibrary">
+      <!-- 无数据 -->
       <a-empty v-if="!form[config.key]"></a-empty>
+      <!-- 缩略图 -->
+      <img v-else :src="form[config.key]" alt="background">
+      <!-- 素材库弹窗 -->
+      <library-modal v-if="libraryVisible"
+                     :type="config.libraryType"
+                     @submit="onLibrarySubmit"
+                     @close="onModalClose"></library-modal>
     </div>
   </a-form-model-item>
 </template>
 
 <script>
+import libraryModal from './libraryModal.vue'
+
 export default {
   props: {
     config: {
@@ -44,6 +55,12 @@ export default {
       required: true
     }
   },
+  components: { libraryModal },
+  data () {
+    return {
+      libraryVisible: false
+    }
+  },
   methods: {
     getTitle () {
       return ''
@@ -51,6 +68,16 @@ export default {
     onChange () {
       this.$forceUpdate()
       this.$emit('change')
+    },
+    onLibrary () {
+      this.libraryVisible = true
+    },
+    onLibrarySubmit (image) {
+      this.form[this.config.key] = image
+      this.$emit('change')
+    },
+    onModalClose () {
+      this.libraryVisible = false
     }
   }
 }

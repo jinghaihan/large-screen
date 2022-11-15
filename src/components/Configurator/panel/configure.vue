@@ -69,6 +69,9 @@ export default {
         case 'basic':
           this.root.ratio.width = data['ratio-width']
           this.root.ratio.height = data['ratio-height']
+          if (data['background']) {
+            this.root.$refs.paper.updateBackground(data['background'])
+          }
           break
         case 'component':
           break

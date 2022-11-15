@@ -10,18 +10,20 @@
         @mouseup="onMouseUp">
       <div ref="dropPaper"
           class="drop-paper"
-          :style="getDropPaperStyle()">
-        <LayoutContainer ref="layoutContainer"
-                        :config="config"
-                        :layout="layout"
-                        :colNum="colNum"
-                        :rowHeight="rowHeight"
-                        :ratio="ratio"
-                        :layer="layer"
-                        :maxLayer="maxLayer"
-                        :component="component"
-                        :root="root" >
-        </LayoutContainer>
+          :style="getBackgroundStyle()">
+        <div class="layout-container" :style="getGridStyle()">
+          <LayoutContainer ref="layoutContainer"
+                          :config="config"
+                          :layout="layout"
+                          :colNum="colNum"
+                          :rowHeight="rowHeight"
+                          :ratio="ratio"
+                          :layer="layer"
+                          :maxLayer="maxLayer"
+                          :component="component"
+                          :root="root" >
+          </LayoutContainer>
+        </div>
       </div>
     </div>
   </div>
@@ -97,7 +99,8 @@ export default {
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
-      }
+      },
+      background: ''
     }
   },
   watch: {
@@ -146,7 +149,7 @@ export default {
       this.$refs.dropPaper.style.margin = 'auto'
       this.initPaperPos()
     },
-    getDropPaperStyle () {
+    getGridStyle () {
       if (this.grid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / this.colNum
         this.style[this.theme].backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
@@ -204,6 +207,18 @@ export default {
     onScale (scale) {
       let totalWidth = this.$refs.paperPanel.getBoundingClientRect().width
       this.$refs.dropPaper.style.width = totalWidth * 0.9 * scale + 'px'
+    },
+    updateBackground (image) {
+      this.background = image
+    },
+    getBackgroundStyle () {
+      if (this.background) {
+        this.$refs.dropPaper.style.backgroundImage = `url(${this.background})`
+        this.$refs.dropPaper.style.backgroundRepeat = 'no-repeat'
+        this.$refs.dropPaper.style.backgroundSize = '100% 100%'
+        
+        console.log(this.$refs.dropPaper.style)
+      }
     }
   }
 }

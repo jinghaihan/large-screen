@@ -65,14 +65,14 @@ export default {
     }
   },
   created () {
-    console.log(this.ratio.width)
     this.init()
   },
   methods: {
-    async init () {
+    init () {
       let form = {}
       let rules = {}
       let fields = []
+
       this.config.forEach(conf => {
         switch (conf.key) {
           case 'ratioWidth':
@@ -101,7 +101,9 @@ export default {
       this.form = _.cloneDeep(form)
       this.rules = _.cloneDeep(rules)
       this.visible = true
-
+      this.initValid(fields)
+    },
+    async initValid (fields) {
       await this.$nextTick()
       if (this.$refs.form) {
         this.$refs.form.validateField(fields)

@@ -2,19 +2,21 @@
   <div class="configure-container">
     <!-- 表单配置 -->
     <div class="configure-form-container">
-      <!-- 表单配置 -->
-      <FormModel v-if="activeKey !== 'layer'"
-                :config="formConfig"
+      <!-- 基础配置 -->
+      <FormModel v-show="activeKey === 'basic'"
+                :config="config['configure']['basic']"
                 :ratio="ratio"
                 :gridColor="gridColor"
+                :component="component"
                 @change="onModelChange">
       </FormModel>
       <!-- 图层配置 -->
-      <LayerPanel v-else
+      <LayerPanel v-if="activeKey === 'layer'"
                   :layout="layout"
                   :layer="layer"
                   :root="root">
       </LayerPanel>
+      <!-- 组件配置 -->
     </div>
     <!-- 切换 -->
     <div class="tab-container">
@@ -54,19 +56,32 @@ export default {
       type: Number,
       required: true
     },
+    component: {
+      type: Object,
+      required: true
+    },
     root: null
   },
   components: { FormModel, LayerPanel },
   data () {
     return {
-      formConfig: this.config['configure']['basic'],
       activeKey: 'basic'
+    }
+  },
+  watch: {
+    component: {
+      deep: true,
+      immediate: true,
+      handler: function (data) {
+        if (data.props) {
+          this.activeKey = 'component'
+        }
+      }
     }
   },
   methods: {
     onChange (tab) {
       this.activeKey = tab.key
-      this.formConfig = this.config['configure'][this.activeKey] || []
     },
     onModelChange (data) {
       switch (this.activeKey) {

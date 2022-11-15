@@ -94,6 +94,7 @@
                            :ratio="ratio"
                            :layer="layer"
                            :gridColor="gridColor"
+                           :component="component"
                            :root="getRootRef()"></ConfigurePanel>
           </div>
         </div>
@@ -138,14 +139,6 @@ export default {
       component: {},
       // 面板
       panelVisible: false
-    }
-  },
-  watch: {
-    ratio: {
-      immediate: true,
-      handler: function (value) {
-        console.log('ratio change', this.ratio.width, this.ratio.height)
-      }
     }
   },
   created () {

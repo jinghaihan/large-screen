@@ -72,6 +72,7 @@
                   :ratio="ratio"
                   :colNum="colNum"
                   :grid="grid"
+                  :gridColor="gridColor"
                   :component="component"
                   :theme="theme"
                   :root="getRootRef()"
@@ -132,6 +133,7 @@ export default {
       scale: 1,
       colNum: 100,
       grid: false,
+      gridColor: { r: 240, g: 240, b: 240 },
       component: {},
       // 面板
       panelVisible: false

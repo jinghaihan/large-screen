@@ -363,6 +363,91 @@ async function initChart (vm, dom, option) {
   vm.chart.setOption(option)
 }
 
+const basicConfigure = [
+  {
+    type: 'input',
+    label: '名称',
+    key: 'name',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入名称', whitespace: true }
+    ],
+    props: {
+      placeholder: '请输入名称',
+      disabled: false,
+      allowClear: true
+    }
+  },
+  {
+    type: 'input-number',
+    label: '长比例',
+    key: 'ratio-width',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入长比例' }
+    ],
+    props: {
+      placeholder: '长比例',
+      disabled: false
+    }
+  },
+  {
+    type: 'input-number',
+    label: '宽比例',
+    key: 'ratio-height',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入宽比例' }
+    ],
+    props: {
+      placeholder: '宽比例',
+      disabled: false
+    }
+  },
+  {
+    type: 'textarea',
+    label: '描述',
+    key: 'description',
+    defaultValue: null,
+    rules: [
+      { required: false, message: '请输入描述', whitespace: true }
+    ],
+    props: {
+      maxLength: 300,
+      placeholder: '请输入描述',
+      disabled: false,
+      allowClear: true
+    }
+  },
+  {
+    type: 'material-library',
+    libraryType: 'picture',
+    label: '背景',
+    key: 'background',
+    defaultValue: null,
+    rules: [
+      { required: false, message: '请选择背景' }
+    ],
+    props: {
+      disabled: false
+    }
+  },
+  {
+    type: 'color-picker',
+    label: '网格颜色',
+    key: 'gridColor',
+    defaultValue: {
+      rgba: { r: 240, g: 240, b: 240, a: 1 }
+    },
+    rules: [
+      { required: false, message: '请选择网格颜色' }
+    ],
+    props: {
+      disabled: false
+    }
+  }
+]
+
 const config = {
   'largeScreen': {
     operation: {
@@ -390,81 +475,7 @@ const config = {
       ]
     },
     configure: {
-      'basic': [
-        {
-          type: 'input',
-          label: '名称',
-          key: 'name',
-          col: 12,
-          defaultValue: null,
-          rules: [
-            { required: true, message: '请输入名称', whitespace: true }
-          ],
-          props: {
-            placeholder: '请输入名称',
-            disabled: false,
-            allowClear: true
-          }
-        },
-        {
-          type: 'input-number',
-          label: '长比例',
-          key: 'ratio-width',
-          col: 12,
-          defaultValue: null,
-          rules: [
-            { required: true, message: '请输入长比例' }
-          ],
-          props: {
-            placeholder: '长比例',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '宽比例',
-          key: 'ratio-height',
-          col: 12,
-          defaultValue: null,
-          rules: [
-            { required: true, message: '请输入宽比例' }
-          ],
-          props: {
-            placeholder: '宽比例',
-            disabled: false
-          }
-        },
-        {
-          type: 'textarea',
-          label: '描述',
-          key: 'description',
-          col: 12,
-          defaultValue: null,
-          rules: [
-            { required: false, message: '请输入描述', whitespace: true }
-          ],
-          props: {
-            maxLength: 300,
-            placeholder: '请输入描述',
-            disabled: false,
-            allowClear: true
-          }
-        },
-        {
-          type: 'material-library',
-          libraryType: 'picture',
-          label: '背景',
-          key: 'background',
-          col: 12,
-          defaultValue: null,
-          rules: [
-            { required: false, message: '请选择背景' }
-          ],
-          props: {
-            disabled: false
-          }
-        }
-      ]
+      'basic': basicConfigure
     },
     component
   }

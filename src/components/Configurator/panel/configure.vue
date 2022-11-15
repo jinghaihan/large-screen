@@ -64,13 +64,15 @@ export default {
       this.formConfig = this.config['configure'][this.activeKey] || []
     },
     onModelChange (data) {
-      console.log('onModelChange', data)
       switch (this.activeKey) {
         case 'basic':
           this.root.ratio.width = data['ratio-width']
           this.root.ratio.height = data['ratio-height']
           if (data['background']) {
             this.root.$refs.paper.updateBackground(data['background'])
+          }
+          if (data['gridColor']) {
+            this.root.gridColor = data['gridColor']
           }
           break
         case 'component':

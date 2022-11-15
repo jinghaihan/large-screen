@@ -69,6 +69,10 @@ export default {
       type: Boolean,
       required: true
     },
+    gridColor: {
+      type: Object,
+      required: true
+    },
     component: {
       type: Object,
       required: true
@@ -81,19 +85,11 @@ export default {
   },
   data () {
     return {
-      style: {
-        light: {
-          backgroundImage: 
+      gridStyle: {
+        backgroundImage: 
           `linear-gradient(90deg, rgb(240, 240, 240) 5%,transparent 0),
           linear-gradient(rgb(240, 240, 240) 5%, transparent 0)`,
-          backgroundRepeat: `repeat`
-        },
-        dark: {
-          backgroundImage: 
-          `linear-gradient(90deg, rgb(36, 40, 46) 5%,transparent 0),
-          linear-gradient(rgb(36, 40, 46) 5%, transparent 0)`,
-          backgroundRepeat: `repeat`
-        }
+        backgroundRepeat: `repeat`
       },
       rowHeight: null,
       diffmove: {
@@ -152,8 +148,13 @@ export default {
     getGridStyle () {
       if (this.grid) {
         this.rowHeight = this.$refs.dropPaper.offsetWidth / this.colNum
-        this.style[this.theme].backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
-        return this.style[this.theme]
+        this.gridStyle.backgroundSize = `${this.rowHeight}px ${this.rowHeight}px`
+
+        let rgb = `rgb(${this.gridColor.r}, ${this.gridColor.g}, ${this.gridColor.b})`
+        this.gridStyle.backgroundImage = `
+          linear-gradient(90deg, ${rgb} 5%,transparent 0),
+          linear-gradient(${rgb} 5%, transparent 0)`
+        return this.gridStyle
       } else {
         return {}
       }
@@ -216,8 +217,6 @@ export default {
         this.$refs.dropPaper.style.backgroundImage = `url(${this.background})`
         this.$refs.dropPaper.style.backgroundRepeat = 'no-repeat'
         this.$refs.dropPaper.style.backgroundSize = '100% 100%'
-        
-        console.log(this.$refs.dropPaper.style)
       }
     }
   }

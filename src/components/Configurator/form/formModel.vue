@@ -32,7 +32,7 @@ export default {
       required: true
     },
     labelCol: {
-      default: { span: 4 }
+      default: { span: 5 }
     },
     wrapperCol: {
       default: { span: 18 }

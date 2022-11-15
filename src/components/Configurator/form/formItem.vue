@@ -1,6 +1,6 @@
 <template>
   <a-form-model-item :prop="config.key"
-                     :hasFeedback="config.type !== 'textarea'"
+                     :hasFeedback="!whitelist.includes(config.type)"
                      :title="getTitle(form[config.key], config)"
                      :label="config.label">
     <!-- 输入框 -->
@@ -38,11 +38,22 @@
                      @submit="onLibrarySubmit"
                      @close="onModalClose"></library-modal>
     </div>
+    <!-- 颜色选择器 -->
+    <div v-if="config.type === 'color-picker'"
+         class="color-picker">
+      <a-dropdown @visibleChange="onColorPicker">
+        <div ref="colorHolder" class="color-placeholder"></div>
+        <template slot="overlay">
+          <ColorPicker v-model="color"></ColorPicker>
+        </template>
+      </a-dropdown>
+    </div>
   </a-form-model-item>
 </template>
 
 <script>
 import libraryModal from './libraryModal.vue'
+import { Chrome } from 'vue-color' 
 
 export default {
   props: {
@@ -55,13 +66,44 @@ export default {
       required: true
     }
   },
-  components: { libraryModal },
+  components: {
+    libraryModal,
+    ColorPicker: Chrome
+  },
   data () {
     return {
-      libraryVisible: false
+      libraryVisible: false,
+      colorVisible: false,
+      whitelist: ['textarea', 'material-library', 'color-picker'],
+      // 颜色选择器
+      color: {}
     }
   },
+  watch: {
+    color: {
+      immediate: true,
+      deep: true,
+      handler: function (value) {
+        if (this.$refs.colorHolder) {
+          this.onColorPicker(value)
+        }
+      }
+    }
+  },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      // 颜色选择器
+      switch (this.config.type) {
+        case 'color-picker':
+          this.color = this.form[this.config.key]
+          break
+        default:
+          break
+      }
+    },
     getTitle () {
       return ''
     },
@@ -78,6 +120,11 @@ export default {
     },
     onModalClose () {
       this.libraryVisible = false
+    },
+    onColorPicker (value) {
+      this.$refs.colorHolder.style.background = value.hex
+      this.form[this.config.key] = this.color.rgba
+      this.$emit('change')
     }
   }
 }

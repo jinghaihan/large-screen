@@ -18,6 +18,7 @@ const chart = [
       },
       series: [
         {
+          name: 'X',
           data: [120, 200, 150, 80, 70, 110, 130],
           type: 'bar'
         }
@@ -38,7 +39,6 @@ const chart = [
           type: 'shadow'
         }
       },
-      legend: {},
       xAxis: [
         {
           type: 'category',
@@ -98,6 +98,7 @@ const chart = [
       },
       series: [
         {
+          name: 'X',
           data: [150, 230, 224, 218, 135, 147, 260],
           type: 'line'
         }
@@ -122,6 +123,7 @@ const chart = [
       },
       series: [
         {
+          name: 'X',
           data: [820, 932, 901, 934, 1290, 1330, 1320],
           type: 'line',
           areaStyle: {}
@@ -142,6 +144,7 @@ const chart = [
       },
       series: [
         {
+          name: 'X',
           type: 'pie',
           radius: '50%',
           data: [
@@ -194,6 +197,7 @@ const chart = [
       yAxis: {},
       series: [
         {
+          name: 'X',
           symbolSize: 20,
           data: [
             [10.0, 8.04],
@@ -339,6 +343,7 @@ class Chart {
     this.dom = dom
     this.option = option
     this.chart = null
+    this.formData = {}
 
     this.init()
   }
@@ -350,7 +355,7 @@ class Chart {
   update (option) {
     this.option = option
     if (this.chart) {
-      this.chart.setOption(this.option)
+      this.chart.setOption(this.option, true)
     }
   }
   resize () {
@@ -359,121 +364,102 @@ class Chart {
   getOption () {
     return this.option
   }
+  setFormData (data) {
+    this.formData = data
+  }
+  getFormData () {
+    return this.formData
+  }
 }
 
 const configure = [
   {
     name: '配置',
     key: 'config',
-    config: [
-      {
-        type: 'switch',
-        label: '标题',
-        key: 'title',
-        defaultValue: false,
-        rules: [
-          { required: false, message: '请选择' }
-        ],
-        props: {
-          disabled: false
-        },
-        callback: {
-          // change: function (form, config) {
-          //   config.forEach(conf => {
-          //     if (conf.key !== 'title') {
-          //       conf.visible = form.title
-          //     }
-          //   })
-          // }
-        }
-      },
-      {
-        type: 'input',
-        label: '标题名称',
-        key: 'titleText',
-        defaultValue: null,
-        rules: [
-          { required: false, message: '请输入标题' }
-        ],
-        props: {
-          placeholder: '请输入标题',
-          disabled: false,
-          allowClear: true
-        }
-      },
-      {
-        type: 'input-number',
-        label: '标题字号',
-        key: 'titleFontSize',
-        defaultValue: 18,
-        rules: [
-          { required: false, message: '请输入标题字号' }
-        ],
-        props: {
-          placeholder: '标题字号',
-          disabled: false
-        }
-      },
-      {
-        type: 'select',
-        label: '字体粗细',
-        key: 'titleFontWeight',
-        defaultValue: 'bolder',
-        rules: [
-          { required: false, message: '请选择字体粗细' }
-        ],
-        props: {
-          placeholder: '请选择字体粗细',
-          disabled: false,
-          options: [
-            { label: '默认', value: 'normal' },
-            { label: '粗', value: 'bold' },
-            { label: '加粗', value: 'bolder' },
-            { label: '细', value: 'lighter' }
-          ]
-        }
-      },
-      {
-        type: 'select',
-        label: '标题位置',
-        key: 'titlePosition',
-        defaultValue: 'center',
-        rules: [
-          { required: false, message: '请选择标题位置' }
-        ],
-        props: {
-          placeholder: '请选择标题位置',
-          disabled: false,
-          options: [
-            { label: '左', value: 'left' },
-            { label: '中', value: 'center' },
-            { label: '右', value: 'right' }
-          ]
-        }
-      }
-    ],
     collapse: [
       {
-        name: '图例设置',
-        key: 'legend',
+        name: '标题设置',
+        key: 'title',
+        switch: true,
+        defaultValue: true,
         config: [
           {
-            type: 'switch',
-            label: '图例',
-            key: 'legend',
-            defaultValue: false,
+            type: 'input',
+            label: '标题名称',
+            key: 'titleText',
+            defaultValue: '标题',
             rules: [
-              { required: false, message: '请选择' }
+              { required: false, message: '请输入标题' }
             ],
             props: {
+              placeholder: '请输入标题',
+              disabled: false,
+              allowClear: true
+            }
+          },
+          {
+            type: 'input-number',
+            label: '标题字号',
+            key: 'titleFontSize',
+            defaultValue: 18,
+            rules: [
+              { required: false, message: '请输入标题字号' }
+            ],
+            props: {
+              placeholder: '标题字号',
               disabled: false
             }
           },
           {
             type: 'select',
+            label: '字体粗细',
+            key: 'titleFontWeight',
+            defaultValue: 'bolder',
+            rules: [
+              { required: false, message: '请选择字体粗细' }
+            ],
+            props: {
+              placeholder: '请选择字体粗细',
+              disabled: false,
+              options: [
+                { label: '默认', value: 'normal' },
+                { label: '粗', value: 'bold' },
+                { label: '加粗', value: 'bolder' },
+                { label: '细', value: 'lighter' }
+              ]
+            }
+          },
+          {
+            type: 'select',
+            label: '标题位置',
+            key: 'titlePosition',
+            defaultValue: 'left',
+            rules: [
+              { required: false, message: '请选择标题位置' }
+            ],
+            props: {
+              placeholder: '请选择标题位置',
+              disabled: false,
+              options: [
+                { label: '左', value: 'left' },
+                { label: '中', value: 'center' },
+                { label: '右', value: 'right' }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        name: '图例设置',
+        key: 'legend',
+        switch: true,
+        defaultValue: true,
+        config: [
+          {
+            type: 'select',
             label: '图例位置',
             key: 'legendPosition',
-            defaultValue: 'up',
+            defaultValue: 'left-center',
             rules: [
               { required: false, message: '请选择图例位置' }
             ],
@@ -481,26 +467,22 @@ const configure = [
               placeholder: '请选择图例位置',
               disabled: false,
               options: [
-                { label: '正上', value: 'up' },
-                { label: '正右', value: 'right' },
-                { label: '正下', value: 'bottom' },
-                { label: '正左', value: 'left' },
-                { label: '上左', value: 'up-left' },
-                { label: '上右', value: 'up-right' },
-                { label: '下左', value: 'bottom-left' },
-                { label: '下右', value: 'bottom-right' },
-                { label: '左上', value: 'left-up' },
-                { label: '左下', value: 'left-bottom' },
-                { label: '右上', value: 'right-up' },
-                { label: '右下', value: 'right-bottom' }
+                { label: '左上', value: 'left-left' },
+                { label: '上', value: 'left-center' },
+                { label: '右上', value: 'left-right' },
+                { label: '右', value: 'left-right-top-middle' },
+                { label: '右下', value: 'left-right-top-bottom' },
+                { label: '下', value: 'top-bottom' },
+                { label: '左下', value: 'left-left-top-bottom' },
+                { label: '左', value: 'left-left-top-middle' }
               ]
             }
           },
           {
             type: 'select',
             label: '图例布局',
-            key: 'legendLayout',
-            defaultValue: 'row',
+            key: 'legendOrient',
+            defaultValue: 'horizontal',
             rules: [
               { required: false, message: '请选择图例布局' }
             ],
@@ -508,16 +490,16 @@ const configure = [
               placeholder: '请选择图例布局',
               disabled: false,
               options: [
-                { label: '横排', value: 'row' },
-                { label: '竖排', value: 'col' }
+                { label: '横排', value: 'horizontal' },
+                { label: '竖排', value: 'vertical' }
               ]
             }
           },
           {
             type: 'select',
             label: '图例形状',
-            key: 'legendShape',
-            defaultValue: 'default',
+            key: 'legendIcon',
+            defaultValue: 'roundRect',
             rules: [
               { required: false, message: '请选择图例布局' }
             ],
@@ -525,8 +507,13 @@ const configure = [
               placeholder: '请选择图例布局',
               disabled: false,
               options: [
-                { label: '默认', value: 'default' },
-                { label: '圆形', value: 'circle' }
+                { label: '默认', value: 'roundRect' },
+                { label: '矩形', value: 'rect' },
+                { label: '圆形', value: 'circle' },
+                { label: '三角形', value: 'triangle' },
+                { label: '钻石', value: 'diamond' },
+                { label: '箭头', value: 'arrow' },
+                { label: '无', value: 'none' }
               ]
             }
           }
@@ -535,6 +522,8 @@ const configure = [
       {
         name: '颜色设置',
         key: 'color',
+        switch: true,
+        defaultValue: false,
         config: []
       }
     ] 

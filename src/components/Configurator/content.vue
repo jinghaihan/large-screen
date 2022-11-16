@@ -52,13 +52,13 @@
       <div class="config-container">
         <!-- 组件面板 -->
         <div class="component-container">
-          <ComponentPanel v-if="panelVisible"
-                          ref="componentPanel"
-                          :type="activeKey"
-                          :config="config"
-                          :colNum="colNum"
-                          :layer="layer"
-                          :root="getRootRef()"></ComponentPanel>
+          <DragPanel v-if="panelVisible"
+                      ref="componentPanel"
+                      :type="activeKey"
+                      :config="config"
+                      :colNum="colNum"
+                      :layer="layer"
+                      :root="getRootRef()"></DragPanel>
         </div>
         <div class="paper-container">
           <!-- 画布 -->
@@ -109,13 +109,13 @@ import $ from 'jquery'
 import hotkeys from 'hotkeys-js'
 import Paper from './paper/paper.vue'
 import Toolbox from './toolbox/toolbox.vue'
-import ComponentPanel from './panel/component.vue'
+import DragPanel from './panel/drag.vue'
 import ConfigurePanel from './panel/configure.vue'
 import { getUUID } from './utils'
 import './theme.less'
 
 export default {
-  components: { Paper, Toolbox, ComponentPanel, ConfigurePanel },
+  components: { Paper, Toolbox, DragPanel, ConfigurePanel },
   props: {
     config: {
       type: Object,

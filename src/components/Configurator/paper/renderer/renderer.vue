@@ -54,16 +54,11 @@ export default {
       let _this = this
       if (!_this.data.props) return
 
-      _this.data.props.init(_this, _this.$refs.render, _this.data.props.option)
+      this.chart = new _this.data.props.Chart(_this, _this.$refs.render, _this.data.props.option)
       _this.observer = new ResizeObserver(function () {
-        _this.onResize()
+        _this.chart.resize()
       })
       _this.observer.observe(_this.$refs.render)
-    },
-    onResize () {
-      if (this.chart) {
-        this.chart.resize()
-      }
     },
     getStyle () {
       return this.component.i === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'

@@ -1,7 +1,6 @@
 <template>
   <a-form-model-item :ref="config.key"
                      :prop="config.key"
-                     :hasFeedback="!whitelist.includes(config.type)"
                      :title="getTitle(form[config.key], config)"
                      :label="config.label">
     <!-- 输入框 -->
@@ -25,6 +24,20 @@
                     v-bind="config.props"
                     style="width: 100%"
                     @change="onChange" />
+    <!-- 开关 -->
+    <a-switch v-if="config.type === 'switch'"
+              v-model="form[config.key]"
+              v-bind="config.props"
+              @change="onChange" >
+    </a-switch>
+    <!-- 下拉框 -->
+    <a-select v-if="config.type === 'select'"
+              v-model="form[config.key]"
+              :show-search="true"
+              :filter-option="filterOptions"
+              v-bind="config.props"
+              @change="onChange" >
+    </a-select>
     <!-- 素材库 -->
     <div v-if="config.type === 'material-library'"
          class="material-library"
@@ -62,6 +75,10 @@ export default {
       type: Object,
       required: true
     },
+    configData: {
+      type: Array,
+      required: true
+    },
     form: {
       type: Object,
       required: true
@@ -75,7 +92,6 @@ export default {
     return {
       libraryVisible: false,
       colorVisible: false,
-      whitelist: ['textarea', 'material-library', 'color-picker'],
       // 颜色选择器
       color: {}
     }
@@ -106,6 +122,11 @@ export default {
           break
       }
     },
+    onChange () {
+      if (this.config.callback && this.config.callback.change) {
+        this.config.callback.change(this.form, this.configData)
+      }
+    },
     getTitle () {
       return ''
     },
@@ -121,6 +142,11 @@ export default {
     onColorPicker (value) {
       this.$refs.colorHolder.style.background = value.hex
       this.form[this.config.key] = this.color.rgba
+    },
+    filterOptions (input, option) {
+      return (
+        option.componentOptions.children[0].text.includes(input)
+      )
     }
   }
 }

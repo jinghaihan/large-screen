@@ -1,26 +1,29 @@
 <template>
-  <a-row :gutter="[8, 8]">
-    <a-col v-for="conf in config.component[type]"
-            :key="conf.name"
-            :span="conf.col">
-        <div class="droppable-element"
-             @drag="drag($event, conf)"
-             @dragend="dragend($event, conf)"
-             draggable="true"
-             unselectable="on">
-          <a-card hoverable size="small" :title="conf.name">
-            <img slot="cover" :src="conf.image" />
-          </a-card>
-        </div>
-    </a-col>
-  </a-row>
+  <a-tabs v-model="activeKey">
+    <a-tab-pane v-for="conf in configure" :key="conf.key" :tab="conf.name">
+      <!-- 基础配置 -->
+      <FormModel ref="basicForm"
+                 v-if="conf.config"
+                 :config="conf.config"
+                 @change="onChange">
+      </FormModel>
+      <!-- 折叠面板 -->
+      <a-collapse v-if="conf.collapse" :bordered="false">
+        <a-collapse-panel v-for="collapse in conf.collapse"
+                          :key="collapse.key"
+                          :header="collapse.name"
+                          forceRender>
+          <FormModel ref="collapseForm"
+                     :config="collapse.config || []"
+                     @change="onChange"></FormModel>
+        </a-collapse-panel>
+      </a-collapse>
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script>
-import { getUUID } from '../utils'
-
-let mouseXY = { 'x': null, 'y': null }
-let DragPos = { 'x': null, 'y': null, 'i': null }
+import FormModel from '../form/formModel.vue'
 
 export default {
   props: {
@@ -28,134 +31,73 @@ export default {
       type: Object,
       required: true
     },
-    type: {
-      type: Object,
-      required: true
-    },
     layer: {
       type: Number,
       required: true
     },
-    colNum: {
-      type: Number,
+    component: {
+      type: Object,
       required: true
     },
     root: null
   },
+  components: { FormModel },
   data () {
     return {
-      ref: this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
+      configure: [],
+      activeKey: null
     }
   },
   watch: {
-    layer: {
-      handler: function () {
-        this.updateRef()
+    component: {
+      deep: true,
+      immediate: true,
+      handler: function (data) {
+        if (data.props) {
+          this.init()
+        }
       }
-    }
-  },
-  mounted () {
-    this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
-  },
-  beforeDestroy () {
-    if (this.ref.$refs.gridLayout) {
-      this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
     }
   },
   methods: {
-    drag: function (e, item) {
-      let parentRect = this.ref.$refs.gridLayout.$el.getBoundingClientRect()
-      let mouseInGrid = false
-      if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
-        mouseInGrid = true
+    init () {
+      this.configure = this.component.props.configure
+      this.activeKey = this.configure[0].key
+    },
+    onChange () {
+      let form = {}
+      if (this.$refs.basicForm) {
+        form = { ...this.$refs.basicForm[0].form }
       }
-      if (mouseInGrid === true && (this.ref.layout.findIndex(item => item.i === 'drop')) === -1) {
-        this.ref.layout.push({
-          x: (this.ref.layout.length * 2) % this.colNum,
-          y: this.ref.layout.length + this.colNum,
-          w: item.w,
-          h: item.h,
-          i: 'drop'
+      if (this.$refs.collapseForm) {
+        let refs = this.$refs.collapseForm
+        refs.forEach(ref => {
+          form = { ...form, ...ref.form }
         })
       }
-      let index = this.ref.layout.findIndex(item => item.i === 'drop')
-      if (index !== -1) {
-        try {
-          this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'none'
-        } catch (error) { }
-        let el = this.ref.$refs.gridLayout.$children[index]
-        el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
-        let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
-        if (mouseInGrid === true) {
-          this.ref.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
-          DragPos.x = this.ref.layout[index].x
-          DragPos.y = this.ref.layout[index].y
-        }
-        if (mouseInGrid === false) {
-          this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
-          this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
+      let ref = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer].$refs['renderer-' + this.component.props.key][0]
+      let option = this.handleChartOption(form, ref.chart.getOption())
+      ref.chart.update(option)
+    },
+    handleChartOption (data, current) {
+      let option = {}
+      // 标题设置
+      option.title = {
+        text: data.titleText || '',
+        left: data.titlePosition,
+        textStyle: {
+          fontSize: data.titleFontSize || 18,
+          fontWeight: data.titleFontWeight
         }
       }
-    },
-    dragend: function (e, item) {
-      let parentRect = this.ref.$refs.gridLayout.$el.getBoundingClientRect()
-      let mouseInGrid = false
-      if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
-        mouseInGrid = true
-      }
-      if (mouseInGrid === true) {
-        this.ref.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
-        this.ref.layout = this.ref.layout.filter(obj => obj.i !== 'drop')
-
-        let key = getUUID()
-
-        this.ref.layout.push({
-          x: DragPos.x,
-          y: DragPos.y,
-          w: item.w,
-          h: item.h,
-          i: key,
-          props: {
-            key,
-            name: item.name,
-            type: item.type,
-            init: item.init,
-            option: item.option
-          }
-        })
-        this.$emit('drop')
-        this.root.updateSelectedComponent(this.ref.layout[this.ref.layout.length - 1])
-        try {
-          this.ref.$refs.gridLayout.$children[this.ref.layout.length].$refs.item.style.display = 'block'
-        } catch (error) { }
-      }
-    },
-    updateMouse (e) {
-      mouseXY.x = e.clientX
-      mouseXY.y = e.clientY
-    },
-    updateRef () {
-      // 清空上个图层的dragover事件
-      try {
-        this.ref.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
-      } catch (error) { }
-      this.ref = this.root.$refs.paper.$refs.layoutContainer.$refs.layer[this.layer]
-      // 新增当前图层的dragover事件
-      this.ref.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+      return { ...current, ...option }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  /deep/.ant-card{
-    background: var(--primary-color);
-  }
-  /deep/.ant-card-head{
-    background: var(--normal-color);
-    color: var(--font-color);
-  }
-  /deep/.ant-card-bordered{
-    border-color: var(--highlight-color);
+  /deep/.ant-collapse-content-box{
+    padding: 0;
   }
 </style>

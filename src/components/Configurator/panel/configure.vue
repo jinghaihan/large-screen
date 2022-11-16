@@ -3,13 +3,14 @@
     <!-- 表单配置 -->
     <div class="configure-form-container">
       <!-- 基础配置 -->
-      <FormModel v-show="activeKey === 'basic'"
-                :config="config['configure']['basic']"
-                :ratio="ratio"
-                :gridColor="gridColor"
-                :component="component"
-                @change="onModelChange">
-      </FormModel>
+      <div class="basic-panel-container" v-show="activeKey === 'basic'">
+        <FormModel :config="config['configure']['basic']"
+                    :ratio="ratio"
+                    :gridColor="gridColor"
+                    :component="component"
+                    @change="onModelChange">
+        </FormModel>
+      </div>
       <!-- 图层配置 -->
       <LayerPanel v-if="activeKey === 'layer'"
                   :layout="layout"
@@ -17,6 +18,12 @@
                   :root="root">
       </LayerPanel>
       <!-- 组件配置 -->
+      <ComponentPanel v-show="activeKey === 'component'"
+                      :config="config"
+                      :layer="layer"
+                      :component="component"
+                      :root="root">
+      </ComponentPanel>
     </div>
     <!-- 切换 -->
     <div class="tab-container">
@@ -33,6 +40,7 @@
 <script>
 import FormModel from '../form/formModel.vue'
 import LayerPanel from './layer.vue'
+import ComponentPanel from './component.vue'
 
 export default {
   props: {
@@ -62,7 +70,7 @@ export default {
     },
     root: null
   },
-  components: { FormModel, LayerPanel },
+  components: { FormModel, LayerPanel, ComponentPanel },
   data () {
     return {
       activeKey: 'basic'
@@ -75,6 +83,8 @@ export default {
       handler: function (data) {
         if (data.props) {
           this.activeKey = 'component'
+        } else {
+          this.activeKey = 'basic'
         }
       }
     }

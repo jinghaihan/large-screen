@@ -21,7 +21,7 @@
                   :maxH="maxH"
                   @move="onMove(item)"
                   @resize="onResize(item)">
-          <Renderer :config="config" :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
+          <Renderer :ref="'renderer-' + item.i" :config="config" :data="item" :component="component" :root="root" @delete="onDelete"></Renderer>
         </grid-item>
     </grid-layout>
   </div>

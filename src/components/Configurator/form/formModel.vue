@@ -1,6 +1,6 @@
 <template>
   <a-form-model
-    v-if="visible && config.length"
+    v-if="visible && configData.length"
     ref="form"
     :model="form"
     :rules="rules"
@@ -8,11 +8,13 @@
     :wrapper-col="wrapperCol"
   >
     <a-row>
-      <a-col v-for="conf in config" :key="conf.key">
+      <a-col v-for="conf in configData" :key="conf.key">
         <FormModelItem :config="conf"
+                       :configData="configData"
                        :form.sync="form"
                        :ratio="ratio"
-                       :gridColor="gridColor">
+                       :gridColor="gridColor"
+                       v-if="isVisible(conf)">
         </FormModelItem>
       </a-col>
     </a-row>
@@ -34,11 +36,11 @@ export default {
     },
     ratio: {
       type: Object,
-      required: true
+      required: false
     },
     gridColor: {
       type: Object,
-      required: true
+      required: false
     },
     labelCol: {
       default: { span: 5 }
@@ -52,7 +54,8 @@ export default {
     return {
       visible: false,
       form: {},
-      rules: {}
+      rules: {},
+      configData: _.cloneDeep(this.config)
     }
   },
   watch: {
@@ -71,9 +74,8 @@ export default {
     init () {
       let form = {}
       let rules = {}
-      let fields = []
 
-      this.config.forEach(conf => {
+      this.configData.forEach(conf => {
         switch (conf.key) {
           case 'ratioWidth':
             form[conf.key] = this.ratio.width
@@ -89,7 +91,6 @@ export default {
             break
         }
 
-        if (form[conf.key]) fields.push(conf.key)
         // 规则
         rules[conf.key] = conf.rules.map(rule => {
           return {
@@ -101,21 +102,20 @@ export default {
       this.form = _.cloneDeep(form)
       this.rules = _.cloneDeep(rules)
       this.visible = true
-      this.initValid(fields)
-    },
-    async initValid (fields) {
-      await this.$nextTick()
-      if (this.$refs.form) {
-        this.$refs.form.validateField(fields)
-      }
     },
     onChange () {
       this.$emit('change', this.form)
+    },
+    isVisible (config) {
+      if (typeof config.visible === 'boolean') {
+        return config.visible
+      }
+      return true
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
+  
 </style>

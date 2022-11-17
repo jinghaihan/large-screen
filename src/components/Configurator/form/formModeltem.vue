@@ -40,17 +40,8 @@
     </a-select>
     <!-- 素材库 -->
     <div v-if="config.type === 'material-library'"
-         class="material-library"
-         @click="onLibrary">
-      <!-- 无数据 -->
-      <a-empty v-if="!form[config.key]"></a-empty>
-      <!-- 缩略图 -->
-      <img v-else :src="form[config.key]" alt="background">
-      <!-- 素材库弹窗 -->
-      <library-modal v-if="libraryVisible"
-                     :type="config.libraryType"
-                     @submit="onLibrarySubmit"
-                     @close="onModalClose"></library-modal>
+         class="material-library" >
+      <Library :form="form" :config="config"></Library>
     </div>
     <!-- 颜色选择器 -->
     <div v-if="config.type === 'color-picker'"
@@ -66,8 +57,8 @@
 </template>
 
 <script>
-import libraryModal from './libraryModal.vue'
-import { Chrome } from 'vue-color' 
+import { Chrome } from 'vue-color'
+import Library from './component/library.vue'
 
 export default {
   props: {
@@ -85,12 +76,11 @@ export default {
     }
   },
   components: {
-    libraryModal,
-    ColorPicker: Chrome
+    ColorPicker: Chrome,
+    Library
   },
   data () {
     return {
-      libraryVisible: false,
       colorVisible: false,
       // 颜色选择器
       color: {}
@@ -129,15 +119,6 @@ export default {
     },
     getTitle () {
       return ''
-    },
-    onLibrary () {
-      this.libraryVisible = true
-    },
-    onLibrarySubmit (image) {
-      this.form[this.config.key] = image
-    },
-    onModalClose () {
-      this.libraryVisible = false
     },
     onColorPicker (value) {
       this.$refs.colorHolder.style.background = value.hex

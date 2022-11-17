@@ -71,7 +71,7 @@ const basic = [
     libraryType: 'picture',
     label: '背景',
     key: 'background',
-    defaultValue: null,
+    defaultValue: 'none',
     rules: [
       { required: false, message: '请选择背景' }
     ],

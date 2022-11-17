@@ -4,16 +4,23 @@
       id="config-container">
     <!-- 侧边栏 -->
     <div class="side-bar">
-      <div class="action">
-        <tooltip-icon icon="rollback" title="返回" placement="right" @click="closeModal"></tooltip-icon>
+      <div class="action-container">
+        <div class="action">
+          <tooltip-icon icon="rollback" title="返回" placement="right" @click="closeModal"></tooltip-icon>
+        </div>
+        <div :class="activeKey === icon.key ? 'action action-active' : 'action'"
+              v-for="icon in config.operation['sidebar']"
+              :key="icon.key">
+          <tooltip-icon :title="icon.name"
+                        :icon="icon.icon"
+                        placement="right"
+                        @click="onOperation(icon.key)">
+          </tooltip-icon>
+        </div>
       </div>
-      <div :class="activeKey === icon.key ? 'action action-active' : 'action'"
-            v-for="icon in config.operation['sidebar']"
-            :key="icon.key">
-        <tooltip-icon :title="icon.name"
-                      :icon="icon.icon"
-                      placement="right"
-                      @click="onOperation(icon.key)">
+      <div class="trigger-container" @click="onDragTrigger">
+        <tooltip-icon :icon="'double-' + dragTrigger"
+                      :title="dragTrigger === 'right' ? '展开' : '收缩'" >
         </tooltip-icon>
       </div>
     </div>
@@ -51,7 +58,7 @@
       <!-- 配置区域 -->
       <div class="config-container">
         <!-- 组件面板 -->
-        <div class="component-container">
+        <div ref="componentContainer" class="component-container">
           <DragPanel v-if="panelVisible"
                       ref="componentPanel"
                       :type="activeKey"
@@ -60,8 +67,8 @@
                       :layer="layer"
                       :root="getRootRef()"></DragPanel>
         </div>
-        <div class="paper-container">
-          <!-- 画布 -->
+        <!-- 画布 -->
+        <div ref="paperContainer" class="paper-container">
           <div class="paper">
             <Paper ref="paper"
                   :config="config"
@@ -79,11 +86,11 @@
                   @rendered="onPaperRenderd"></Paper>
           </div>
           <!-- 表单面板 -->
-          <div class="form-container" id="form-container">
+          <div ref="formContainer" class="form-container">
             <!-- 操作按钮 -->
-            <div class="trigger-container" @click="onTrigger">
-              <tooltip-icon :icon="'double-' + trigger"
-                            :title="trigger === 'right' ? '收缩' : '展开'" >
+            <div class="trigger-container" @click="onConfigTrigger">
+              <tooltip-icon :icon="'double-' + configTrigger"
+                            :title="configTrigger === 'right' ? '收缩' : '展开'" >
               </tooltip-icon>
             </div>
             <!-- 表单内容 -->
@@ -125,7 +132,8 @@ export default {
   data () {
     return {
       activeKey: 'chart',
-      trigger: 'right',
+      dragTrigger: 'left',
+      configTrigger: 'right',
       theme: 'light',
       // 画布
       layout: [],
@@ -164,14 +172,27 @@ export default {
     onOperation (key) {
       this.activeKey = key
     },
-    onTrigger () {
-      let dom = $('#form-container')
-      if (this.trigger === 'right') {
+    onConfigTrigger () {
+      let dom = $(this.$refs.formContainer)
+      if (this.configTrigger === 'right') {
         dom.css({ 'right': '-460px', 'transition': '0.3s' })
-        this.trigger = 'left'
+        this.configTrigger = 'left'
       } else {
         dom.css({ 'right': '0px', 'transition': '0.3s' })
-        this.trigger = 'right'
+        this.configTrigger = 'right'
+      }
+    },
+    onDragTrigger () {
+      let drag = $(this.$refs.componentContainer)
+      let paper = $(this.$refs.paperContainer)
+      if (this.dragTrigger === 'right') {
+        drag.css({ 'width': '280px', 'padding': '8px', 'transition': '0.3s' })
+        paper.css({ 'width': 'calc(100% - 280px)', 'transition': '0.3s' })
+        this.dragTrigger = 'left'
+      } else {
+        drag.css({ 'width': '0px', 'padding': '0px', 'transition': '0.3s' })
+        paper.css({ 'width': '100%', 'transition': '0.3s' })
+        this.dragTrigger = 'right'
       }
     },
     onSwitchTheme (value) {

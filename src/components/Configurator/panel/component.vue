@@ -4,11 +4,13 @@
                 :key="conf.key"
                 :tab="conf.name">
       <!-- 基础配置 -->
-      <FormModel ref="basicForm"
-                 v-if="conf.config"
-                 :config="conf.config"
-                 @change="onChange">
-      </FormModel>
+      <div class="component-basic-container">
+        <FormModel ref="basicForm"
+                  v-if="conf.config"
+                  :config="conf.config"
+                  @change="onChange">
+        </FormModel>
+      </div>
       <!-- 折叠面板 -->
       <a-collapse v-if="conf.collapse"
                   :activeKey="collapseKeys"
@@ -116,6 +118,7 @@ export default {
       if (switchKeys || collapseKeys) {
         this.switchKeys = switchKeys
         this.collapseKeys = collapseKeys
+        this.activeKey = this.configure[0].key
       } else {
         this.activeKey = this.configure[0].key
         this.configure.forEach(conf => {
@@ -146,6 +149,9 @@ export default {
       }
       let ref = this.getChartRef()
       let option = this.handleChartOption(form, ref.chart.getOption())
+      if (ref.chart.theme !== form.theme) {
+        ref.chart.init(form.theme)
+      }
       ref.chart.update(option)
       ref.chart.setFormData(form)
       ref.chart.setKey({ switchKeys: this.switchKeys, collapseKeys: this.collapseKeys })

@@ -1,5 +1,10 @@
 import _ from 'lodash'
 import * as Echarts from 'echarts'
+// Echarts主题
+import 'echarts/theme/macarons'
+import 'echarts/theme/infographic'
+import 'echarts/theme/shine'
+import 'echarts/theme/roma'
 
 const chart = [
   {
@@ -136,8 +141,8 @@ const chart = [
     name: '饼状图',
     col: 12,
     image: require('@/assets/configurator/component/pie.png'),
-    w: 20,
-    h: 20,
+    w: 30,
+    h: 30,
     type: 'pie',
     option: {
       tooltip: {
@@ -163,8 +168,8 @@ const chart = [
     name: '环状图',
     col: 12,
     image: require('@/assets/configurator/component/pie-ring.png'),
-    w: 20,
-    h: 20,
+    w: 30,
+    h: 30,
     type: 'pie-ring',
     option: {
       tooltip: {
@@ -344,15 +349,18 @@ class Chart {
     this.dom = dom
     this.option = option
     this.chart = null
+    this.theme = 'default'
     this.formData = null
     this.switchKeys = null
     this.collapseKeys = null
 
     this.init()
   }
-  async init () {
+  async init (theme) {
+    if (this.chart) this.chart.dispose()
+    this.theme = theme || 'default'
     await this.vm.$nextTick()
-    this.chart = Echarts.init(this.dom)
+    this.chart = Echarts.init(this.dom, this.theme === 'default' ? null : this.theme)
     this.chart.setOption(this.option)
   }
   update (option) {
@@ -387,6 +395,28 @@ const configure = [
   {
     name: '配置',
     key: 'config',
+    config: [
+      {
+        type: 'select',
+        label: '主题',
+        key: 'theme',
+        defaultValue: 'default',
+        rules: [
+          { required: false, message: '请选择主题' }
+        ],
+        props: {
+          placeholder: '请选择主题',
+          disabled: false,
+          options: [
+            { label: '默认', value: 'default' },
+            { label: 'macarons', value: 'macarons' },
+            { label: 'infographic', value: 'infographic' },
+            { label: 'shine', value: 'shine' },
+            { label: 'roma', value: 'roma' }
+          ]
+        }
+      }
+    ],
     collapse: [
       {
         name: '标题设置',

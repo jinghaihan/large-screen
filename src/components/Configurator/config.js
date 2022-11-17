@@ -46,9 +46,7 @@ const config = {
         { name: '删除', key: 'delete', icon: 'delete' }
       ]
     },
-    configure: {
-      'basic': basic
-    },
+    configure: { basic },
     component
   }
 }

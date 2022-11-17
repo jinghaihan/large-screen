@@ -551,92 +551,6 @@ const configure = [
     ],
     collapse: [
       {
-        name: '标题设置',
-        key: 'title',
-        switch: true,
-        defaultValue: false,
-        config: [
-          {
-            type: 'input',
-            label: '标题名称',
-            key: 'titleText',
-            defaultValue: '标题',
-            rules: [
-              { required: false, message: '请输入标题' }
-            ],
-            props: {
-              placeholder: '请输入标题',
-              disabled: false,
-              allowClear: true
-            }
-          },
-          {
-            type: 'input-number',
-            label: '标题字号',
-            key: 'titleFontSize',
-            defaultValue: 18,
-            rules: [
-              { required: false, message: '请输入标题字号' }
-            ],
-            props: {
-              placeholder: '标题字号',
-              disabled: false
-            }
-          },
-          {
-            type: 'select',
-            label: '字体粗细',
-            key: 'titleFontWeight',
-            defaultValue: 'bolder',
-            rules: [
-              { required: false, message: '请选择字体粗细' }
-            ],
-            props: {
-              placeholder: '请选择字体粗细',
-              disabled: false,
-              options: [
-                { label: '默认', value: 'normal' },
-                { label: '粗', value: 'bold' },
-                { label: '加粗', value: 'bolder' },
-                { label: '细', value: 'lighter' }
-              ]
-            }
-          },
-          {
-            type: 'select',
-            label: '标题位置',
-            key: 'titlePosition',
-            defaultValue: 'left',
-            rules: [
-              { required: false, message: '请选择标题位置' }
-            ],
-            props: {
-              placeholder: '请选择标题位置',
-              disabled: false,
-              options: [
-                { label: '左', value: 'left' },
-                { label: '中', value: 'center' },
-                { label: '右', value: 'right' }
-              ]
-            }
-          },
-          {
-            type: 'color-picker',
-            label: '字体颜色',
-            key: 'titleFontColor',
-            defaultValue: {
-              hex: '#333'
-            },
-            rules: [
-              { required: false, message: '请选择字体颜色' }
-            ],
-            props: {
-              disabled: false
-            }
-          }
-        ]
-      },
-      {
         name: '图例设置',
         key: 'legend',
         switch: true,
@@ -771,6 +685,92 @@ const configure = [
             key: 'axisSplitColor',
             defaultValue: {
               hex: '#ccc'
+            },
+            rules: [
+              { required: false, message: '请选择字体颜色' }
+            ],
+            props: {
+              disabled: false
+            }
+          }
+        ]
+      },
+      {
+        name: '标题设置',
+        key: 'title',
+        switch: true,
+        defaultValue: false,
+        config: [
+          {
+            type: 'input',
+            label: '标题名称',
+            key: 'titleText',
+            defaultValue: '标题',
+            rules: [
+              { required: false, message: '请输入标题' }
+            ],
+            props: {
+              placeholder: '请输入标题',
+              disabled: false,
+              allowClear: true
+            }
+          },
+          {
+            type: 'input-number',
+            label: '标题字号',
+            key: 'titleFontSize',
+            defaultValue: 18,
+            rules: [
+              { required: false, message: '请输入标题字号' }
+            ],
+            props: {
+              placeholder: '标题字号',
+              disabled: false
+            }
+          },
+          {
+            type: 'select',
+            label: '字体粗细',
+            key: 'titleFontWeight',
+            defaultValue: 'bolder',
+            rules: [
+              { required: false, message: '请选择字体粗细' }
+            ],
+            props: {
+              placeholder: '请选择字体粗细',
+              disabled: false,
+              options: [
+                { label: '默认', value: 'normal' },
+                { label: '粗', value: 'bold' },
+                { label: '加粗', value: 'bolder' },
+                { label: '细', value: 'lighter' }
+              ]
+            }
+          },
+          {
+            type: 'select',
+            label: '标题位置',
+            key: 'titlePosition',
+            defaultValue: 'left',
+            rules: [
+              { required: false, message: '请选择标题位置' }
+            ],
+            props: {
+              placeholder: '请选择标题位置',
+              disabled: false,
+              options: [
+                { label: '左', value: 'left' },
+                { label: '中', value: 'center' },
+                { label: '右', value: 'right' }
+              ]
+            }
+          },
+          {
+            type: 'color-picker',
+            label: '字体颜色',
+            key: 'titleFontColor',
+            defaultValue: {
+              hex: '#333'
             },
             rules: [
               { required: false, message: '请选择字体颜色' }

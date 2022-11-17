@@ -46,7 +46,7 @@ export default {
       default: { span: 6 }
     },
     wrapperCol: {
-      default: { span: 18 }
+      default: { span: 17 }
     }
   },
   components: { FormModelItem },
@@ -87,7 +87,7 @@ export default {
             form[conf.key] = { rgba: this.gridColor }
             break
           default:
-            form[conf.key] = conf.defaultValue || undefined
+            form[conf.key] = this.getValue(conf.defaultValue)
             break
         }
 
@@ -102,6 +102,12 @@ export default {
       this.form = _.cloneDeep(form)
       this.rules = _.cloneDeep(rules)
       this.visible = true
+    },
+    getValue (defaultValue) {
+      if (!defaultValue && typeof defaultValue !== 'boolean' && defaultValue !== 0) {
+        return undefined
+      }
+      return defaultValue
     },
     onChange () {
       this.$emit('change', this.form)

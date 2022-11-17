@@ -6,6 +6,8 @@ import 'echarts/theme/infographic'
 import 'echarts/theme/shine'
 import 'echarts/theme/roma'
 
+const axisType = ['bar', 'bar-stack', 'line', 'line-area', 'scatter', 'bubble']
+
 const chart = [
   {
     name: '柱状图',
@@ -344,10 +346,11 @@ const chart = [
 ]
 
 class Chart {
-  constructor (vm, dom, option) {
+  constructor (vm, dom, option, type) {
     this.vm = vm
     this.dom = dom
     this.option = option
+    this.type = type
     this.chart = null
     this.formData = null
     this.theme = 'default'
@@ -384,8 +387,11 @@ class Chart {
     this.handleTooltipOption(option, data)
     this.handleTitleOption(option, data)
     this.handleLegendOption(option, data)
-    this.handleDataZoomOption(option, data)
-    this.handleAxisOption(option, data)
+    if (axisType.includes(this.type)) {
+      this.handleDataZoomOption(option, data)
+      this.handleAxisOption(option, data)
+    }
+    
     return option
   }
   handleTooltipOption (option, data) {
@@ -494,8 +500,6 @@ class Chart {
       target.axisLabel = {
         fontSize: data.axisFontSize
       }
-
-      console.log(option)
     }
   }
   setData (data) {
@@ -855,6 +859,11 @@ const configure = [
 ]
 
 export default chart.map(item => {
-  let data = { ...item, componentType: 'chart', configure, Chart }
+  let data = {
+    ...item,
+    componentType: 'chart',
+    configure,
+    Chart
+  }
   return data
 })

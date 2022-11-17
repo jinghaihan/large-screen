@@ -54,7 +54,7 @@ export default {
       let _this = this
       if (!_this.data.props) return
 
-      this.chart = new _this.data.props.Chart(_this, _this.$refs.render, _this.data.props.option)
+      this.chart = new _this.data.props.Chart(_this, _this.$refs.render, _this.data.props.option, _this.data.props.type)
       _this.observer = new ResizeObserver(function () {
         _this.chart.resize()
       })

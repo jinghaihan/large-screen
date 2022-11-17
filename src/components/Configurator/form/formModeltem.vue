@@ -141,7 +141,7 @@ export default {
     },
     onColorPicker (value) {
       this.$refs.colorHolder.style.background = value.hex
-      this.form[this.config.key] = this.color.rgba
+      this.form[this.config.key] = this.color
     },
     filterOptions (input, option) {
       return (

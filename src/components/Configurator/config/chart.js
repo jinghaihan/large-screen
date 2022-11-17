@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as Echarts from 'echarts'
 
 const chart = [
@@ -343,7 +344,9 @@ class Chart {
     this.dom = dom
     this.option = option
     this.chart = null
-    this.formData = {}
+    this.formData = null
+    this.switchKeys = null
+    this.collapseKeys = null
 
     this.init()
   }
@@ -369,6 +372,14 @@ class Chart {
   }
   getFormData () {
     return this.formData
+  }
+  setKey (data) {
+    let { switchKeys, collapseKeys } = data
+    this.switchKeys = _.cloneDeep(switchKeys)
+    this.collapseKeys = _.cloneDeep(collapseKeys)
+  }
+  getKey () {
+    return { switchKeys: this.switchKeys, collapseKeys: this.collapseKeys }
   }
 }
 
@@ -446,6 +457,20 @@ const configure = [
                 { label: '右', value: 'right' }
               ]
             }
+          },
+          {
+            type: 'color-picker',
+            label: '字体颜色',
+            key: 'titleFontColor',
+            defaultValue: {
+              hex: '#333'
+            },
+            rules: [
+              { required: false, message: '请选择字体颜色' }
+            ],
+            props: {
+              disabled: false
+            }
           }
         ]
       },
@@ -515,6 +540,20 @@ const configure = [
                 { label: '箭头', value: 'arrow' },
                 { label: '无', value: 'none' }
               ]
+            }
+          },
+          {
+            type: 'color-picker',
+            label: '字体颜色',
+            key: 'legendFontColor',
+            defaultValue: {
+              hex: '#333'
+            },
+            rules: [
+              { required: false, message: '请选择字体颜色' }
+            ],
+            props: {
+              disabled: false
             }
           }
         ]

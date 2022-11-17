@@ -84,7 +84,7 @@ export default {
             form[conf.key] = this.ratio.height
             break
           case 'gridColor':
-            form[conf.key] = this.gridColor
+            form[conf.key] = { rgba: this.gridColor }
             break
           default:
             form[conf.key] = conf.defaultValue || undefined

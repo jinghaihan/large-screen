@@ -155,6 +155,19 @@ export default {
   /deep/.ant-card-head{
     background: var(--normal-color);
     color: var(--font-color);
+    padding: 0;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+  }
+  /deep/.ant-card-head-wrapper{
+    width: 100%;
+  }
+  /deep/.ant-card-head-title{
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   /deep/.ant-card-bordered{
     border-color: var(--highlight-color);

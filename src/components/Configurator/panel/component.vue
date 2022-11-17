@@ -19,7 +19,9 @@
                           :header="collapse.name"
                           :disabled="collapse.switch ? !switchKeys.includes(collapse.key) : false">
           <div slot="extra" @click="e => e.stopPropagation()" v-if="collapse.switch">
-            <a-switch :checked="switchKeys.includes(collapse.key)" @change="onSwitch($event, collapse, index)" size="small"></a-switch>
+            <a-switch :checked="switchKeys.includes(collapse.key)"
+                      @change="onSwitch($event, collapse, index)"
+                      size="small"></a-switch>
           </div>
           <FormModel ref="collapseForm"
                      :config="collapse.config || []"
@@ -86,18 +88,18 @@ export default {
     initConfig () {
       let ref = this.getChartRef()
       let formData = ref.chart.getFormData()
-      if (Object.keys(formData).length) {
+      if (formData) {
         // 初始化表单数据
         this.configure = this.component.props.configure.map(conf => {
           if (conf.config) {
             conf.config.forEach(item => {
-              item.defaultValue = formData[item.key]
+              item.defaultValue = formData[item.key] || item.defaultValue
             })
           }
           if (conf.collapse) {
             conf.collapse.forEach(collapse => {
               collapse.config.forEach(item => {
-                item.defaultValue = formData[item.key]
+                item.defaultValue = formData[item.key] || item.defaultValue
               })
             })
           }
@@ -108,20 +110,28 @@ export default {
       }
     },
     initKey () {
-      this.activeKey = this.configure[0].key
-      this.configure.forEach(conf => {
-        if (conf.collapse) {
-          conf.collapse.forEach(collapse => {
-            if (collapse.switch && collapse.defaultValue) {
-              this.switchKeys.push(collapse.key)
-              this.collapseKeys.push(collapse.key)
-            }
-            if (!collapse.switch) {
-              this.collapseKeys.push(collapse.key)
-            }
-          })
-        }
-      })
+      let ref = this.getChartRef()
+      let key = ref.chart.getKey()
+      let { switchKeys, collapseKeys } = key
+      if (switchKeys || collapseKeys) {
+        this.switchKeys = switchKeys
+        this.collapseKeys = collapseKeys
+      } else {
+        this.activeKey = this.configure[0].key
+        this.configure.forEach(conf => {
+          if (conf.collapse) {
+            conf.collapse.forEach(collapse => {
+              if (collapse.switch && collapse.defaultValue) {
+                this.switchKeys.push(collapse.key)
+                this.collapseKeys.push(collapse.key)
+              }
+              if (!collapse.switch) {
+                this.collapseKeys.push(collapse.key)
+              }
+            })
+          }
+        })
+      }
     },
     onChange () {
       let form = {}
@@ -138,6 +148,7 @@ export default {
       let option = this.handleChartOption(form, ref.chart.getOption())
       ref.chart.update(option)
       ref.chart.setFormData(form)
+      ref.chart.setKey({ switchKeys: this.switchKeys, collapseKeys: this.collapseKeys })
     },
     handleChartOption (data, current) {
       let option = { ...current }
@@ -153,7 +164,8 @@ export default {
           left: data.titlePosition,
           textStyle: {
             fontSize: data.titleFontSize || 18,
-            fontWeight: data.titleFontWeight
+            fontWeight: data.titleFontWeight,
+            color: data.titleFontColor ? data.titleFontColor.hex : '#333'
           }
         }
       } else {
@@ -166,7 +178,10 @@ export default {
         option.legend = {
           show: true,
           orient: data.legendOrient,
-          icon: data.legendIcon
+          icon: data.legendIcon,
+          textStyle: {
+            color: data.legendFontColor ? data.legendFontColor.hex : '#333'
+          }
         }
         let arr = data.legendPosition.split('-')
         let pos = {}

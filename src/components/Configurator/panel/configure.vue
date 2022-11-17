@@ -107,7 +107,7 @@ export default {
           }
           // 网格线颜色
           if (data['gridColor']) {
-            this.root.gridColor = data['gridColor']
+            this.root.gridColor = data['gridColor'].rgba
           }
           break
         case 'component':

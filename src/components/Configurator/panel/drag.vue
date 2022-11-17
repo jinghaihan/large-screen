@@ -117,6 +117,7 @@ export default {
           i: key,
           props: {
             key,
+            componentType: item.componentType,
             name: item.name,
             type: item.type,
             Chart: item.Chart,

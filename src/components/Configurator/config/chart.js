@@ -349,8 +349,8 @@ class Chart {
     this.dom = dom
     this.option = option
     this.chart = null
-    this.theme = 'default'
     this.formData = null
+    this.theme = 'default'
     this.switchKeys = null
     this.collapseKeys = null
 
@@ -360,7 +360,7 @@ class Chart {
     if (this.chart) this.chart.dispose()
     this.theme = theme || 'default'
     await this.vm.$nextTick()
-    this.chart = Echarts.init(this.dom, this.theme === 'default' ? null : this.theme)
+    this.chart = Echarts.init(this.dom, this.theme)
     this.chart.setOption(this.option)
   }
   update (option) {
@@ -372,22 +372,137 @@ class Chart {
   resize () {
     this.chart.resize()
   }
-  getOption () {
-    return this.option
+  change (data) {
+    if (data.theme !== this.theme) {
+      this.init(data.theme)
+    }
+    this.option = this.handleOption(data)
+    this.update(this.option)
   }
-  setFormData (data) {
-    this.formData = data
+  handleOption (data) {
+    let option = { ...this.option }
+    this.handleTooltipOption(option, data)
+    this.handleTitleOption(option, data)
+    this.handleLegendOption(option, data)
+    this.handleDataZoomOption(option, data)
+    this.handleAxisOption(option, data)
+    return option
   }
-  getFormData () {
-    return this.formData
+  handleTooltipOption (option, data) {
+    if (data.tooltip) {
+      option.tooltip = {
+        show: true
+      }
+    } else {
+      delete option.tooltip
+    }
   }
-  setKey (data) {
-    let { switchKeys, collapseKeys } = data
+  handleTitleOption (option, data) {
+    if (data.titleText) {
+      option.title = {
+        text: data.titleText || '',
+        left: data.titlePosition,
+        textStyle: {
+          fontSize: data.titleFontSize || 18,
+          fontWeight: data.titleFontWeight,
+          color: data.titleFontColor ? data.titleFontColor.hex : '#333'
+        }
+      }
+    } else {
+      delete option.title
+    }
+  }
+  handleLegendOption (option, data) {
+    if (data.legendPosition) {
+      option.legend = {
+        show: true,
+        orient: data.legendOrient,
+        icon: data.legendIcon,
+        textStyle: {
+          color: data.legendFontColor ? data.legendFontColor.hex : '#333'
+        }
+      }
+      let arr = data.legendPosition.split('-')
+      let pos = {}
+      arr.forEach((item, index) => {
+        if (!(index % 2)) {
+          pos[item] = arr[index + 1]
+        }
+      })
+      option.legend = { ...option.legend, ...pos }
+    } else {
+      delete option.legend
+    }
+  }
+  handleDataZoomOption (option, data) {
+    delete option.dataZoom
+    if (data.dataZoomX) {
+      if (!option.dataZoom) option.dataZoom = []
+      option.dataZoom.push({
+        type: 'slider',
+        xAxisIndex: 0,
+        filterMode: 'none',
+        height: data.dataZoomXHeight || 15
+      })
+      option.dataZoom.push({
+        type: 'inside',
+        xAxisIndex: 0,
+        filterMode: 'none'
+      })
+    }
+    if (data.dataZoomY) {
+      if (!option.dataZoom) option.dataZoom = []
+      option.dataZoom.push({
+        type: 'slider',
+        yAxisIndex: 0,
+        filterMode: 'none',
+        width: data.dataZoomXWidth || 15
+      })
+      option.dataZoom.push({
+        type: 'inside',
+        yAxisIndex: 0,
+        filterMode: 'none'
+      })
+    }
+  }
+  handleAxisOption (option, data) {
+    let keys = ['xAxis', 'yAxis']
+    keys.forEach(key => {
+      if (option[key] instanceof Array) {
+        option[key].forEach(config => {
+          setOption(config, key)
+        })
+      } else {
+        setOption(option[key], key)
+      }
+    })
+    function setOption (target, key) {
+      if (data.axisFontColor) {
+        target.axisLine = {}
+        target.axisLine.lineStyle = {
+          color: data.axisFontColor.hex
+        }
+      }
+      if (data.axisSplitColor) {
+        target.splitLine = {
+          show: key === 'yAxis' ? data.axisSplitShow : false
+        }
+        target.splitLine.lineStyle = {
+          color: data.axisSplitColor.hex
+        }
+      }
+      target.axisLabel = {
+        fontSize: data.axisFontSize
+      }
+
+      console.log(option)
+    }
+  }
+  setData (data) {
+    let { formData, switchKeys, collapseKeys } = data
+    this.formData = formData
     this.switchKeys = _.cloneDeep(switchKeys)
     this.collapseKeys = _.cloneDeep(collapseKeys)
-  }
-  getKey () {
-    return { switchKeys: this.switchKeys, collapseKeys: this.collapseKeys }
   }
 }
 
@@ -409,11 +524,24 @@ const configure = [
           disabled: false,
           options: [
             { label: '默认', value: 'default' },
+            { label: 'light', value: 'light' },
             { label: 'macarons', value: 'macarons' },
             { label: 'infographic', value: 'infographic' },
             { label: 'shine', value: 'shine' },
             { label: 'roma', value: 'roma' }
           ]
+        }
+      },
+      {
+        type: 'switch',
+        label: '提示框',
+        key: 'tooltip',
+        defaultValue: true,
+        rules: [
+          { required: false, message: '请选择' }
+        ],
+        props: {
+          disabled: false
         }
       }
     ],
@@ -422,7 +550,7 @@ const configure = [
         name: '标题设置',
         key: 'title',
         switch: true,
-        defaultValue: true,
+        defaultValue: false,
         config: [
           {
             type: 'input',
@@ -583,6 +711,125 @@ const configure = [
               { required: false, message: '请选择字体颜色' }
             ],
             props: {
+              disabled: false
+            }
+          }
+        ]
+      },
+      {
+        name: '坐标轴设置',
+        key: 'axis',
+        switch: true,
+        defaultValue: true,
+        config: [
+          {
+            type: 'input-number',
+            label: '字体大小',
+            key: 'axisFontSize',
+            defaultValue: 12,
+            rules: [
+              { required: false, message: '请输入字体大小' }
+            ],
+            props: {
+              placeholder: '请输入字体大小',
+              disabled: false
+            }
+          },
+          {
+            type: 'color-picker',
+            label: '字体/轴线颜色',
+            key: 'axisFontColor',
+            defaultValue: {
+              hex: '#333'
+            },
+            rules: [
+              { required: false, message: '请选择字体颜色' }
+            ],
+            props: {
+              disabled: false
+            }
+          },
+          {
+            type: 'switch',
+            label: '分割线',
+            key: 'axisSplitShow',
+            defaultValue: false,
+            rules: [
+              { required: false, message: '请选择' }
+            ],
+            props: {
+              disabled: false
+            }
+          },
+          {
+            type: 'color-picker',
+            label: '分割线颜色',
+            key: 'axisSplitColor',
+            defaultValue: {
+              hex: '#ccc'
+            },
+            rules: [
+              { required: false, message: '请选择字体颜色' }
+            ],
+            props: {
+              disabled: false
+            }
+          }
+        ]
+      },
+      {
+        name: '区域缩放设置',
+        key: 'zoom',
+        switch: true,
+        defaultValue: false,
+        config: [
+          {
+            type: 'switch',
+            label: '水平方向',
+            key: 'dataZoomX',
+            defaultValue: false,
+            rules: [
+              { required: false, message: '请选择' }
+            ],
+            props: {
+              disabled: false
+            }
+          },
+          {
+            type: 'input-number',
+            label: '水平高度',
+            key: 'dataZoomXHeight',
+            defaultValue: 15,
+            rules: [
+              { required: false, message: '请输入水平高度' }
+            ],
+            props: {
+              placeholder: '请输入水平高度',
+              disabled: false
+            }
+          },
+          {
+            type: 'switch',
+            label: '垂直方向',
+            key: 'dataZoomY',
+            defaultValue: false,
+            rules: [
+              { required: false, message: '请选择' }
+            ],
+            props: {
+              disabled: false
+            }
+          },
+          {
+            type: 'input-number',
+            label: '垂直高度',
+            key: 'dataZoomXWidth',
+            defaultValue: 15,
+            rules: [
+              { required: false, message: '请输入垂直高度' }
+            ],
+            props: {
+              placeholder: '请输入垂直高度',
               disabled: false
             }
           }

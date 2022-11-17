@@ -81,27 +81,25 @@ export default {
     async init () {
       this.configure = []
       await this.$nextTick()
-
       this.initConfig()
       this.initKey()
-      
       this.onChange()
     },
     initConfig () {
       let ref = this.getChartRef()
-      let formData = ref.chart.getFormData()
+      let formData = ref.chart.formData
       if (formData) {
         // 初始化表单数据
         this.configure = this.component.props.configure.map(conf => {
           if (conf.config) {
             conf.config.forEach(item => {
-              item.defaultValue = formData[item.key] || item.defaultValue
+              item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
             })
           }
           if (conf.collapse) {
             conf.collapse.forEach(collapse => {
               collapse.config.forEach(item => {
-                item.defaultValue = formData[item.key] || item.defaultValue
+                item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
               })
             })
           }
@@ -111,9 +109,15 @@ export default {
         this.configure = this.component.props.configure
       }
     },
+    getValue (value, defaultValue) {
+      if (!value && typeof value !== 'boolean' && value !== 0) {
+        return defaultValue
+      }
+      return value
+    },
     initKey () {
       let ref = this.getChartRef()
-      let key = ref.chart.getKey()
+      let key = { switchKeys: ref.chart.switchKeys, collapseKeys: ref.chart.collapseKeys }
       let { switchKeys, collapseKeys } = key
       if (switchKeys || collapseKeys) {
         this.switchKeys = switchKeys
@@ -138,67 +142,28 @@ export default {
     },
     onChange () {
       let form = {}
-      if (this.$refs.basicForm) {
+      if (this.$refs.basicForm && this.$refs.basicForm.length) {
         form = { ...this.$refs.basicForm[0].form }
       }
-      if (this.$refs.collapseForm) {
+      if (this.$refs.collapseForm && this.$refs.collapseForm.length) {
         let refs = this.$refs.collapseForm
         refs.forEach(ref => {
           form = { ...form, ...ref.form }
         })
       }
-      let ref = this.getChartRef()
-      let option = this.handleChartOption(form, ref.chart.getOption())
-      if (ref.chart.theme !== form.theme) {
-        ref.chart.init(form.theme)
-      }
-      ref.chart.update(option)
-      ref.chart.setFormData(form)
-      ref.chart.setKey({ switchKeys: this.switchKeys, collapseKeys: this.collapseKeys })
-    },
-    handleChartOption (data, current) {
-      let option = { ...current }
-      this.handleChartTitle(option, data)
-      this.handleChartlegend(option, data)
-      return option
-    },
-    // 标题设置
-    handleChartTitle (option, data) {
-      if (data.titleText) {
-        option.title = {
-          text: data.titleText || '',
-          left: data.titlePosition,
-          textStyle: {
-            fontSize: data.titleFontSize || 18,
-            fontWeight: data.titleFontWeight,
-            color: data.titleFontColor ? data.titleFontColor.hex : '#333'
-          }
-        }
-      } else {
-        delete option.title
-      }
-    },
-    // 图例设置
-    handleChartlegend (option, data) {
-      if (data.legendPosition) {
-        option.legend = {
-          show: true,
-          orient: data.legendOrient,
-          icon: data.legendIcon,
-          textStyle: {
-            color: data.legendFontColor ? data.legendFontColor.hex : '#333'
-          }
-        }
-        let arr = data.legendPosition.split('-')
-        let pos = {}
-        arr.forEach((item, index) => {
-          if (!(index % 2)) {
-            pos[item] = arr[index + 1]
-          }
-        })
-        option.legend = { ...option.legend, ...pos }
-      } else {
-        delete option.legend
+      // 组件更新
+      switch (this.component.props.componentType) {
+        case 'chart':
+          let ref = this.getChartRef()
+          ref.chart.change(form)
+          ref.chart.setData({
+            formData: form,
+            switchKeys: this.switchKeys,
+            collapseKeys: this.collapseKeys
+          })
+          break
+        default:
+          break
       }
     },
     async onSwitch (checked, collapse, index) {

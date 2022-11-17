@@ -43,7 +43,7 @@ export default {
       required: false
     },
     labelCol: {
-      default: { span: 5 }
+      default: { span: 6 }
     },
     wrapperCol: {
       default: { span: 18 }

@@ -88,6 +88,7 @@ export default {
         cancelText: '取消',
         onOk () {
           _this.layout = _this.layout.filter(item => item.i !== data.key)
+          _this.editor.deleteCell(data)
           _this.editor.changeComponent()
         },
         onCancel () { }

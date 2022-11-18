@@ -78,6 +78,10 @@
                  @rendered="onRendered"></Paper>
           <!-- 配置面板 -->
           <div ref="config" class="config-container">
+            <ConfigPanel :editor="editor"
+                         :ratio="ratio"
+                         :grid="grid">
+            </ConfigPanel>
             <!-- 展开/收缩 -->
             <div class="trigger" @click="onTrigger('config')">
               <TooltipIcon :icon="'double-' + trigger.config"
@@ -98,12 +102,13 @@ import TooltipIcon from './component/TooltipIcon'
 import DragPanel from './component/DragPanel'
 import Paper from './component/Paper'
 import ToolBox from './component/ToolBox'
+import ConfigPanel from './component/ConfigPanel'
 import config from './config'
 import { getUUID } from './utils'
 
 export default {
   name: 'VisualEditor',
-  components: { TooltipIcon, DragPanel, Paper, ToolBox },
+  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel },
   data () {
     return {
       editor: new Editor(),

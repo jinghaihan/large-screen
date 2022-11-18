@@ -64,6 +64,7 @@ export default {
           default:
             break
         }
+        this.editor.setCell(this.data.props, this.cell)
         this.observe()
       }
     },

@@ -37,17 +37,19 @@
       </a-row>
     </a-spin>
 
-    <!-- 组件 -->
-    <Configurator v-if="configVisible" :modalData="modalData" type="largeScreen" @close="onModalClose"></Configurator>
+    <Modal v-if="configVisible">
+      <VisualEditor @close="onModalClose"></VisualEditor>
+    </Modal>
   </div>
 </template>
 
 <script>
-import Configurator from '@/components/Configurator/modal.vue'
+import Modal from './modal.vue'
+import VisualEditor from '@/components/VisualEditor'
 
 export default {
   name: 'largeScreen',
-  components: { Configurator },
+  components: { Modal, VisualEditor },
   data () {
     return {
       loading: false,

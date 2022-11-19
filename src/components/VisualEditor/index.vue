@@ -79,6 +79,8 @@
           <!-- 配置面板 -->
           <div ref="config" class="config-container">
             <ConfigPanel :editor="editor"
+                         :layout="layout"
+                         :layer="layer"
                          :ratio="ratio"
                          :grid="grid">
             </ConfigPanel>

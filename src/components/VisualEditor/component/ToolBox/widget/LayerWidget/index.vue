@@ -37,13 +37,13 @@
     </div>
     <TooltipIcon class="action" title="新增图层" icon="block" placement="bottom" @click="onCreate"></TooltipIcon>
 
-    <LayerModal v-if="modalVisible" :modalData="modalData" @close="onModalClose"></LayerModal>
+    <Modal v-if="modalVisible" :modalData="modalData" @close="onModalClose"></Modal>
   </div>
 </template>
 
 <script>
-import LayerModal from './layerModal.vue'
-import TooltipIcon from '../../TooltipIcon'
+import Modal from './modal.vue'
+import TooltipIcon from '../../../TooltipIcon'
 
 export default {
   props: {
@@ -57,7 +57,7 @@ export default {
       required: true
     }
   },
-  components: { LayerModal, TooltipIcon },
+  components: { Modal, TooltipIcon },
   data () {
     return {
       modalData: {},

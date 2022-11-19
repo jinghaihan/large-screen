@@ -13,8 +13,8 @@
           alt="background">
       <!-- 遮罩层 -->
       <div v-if="isVisible('mask')" class="mask">
-        <tooltip-icon class="action" icon="edit" title="修改" @click="onClick"></tooltip-icon>
-        <tooltip-icon class="action" icon="delete" title="删除" @click="onDelete"></tooltip-icon>
+        <TooltipIcon class="action" icon="edit" title="修改" @click="onClick"></TooltipIcon>
+        <TooltipIcon class="action" icon="delete" title="删除" @click="onDelete"></TooltipIcon>
       </div>
 
       <Modal v-if="visible" :type="config.libraryType" @submit="onSubmit" @close="onModalClose"></Modal>
@@ -23,6 +23,7 @@
 
 <script>
 import Modal from './modal.vue'
+import TooltipIcon from '../../../../TooltipIcon'
 
 export default {
   props: {
@@ -35,7 +36,7 @@ export default {
       required: true
     }
   },
-  components: { Modal },
+  components: { Modal, TooltipIcon },
   data () {
     return {
       visible: false

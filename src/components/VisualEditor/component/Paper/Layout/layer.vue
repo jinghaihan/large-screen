@@ -28,12 +28,13 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Renderer from './renderer.vue'
 
 export default {
   props: {
     editor: null,
-    data: {
+    layoutData: {
       type: Array,
       required: true
     },
@@ -65,7 +66,7 @@ export default {
   components: { Renderer },
   data () {
     return {
-      layout: [],
+      layout: _.cloneDeep(this.layoutData),
       maxW: this.grid.count,
       maxH: (this.grid.count / this.ratio.width * this.ratio.height).toFixed(0),
       visible: false

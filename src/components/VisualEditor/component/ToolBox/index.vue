@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import LayerWidget from './widget/layerWidget.vue'
+import LayerWidget from './widget/LayerWidget'
 import ScaleWidget from './widget/scaleWidget.vue'
 import HotkeyWidget from './widget/hotkeyWidget.vue'
 import TooltipIcon from '../TooltipIcon'

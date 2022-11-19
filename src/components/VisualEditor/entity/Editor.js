@@ -229,6 +229,13 @@ class Editor {
       onCancel () { }
     })
   }
+  updateLayer (data) {
+    this.instance.editor.layout = _.cloneDeep(data.layout)
+    this.instance.layer = _.cloneDeep({
+      ...this.instance.layer,
+      current: data.layer
+    })
+  }
   async clear () {
     let instance = this.instance.editor
     this.changeLayer(instance.layout[0].key)

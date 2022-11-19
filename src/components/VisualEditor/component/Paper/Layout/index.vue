@@ -17,7 +17,7 @@
           <Layer v-show="data.visible"
                  ref="layer"
                  :editor="editor"
-                 :data="data.layout"
+                 :layoutData="data.layout"
                  :ratio="ratio"
                  :grid="grid"
                  :resizable="index === layer.current"

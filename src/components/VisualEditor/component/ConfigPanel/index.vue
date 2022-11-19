@@ -9,6 +9,11 @@
                   :grid="grid">
       </BasicPanel>
       <!-- 图层配置 -->
+      <LayerPanel v-if="activeKey === 'layer'"
+                  :editor="editor"
+                  :layout="layout"
+                  :layer="layer">
+      </LayerPanel>
       <!-- 组件配置 -->
     </div>
     <!-- Tab切换 -->
@@ -25,10 +30,19 @@
 
 <script>
 import BasicPanel from './basicPanel.vue'
+import LayerPanel from './layerPanel.vue'
 
 export default {
   props: {
     editor: null,
+    layout: {
+      type: Array,
+      required: true
+    },
+    layer: {
+      type: Object,
+      required: true
+    },
     ratio: {
       type: Object,
       required: true
@@ -38,7 +52,7 @@ export default {
       required: true
     }
   },
-  components: { BasicPanel },
+  components: { BasicPanel, LayerPanel },
   data () {
     return {
       activeKey: null

@@ -1,8 +1,50 @@
 <template>
-  <div></div>
+  <a-tabs v-model="activeKey" v-if="configData.length">
+    <a-tab-pane v-for="tab in configData"
+                :key="tab.key"
+                :tab="tab.name">
+      <!-- 常规配置 -->
+      <div v-if="tab.config.length" class="component-basic-container">
+        <FormModel ref="basicForm"
+                   v-for="conf in tab.config"
+                   :key="conf.key"
+                   :config="conf.config || []"
+                   @change="onChange">
+        </FormModel>
+      </div>
+      <!-- 折叠面板配置 -->
+      <a-collapse v-if="tab.collapse.length"
+                  :activeKey="collapseKeys"
+                  :bordered="false"
+                  destroyInactivePanel>
+        <a-collapse-panel v-for="(collapse, index) in tab.collapse"
+                          :key="collapse.key"
+                          :header="collapse.name"
+                          :disabled="collapse.switch ? !switchKeys.includes(collapse.key) : false">
+          <div slot="extra"
+               v-if="collapse.switch"
+               @click="e => e.stopPropagation()">
+            <a-switch :checked="switchKeys.includes(collapse.key)"
+                      @change="onSwitch($event, collapse, index)"
+                      size="small">
+            </a-switch>
+          </div>
+          <FormModel ref="collapseForm"
+                     :config="collapse.config || []"
+                     @change="onChange">
+          </FormModel>
+        </a-collapse-panel>
+      </a-collapse>
+    </a-tab-pane>
+  </a-tabs>
+  <div class="empty-container" v-else>
+    <a-empty></a-empty>
+  </div>
 </template>
 
 <script>
+import FormModel from './FormModel/formModel.vue'
+
 export default {
   props: {
     editor: null,
@@ -11,9 +53,14 @@ export default {
       required: true
     }
   },
+  components: { FormModel },
   data () {
     return {
-      cell: null
+      cell: null,
+      configData: [],
+      activeKey: null,
+      collapseKeys: [],
+      switchKeys: []
     }
   },
   watch: {
@@ -21,22 +68,131 @@ export default {
       deep: true,
       immediate: true,
       handler: function (curr, prev) {
-        prev = prev || {}
-        if (curr.key !== prev.key) {
-          this.init()
+        if (curr.key) {
+          prev = prev || {}
+          if (curr.key !== prev.key) {
+            this.init()
+          }
+        } else {
+          this.cell = null
+          this.configData = []
+          this.activeKey = null
+          this.collapseKeys = []
+          this.switchKeys = []
         }
       }
     }
   },
   methods: {
-    init () {
+    onChange () {
+      let formData = {}
+      const formType = ['basicForm', 'collapseForm']
+      formType.forEach(type => {
+        if (this.$refs[type] && this.$refs[type].length) {
+          let refs = this.$refs[type]
+          refs.forEach(ref => {
+            formData = { ...formData, ...ref.form }
+          })
+        }
+      })
+      switch (this.component.componentType) {
+        case 'chart':
+          this.cell.change(formData)
+          break
+        default:
+          break
+      }
+      this.cell.setConfigData({
+        formData,
+        collapse: this.collapseKeys,
+        switch: this.switchKeys
+      })
+    },
+    async init () {
+      this.configData = []
       this.cell = this.editor.cell[this.component.key]
-      console.log(this.cell)
+      
+      await this.$nextTick()
+      this.initConfig()
+      this.initKey()
+      this.onChange()
+    },
+    initConfig () {
+      let formData = this.cell.configData.formData
+      if (formData) {
+        this.configData = this.cell.config.map(conf => {
+          if (conf.config) {
+            conf.config.forEach(item => {
+              item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
+            })
+          }
+          if (conf.collapse) {
+            conf.collapse.forEach(collapse => {
+              collapse.config.forEach(item => {
+                item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
+              })
+            })
+          }
+          return conf
+        })
+      } else {
+        this.configData = this.cell.config
+      }
+    },
+    getValue (value, defaultValue) {
+      if (!value && typeof value !== 'boolean' && value !== 0) {
+        return defaultValue
+      }
+      return value
+    },
+    initKey () {
+      this.activeKey = this.configData[0].key
+      let switchKeys = this.cell.configData.switch
+      let collapseKeys = this.cell.configData.collapse
+
+      if (switchKeys || collapseKeys) {
+        this.switchKeys = switchKeys
+        this.collapseKeys = collapseKeys
+      } else {
+        this.configure.forEach(conf => {
+          if (conf.collapse) {
+            conf.collapse.forEach(collapse => {
+              if (collapse.switch && collapse.defaultValue) {
+                this.switchKeys.push(collapse.key)
+                this.collapseKeys.push(collapse.key)
+              }
+              if (!collapse.switch) {
+                this.collapseKeys.push(collapse.key)
+              }
+            })
+          }
+        })
+      }
+    },
+    async onSwitch (checked, collapse, index) {
+      if (checked) {
+        this.switchKeys.push(collapse.key)
+        this.collapseKeys.push(collapse.key)
+      } else {
+        this.switchKeys = this.switchKeys.filter(key => key !== collapse.key)
+        this.collapseKeys = this.collapseKeys.filter(key => key !== collapse.key)
+      }
+      await this.$nextTick()
+      this.onChange()
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
+  .empty-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /deep/.ant-collapse-content-box{
+    padding: 0;
+  }
 </style>

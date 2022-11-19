@@ -282,8 +282,12 @@ class Chart {
     this.chart = null
     this.theme = 'default'
 
-    this.config = {}
-    this.configData = {}
+    this.config = handleConfigData(this.type)
+    this.configData = {
+      formData: null,
+      switch: [],
+      collapse: []
+    }
 
     this.init()
   }
@@ -291,10 +295,12 @@ class Chart {
     if (this.chart) this.chart.dispose()
     this.theme = theme || 'default'
     await this.vm.$nextTick()
+
     this.chart = Echarts.init(this.el, this.theme)
     this.chart.setOption(this.option)
   }
   update (option) {
+    console.log('Chart Update', option)
     this.option = option
     if (this.chart) {
       this.chart.setOption(this.option, true)
@@ -303,6 +309,201 @@ class Chart {
   resize () {
     this.chart.resize()
   }
+  change (data) {
+    if (data.theme !== this.theme) {
+      this.init(data.theme)
+    }
+    this.update(handleOption(data, this.option))
+  }
+  setConfigData (data) {
+    this.configData = _.cloneDeep(data)
+  }
+}
+
+const config = {
+  // 配置
+  chartConfig: {
+    'basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '主题',
+          key: 'theme',
+          defaultValue: 'default',
+          rules: [
+            { required: false, message: '请选择主题' }
+          ],
+          props: {
+            placeholder: '请选择主题',
+            disabled: false,
+            options: [
+              { label: '默认', value: 'default' },
+              { label: 'light', value: 'light' },
+              { label: 'macarons', value: 'macarons' },
+              { label: 'infographic', value: 'infographic' },
+              { label: 'shine', value: 'shine' },
+              { label: 'roma', value: 'roma' }
+            ]
+          }
+        },
+        {
+          type: 'switch',
+          label: '提示框',
+          key: 'tooltip-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'legend': {
+      type: 'collapse',
+      name: '图例设置',
+      switch: true,
+      defaultValue: true,
+      config: [
+        {
+          type: 'select',
+          label: '图例位置',
+          key: 'legend-left/legend-top',
+          defaultValue: 'center',
+          rules: [
+            { required: false, message: '请选择图例位置' }
+          ],
+          props: {
+            placeholder: '请选择图例位置',
+            disabled: false,
+            options: [
+              { label: '左上', value: 'left' },
+              { label: '上', value: 'center' },
+              { label: '右上', value: 'right' },
+              { label: '右', value: 'right/middle' },
+              { label: '右下', value: 'right/bottom' },
+              { label: '下', value: '/bottom' },
+              { label: '左下', value: 'left/bottom' },
+              { label: '左', value: 'left/middle' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '图例布局',
+          key: 'legend-orient',
+          defaultValue: 'horizontal',
+          rules: [
+            { required: false, message: '请选择图例布局' }
+          ],
+          props: {
+            placeholder: '请选择图例布局',
+            disabled: false,
+            options: [
+              { label: '横排', value: 'horizontal' },
+              { label: '竖排', value: 'vertical' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '图例形状',
+          key: 'legend-icon',
+          defaultValue: 'roundRect',
+          rules: [
+            { required: false, message: '请选择图例形状' }
+          ],
+          props: {
+            placeholder: '请选择图例形状',
+            disabled: false,
+            options: [
+              { label: '默认', value: 'roundRect' },
+              { label: '矩形', value: 'rect' },
+              { label: '圆形', value: 'circle' },
+              { label: '三角形', value: 'triangle' },
+              { label: '钻石', value: 'diamond' },
+              { label: '箭头', value: 'arrow' },
+              { label: '无', value: 'none' }
+            ]
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'legend-textStyle-color',
+          defaultValue: {
+            hex: '#333'
+          },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    }
+  },
+  // 数据
+  dataSource: {}, 
+  // 交互
+  interaction: {}
+}
+
+function handleConfigData (type) {
+  let result = [
+    { name: '配置', key: 'chartConfig' },
+    { name: '数据', key: 'dataSource' },
+    { name: '交互', key: 'interaction' }
+  ]
+  result.forEach(item => {
+    item.config = []
+    item.collapse = []
+    let data = config[item.key]
+    Object.keys(data).forEach(key => {
+      item[data[key].type].push({
+        ...data[key],
+        type: key,
+        key
+      })
+    })
+  })
+  return result
+}
+
+function handleOption (data, current) {
+  let option = { ...current }
+  let keys = Object.keys(data)
+  let whiteList = ['theme']
+  
+  keys.forEach(key => {
+    if (whiteList.includes(key)) return
+    let list = key.split('/').map(item => item.split('-'))
+    let value = typeof data[key] === 'string' && data[key].includes('/') 
+      ? data[key].split('/') : [data[key]]
+    list.forEach((item, index) => {
+      recursive(item, option, value[index])
+    })
+  })
+
+  function recursive (value, option, data) {
+    let key = value[0]
+    if (!option[key]) option[key] = {}
+    value.splice(0, 1)
+    if (value.length) {
+      recursive(value, option[key], data)
+    } else {
+      if (data) {
+        option[key] = data.hex ? data.hex : data
+      } else {
+        delete option[key]
+      }
+    }
+  }
+
+  return option
 }
 
 export default Chart

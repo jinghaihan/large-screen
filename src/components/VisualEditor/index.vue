@@ -82,7 +82,8 @@
                          :layout="layout"
                          :layer="layer"
                          :ratio="ratio"
-                         :grid="grid">
+                         :grid="grid"
+                         :component="component">
             </ConfigPanel>
             <!-- 展开/收缩 -->
             <div class="trigger" @click="onTrigger('config')">

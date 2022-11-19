@@ -89,14 +89,6 @@ export default {
       modalVisible: false
     }
   },
-  watch: {
-    layout: {
-      deep: true,
-      handler: function () {
-        this.onRefresh()
-      }
-    }
-  },
   created () {
     this.onRefresh()
   },

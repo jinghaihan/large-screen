@@ -283,6 +283,7 @@ class Chart {
     this.theme = 'default'
 
     this.config = {}
+    this.configData = {}
 
     this.init()
   }

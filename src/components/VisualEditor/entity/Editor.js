@@ -181,6 +181,7 @@ class Editor {
       current: instance.layout.length - 1
     })
     this.changeComponent()
+    instance.$notification.success({ message: '成功', description: `新增成功` })
   }
   editLayer (data) {
     let instance = this.instance.editor
@@ -225,6 +226,7 @@ class Editor {
             })
           }
         }
+        instance.$notification.success({ message: '成功', description: `删除成功` })
       },
       onCancel () { }
     })

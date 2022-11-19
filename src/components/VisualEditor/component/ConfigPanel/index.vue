@@ -15,6 +15,10 @@
                   :layer="layer">
       </LayerPanel>
       <!-- 组件配置 -->
+      <ComponentPanel v-show="activeKey === 'component'"
+                      :editor="editor"
+                      :component="component">
+      </ComponentPanel>
     </div>
     <!-- Tab切换 -->
     <div class="tab-container">
@@ -31,6 +35,7 @@
 <script>
 import BasicPanel from './basicPanel.vue'
 import LayerPanel from './layerPanel.vue'
+import ComponentPanel from './componentPanel.vue'
 
 export default {
   props: {
@@ -50,12 +55,29 @@ export default {
     grid: {
       type: Object,
       required: true
+    },
+    component: {
+      type: Object,
+      required: true
     }
   },
-  components: { BasicPanel, LayerPanel },
+  components: { BasicPanel, LayerPanel, ComponentPanel },
   data () {
     return {
       activeKey: null
+    }
+  },
+  watch: {
+    component: {
+      deep: true,
+      immediate: true,
+      handler: function (data) {
+        if (data.key) {
+          this.activeKey = 'component'
+        } else {
+          this.activeKey = 'basic'
+        }
+      }
     }
   },
   created () {

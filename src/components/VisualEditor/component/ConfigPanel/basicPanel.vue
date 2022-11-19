@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import FormModel from '../ConfigPanel/FormModel/formModel.vue'
+
 export default {
   props: {
     editor: null,
@@ -20,6 +22,7 @@ export default {
       required: true
     }
   },
+  components: { FormModel },
   data () {
     return {
       visible: false,
@@ -47,11 +50,23 @@ export default {
         }
         return item
       })
-
       this.visible = true
     },
-    onModelChange () {
-      
+    onModelChange (data) {
+      if (this.editor) {
+        // 画布尺寸
+        if (data['ratioWidth'] && data['ratioHeight']) {
+          this.editor.changeRatio({ height: data['ratioHeight'], width: data['ratioWidth'] })
+        }
+        // 网格线颜色
+        if (data['gridColor']) {
+          this.editor.changeGrid(data['gridColor'].rgba)
+        }
+        // 背景
+        if (data['background']) {
+          this.editor.changeBackground(data['background'])
+        }
+      }
     }
   }
 }
@@ -59,6 +74,6 @@ export default {
 
 <style lang="less" scoped>
   .basic-panel-container{
-    padding: 24px;
+    padding-top: 24px;
   }
 </style>

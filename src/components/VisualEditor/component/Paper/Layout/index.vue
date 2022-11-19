@@ -6,7 +6,7 @@
        @mouseup="onMouseUp">
     <div ref="paper"
          class="paper-background-container"
-         :style="getBackgroundStyle()">
+         :style="backgroundStyle">
       <div ref="grid"
            class="paper-grid-container"
            :style="gridStyle">
@@ -67,31 +67,35 @@ export default {
   components: { Layer },
   data () {
     return {
-      background: 'none',
       diffmove: {
         start: { x: 0, y: 0 },
         move: false
       },
       rowHeight: 0,
-      gridStyle: {}
+      gridStyle: {},
+      backgroundStyle: {
+        backgroundImage: 'none',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%'
+      }
     }
   },
   watch: {
     scale: {
       handler: function (scale) {
-        this.onScale(scale)
+        this.onScaleChange(scale)
       }
     },
     ratio: {
       deep: true,
       handler: function (ratio) {
-        this.onRatio()
+        this.onRatioChange()
       }
     },
     grid: {
       deep: true,
       handler: function (grid) {
-        this.onGrid()
+        this.onGridChange()
       }
     }
   },
@@ -116,12 +120,12 @@ export default {
       this.$refs.paper.style.bottom = 'auto'
       this.$refs.paper.style.margin = 0
     },
-    onScale (scale) {
+    onScaleChange (scale) {
       let containerWidth = this.$refs.container.getBoundingClientRect().width
       this.$refs.paper.style.width = containerWidth * 0.9 * scale + 'px'
-      this.onGrid()
+      this.onGridChange()
     },
-    onRatio () {
+    onRatioChange () {
       this.$refs.paper.style.left = 0
       this.$refs.paper.style.top = 0
       this.$refs.paper.style.right = 0
@@ -129,7 +133,7 @@ export default {
       this.$refs.paper.style.margin = 'auto'
       this.initRender()
     },
-    onGrid () {
+    onGridChange () {
       if (this.grid.show) {
         let gridStyle = { backgroundRepeat: `repeat` }
         this.rowHeight = this.$refs.paper.getBoundingClientRect().width / this.grid.count
@@ -190,13 +194,6 @@ export default {
     getLayerStyle (layer) {
       return {
         'z-index': this.layer.current === layer ? layer + this.layer.max : layer
-      }
-    },
-    getBackgroundStyle () {
-      if (this.$refs.background) {
-        this.$refs.background.style.backgroundImage = `url(${this.background})`
-        this.$refs.background.style.backgroundRepeat = 'no-repeat'
-        this.$refs.background.style.backgroundSize = '100% 100%'
       }
     }
   }

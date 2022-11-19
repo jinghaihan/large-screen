@@ -249,6 +249,21 @@ class Editor {
   deleteCell (data) {
     delete this.cell[data.key]
   }
+  changeRatio (data) {
+    this.instance.editor.ratio = _.cloneDeep(data)
+  }
+  changeGrid (color) {
+    this.instance.editor.grid = _.cloneDeep({
+      ...this.instance.editor.grid,
+      color: color
+    })
+  }
+  changeBackground (image) {
+    this.instance.layout.backgroundStyle = _.cloneDeep({
+      ...this.instance.layout.backgroundStyle,
+      backgroundImage: !image || image === 'none' ? 'none' : `url(${image})`
+    })
+  }
 }
 
 export default Editor

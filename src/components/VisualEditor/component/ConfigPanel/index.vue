@@ -62,6 +62,7 @@ export default {
 <style lang="less" scoped>
   .config-panel-container{
     height: 100%;
+    width: 100%;
     display: flex;
     .config-container{
       height: 100%;

@@ -282,6 +282,8 @@ class Chart {
     this.chart = null
     this.theme = 'default'
 
+    this.config = {}
+
     this.init()
   }
   async init (theme) {

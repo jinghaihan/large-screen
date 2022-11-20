@@ -110,6 +110,8 @@ export default {
     },
     async init () {
       this.configData = []
+      this.collapseKeys = []
+      this.switchKeys = []
       this.cell = this.editor.cell[this.component.key]
       
       await this.$nextTick()

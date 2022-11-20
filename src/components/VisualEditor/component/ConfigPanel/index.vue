@@ -74,8 +74,6 @@ export default {
       handler: function (data) {
         if (data.key) {
           this.activeKey = 'component'
-        } else {
-          this.activeKey = 'basic'
         }
       }
     }

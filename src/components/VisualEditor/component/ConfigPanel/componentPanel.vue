@@ -154,7 +154,7 @@ export default {
         this.switchKeys = switchKeys
         this.collapseKeys = collapseKeys
       } else {
-        this.configure.forEach(conf => {
+        this.configData.forEach(conf => {
           if (conf.collapse) {
             conf.collapse.forEach(collapse => {
               if (collapse.switch && collapse.defaultValue) {

@@ -138,8 +138,8 @@ export default {
       }
       this.modalVisible = true
     },
-    onDelete () {
-      this.editor.deleteLayer(this.layout[this.layer.current])
+    onDelete (layer) {
+      this.editor.deleteLayer(layer)
     },
     onSave () {
       let keys = []

@@ -198,7 +198,8 @@ class Editor {
     this.changeComponent()
   }
   deleteLayer (data) {
-    let instance = this.instance.editor
+    let _this = this
+    let instance = _this.instance.editor
     if (instance.layout.length === 1) {
       instance.$notification.error({ message: '错误', description: `请至少配置2个图层` })
       return
@@ -212,6 +213,11 @@ class Editor {
       cancelText: '取消',
       onOk () {
         let index = instance.layout.findIndex(item => item.key === data.key)
+        let layout = _this.instance['layout'].$refs['layer'][index].layout
+        layout.forEach(item => {
+          _this.deleteCell(item.props)
+        })
+
         instance.layout = instance.layout.filter(item => item.key !== data.key)
         if (index === instance.layer.current) {
           if (!index) {

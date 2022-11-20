@@ -285,8 +285,8 @@ class Chart {
     this.config = handleConfigData(this.type)
     this.configData = {
       formData: null,
-      switch: [],
-      collapse: []
+      switch: null,
+      collapse: null
     }
 
     this.init()
@@ -313,10 +313,83 @@ class Chart {
     if (data.theme !== this.theme) {
       this.init(data.theme)
     }
-    this.update(handleOption(data, this.option))
+    let option = handleOption(data, this.option)
+    handleDataZoomOption(data, option)
+    this.update(option)
   }
   setConfigData (data) {
     this.configData = _.cloneDeep(data)
+  }
+}
+
+function handleOption (data, chartOption) {
+  let option = { ...chartOption }
+  let list = Object.keys(data)
+  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth']
+  
+  list.forEach(key => {
+    if (whiteList.includes(key)) return
+    let keys = key.split('/').map(item => item.split('-'))
+    let values = typeof data[key] === 'string' && data[key].includes('/') 
+      ? data[key].split('/') : [data[key]]
+    // 补全缺省
+    if (values.length < keys.length) {
+      for (let i = 0; i < keys.length - values.length; i++) {
+        values.push(data[key])
+      }
+    }
+    keys.forEach((item, index) => {
+      recursive(item, option, values[index])
+    })
+  })
+
+  function recursive (value, option, data) {
+    let key = value[0]
+    if (!option[key]) option[key] = {}
+    value.splice(0, 1)
+    if (value.length) {
+      recursive(value, option[key], data)
+    } else {
+      if (data || data === 0 || typeof data === 'boolean') {
+        option[key] = data.hex ? data.hex : data
+      } else {
+        delete option[key]
+      }
+    }
+  }
+
+  return option
+}
+
+function handleDataZoomOption (data, chartOption) {
+  delete chartOption.dataZoom
+  if (data.dataZoomX) {
+    if (!chartOption.dataZoom) chartOption.dataZoom = []
+    chartOption.dataZoom.push({
+      type: 'slider',
+      xAxisIndex: 0,
+      filterMode: 'none',
+      height: data.dataZoomXHeight || 15
+    })
+    chartOption.dataZoom.push({
+      type: 'inside',
+      xAxisIndex: 0,
+      filterMode: 'none'
+    })
+  }
+  if (data.dataZoomY) {
+    if (!chartOption.dataZoom) chartOption.dataZoom = []
+    chartOption.dataZoom.push({
+      type: 'slider',
+      yAxisIndex: 0,
+      filterMode: 'none',
+      width: data.dataZoomXWidth || 15
+    })
+    chartOption.dataZoom.push({
+      type: 'inside',
+      yAxisIndex: 0,
+      filterMode: 'none'
+    })
   }
 }
 
@@ -371,7 +444,7 @@ const config = {
           type: 'select',
           label: '图例位置',
           key: 'legend-left/legend-top',
-          defaultValue: 'center',
+          defaultValue: 'center/',
           rules: [
             { required: false, message: '请选择图例位置' }
           ],
@@ -379,9 +452,9 @@ const config = {
             placeholder: '请选择图例位置',
             disabled: false,
             options: [
-              { label: '左上', value: 'left' },
-              { label: '上', value: 'center' },
-              { label: '右上', value: 'right' },
+              { label: '左上', value: 'left/' },
+              { label: '上', value: 'center/' },
+              { label: '右上', value: 'right/' },
               { label: '右', value: 'right/middle' },
               { label: '右下', value: 'right/bottom' },
               { label: '下', value: '/bottom' },
@@ -433,9 +506,7 @@ const config = {
           type: 'color-picker',
           label: '字体颜色',
           key: 'legend-textStyle-color',
-          defaultValue: {
-            hex: '#333'
-          },
+          defaultValue: { hex: '#333' },
           rules: [
             { required: false, message: '请选择字体颜色' }
           ],
@@ -444,6 +515,212 @@ const config = {
           }
         }
       ]
+    },
+    'axis': {
+      type: 'collapse',
+      name: '坐标轴设置',
+      switch: true,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'xAxis-axisLabel-fontSize/yAxis-axisLabel-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体/轴线颜色',
+          key: 'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'switch',
+          label: '分割线',
+          key: 'yAxis-splitLine-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '分割线颜色',
+          key: 'yAxis-splitLine-lineStyle-color',
+          defaultValue: { hex: '#ccc' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'title': {
+      type: 'collapse',
+      name: '标题设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'input',
+          label: '标题名称',
+          key: 'title-text',
+          defaultValue: '标题',
+          rules: [
+            { required: false, message: '请输入标题' }
+          ],
+          props: {
+            placeholder: '请输入标题',
+            disabled: false,
+            allowClear: true
+          }
+        },
+        {
+          type: 'input-number',
+          label: '标题字号',
+          key: 'title-textStyle-fontSize',
+          defaultValue: 18,
+          rules: [
+            { required: false, message: '请输入标题字号' }
+          ],
+          props: {
+            placeholder: '标题字号',
+            disabled: false
+          }
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'title-textStyle-fontWeight',
+          defaultValue: 'bolder',
+          rules: [
+            { required: false, message: '请选择字体粗细' }
+          ],
+          props: {
+            placeholder: '请选择字体粗细',
+            disabled: false,
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '标题位置',
+          key: 'title-left',
+          defaultValue: 'left',
+          rules: [
+            { required: false, message: '请选择标题位置' }
+          ],
+          props: {
+            placeholder: '请选择标题位置',
+            disabled: false,
+            options: [
+              { label: '左', value: 'left' },
+              { label: '中', value: 'center' },
+              { label: '右', value: 'right' }
+            ]
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'title-textStyle-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'dataZoom': {
+      type: 'collapse',
+      name: '区域缩放设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'switch',
+          label: '水平方向',
+          key: 'dataZoomX',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '水平高度',
+          key: 'dataZoomXHeight',
+          defaultValue: 15,
+          rules: [
+            { required: false, message: '请输入水平高度' }
+          ],
+          props: {
+            placeholder: '请输入水平高度',
+            disabled: false
+          }
+        },
+        {
+          type: 'switch',
+          label: '垂直方向',
+          key: 'dataZoomY',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '垂直高度',
+          key: 'dataZoomXWidth',
+          defaultValue: 15,
+          rules: [
+            { required: false, message: '请输入垂直高度' }
+          ],
+          props: {
+            placeholder: '请输入垂直高度',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'color': {
+      type: 'collapse',
+      name: '颜色设置',
+      switch: true,
+      defaultValue: false,
+      config: []
     }
   },
   // 数据
@@ -461,7 +738,7 @@ function handleConfigData (type) {
   result.forEach(item => {
     item.config = []
     item.collapse = []
-    let data = config[item.key]
+    let data = _.cloneDeep(config[item.key])
     Object.keys(data).forEach(key => {
       item[data[key].type].push({
         ...data[key],
@@ -471,39 +748,6 @@ function handleConfigData (type) {
     })
   })
   return result
-}
-
-function handleOption (data, current) {
-  let option = { ...current }
-  let keys = Object.keys(data)
-  let whiteList = ['theme']
-  
-  keys.forEach(key => {
-    if (whiteList.includes(key)) return
-    let list = key.split('/').map(item => item.split('-'))
-    let value = typeof data[key] === 'string' && data[key].includes('/') 
-      ? data[key].split('/') : [data[key]]
-    list.forEach((item, index) => {
-      recursive(item, option, value[index])
-    })
-  })
-
-  function recursive (value, option, data) {
-    let key = value[0]
-    if (!option[key]) option[key] = {}
-    value.splice(0, 1)
-    if (value.length) {
-      recursive(value, option[key], data)
-    } else {
-      if (data) {
-        option[key] = data.hex ? data.hex : data
-      } else {
-        delete option[key]
-      }
-    }
-  }
-
-  return option
 }
 
 export default Chart

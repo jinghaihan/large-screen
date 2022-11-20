@@ -343,12 +343,23 @@ function handleOption (data, chartOption) {
     })
   })
 
-  function recursive (value, option, data) {
-    let key = value[0]
-    if (!option[key]) option[key] = {}
-    value.splice(0, 1)
-    if (value.length) {
-      recursive(value, option[key], data)
+  function recursive (keys, option, data) {
+    let key = keys[0]
+    if (!option[key]) {
+      option[key] = {}
+    } else {
+      // 数组类型-循环遍历
+      if (option[key] instanceof Array) {
+        keys.splice(0, 1)
+        option[key].forEach(item => {
+          recursive(keys, item, data)
+        })
+        return
+      }
+    }
+    keys.splice(0, 1)
+    if (keys.length) {
+      recursive(keys, option[key], data)
     } else {
       if (data || data === 0 || typeof data === 'boolean') {
         option[key] = data.hex ? data.hex : data

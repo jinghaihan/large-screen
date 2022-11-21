@@ -40,8 +40,8 @@ const chart = {
     type: 'pie',
     image: require('@/assets/VisualEditor/component/pie.png'),
     col: 12,
-    w: 30,
-    h: 30,
+    w: 25,
+    h: 25,
     props: {}
   },
   'pie-ring': {
@@ -49,8 +49,8 @@ const chart = {
     type: 'pie-ring',
     image: require('@/assets/VisualEditor/component/pie-ring.png'),
     col: 12,
-    w: 30,
-    h: 30,
+    w: 25,
+    h: 25,
     props: {}
   },
   'scatter': {

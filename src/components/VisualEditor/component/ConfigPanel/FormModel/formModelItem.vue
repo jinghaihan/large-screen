@@ -28,11 +28,39 @@
               :filter-option="filterOptions"
               @change="onChange" >
     </a-select>
-    <!-- 级联下拉框-TODO -->
-    <!-- 多选框-TODO -->
-    <!-- 单选框-TODO -->
-    <!-- 日期选择框-TODO -->
-    <!-- 时间选择器-TODO -->
+    <!-- 级联下拉框 -->
+    <a-cascader v-if="config.type === 'cascader'"
+                v-model="form[config.key]"
+                v-bind="config.props"
+                @change="onChange"
+                :allowClear="false">
+    </a-cascader>
+    <!-- 多选框 -->
+    <a-checkbox v-if="config.type === 'checkbox'"
+                v-model="form[config.key]"
+                v-bind="config.props"
+                @change="onChange">
+      {{config.text}}
+    </a-checkbox>
+    <!-- 单选框 -->
+    <a-radio-group v-if="config.type === 'radio'"
+                   v-model="form[config.key]"
+                   v-bind="config.props"
+                   @change="onChange">
+      {{config.text}}
+    </a-radio-group>
+    <!-- 日期选择框 -->
+    <a-date-picker v-if="config.type === 'date-picker'"
+                   v-model="form[config.key]"
+                   v-bind="config.props"
+                   @change="onChange">
+    </a-date-picker>
+    <!-- 时间范围选择器 -->
+    <a-range-picker v-if="config.type === 'range-picker'"
+                    v-model="form[config.key]"
+                    v-bind="config.props"
+                    @change="onChange">
+    </a-range-picker>
     <!-- 开关 -->
     <a-switch v-if="config.type === 'switch'"
               v-model="form[config.key]"
@@ -40,6 +68,12 @@
               @change="onChange" >
     </a-switch>
     <!-- 评分 -->
+    <a-rate v-if="config.type === 'rate'"
+            v-model="form[config.key]"
+            v-bind="config.props"
+            @change="onChange"
+            :allowClear="false">
+    </a-rate>
     <!-- 颜色选择器 -->
     <ColorPicker v-if="config.type === 'color-picker'"
                  :config="config"

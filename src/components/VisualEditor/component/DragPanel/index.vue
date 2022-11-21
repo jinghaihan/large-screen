@@ -64,21 +64,27 @@ export default {
       handler: function () {
         this.init()
       }
+    },
+    type: {
+      immediate: true,
+      handler: function (type) {
+        this.queryParam = null
+      }
     }
   },
   computed: {
     configData () {
+      let originData = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
+      
       if (!this.queryParam) {
-        console.log(this.config[this.type])
-        return this.config[this.type]
+        return originData || {}
       } else {
         let result = {}
-        Object.keys(this.config[this.type]).forEach(key => {
-          if (this.config[this.type][key].name.includes(this.queryParam)) {
-            result[key] = this.config[this.type][key]
+        Object.keys(originData || {}).forEach(key => {
+          if (originData[key].name.includes(this.queryParam)) {
+            result[key] = originData[key]
           }
         })
-        console.log(result)
         return result
       }
     }
@@ -158,7 +164,8 @@ export default {
             key,
             name: item.name,
             type: item.type,
-            componentType: this.type
+            componentType: item.props.componentType || this.type,
+            parentKey: item.props.parentKey
           }
         })
         this.editor.changeComponent(this.instance.layout[this.instance.layout.length - 1])

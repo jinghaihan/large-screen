@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import hotkeys from 'hotkeys-js'
 import { getUUID } from '../utils'
 import { sidebar, renderer, layer, library, navbar, configPanel, basic } from '../config/editor'
@@ -9,6 +10,7 @@ class Editor {
     this.operation = { sidebar, renderer, layer, library, navbar, configPanel }
     this.config = { basic }
     this.cell = {}
+    this.clipBoard = {}
   }
   setInstance (data) {
     Object.keys(data).forEach(key => {
@@ -151,6 +153,24 @@ class Editor {
   }
   deleteCell (data) {
     delete this.cell[data.key]
+  }
+  copyCell (data) {
+    let key = data.props.name + '-' + moment().format('HH:mm:ss')
+    this.clipBoard[key] = {
+      name: key,
+      type: data.props.type,
+      image: data.props.image,
+      col: 24,
+      w: data.w,
+      h: data.h,
+      props: {
+        componentType: data.props.componentType,
+        parentKey: data.props.key
+      }
+    }
+    this.instance.editor.activeKey = 'clipBoard'
+    // 刷新拖拽面板视图
+    this.instance.dragPanel.$forceUpdate()
   }
   changeRatio (data) {
     this.instance.editor.ratio = _.cloneDeep(data)

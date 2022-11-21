@@ -4,7 +4,7 @@ const chart = {
     type: 'bar',
     image: require('@/assets/configurator/component/bar.png'),
     col: 12,
-    w: 20,
+    w: 25,
     h: 20,
     props: {}
   },
@@ -13,7 +13,7 @@ const chart = {
     type: 'bar-stack',
     image: require('@/assets/configurator/component/bar-stack.png'),
     col: 12,
-    w: 25,
+    w: 30,
     h: 20,
     props: {}
   },
@@ -22,7 +22,7 @@ const chart = {
     type: 'line',
     image: require('@/assets/configurator/component/line.png'),
     col: 12,
-    w: 20,
+    w: 30,
     h: 20,
     props: {}
   },
@@ -31,7 +31,7 @@ const chart = {
     type: 'line-area',
     image: require('@/assets/configurator/component/line-area.png'),
     col: 12,
-    w: 20,
+    w: 30,
     h: 20,
     props: {}
   },

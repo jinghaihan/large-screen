@@ -10,16 +10,16 @@ import { option, config, configMap } from '../config/chart'
 
 class Chart {
   constructor (data) {
-    let { vm, key, el, type } = data
+    let { vm, key, el, type, parentOption, parentConfig, parentConfigData } = data
     this.vm = vm
     this.key = key
     this.el = el
     this.type = type
-    this.option = option[this.type]
+    this.option = parentOption || option[this.type]
     this.chart = null
 
-    this.config = handleConfigData(this.type)
-    this.configData = {
+    this.config = parentConfig || handleConfigData(this.type)
+    this.configData = parentConfigData || {
       theme: 'default',
       axisFlip: null,
       formData: null,
@@ -27,7 +27,7 @@ class Chart {
       collapse: null
     }
 
-    this.init()
+    this.init(this.configData.theme)
   }
   async init (theme) {
     if (this.chart) this.chart.dispose()

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Chart from '../../../entity/Chart'
 
 export default {
@@ -54,28 +55,35 @@ export default {
       if (this.data.props) {
         switch (this.data.props.componentType) {
           case 'chart':
-            let cell = this.editor.cell[this.data.props.key]
-            if (cell) {
-              this.cell = cell
-              this.cell.changeAttr({
-                vm: this,
-                el: this.$refs.render
-              })
-              this.cell.init()
-            } else {
-              this.cell = new Chart({
-                vm: this,
-                key: this.data.props.key,
-                el: this.$refs.render,
-                type: this.data.props.type
-              })
-            }
+            this.handleChart()
             break
           default:
             break
         }
         this.editor.setCell(this.data.props, this.cell)
         this.observe()
+      }
+    },
+    handleChart () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+        this.cell.changeAttr({
+          vm: this,
+          el: this.$refs.render
+        })
+        this.cell.init()
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        this.cell = new Chart({
+          vm: this,
+          key: this.data.props.key,
+          el: this.$refs.render,
+          type: this.data.props.type,
+          parentOption: _.cloneDeep(cell.option),
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
       }
     },
     observe () {
@@ -94,12 +102,19 @@ export default {
     onClick () {
       this.editor.changeComponent(this.data)
     },
-    onOperation (operation) {
+    async onOperation (operation) {
       switch (operation.key) {
         case 'delete':
           this.$emit('delete', this.data.props)
           break
         case 'copy':
+          this.editor.copyCell({
+            ...this.data,
+            props: {
+              ...this.data.props,
+              image: this.cell.chart.getDataURL()
+            }
+          })
           break
         default:
           break

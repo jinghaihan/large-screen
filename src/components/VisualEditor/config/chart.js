@@ -347,6 +347,15 @@ const option = {
   }
 }
 
+Object.keys(option).forEach(key => {
+  option[key].grid = {
+    top: 30,
+    bottom: 30,
+    width: 'auto',
+    height: 'auto'
+  }
+})
+
 const config = {
   // 配置
   chartConfig: {
@@ -383,6 +392,32 @@ const config = {
             { required: false, message: '请选择' }
           ],
           props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '上边距',
+          key: 'grid-top',
+          defaultValue: 30,
+          rules: [
+            { required: false, message: '请输入上边距' }
+          ],
+          props: {
+            placeholder: '请输入上边距',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '下边距',
+          key: 'grid-bottom',
+          defaultValue: 30,
+          rules: [
+            { required: false, message: '请输入下边距' }
+          ],
+          props: {
+            placeholder: '请输入下边距',
             disabled: false
           }
         }

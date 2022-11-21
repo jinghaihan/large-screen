@@ -11,6 +11,7 @@ class Editor {
     this.config = { basic }
     this.cell = {}
     this.clipBoard = {}
+    this.maxClipBoard = 20
   }
   setInstance (data) {
     Object.keys(data).forEach(key => {
@@ -168,9 +169,30 @@ class Editor {
         parentKey: data.props.key
       }
     }
+    let keys = Object.keys(this.clipBoard)
+    if (keys.length > this.maxClipBoard) {
+      delete this.clipBoard[keys[0]]
+    }
     this.instance.editor.activeKey = 'clipBoard'
     // 刷新拖拽面板视图
     this.instance.dragPanel.$forceUpdate()
+  }
+  deleteClipBoardCell (data) {
+    let _this = this
+    _this.instance.editor.$confirm({
+      title: `您确定删除${data.name}配置吗？`,
+      content: '',
+      confirmLoading: true,
+      okText: '确定',
+      cancelText: '取消',
+      onOk () {
+        let key = data.name
+        delete _this.clipBoard[key]
+        // 刷新拖拽面板视图
+        _this.instance.dragPanel.$forceUpdate()
+      },
+      onCancel () { }
+    })
   }
   changeRatio (data) {
     this.instance.editor.ratio = _.cloneDeep(data)

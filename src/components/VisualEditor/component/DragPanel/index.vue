@@ -17,6 +17,9 @@
               draggable="true"
               unselectable="on">
             <a-card hoverable size="small" :title="conf.name">
+              <div slot="extra" v-if="type === 'clipBoard'">
+                <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
+              </div>
               <img slot="cover" :src="conf.image" />
             </a-card>
           </div>
@@ -30,6 +33,7 @@
 </template>
 
 <script>
+import TooltipIcon from '../TooltipIcon'
 import { getUUID } from '../../utils'
 
 let mouseXY = { 'x': null, 'y': null }
@@ -51,6 +55,7 @@ export default {
       required: true
     }
   },
+  components: { TooltipIcon },
   data () {
     return {
       instance: null,
@@ -67,7 +72,7 @@ export default {
     },
     type: {
       immediate: true,
-      handler: function (type) {
+      handler: function () {
         this.queryParam = null
       }
     }
@@ -173,6 +178,9 @@ export default {
           this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'block'
         } catch (error) { }
       }
+    },
+    onDelete (data) {
+      this.editor.deleteClipBoardCell(data)
     }
   }
 }
@@ -191,6 +199,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .action{
+      margin-right: 8px;
     }
   }
   /deep/.ant-card{

@@ -144,12 +144,24 @@ export default {
     },
     // 操作
     onOperation (operation) {
+      let _this = this
       if (operation.active) {
-        this.activeKey = operation.key
+        _this.activeKey = operation.key
       }
       switch (operation.key) {
         case 'close':
-          this.$emit('close')
+          _this.$confirm({
+            title: `您确定退出编辑吗？`,
+            content: '未保存的数据将会丢失',
+            confirmLoading: true,
+            okText: '确定',
+            cancelText: '取消',
+            onOk () {
+              _this.$emit('close')
+            },
+            onCancel () { }
+          })
+          
           break
         default:
           break

@@ -368,7 +368,9 @@ const option = {
   }
 }
 
+const gridWhiteList = ['pie', 'pie-ring', 'map']
 Object.keys(option).forEach(key => {
+  if (gridWhiteList.includes(key)) return
   option[key].grid = {
     top: 30,
     bottom: 30,
@@ -796,12 +798,92 @@ const config = {
         }
       ]
     },
-    'color': {
-      type: 'collapse',
-      name: '颜色设置',
-      switch: true,
-      defaultValue: false,
-      config: []
+    'map-basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '主题',
+          key: 'theme',
+          defaultValue: 'default',
+          rules: [
+            { required: false, message: '请选择主题' }
+          ],
+          props: {
+            placeholder: '请选择主题',
+            disabled: false,
+            options: [
+              { label: '默认', value: 'default' },
+              { label: 'light', value: 'light' },
+              { label: 'macarons', value: 'macarons' },
+              { label: 'infographic', value: 'infographic' },
+              { label: 'shine', value: 'shine' },
+              { label: 'roma', value: 'roma' }
+            ]
+          }
+        },
+        {
+          type: 'switch',
+          label: '提示框',
+          key: 'geo-tooltip-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'select',
+          label: '地图名称',
+          key: 'geo-map',
+          defaultValue: 'china',
+          rules: [
+            { required: false, message: '请选择地图名称' }
+          ],
+          props: {
+            placeholder: '请选择地图名称',
+            disabled: false,
+            options: [
+              { label: '中国', value: 'china' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '鼠标操作',
+          key: 'geo-roam',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择鼠标操作' }
+          ],
+          props: {
+            placeholder: '请选择鼠标操作',
+            disabled: false,
+            options: [
+              { label: '鼠标缩放和平移漫游', value: true },
+              { label: '鼠标缩放', value: 'scale' },
+              { label: '平移漫游', value: 'move' },
+              { label: '禁用', value: false }
+            ]
+          }
+        },
+        {
+          type: 'input-number',
+          label: '缩放比例',
+          key: 'geo-zoom',
+          defaultValue: 1,
+          rules: [
+            { required: false, message: '请输入缩放比例' }
+          ],
+          props: {
+            placeholder: '请输入缩放比例',
+            disabled: false,
+            step: 0.1
+          }
+        }
+      ]
     }
   },
   // 数据
@@ -814,7 +896,7 @@ const configMap = {
   'bar': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -828,7 +910,7 @@ const configMap = {
   'bar-stack': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -842,7 +924,7 @@ const configMap = {
   'line': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -856,7 +938,7 @@ const configMap = {
   'line-area': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -870,7 +952,7 @@ const configMap = {
   'pie': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'radius-Number', 'legend', 'title', 'color']
+      config: ['basic', 'radius-Number', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -884,7 +966,7 @@ const configMap = {
   'pie-ring': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'radius-Array', 'legend', 'title', 'color']
+      config: ['basic', 'radius-Array', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -898,7 +980,7 @@ const configMap = {
   'scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -912,7 +994,7 @@ const configMap = {
   'bubble': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -926,7 +1008,7 @@ const configMap = {
   'radar': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'title', 'color']
+      config: ['basic', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -940,7 +1022,7 @@ const configMap = {
   'map': {
     'chartConfig': {
       name: '配置',
-      config: []
+      config: ['map-basic']
     },
     'dataSource': {
       name: '数据',

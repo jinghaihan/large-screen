@@ -42,7 +42,7 @@ class Chart {
     this.chart.setOption(this.option)
   }
   update (option) {
-    // console.log('Chart Update', option)
+    console.log('Chart Update', option)
     this.option = option
     if (this.chart) {
       this.chart.setOption(this.option, true)

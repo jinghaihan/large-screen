@@ -1,19 +1,32 @@
 <template>
-  <a-row :gutter="[8, 8]">
-    <a-col v-for="conf in config[type]"
-            :key="conf.name"
-            :span="conf.col">
-        <div class="droppable-element"
-             @drag="drag($event, conf)"
-             @dragend="dragEnd($event, conf)"
-             draggable="true"
-             unselectable="on">
-          <a-card hoverable size="small" :title="conf.name">
-            <img slot="cover" :src="conf.image" />
-          </a-card>
-        </div>
-    </a-col>
-  </a-row>
+  <div class="drag-panel-container">
+    <!-- 查询条件 -->
+    <a-input-search class="search"
+                    v-model="queryParam"
+                    placeholder="请输入组件名称">
+    </a-input-search>
+    <!-- 拖拽元素 -->
+    <a-row :gutter="[8, 8]"
+            v-if="Object.keys(configData).length">
+      <a-col v-for="conf in configData"
+              :key="conf.name"
+              :span="conf.col">
+          <div class="droppable-element"
+              @drag="drag($event, conf)"
+              @dragend="dragEnd($event, conf)"
+              draggable="true"
+              unselectable="on">
+            <a-card hoverable size="small" :title="conf.name">
+              <img slot="cover" :src="conf.image" />
+            </a-card>
+          </div>
+      </a-col>
+    </a-row>
+    <!-- 无数据样式 -->
+    <div class="empty-container" v-else>
+      <a-empty></a-empty>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -40,7 +53,8 @@ export default {
   },
   data () {
     return {
-      instance: null
+      instance: null,
+      queryParam: null
     }
   },
   watch: {
@@ -49,6 +63,23 @@ export default {
       immediate: true,
       handler: function () {
         this.init()
+      }
+    }
+  },
+  computed: {
+    configData () {
+      if (!this.queryParam) {
+        console.log(this.config[this.type])
+        return this.config[this.type]
+      } else {
+        let result = {}
+        Object.keys(this.config[this.type]).forEach(key => {
+          if (this.config[this.type][key].name.includes(this.queryParam)) {
+            result[key] = this.config[this.type][key]
+          }
+        })
+        console.log(result)
+        return result
       }
     }
   },
@@ -141,6 +172,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .drag-panel-container{
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .search{
+      margin-bottom: 8px;
+    }
+    .empty-container{
+      height: calc(~"100% - 40px");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   /deep/.ant-card{
     background: var(--primary-color);
   }

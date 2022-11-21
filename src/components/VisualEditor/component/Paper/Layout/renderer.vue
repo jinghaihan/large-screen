@@ -54,12 +54,22 @@ export default {
       if (this.data.props) {
         switch (this.data.props.componentType) {
           case 'chart':
-            this.cell = new Chart({
-              vm: this,
-              key: this.data.props.key,
-              el: this.$refs.render,
-              type: this.data.props.type
-            })
+            let cell = this.editor.cell[this.data.props.key]
+            if (cell) {
+              this.cell = cell
+              this.cell.changeAttr({
+                vm: this,
+                el: this.$refs.render
+              })
+              this.cell.init()
+            } else {
+              this.cell = new Chart({
+                vm: this,
+                key: this.data.props.key,
+                el: this.$refs.render,
+                type: this.data.props.type
+              })
+            }
             break
           default:
             break

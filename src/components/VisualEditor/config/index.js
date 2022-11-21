@@ -1,4 +1,4 @@
-import chart from './chart'
+import { chart } from './chart'
 
 const config = {
   component: { chart }

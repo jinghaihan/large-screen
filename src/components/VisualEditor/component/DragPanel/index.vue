@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     init () {
-      if (this.instance) {
+      if (this.instance && this.instance.$refs.gridLayout) {
         this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
       }
       this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]

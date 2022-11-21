@@ -17,11 +17,11 @@ class Chart {
     this.type = type
     this.option = option[this.type]
     this.chart = null
-    this.theme = 'default'
-    this.axisFlip = null
 
     this.config = handleConfigData(this.type)
     this.configData = {
+      theme: 'default',
+      axisFlip: null,
       formData: null,
       switch: null,
       collapse: null
@@ -31,10 +31,10 @@ class Chart {
   }
   async init (theme) {
     if (this.chart) this.chart.dispose()
-    this.theme = theme || 'default'
+    this.configData.theme = theme || 'default'
     await this.vm.$nextTick()
 
-    this.chart = Echarts.init(this.el, this.theme)
+    this.chart = Echarts.init(this.el, this.configData.theme)
     this.chart.setOption(this.option)
   }
   update (option) {
@@ -48,7 +48,7 @@ class Chart {
     this.chart.resize()
   }
   change (data, keys) {
-    if (data.theme && data.theme !== this.theme) {
+    if (data.theme && data.theme !== this.configData.theme) {
       this.init(data.theme)
     }
     let option = handleOption(data, this.option)
@@ -76,7 +76,11 @@ class Chart {
     })
   }
   setConfigData (data) {
-    this.configData = _.cloneDeep(data)
+    this.configData = _.cloneDeep({
+      ...data,
+      theme: this.configData.theme,
+      axisFlip: this.configData.axisFlip
+    })
   }
 }
 
@@ -166,13 +170,13 @@ function handleDataZoomOption (data, chartOption) {
 // 坐标轴翻转
 function handleAxisFlipOption (data, chartOption, vm) {
   if (data.axisFlip || typeof data.axisFlip === 'boolean') {
-    if (data.axisFlip !== vm.axisFlip && typeof vm.axisFlip === 'boolean') {
+    if (data.axisFlip !== vm.configData.axisFlip && typeof vm.configData.axisFlip === 'boolean') {
       let xAxis = chartOption.yAxis
       let yAxis = chartOption.xAxis
       chartOption.xAxis = xAxis
       chartOption.yAxis = yAxis
     }
-    vm.axisFlip = data.axisFlip
+    vm.configData.axisFlip = data.axisFlip
   }
 }
 

@@ -125,20 +125,18 @@ export default {
     initConfig () {
       let formData = this.cell.configData.formData
       if (formData) {
-        this.configData = this.cell.config.map(conf => {
-          if (conf.config) {
-            conf.config.forEach(item => {
-              item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
-            })
-          }
-          if (conf.collapse) {
-            conf.collapse.forEach(collapse => {
-              collapse.config.forEach(item => {
-                item.defaultValue = this.getValue(formData[item.key], item.defaultValue)
+        let keys = ['config', 'collapse']
+        this.configData = this.cell.config.map(item => {
+          keys.forEach(key => {
+            if (item[key] && item[key].length) {
+              item[key].forEach(data => {
+                data.config.forEach(conf => {
+                  conf.defaultValue = this.getValue(formData[conf.key], conf.defaultValue)
+                })
               })
-            })
-          }
-          return conf
+            }
+          })
+          return item
         })
       } else {
         this.configData = this.cell.config

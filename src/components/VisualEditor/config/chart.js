@@ -388,6 +388,80 @@ const config = {
         }
       ]
     },
+    'axisFlip': {
+      type: 'config',
+      config: [
+        {
+          type: 'switch',
+          label: '坐标轴翻转',
+          key: 'axisFlip',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'axis': {
+      type: 'collapse',
+      name: '坐标轴设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'xAxis-axisLabel-fontSize/yAxis-axisLabel-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体/轴线颜色',
+          key: 'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'switch',
+          label: '分割线',
+          key: 'yAxis-splitLine-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '分割线颜色',
+          key: 'yAxis-splitLine-lineStyle-color',
+          defaultValue: { hex: '#ccc' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
     'legend': {
       type: 'collapse',
       name: '图例设置',
@@ -461,63 +535,6 @@ const config = {
           label: '字体颜色',
           key: 'legend-textStyle-color',
           defaultValue: { hex: '#333' },
-          rules: [
-            { required: false, message: '请选择字体颜色' }
-          ],
-          props: {
-            disabled: false
-          }
-        }
-      ]
-    },
-    'axis': {
-      type: 'collapse',
-      name: '坐标轴设置',
-      switch: true,
-      defaultValue: true,
-      config: [
-        {
-          type: 'input-number',
-          label: '字体大小',
-          key: 'xAxis-axisLabel-fontSize/yAxis-axisLabel-fontSize',
-          defaultValue: 12,
-          rules: [
-            { required: false, message: '请输入字体大小' }
-          ],
-          props: {
-            placeholder: '请输入字体大小',
-            disabled: false
-          }
-        },
-        {
-          type: 'color-picker',
-          label: '字体/轴线颜色',
-          key: 'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
-          defaultValue: { hex: '#333' },
-          rules: [
-            { required: false, message: '请选择字体颜色' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'switch',
-          label: '分割线',
-          key: 'yAxis-splitLine-show',
-          defaultValue: false,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'color-picker',
-          label: '分割线颜色',
-          key: 'yAxis-splitLine-lineStyle-color',
-          defaultValue: { hex: '#ccc' },
           rules: [
             { required: false, message: '请选择字体颜色' }
           ],
@@ -621,7 +638,7 @@ const config = {
           type: 'switch',
           label: '水平方向',
           key: 'dataZoomX',
-          defaultValue: false,
+          defaultValue: true,
           rules: [
             { required: false, message: '请选择' }
           ],
@@ -687,7 +704,7 @@ const configMap = {
   'bar': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -701,7 +718,7 @@ const configMap = {
   'bar-stack': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -715,7 +732,7 @@ const configMap = {
   'line': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -729,7 +746,7 @@ const configMap = {
   'line-area': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -771,7 +788,7 @@ const configMap = {
   'scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -785,7 +802,7 @@ const configMap = {
   'bubble': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'axis', 'title', 'dataZoom', 'color']
+      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',

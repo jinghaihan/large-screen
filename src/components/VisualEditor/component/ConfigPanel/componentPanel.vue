@@ -15,8 +15,7 @@
       <!-- 折叠面板配置 -->
       <a-collapse v-if="tab.collapse.length"
                   :activeKey="collapseKeys"
-                  :bordered="false"
-                  destroyInactivePanel>
+                  :bordered="false">
         <a-collapse-panel v-for="(collapse, index) in tab.collapse"
                           :key="collapse.key"
                           :header="collapse.name"
@@ -43,6 +42,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import FormModel from './FormModel/formModel.vue'
 
 export default {
@@ -83,6 +83,9 @@ export default {
       }
     }
   },
+  created () {
+    this.onChange = _.debounce(this.onChange, 50)
+  },
   methods: {
     onChange () {
       let formData = {}
@@ -97,7 +100,7 @@ export default {
       })
       switch (this.component.componentType) {
         case 'chart':
-          this.cell.change(formData)
+          this.cell.change(formData, this.switchKeys)
           break
         default:
           break

@@ -18,6 +18,7 @@ class Chart {
     this.option = option[this.type]
     this.chart = null
     this.theme = 'default'
+    this.axisFlip = null
 
     this.config = handleConfigData(this.type)
     this.configData = {
@@ -46,12 +47,27 @@ class Chart {
   resize () {
     this.chart.resize()
   }
-  change (data) {
+  change (data, keys) {
     if (data.theme && data.theme !== this.theme) {
       this.init(data.theme)
     }
     let option = handleOption(data, this.option)
+    // 区域缩放
     handleDataZoomOption(data, option)
+    // 坐标轴翻转
+    handleAxisFlipOption(data, option, this)
+    
+    // 删除未激活折叠面板配置
+    this.config.forEach(tab => {
+      if (tab.collapse && tab.collapse.length) {
+        tab.collapse.forEach(collapse => {
+          if (collapse.key && !keys.includes(collapse.key)) {
+            delete option[collapse.key]
+          }
+        })
+      }
+    })
+
     this.update(option)
   }
   changeAttr (data) {
@@ -67,7 +83,7 @@ class Chart {
 function handleOption (data, chartOption) {
   let option = { ...chartOption }
   let list = Object.keys(data)
-  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth']
+  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth', 'axisFlip']
   
   list.forEach(key => {
     if (whiteList.includes(key)) return
@@ -114,6 +130,7 @@ function handleOption (data, chartOption) {
   return option
 }
 
+// 区域缩放
 function handleDataZoomOption (data, chartOption) {
   delete chartOption.dataZoom
   if (data.dataZoomX) {
@@ -143,6 +160,19 @@ function handleDataZoomOption (data, chartOption) {
       yAxisIndex: 0,
       filterMode: 'none'
     })
+  }
+}
+
+// 坐标轴翻转
+function handleAxisFlipOption (data, chartOption, vm) {
+  if (data.axisFlip || typeof data.axisFlip === 'boolean') {
+    if (data.axisFlip !== vm.axisFlip && typeof vm.axisFlip === 'boolean') {
+      let xAxis = chartOption.yAxis
+      let yAxis = chartOption.xAxis
+      chartOption.xAxis = xAxis
+      chartOption.yAxis = yAxis
+    }
+    vm.axisFlip = data.axisFlip
   }
 }
 

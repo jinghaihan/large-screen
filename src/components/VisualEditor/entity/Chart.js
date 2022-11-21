@@ -56,6 +56,8 @@ class Chart {
     handleDataZoomOption(data, option)
     // 坐标轴翻转
     handleAxisFlipOption(data, option, this)
+    // 半径
+    handleRadiusOption(data, option)
     
     // 删除未激活折叠面板配置
     this.config.forEach(tab => {
@@ -87,7 +89,7 @@ class Chart {
 function handleOption (data, chartOption) {
   let option = { ...chartOption }
   let list = Object.keys(data)
-  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth', 'axisFlip']
+  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth', 'axisFlip', 'radius', 'radiusInner', 'radiusOuter']
   
   list.forEach(key => {
     if (whiteList.includes(key)) return
@@ -177,6 +179,22 @@ function handleAxisFlipOption (data, chartOption, vm) {
       chartOption.yAxis = yAxis
     }
     vm.configData.axisFlip = data.axisFlip
+  }
+}
+
+// 饼状图/环状图半径
+function handleRadiusOption (data, chartOption) {
+  if (data.radius) {
+    // 饼状图
+    chartOption.series.forEach(item => {
+      item.radius = data.radius + '%'
+    })
+  }
+  if (data.radiusInner && data.radiusOuter) {
+    // 环状图
+    chartOption.series.forEach(item => {
+      item.radius = [data.radiusInner + '%', data.radiusOuter + '%']
+    })
   }
 }
 

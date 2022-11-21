@@ -2,7 +2,7 @@ const chart = {
   'bar': {
     name: '柱状图',
     type: 'bar',
-    image: require('@/assets/configurator/component/bar.png'),
+    image: require('@/assets/VisualEditor/component/bar.png'),
     col: 12,
     w: 25,
     h: 20,
@@ -11,7 +11,7 @@ const chart = {
   'bar-stack': {
     name: '堆叠柱状图',
     type: 'bar-stack',
-    image: require('@/assets/configurator/component/bar-stack.png'),
+    image: require('@/assets/VisualEditor/component/bar-stack.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -20,7 +20,7 @@ const chart = {
   'line': {
     name: '折线图',
     type: 'line',
-    image: require('@/assets/configurator/component/line.png'),
+    image: require('@/assets/VisualEditor/component/line.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -29,7 +29,7 @@ const chart = {
   'line-area': {
     name: '面积图',
     type: 'line-area',
-    image: require('@/assets/configurator/component/line-area.png'),
+    image: require('@/assets/VisualEditor/component/line-area.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -38,7 +38,7 @@ const chart = {
   'pie': {
     name: '饼状图',
     type: 'pie',
-    image: require('@/assets/configurator/component/pie.png'),
+    image: require('@/assets/VisualEditor/component/pie.png'),
     col: 12,
     w: 30,
     h: 30,
@@ -47,7 +47,7 @@ const chart = {
   'pie-ring': {
     name: '环状图',
     type: 'pie-ring',
-    image: require('@/assets/configurator/component/pie-ring.png'),
+    image: require('@/assets/VisualEditor/component/pie-ring.png'),
     col: 12,
     w: 30,
     h: 30,
@@ -56,7 +56,7 @@ const chart = {
   'scatter': {
     name: '散点图',
     type: 'scatter',
-    image: require('@/assets/configurator/component/scatter.png'),
+    image: require('@/assets/VisualEditor/component/scatter.png'),
     col: 12,
     w: 20,
     h: 20,
@@ -65,7 +65,7 @@ const chart = {
   'bubble': {
     name: '气泡图',
     type: 'bubble',
-    image: require('@/assets/configurator/component/bubble.png'),
+    image: require('@/assets/VisualEditor/component/bubble.png'),
     col: 12,
     w: 40,
     h: 30,
@@ -74,7 +74,7 @@ const chart = {
   'radar': {
     name: '雷达图',
     type: 'radar',
-    image: require('@/assets/configurator/component/radar.png'),
+    image: require('@/assets/VisualEditor/component/radar.png'),
     col: 12,
     w: 30,
     h: 30,
@@ -189,7 +189,7 @@ const option = {
       {
         name: 'X',
         type: 'pie',
-        radius: '50%',
+        radius: '70%',
         data: [
           { value: 1048, name: 'A' },
           { value: 735, name: 'B' },
@@ -394,7 +394,12 @@ const config = {
           props: {
             disabled: false
           }
-        },
+        }
+      ]
+    },
+    'grid': {
+      type: 'config',
+      config: [
         {
           type: 'input-number',
           label: '上边距',
@@ -435,6 +440,55 @@ const config = {
             { required: false, message: '请选择' }
           ],
           props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'radius-Number': {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '半径',
+          key: 'radius',
+          defaultValue: 70,
+          rules: [
+            { required: false, message: '请输入半径' }
+          ],
+          props: {
+            placeholder: '请输入半径',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'radius-Array': {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '内半径',
+          key: 'radiusInner',
+          defaultValue: 40,
+          rules: [
+            { required: false, message: '请输入内半径' }
+          ],
+          props: {
+            placeholder: '请输入内半径',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '外半径',
+          key: 'radiusOuter',
+          defaultValue: 70,
+          rules: [
+            { required: false, message: '请输入外半径' }
+          ],
+          props: {
+            placeholder: '请输入外半径',
             disabled: false
           }
         }
@@ -739,7 +793,7 @@ const configMap = {
   'bar': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -753,7 +807,7 @@ const configMap = {
   'bar-stack': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -767,7 +821,7 @@ const configMap = {
   'line': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -781,7 +835,7 @@ const configMap = {
   'line-area': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -795,7 +849,7 @@ const configMap = {
   'pie': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'title', 'color']
+      config: ['basic', 'radius-Number', 'legend', 'title', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -809,7 +863,7 @@ const configMap = {
   'pie-ring': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'title', 'color']
+      config: ['basic', 'radius-Array', 'legend', 'title', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -823,7 +877,7 @@ const configMap = {
   'scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',
@@ -837,7 +891,7 @@ const configMap = {
   'bubble': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'axis', 'legend', 'title', 'dataZoom', 'color']
+      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom', 'color']
     },
     'dataSource': {
       name: '数据',

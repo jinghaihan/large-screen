@@ -180,7 +180,7 @@ class Editor {
   deleteClipBoardCell (data) {
     let _this = this
     _this.instance.editor.$confirm({
-      title: `您确定删除${data.name}配置吗？`,
+      title: `您确定删除${data.name}记录吗？`,
       content: '',
       confirmLoading: true,
       okText: '确定',

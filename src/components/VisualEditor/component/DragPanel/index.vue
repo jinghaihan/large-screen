@@ -20,7 +20,7 @@
               <div slot="extra" v-if="type === 'clipBoard'">
                 <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
               </div>
-              <img slot="cover" :src="conf.image" />
+              <img :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
             </a-card>
           </div>
       </a-col>
@@ -199,6 +199,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .image-col12{
+      height: 95px;
     }
     .action{
       margin-right: 8px;

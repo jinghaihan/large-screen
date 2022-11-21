@@ -5,8 +5,12 @@ import 'echarts/theme/macarons'
 import 'echarts/theme/infographic'
 import 'echarts/theme/shine'
 import 'echarts/theme/roma'
+// Echarts地图
+import chinaMap from '@/assets/VisualEditor/map/china.json'
 
 import { option, config, configMap } from '../config/chart'
+
+Echarts.registerMap('china', chinaMap)
 
 class Chart {
   constructor (data) {

@@ -79,6 +79,15 @@ const chart = {
     w: 30,
     h: 30,
     props: {}
+  },
+  'map': {
+    name: '地图',
+    type: 'map',
+    image: require('@/assets/VisualEditor/component/map.png'),
+    col: 12,
+    w: 40,
+    h: 30,
+    props: {}
   }
 }
 
@@ -344,6 +353,18 @@ const option = {
         ]
       }
     ]
+  },
+  'map': {
+    geo: {
+      show: true,
+      map: 'china',
+      roam: true,
+      zoom: 1,
+      scaleLimit: {
+        min: 0.1,
+        max: 12
+      }
+    }
   }
 }
 
@@ -906,6 +927,20 @@ const configMap = {
     'chartConfig': {
       name: '配置',
       config: ['basic', 'legend', 'title', 'color']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'interaction': {
+      name: '交互',
+      config: []
+    }
+  },
+  'map': {
+    'chartConfig': {
+      name: '配置',
+      config: []
     },
     'dataSource': {
       name: '数据',

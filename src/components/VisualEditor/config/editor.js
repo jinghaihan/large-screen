@@ -19,6 +19,7 @@ const library = [
   { name: '主题库', icon: 'bg-colors', key: 'theme', type: 'danger' }
 ]
 const navbar = [
+  { name: '批量修改', icon: 'edit', key: 'edit' },
   { name: '截图', icon: 'picture', key: 'screenshot' },
   { name: '保存', icon: 'save', key: 'save' }
 ]

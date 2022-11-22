@@ -89,10 +89,10 @@ const chart = {
     h: 30,
     props: {}
   },
-  'map': {
-    name: '地图',
-    type: 'map',
-    image: require('@/assets/VisualEditor/component/map.png'),
+  'map-scatter': {
+    name: '散点地图',
+    type: 'map-scatter',
+    image: require('@/assets/VisualEditor/component/map-scatter.png'),
     col: 12,
     w: 40,
     h: 30,
@@ -383,12 +383,18 @@ const option = {
       }
     ]
   },
-  'map': {
+  'map-scatter': {
+    tooltip: {
+      show: true,
+      formatter (params) {
+        return `地区：${params.name}</br>数值：${params.value[2]}`
+      }
+    },
     geo: {
       show: true,
       map: 'china',
       roam: true,
-      zoom: 1,
+      zoom: 1.2,
       scaleLimit: {
         min: 0.1,
         max: 12
@@ -416,13 +422,26 @@ const option = {
     },
     series: [
       {
-
+        type: 'effectScatter',
+        coordinateSystem: 'geo',
+        effectType: 'ripple',
+        showEffectOn: 'render',
+        hoverAnimation: true,
+        zlevel: 1,
+        rippleEffect: {
+          period: 10,
+          scale: 10,
+          brushType: 'fill'
+        },
+        data: [
+          { name: '北京', value: [116.405285, 39.904989, 1000] }
+        ]
       }
     ]
   }
 }
 
-const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map']
+const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map-scatter']
 Object.keys(option).forEach(key => {
   if (gridWhiteList.includes(key)) return
   option[key].grid = {
@@ -855,39 +874,18 @@ const config = {
     'map-basic': {
       type: 'config',
       config: [
-        // {
-        //   type: 'select',
-        //   label: '主题',
-        //   key: 'theme',
-        //   defaultValue: 'default',
-        //   rules: [
-        //     { required: false, message: '请选择主题' }
-        //   ],
-        //   props: {
-        //     placeholder: '请选择主题',
-        //     disabled: false,
-        //     options: [
-        //       { label: '默认', value: 'default' },
-        //       { label: 'light', value: 'light' },
-        //       { label: 'macarons', value: 'macarons' },
-        //       { label: 'infographic', value: 'infographic' },
-        //       { label: 'shine', value: 'shine' },
-        //       { label: 'roma', value: 'roma' }
-        //     ]
-        //   }
-        // },
-        // {
-        //   type: 'switch',
-        //   label: '提示框',
-        //   key: 'geo-tooltip-show',
-        //   defaultValue: true,
-        //   rules: [
-        //     { required: false, message: '请选择' }
-        //   ],
-        //   props: {
-        //     disabled: false
-        //   }
-        // },
+        {
+          type: 'switch',
+          label: '提示框',
+          key: 'tooltip-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
         {
           type: 'select',
           label: '地图名称',
@@ -927,7 +925,7 @@ const config = {
           type: 'input-number',
           label: '缩放比例',
           key: 'geo-zoom',
-          defaultValue: 1,
+          defaultValue: 1.2,
           rules: [
             { required: false, message: '请输入缩放比例' }
           ],
@@ -1084,6 +1082,40 @@ const config = {
           }
         }
       ]
+    },
+    'map-ripple': {
+      type: 'collapse',
+      name: '涟漪特效设置',
+      switch: true,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input-number',
+          label: '动画周期(S)',
+          key: 'series-rippleEffect-period',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入动画周期(S)' }
+          ],
+          props: {
+            placeholder: '请输入动画周期(S)',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '涟漪比例',
+          key: 'series-rippleEffect-scale',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入涟漪比例' }
+          ],
+          props: {
+            placeholder: '请输入涟漪比例',
+            disabled: false
+          }
+        }
+      ]
     }
   },
   // 数据
@@ -1233,10 +1265,10 @@ const configMap = {
       config: []
     }
   },
-  'map': {
+  'map-scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['map-basic', 'map-label', 'map-itemStyle', 'map-emphasis']
+      config: ['map-basic', 'map-ripple', 'map-label', 'map-itemStyle', 'map-emphasis']
     },
     'dataSource': {
       name: '数据',

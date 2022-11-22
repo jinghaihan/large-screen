@@ -53,6 +53,15 @@ const chart = {
     h: 25,
     props: {}
   },
+  'pie-rose': {
+    name: '玫瑰图',
+    type: 'pie-rose',
+    image: require('@/assets/VisualEditor/component/pie-rose.png'),
+    col: 12,
+    w: 25,
+    h: 25,
+    props: {}
+  },
   'scatter': {
     name: '散点图',
     type: 'scatter',
@@ -228,6 +237,26 @@ const option = {
       }
     ]
   },
+  'pie-rose': {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: '70%',
+        center: ['50%', '50%'],
+        data: [
+          { value: 235, name: 'A' },
+          { value: 274, name: 'B' },
+          { value: 310, name: 'C' },
+          { value: 335, name: 'D' },
+          { value: 400, name: 'E' }
+        ],
+        roseType: 'radius'
+      }
+    ]
+  },
   'scatter': {
     xAxis: {},
     yAxis: {},
@@ -393,7 +422,7 @@ const option = {
   }
 }
 
-const gridWhiteList = ['pie', 'pie-ring', 'map']
+const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map']
 Object.keys(option).forEach(key => {
   if (gridWhiteList.includes(key)) return
   option[key].grid = {
@@ -1138,6 +1167,20 @@ const configMap = {
     'chartConfig': {
       name: '配置',
       config: ['basic', 'radius-Array', 'legend', 'title']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'interaction': {
+      name: '交互',
+      config: []
+    }
+  },
+  'pie-rose': {
+    'chartConfig': {
+      name: '配置',
+      config: ['basic', 'radius-Number', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',

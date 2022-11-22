@@ -19,7 +19,7 @@ class Chart {
     this.key = key
     this.el = el
     this.type = type
-    this.option = parentOption || option[this.type]
+    this.option = parentOption || _.cloneDeep(option[this.type])
     this.chart = null
 
     this.config = parentConfig || handleConfigData(this.type)
@@ -51,7 +51,7 @@ class Chart {
   resize () {
     this.chart.resize()
   }
-  change (data, keys) {
+  change (data, type, keys) {
     if (data.theme && data.theme !== this.configData.theme) {
       this.init(data.theme)
     }
@@ -62,17 +62,8 @@ class Chart {
     handleAxisFlipOption(data, option, this)
     // 半径
     handleRadiusOption(data, option)
-    
-    // 删除未激活折叠面板配置
-    this.config.forEach(tab => {
-      if (tab.collapse && tab.collapse.length) {
-        tab.collapse.forEach(collapse => {
-          if (collapse.key && !keys.includes(collapse.key) && collapse.switch) {
-            delete option[collapse.key]
-          }
-        })
-      }
-    })
+    // 清除无用配置
+    handleUselessOption(type, option, this.config, keys)
 
     this.update(option)
   }
@@ -202,6 +193,57 @@ function handleRadiusOption (data, chartOption) {
   }
 }
 
+// 删除无用配置
+function handleUselessOption (type, chartOption, config, keys) {
+  // 删除未激活折叠面板配置
+  config.forEach(tab => {
+    if (tab.collapse && tab.collapse.length) {
+      tab.collapse.forEach(collapse => {
+        if (collapse.key && !keys.includes(collapse.key) && collapse.switch) {
+          delete chartOption[collapse.key]
+          // 地图类型-还原默认配置
+          handleMapDefaultOption(collapse.key)
+        }
+      })
+    }
+  })
+
+  let defaultWhiteList = ['map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
+  function handleMapDefaultOption (key) {
+    if (defaultWhiteList.includes(key)) {
+      switch (key) {
+        case 'map-geo-label':
+          chartOption.geo.label = _.cloneDeep(option[type].geo.label)
+          break
+        case 'map-geo-itemStyle':
+          chartOption.geo.itemStyle = _.cloneDeep(option[type].geo.itemStyle)
+          break
+        case 'map-geo-emphasis':
+          chartOption.geo.emphasis = _.cloneDeep(option[type].geo.emphasis)
+          break
+        case 'map-series-label':
+          chartOption.series.forEach(item => {
+            item.label = _.cloneDeep(option[type].series[0].label)
+          })
+          break
+        case 'map-series-itemStyle':
+          chartOption.series.forEach(item => {
+            item.itemStyle = _.cloneDeep(option[type].series[0].itemStyle)
+          })
+          break
+        case 'map-series-emphasis':
+          chartOption.series.forEach(item => {
+            item.emphasis = _.cloneDeep(option[type].series[0].emphasis)
+          })
+          break
+        default:
+          break
+      }
+    }
+  }
+}
+
+// 配置面板数据
 function handleConfigData (type) {
   let result = []
   Object.keys(configMap[type]).forEach(key => {

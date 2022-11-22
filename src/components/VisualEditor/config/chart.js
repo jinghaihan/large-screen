@@ -1137,7 +1137,7 @@ const config = {
     'map-scatter-rippleEffect': {
       type: 'collapse',
       name: '涟漪特效设置',
-      switch: true,
+      switch: false,
       defaultValue: true,
       config: [
         {

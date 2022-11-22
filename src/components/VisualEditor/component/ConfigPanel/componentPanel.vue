@@ -100,7 +100,7 @@ export default {
       })
       switch (this.component.componentType) {
         case 'chart':
-          this.cell.change(formData, this.switchKeys)
+          this.cell.change(formData, this.component.type, this.switchKeys)
           break
         default:
           break

@@ -195,6 +195,8 @@ function handleRadiusOption (data, chartOption) {
 
 // 删除无用配置
 function handleUselessOption (type, chartOption, config, keys) {
+  let defaultWhiteList = ['map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
+  
   // 删除未激活折叠面板配置
   config.forEach(tab => {
     if (tab.collapse && tab.collapse.length) {
@@ -208,7 +210,6 @@ function handleUselessOption (type, chartOption, config, keys) {
     }
   })
 
-  let defaultWhiteList = ['map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
   function handleMapDefaultOption (key) {
     if (defaultWhiteList.includes(key)) {
       switch (key) {

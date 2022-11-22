@@ -1576,7 +1576,7 @@ const configMap = {
   'map-scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'map-geo-basic', 'map-scatter-rippleEffect', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
+      config: ['basic', 'map-geo-basic', 'map-scatter-rippleEffect', 'title', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
     },
     'dataSource': {
       name: '数据',
@@ -1590,7 +1590,7 @@ const configMap = {
   'map-density': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'map-series-basic', 'visualMap', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
+      config: ['basic', 'map-series-basic', 'visualMap', 'title', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
     },
     'dataSource': {
       name: '数据',

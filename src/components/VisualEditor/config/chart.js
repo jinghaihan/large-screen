@@ -363,8 +363,33 @@ const option = {
       scaleLimit: {
         min: 0.1,
         max: 12
+      },
+      label: {
+        show: false,
+        color: '#333',
+        fontSize: 12
+      },
+      itemStyle: {
+        areaColor: '#eee',
+        borderColor: '#000'
+      },
+      emphasis: {
+        label: {
+          show: false,
+          color: '#fff',
+          fontSize: 12
+        },
+        itemStyle: {
+          areaColor: '#eee',
+          borderColor: '#000'
+        }
       }
-    }
+    },
+    series: [
+      {
+
+      }
+    ]
   }
 }
 
@@ -801,39 +826,39 @@ const config = {
     'map-basic': {
       type: 'config',
       config: [
-        {
-          type: 'select',
-          label: '主题',
-          key: 'theme',
-          defaultValue: 'default',
-          rules: [
-            { required: false, message: '请选择主题' }
-          ],
-          props: {
-            placeholder: '请选择主题',
-            disabled: false,
-            options: [
-              { label: '默认', value: 'default' },
-              { label: 'light', value: 'light' },
-              { label: 'macarons', value: 'macarons' },
-              { label: 'infographic', value: 'infographic' },
-              { label: 'shine', value: 'shine' },
-              { label: 'roma', value: 'roma' }
-            ]
-          }
-        },
-        {
-          type: 'switch',
-          label: '提示框',
-          key: 'geo-tooltip-show',
-          defaultValue: true,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
+        // {
+        //   type: 'select',
+        //   label: '主题',
+        //   key: 'theme',
+        //   defaultValue: 'default',
+        //   rules: [
+        //     { required: false, message: '请选择主题' }
+        //   ],
+        //   props: {
+        //     placeholder: '请选择主题',
+        //     disabled: false,
+        //     options: [
+        //       { label: '默认', value: 'default' },
+        //       { label: 'light', value: 'light' },
+        //       { label: 'macarons', value: 'macarons' },
+        //       { label: 'infographic', value: 'infographic' },
+        //       { label: 'shine', value: 'shine' },
+        //       { label: 'roma', value: 'roma' }
+        //     ]
+        //   }
+        // },
+        // {
+        //   type: 'switch',
+        //   label: '提示框',
+        //   key: 'geo-tooltip-show',
+        //   defaultValue: true,
+        //   rules: [
+        //     { required: false, message: '请选择' }
+        //   ],
+        //   props: {
+        //     disabled: false
+        //   }
+        // },
         {
           type: 'select',
           label: '地图名称',
@@ -881,6 +906,152 @@ const config = {
             placeholder: '请输入缩放比例',
             disabled: false,
             step: 0.1
+          }
+        }
+      ]
+    },
+    'map-label': {
+      type: 'collapse',
+      name: '文本标签设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'geo-label-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'geo-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'geo-label-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'map-itemStyle': {
+      type: 'collapse',
+      name: '地图区域设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'color-picker',
+          label: '区域颜色',
+          key: 'geo-itemStyle-areaColor',
+          defaultValue: { hex: '#eee' },
+          rules: [
+            { required: false, message: '请选择区域颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '描边颜色',
+          key: 'geo-itemStyle-borderColor',
+          defaultValue: { hex: '#000' },
+          rules: [
+            { required: false, message: '请选择描边颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'map-emphasis': {
+      type: 'collapse',
+      name: '高亮状态设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'geo-emphasis-label-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'geo-emphasis-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'geo-emphasis-label-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '区域颜色',
+          key: 'geo-emphasis-itemStyle-areaColor',
+          defaultValue: { hex: '#eee' },
+          rules: [
+            { required: false, message: '请选择区域颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '描边颜色',
+          key: 'geo-emphasis-itemStyle-borderColor',
+          defaultValue: { hex: '#000' },
+          rules: [
+            { required: false, message: '请选择描边颜色' }
+          ],
+          props: {
+            disabled: false
           }
         }
       ]
@@ -1022,7 +1193,7 @@ const configMap = {
   'map': {
     'chartConfig': {
       name: '配置',
-      config: ['map-basic']
+      config: ['map-basic', 'map-label', 'map-itemStyle', 'map-emphasis']
     },
     'dataSource': {
       name: '数据',

@@ -67,7 +67,7 @@ class Chart {
     this.config.forEach(tab => {
       if (tab.collapse && tab.collapse.length) {
         tab.collapse.forEach(collapse => {
-          if (collapse.key && !keys.includes(collapse.key)) {
+          if (collapse.key && !keys.includes(collapse.key) && collapse.switch) {
             delete option[collapse.key]
           }
         })

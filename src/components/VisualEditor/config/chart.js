@@ -97,6 +97,15 @@ const chart = {
     w: 40,
     h: 30,
     props: {}
+  },
+  'map-density': {
+    name: '密度地图',
+    type: 'map-density',
+    image: require('@/assets/VisualEditor/component/map-density.png'),
+    col: 12,
+    w: 40,
+    h: 30,
+    props: {}
   }
 }
 
@@ -434,14 +443,68 @@ const option = {
           brushType: 'fill'
         },
         data: [
-          { name: '北京', value: [116.405285, 39.904989, 1000] }
+          { name: '北京市', value: [116.405285, 39.904989, 1000] }
+        ]
+      }
+    ]
+  },
+  'map-density': {
+    tooltip: {
+      show: true,
+      formatter (params) {
+        return `地区：${params.name}</br>数值：${params.value || '-'}`
+      }
+    },
+    visualMap: {
+      left: 'left',
+      min: 800,
+      max: 50000,
+      text: ['High', 'Low'],
+      realtime: false,
+      calculable: true
+    },
+    series: [
+      {
+        type: 'map',
+        map: 'china',
+        roam: true,
+        zoom: 1.2,
+        scaleLimit: {
+          min: 0.1,
+          max: 12
+        },
+        label: {
+          show: false,
+          color: '#333',
+          fontSize: 12
+        },
+        itemStyle: {
+          areaColor: '#eee',
+          borderColor: '#000'
+        },
+        emphasis: {
+          label: {
+            show: false,
+            color: '#fff',
+            fontSize: 12
+          },
+          itemStyle: {
+            areaColor: '#eee',
+            borderColor: '#000'
+          }
+        },
+        data: [
+          { name: '北京市', value: 1000 },
+          { name: '浙江省', value: 50000 },
+          { name: '四川省', value: 8000 },
+          { name: '江西省', value: 10000 }
         ]
       }
     ]
   }
 }
 
-const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map-scatter']
+const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map-scatter', 'map-density']
 Object.keys(option).forEach(key => {
   if (gridWhiteList.includes(key)) return
   option[key].grid = {
@@ -871,21 +934,9 @@ const config = {
         }
       ]
     },
-    'map-basic': {
+    'map-geo-basic': {
       type: 'config',
       config: [
-        {
-          type: 'switch',
-          label: '提示框',
-          key: 'tooltip-show',
-          defaultValue: true,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
         {
           type: 'select',
           label: '地图名称',
@@ -937,7 +988,7 @@ const config = {
         }
       ]
     },
-    'map-label': {
+    'map-geo-label': {
       type: 'collapse',
       name: '文本标签设置',
       switch: true,
@@ -982,7 +1033,7 @@ const config = {
         }
       ]
     },
-    'map-itemStyle': {
+    'map-geo-itemStyle': {
       type: 'collapse',
       name: '地图区域设置',
       switch: true,
@@ -1014,7 +1065,7 @@ const config = {
         }
       ]
     },
-    'map-emphasis': {
+    'map-geo-emphasis': {
       type: 'collapse',
       name: '高亮状态设置',
       switch: true,
@@ -1083,7 +1134,7 @@ const config = {
         }
       ]
     },
-    'map-ripple': {
+    'map-scatter-rippleEffect': {
       type: 'collapse',
       name: '涟漪特效设置',
       switch: true,
@@ -1116,12 +1167,269 @@ const config = {
           }
         }
       ]
+    },
+    'map-series-basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '地图名称',
+          key: 'series-map',
+          defaultValue: 'china',
+          rules: [
+            { required: false, message: '请选择地图名称' }
+          ],
+          props: {
+            placeholder: '请选择地图名称',
+            disabled: false,
+            options: [
+              { label: '中国', value: 'china' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '鼠标操作',
+          key: 'series-roam',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择鼠标操作' }
+          ],
+          props: {
+            placeholder: '请选择鼠标操作',
+            disabled: false,
+            options: [
+              { label: '鼠标缩放和平移漫游', value: true },
+              { label: '鼠标缩放', value: 'scale' },
+              { label: '平移漫游', value: 'move' },
+              { label: '禁用', value: false }
+            ]
+          }
+        },
+        {
+          type: 'input-number',
+          label: '缩放比例',
+          key: 'series-zoom',
+          defaultValue: 1.2,
+          rules: [
+            { required: false, message: '请输入缩放比例' }
+          ],
+          props: {
+            placeholder: '请输入缩放比例',
+            disabled: false,
+            step: 0.1
+          }
+        }
+      ]
+    },
+    'map-series-label': {
+      type: 'collapse',
+      name: '文本标签设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'series-label-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'series-label-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'map-series-itemStyle': {
+      type: 'collapse',
+      name: '地图区域设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'color-picker',
+          label: '区域颜色',
+          key: 'series-itemStyle-areaColor',
+          defaultValue: { hex: '#eee' },
+          rules: [
+            { required: false, message: '请选择区域颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '描边颜色',
+          key: 'series-itemStyle-borderColor',
+          defaultValue: { hex: '#000' },
+          rules: [
+            { required: false, message: '请选择描边颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'map-series-emphasis': {
+      type: 'collapse',
+      name: '高亮状态设置',
+      switch: true,
+      defaultValue: false,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'series-emphasis-label-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-emphasis-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'series-emphasis-label-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '区域颜色',
+          key: 'series-emphasis-itemStyle-areaColor',
+          defaultValue: { hex: '#eee' },
+          rules: [
+            { required: false, message: '请选择区域颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '描边颜色',
+          key: 'series-emphasis-itemStyle-borderColor',
+          defaultValue: { hex: '#000' },
+          rules: [
+            { required: false, message: '请选择描边颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'visualMap': {
+      type: 'collapse',
+      name: '视觉映射设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'select',
+          label: '控制器位置',
+          key: 'visualMap-left/visualMap-top',
+          defaultValue: 'left/bottom',
+          rules: [
+            { required: false, message: '请选择控制器位置' }
+          ],
+          props: {
+            placeholder: '请选择控制器位置',
+            disabled: false,
+            options: [
+              { label: '左上', value: 'left/top' },
+              { label: '上', value: 'center/top' },
+              { label: '右上', value: 'right/top' },
+              { label: '右', value: 'right/middle' },
+              { label: '右下', value: 'right/bottom' },
+              { label: '下', value: 'center/bottom' },
+              { label: '左下', value: 'left/bottom' },
+              { label: '左', value: 'left/middle' }
+            ]
+          }
+        },
+        {
+          type: 'input-number',
+          label: '最大值',
+          key: 'visualMap-max',
+          defaultValue: 50000,
+          rules: [
+            { required: false, message: '请输入最大值' }
+          ],
+          props: {
+            placeholder: '请输入最大值',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '最小值',
+          key: 'visualMap-min',
+          defaultValue: 800,
+          rules: [
+            { required: false, message: '请输入最小值' }
+          ],
+          props: {
+            placeholder: '请输入最小值',
+            disabled: false
+          }
+        }
+      ]
     }
   },
   // 数据
   dataSource: {}, 
-  // 交互
-  interaction: {}
+  // 事件
+  event: {}
 }
 
 const configMap = {
@@ -1134,8 +1442,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1148,8 +1456,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1162,8 +1470,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1176,8 +1484,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1190,8 +1498,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1204,8 +1512,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1218,8 +1526,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1232,8 +1540,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1246,8 +1554,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
@@ -1260,22 +1568,36 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
       config: []
     }
   },
   'map-scatter': {
     'chartConfig': {
       name: '配置',
-      config: ['map-basic', 'map-ripple', 'map-label', 'map-itemStyle', 'map-emphasis']
+      config: ['basic', 'map-geo-basic', 'map-scatter-rippleEffect', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
     },
     'dataSource': {
       name: '数据',
       config: []
     },
-    'interaction': {
-      name: '交互',
+    'event': {
+      name: '事件',
+      config: []
+    }
+  },
+  'map-density': {
+    'chartConfig': {
+      name: '配置',
+      config: ['basic', 'map-series-basic', 'visualMap', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'event': {
+      name: '事件',
       config: []
     }
   }

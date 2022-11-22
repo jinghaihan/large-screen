@@ -71,6 +71,15 @@ const chart = {
     h: 20,
     props: {}
   },
+  'gauge': {
+    name: '仪表盘',
+    type: 'gauge',
+    image: require('@/assets/VisualEditor/component/gauge.png'),
+    col: 12,
+    w: 25,
+    h: 25,
+    props: {}
+  },
   'scatter': {
     name: '散点图',
     type: 'scatter',
@@ -291,6 +300,55 @@ const option = {
           { value: 20, name: 'C' },
           { value: 80, name: 'D' },
           { value: 100, name: 'E' }
+        ]
+      }
+    ]
+  },
+  'gauge': {
+    series: [
+      {
+        type: 'gauge',
+        progress: {
+          show: true,
+          width: 18
+        },
+        axisLine: {
+          lineStyle: {
+            width: 18
+          }
+        },
+        axisTick: {
+          show: false
+        },
+        splitLine: {
+          length: 15,
+          lineStyle: {
+            width: 2,
+            color: '#999'
+          }
+        },
+        axisLabel: {
+          distance: 25,
+          color: '#999',
+          fontSize: 16
+        },
+        anchor: {
+          show: true,
+          showAbove: true,
+          size: 25,
+          itemStyle: {
+            borderWidth: 10
+          }
+        },
+        detail: {
+          valueAnimation: true,
+          fontSize: 40,
+          offsetCenter: [0, '70%']
+        },
+        data: [
+          {
+            value: 70
+          }
         ]
       }
     ]
@@ -533,7 +591,7 @@ const option = {
   }
 }
 
-const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'map-scatter', 'map-density']
+const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'funnel', 'gauge', 'map-scatter', 'map-density']
 Object.keys(option).forEach(key => {
   if (gridWhiteList.includes(key)) return
   option[key].grid = {
@@ -1613,6 +1671,20 @@ const configMap = {
     'chartConfig': {
       name: '配置',
       config: ['basic', 'funnel-basic', 'legend', 'title']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'event': {
+      name: '事件',
+      config: []
+    }
+  },
+  'gauge': {
+    'chartConfig': {
+      name: '配置',
+      config: ['basic', 'title']
     },
     'dataSource': {
       name: '数据',

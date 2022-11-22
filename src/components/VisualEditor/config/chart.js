@@ -62,6 +62,15 @@ const chart = {
     h: 25,
     props: {}
   },
+  'funnel': {
+    name: '漏斗图',
+    type: 'funnel',
+    image: require('@/assets/VisualEditor/component/funnel.png'),
+    col: 12,
+    w: 30,
+    h: 20,
+    props: {}
+  },
   'scatter': {
     name: '散点图',
     type: 'scatter',
@@ -263,6 +272,26 @@ const option = {
           { value: 400, name: 'E' }
         ],
         roseType: 'radius'
+      }
+    ]
+  },
+  'funnel': {
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        type: 'funnel',
+        sort: 'descending',
+        top: 60,
+        bottom: 20,
+        data: [
+          { value: 60, name: 'A' },
+          { value: 40, name: 'B' },
+          { value: 20, name: 'C' },
+          { value: 80, name: 'D' },
+          { value: 100, name: 'E' }
+        ]
       }
     ]
   },
@@ -648,6 +677,55 @@ const config = {
           ],
           props: {
             placeholder: '请输入外半径',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'funnel-basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '数据排序',
+          key: 'series-sort',
+          defaultValue: 'descending',
+          rules: [
+            { required: false, message: '请选择数据排序' }
+          ],
+          props: {
+            placeholder: '请选择数据排序',
+            disabled: false,
+            options: [
+              { label: '升序', value: 'ascending' },
+              { label: '降序', value: 'descending' },
+              { label: '无指定', value: 'none' }
+            ]
+          }
+        },
+        {
+          type: 'input-number',
+          label: '上边距',
+          key: 'series-top',
+          defaultValue: 60,
+          rules: [
+            { required: false, message: '请输入上边距' }
+          ],
+          props: {
+            placeholder: '请输入上边距',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '下边距',
+          key: 'series-bottom',
+          defaultValue: 20,
+          rules: [
+            { required: false, message: '请输入下边距' }
+          ],
+          props: {
+            placeholder: '请输入下边距',
             disabled: false
           }
         }
@@ -1521,6 +1599,20 @@ const configMap = {
     'chartConfig': {
       name: '配置',
       config: ['basic', 'radius-Number', 'legend', 'title']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'event': {
+      name: '事件',
+      config: []
+    }
+  },
+  'funnel': {
+    'chartConfig': {
+      name: '配置',
+      config: ['basic', 'funnel-basic', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',

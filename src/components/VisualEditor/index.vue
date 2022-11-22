@@ -263,7 +263,6 @@ export default {
         .drag-container{
           height: 100%;
           width: 280px;
-          padding: 8px;
           overflow-x: hidden;
           overflow-y: auto;
           background: var(--primary-color);

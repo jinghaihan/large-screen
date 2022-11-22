@@ -189,8 +189,8 @@ export default {
 <style lang="less" scoped>
   .drag-panel-container{
     height: 100%;
+    padding: 8px;
     overflow-x: hidden;
-    overflow-y: auto;
     .search{
       margin-bottom: 8px;
     }

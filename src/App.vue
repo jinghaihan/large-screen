@@ -11,14 +11,13 @@
 <script>
 import config from '@/../package.json'
 import actions from '@/micro/actions'
-
-const { locales } = window.antd
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 
 export default {
   name: 'App',
   data () {
     return {
-      locales,
+      locales: zhCN,
       // 是否完成路由渲染
       flag: false,
       appName: config.name

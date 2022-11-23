@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // 递归整理菜单结构
 export function handleMenus (children, target) {
   let menus = []

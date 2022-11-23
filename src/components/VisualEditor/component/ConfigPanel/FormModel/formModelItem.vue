@@ -99,7 +99,7 @@ import MaterialLibrary from './widget/MaterialLibrary'
 export default {
   props: {
     config: {
-      type: Array,
+      type: Object,
       required: true
     },
     form: {

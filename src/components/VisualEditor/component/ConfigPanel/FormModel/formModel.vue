@@ -30,12 +30,6 @@ export default {
     config: {
       type: Array,
       required: true
-    },
-    labelCol: {
-      default: { span: 6 }
-    },
-    wrapperCol: {
-      default: { span: 17 }
     }
   },
   components: { FormModelItem },
@@ -44,7 +38,9 @@ export default {
       visible: false,
       form: {},
       rules: {},
-      configData: _.cloneDeep(this.config)
+      configData: _.cloneDeep(this.config),
+      labelCol: { span: 6 },
+      wrapperCol: { span: 17 }
     }
   },
   watch: {

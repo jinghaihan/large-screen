@@ -37,7 +37,7 @@
       </a-row>
     </a-spin>
 
-    <Modal v-if="configVisible">
+    <Modal v-if="configVisible" :modalData="modalData">
       <VisualEditor @close="onModalClose"></VisualEditor>
     </Modal>
   </div>

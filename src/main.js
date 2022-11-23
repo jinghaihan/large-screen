@@ -1,4 +1,3 @@
-import config from '@/../package.json'
 import Vue from 'vue'
 import App from './App.vue'
 // 自定义插件

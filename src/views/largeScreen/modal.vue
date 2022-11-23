@@ -22,10 +22,6 @@ export default {
     modalData: {
       type: Object,
       required: true
-    },
-    type: {
-      type: String,
-      required: true
     }
   },
   data () {

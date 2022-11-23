@@ -43,7 +43,7 @@ export default {
   props: {
     editor: null,
     layer: {
-      type: Number,
+      type: Object,
       required: true
     },
     config: {
@@ -98,17 +98,19 @@ export default {
     this.editor.setInstance({ dragPanel: this })
   },
   beforeDestroy () {
-    if (this.instance.$refs.gridLayout) {
+    try {
       this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
-    }
+    } catch (error) { }
   },
   methods: {
     init () {
-      if (this.instance && this.instance.$refs.gridLayout) {
+      try {
         this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
-      }
+      } catch (error) { }
       this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
-      this.instance.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+      try {
+        this.instance.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
+      } catch (error) {}
     },
     updateMouse (e) {
       mouseXY.x = e.clientX

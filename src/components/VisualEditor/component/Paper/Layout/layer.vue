@@ -29,6 +29,7 @@
 
 <script>
 import _ from 'lodash'
+import { GridLayout, GridItem } from 'vue-grid-layout'
 import Renderer from './renderer.vue'
 
 export default {
@@ -63,12 +64,12 @@ export default {
       required: true
     }
   },
-  components: { Renderer },
+  components: { GridLayout, GridItem, Renderer },
   data () {
     return {
       layout: _.cloneDeep(this.layoutData),
       maxW: this.grid.count,
-      maxH: (this.grid.count / this.ratio.width * this.ratio.height).toFixed(0),
+      maxH: parseInt((this.grid.count / this.ratio.width * this.ratio.height).toFixed(0)),
       visible: false
     }
   },

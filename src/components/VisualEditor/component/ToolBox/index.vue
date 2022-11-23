@@ -2,13 +2,13 @@
   <div class="toolbox-container">
     <!-- 图层 -->
     <LayerWidget :editor="editor" :layout="layout" :layer="layer"></LayerWidget>
-    <a-divider type="virtical"></a-divider>
+    <a-divider type="vertical"></a-divider>
     <!-- 缩放 -->
     <ScaleWidget :editor="editor" :scale="scale"></ScaleWidget>
-    <a-divider type="virtical"></a-divider>
+    <a-divider type="vertical"></a-divider>
     <!-- 清空 -->
     <TooltipIcon class="action delete-action" title="清空" icon="delete" placement="bottom" @click="onClear"></TooltipIcon>
-    <a-divider type="virtical"></a-divider>
+    <a-divider type="vertical"></a-divider>
     <!-- 帮助 -->
     <HotkeyWidget></HotkeyWidget>
   </div>

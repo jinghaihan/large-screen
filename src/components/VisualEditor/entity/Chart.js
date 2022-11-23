@@ -15,6 +15,7 @@ Echarts.registerMap('china', chinaMap)
 class Chart {
   constructor (data) {
     let { vm, key, el, type, parentOption, parentConfig, parentConfigData } = data
+    this.componentType = 'Chart'
     this.vm = vm
     this.key = key
     this.el = el
@@ -51,7 +52,7 @@ class Chart {
   resize () {
     this.chart.resize()
   }
-  change (data, type, keys) {
+  change (data, type, switchKeys) {
     if (data.theme && data.theme !== this.configData.theme) {
       this.init(data.theme)
     }
@@ -63,7 +64,7 @@ class Chart {
     // 半径
     handleRadiusOption(data, option)
     // 清除无用配置
-    handleUselessOption(type, option, this.config, keys)
+    handleUselessOption(type, option, this.config, switchKeys)
 
     this.update(option)
   }

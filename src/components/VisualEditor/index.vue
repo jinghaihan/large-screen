@@ -95,6 +95,8 @@
         </div>
       </div>
     </div>
+    <!-- 批量修改 -->
+    <BatchEdit v-if="editVisible" :editor="editor" @close="onModalClose"></BatchEdit>
   </div>
 </template>
 
@@ -106,12 +108,13 @@ import DragPanel from './component/DragPanel'
 import Paper from './component/Paper'
 import ToolBox from './component/ToolBox'
 import ConfigPanel from './component/ConfigPanel'
+import BatchEdit from './component/BatchEdit'
 import config from './config'
 import { getUUID } from './utils'
 
 export default {
   name: 'VisualEditor',
-  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel },
+  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, BatchEdit },
   data () {
     return {
       editor: new Editor(),
@@ -124,7 +127,8 @@ export default {
       ratio: { width: 16, height: 9 },
       grid: { show: false, count: 100, color: { r: 240, g: 240, b: 240, a: 1 } },
       component: {},
-      config
+      config,
+      editVisible: false
     }
   },
   created () {
@@ -149,23 +153,35 @@ export default {
         _this.activeKey = operation.key
       }
       switch (operation.key) {
+        case 'edit':
+          _this.handleEdit()
+          break
         case 'close':
-          _this.$confirm({
-            title: `您确定退出编辑吗？`,
-            content: '未保存的数据将会丢失',
-            confirmLoading: true,
-            okText: '确定',
-            cancelText: '取消',
-            onOk () {
-              _this.$emit('close')
-            },
-            onCancel () { }
-          })
-          
+          _this.handleClose()
           break
         default:
           break
       }
+    },
+    handleEdit () {
+      this.editVisible = true
+    },
+    handleClose () {
+      let _this = this
+      _this.$confirm({
+        title: `您确定退出编辑吗？`,
+        content: '未保存的数据将会丢失',
+        confirmLoading: true,
+        okText: '确定',
+        cancelText: '取消',
+        onOk () {
+          _this.$emit('close')
+        },
+        onCancel () { }
+      })
+    },
+    onModalClose () {
+      this.editVisible = false
     },
     // 展开/收缩
     onTrigger (type) {

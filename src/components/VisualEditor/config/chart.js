@@ -596,7 +596,7 @@ const option = {
   }
 }
 
-const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'funnel', 'gauge', 'map-scatter', 'map-density']
+const gridWhiteList = ['pie', 'pie-ring', 'pie-rose', 'funnel', 'gauge', 'radar', 'map-scatter', 'map-density']
 Object.keys(option).forEach(key => {
   if (gridWhiteList.includes(key)) return
   option[key].grid = {

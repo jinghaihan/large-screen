@@ -5,25 +5,27 @@
     @cancel="closeModal()"
     :maskClosable="false"
     :keyboard="false"
-    :width="500"
-    title="图层"
+    :width="600"
+    title="批量修改"
   >
     <a-form :form="form" autocomplete="off">
       <a-row :gutter="24">
         <a-col :span="24">
-          <a-form-item v-bind="formItemLayout" label="图层名称">
-            <a-input
+          <a-form-item v-bind="formItemLayout" label="主题">
+            <a-select
               v-decorator="[
-                'name',
+                'theme',
                 {
-                  initialValue: modalData.name,
+                  initialValue: 'default',
                   rules: [
-                    { required: true, message: '请输入图层名称', whitespace: true },
+                    { required: true, message: '请选择主题' },
                   ]
                 }
               ]"
-              placeholder="请输入图层名称"
-            />
+              placeholder="请选择主题"
+              :options="themeOption"
+            >
+            </a-select>
           </a-form-item>
         </a-col>
       </a-row>
@@ -33,12 +35,18 @@
 
 <script>
 
+const themeOption = [
+  { label: '默认', value: 'default' },
+  { label: 'light', value: 'light' },
+  { label: 'macarons', value: 'macarons' },
+  { label: 'infographic', value: 'infographic' },
+  { label: 'shine', value: 'shine' },
+  { label: 'roma', value: 'roma' }
+]
+
 export default {
   props: {
-    modalData: {
-      type: Object,
-      required: true
-    }
+    editor: null
   },
   data () {
     return {
@@ -46,7 +54,8 @@ export default {
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 16 }
-      }
+      },
+      themeOption
     }
   },
   methods: {
@@ -54,8 +63,10 @@ export default {
       let _this = this
       _this.form.validateFields(async (err, values) => {
         if (err) return
-        let params = { ...values, key: this.modalData.key }
-        _this.closeModal(params)
+        let params = { ...values }
+        this.editor.batchEdit(params)
+        
+        // _this.closeModal(params)
       })
     },
     closeModal (data) {

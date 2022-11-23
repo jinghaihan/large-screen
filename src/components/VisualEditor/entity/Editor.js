@@ -209,6 +209,22 @@ class Editor {
       backgroundImage: !image || image === 'none' ? 'none' : `url(${image})`
     })
   }
+  batchEdit (data) {
+    Object.keys(this.cell).forEach(key => {
+      let componentType = this.cell[key].componentType
+      switch (componentType) {
+        case 'Chart':
+          this.cell[key].change(
+            { ...this.cell[key].configData.formData, ...data },
+            this.cell[key].type,
+            this.cell[key].configData.switch
+          )
+          break
+        default:
+          break
+      }
+    })
+  }
 }
 
 export default Editor

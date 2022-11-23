@@ -2,13 +2,13 @@ import _ from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
 import { getUUID } from '../utils'
-import { sidebar, renderer, layer, library, navbar, configPanel, basic } from '../config/editor'
+import config from '../config'
 
 class Editor {
   constructor () {
     this.instance = {}
-    this.operation = { sidebar, renderer, layer, library, navbar, configPanel }
-    this.config = { basic }
+    this.operation = { ...config.operation }
+    this.config = { basic: config.basic }
     this.cell = {}
     this.clipBoard = {}
     this.maxClipBoard = 20
@@ -215,7 +215,7 @@ class Editor {
       switch (componentType) {
         case 'Chart':
           let formData = _.cloneDeep(this.cell[key].configData.formData)
-          handleChartComponent(this.cell[key].config, data, formData)
+          handleChartComponent(data, formData)
           this.cell[key].change(
             formData,
             this.cell[key].type,
@@ -229,7 +229,7 @@ class Editor {
   }
 }
 
-// 字体颜色Key
+// 字体颜色
 const fontColorList = [
   'legend-textStyle-color',
   'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
@@ -242,7 +242,7 @@ const fontColorList = [
   'series-detail-color',
   'series-axisLabel-color'
 ]
-function handleChartComponent (config, data, formData) {
+function handleChartComponent (data, formData) {
   Object.keys(data).forEach(key => {
     switch (key) {
       case 'fontColor':

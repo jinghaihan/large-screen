@@ -68,7 +68,7 @@ export default {
         // 默认值
         form[conf.key] = this.getValue(conf.defaultValue)
         // 规则
-        rules[conf.key] = conf.rules.map(rule => {
+        rules[conf.key] = (conf.rules ? conf.rules : []).map(rule => {
           return {
             ...rule,
             trigger: ['change', 'blur']

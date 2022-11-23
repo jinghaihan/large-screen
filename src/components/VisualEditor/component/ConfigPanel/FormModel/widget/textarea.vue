@@ -2,7 +2,8 @@
   <div>
     <a-textarea v-if="config.type === 'textarea'"
                 v-model="form[config.key]"
-                v-bind="config.props"
+                :placeholder="'请输入' + config.label"
+                v-bind="config.props || {}"
                 :class="config.props.maxLength ? 'textarea-has-marker' : ''"
                 @change="onChange" />
     <!-- textarea角标 -->

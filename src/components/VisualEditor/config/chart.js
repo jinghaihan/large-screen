@@ -679,340 +679,6 @@ const config = {
         }
       ]
     },
-    'axisFlip': {
-      type: 'config',
-      config: [
-        {
-          type: 'switch',
-          label: '坐标轴翻转',
-          key: 'axisFlip',
-          defaultValue: false,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        }
-      ]
-    },
-    'radius-Number': {
-      type: 'config',
-      config: [
-        {
-          type: 'input-number',
-          label: '半径',
-          key: 'radius',
-          defaultValue: 70,
-          rules: [
-            { required: false, message: '请输入半径' }
-          ],
-          props: {
-            placeholder: '请输入半径',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'radius-Array': {
-      type: 'config',
-      config: [
-        {
-          type: 'input-number',
-          label: '内半径',
-          key: 'radiusInner',
-          defaultValue: 40,
-          rules: [
-            { required: false, message: '请输入内半径' }
-          ],
-          props: {
-            placeholder: '请输入内半径',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '外半径',
-          key: 'radiusOuter',
-          defaultValue: 70,
-          rules: [
-            { required: false, message: '请输入外半径' }
-          ],
-          props: {
-            placeholder: '请输入外半径',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'funnel-basic': {
-      type: 'config',
-      config: [
-        {
-          type: 'select',
-          label: '数据排序',
-          key: 'series-sort',
-          defaultValue: 'descending',
-          rules: [
-            { required: false, message: '请选择数据排序' }
-          ],
-          props: {
-            placeholder: '请选择数据排序',
-            disabled: false,
-            options: [
-              { label: '升序', value: 'ascending' },
-              { label: '降序', value: 'descending' },
-              { label: '无指定', value: 'none' }
-            ]
-          }
-        },
-        {
-          type: 'input-number',
-          label: '最小宽度占比',
-          key: 'series-minSize?percent',
-          defaultValue: 0,
-          rules: [
-            { required: false, message: '请输入最小宽度占比' }
-          ],
-          props: {
-            placeholder: '请输入最小宽度占比',
-            disabled: false,
-            formatter: value => `${value}%`,
-            parser: value => value.replace('%', '')
-          }
-        },
-        {
-          type: 'input-number',
-          label: '最大宽度占比',
-          key: 'series-maxSize?percent',
-          defaultValue: 100,
-          rules: [
-            { required: false, message: '请输入最大宽度占比' }
-          ],
-          props: {
-            placeholder: '请输入最大宽度占比',
-            disabled: false,
-            formatter: value => `${value}%`,
-            parser: value => value.replace('%', '')
-          }
-        },
-        {
-          type: 'input-number',
-          label: '上边距',
-          key: 'series-top',
-          defaultValue: 60,
-          rules: [
-            { required: false, message: '请输入上边距' }
-          ],
-          props: {
-            placeholder: '请输入上边距',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '下边距',
-          key: 'series-bottom',
-          defaultValue: 20,
-          rules: [
-            { required: false, message: '请输入下边距' }
-          ],
-          props: {
-            placeholder: '请输入下边距',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'gauge-basic': {
-      type: 'config',
-      config: [
-        {
-          type: 'input-number',
-          label: '进度条宽度',
-          key: 'series-progress-width',
-          defaultValue: 10,
-          rules: [
-            { required: false, message: '请输入进度条宽度' }
-          ],
-          props: {
-            placeholder: '请输入进度条宽度',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '轴线宽度',
-          key: 'series-axisLine-lineStyle-width',
-          defaultValue: 10,
-          rules: [
-            { required: false, message: '请输入轴线宽度' }
-          ],
-          props: {
-            placeholder: '请输入轴线宽度',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'gauge-detail': {
-      type: 'collapse',
-      name: '详情设置',
-      switch: false,
-      defaultValue: true,
-      config: [
-        {
-          type: 'switch',
-          label: '展示',
-          key: 'series-detail-show',
-          defaultValue: true,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '字体大小',
-          key: 'series-detail-fontSize',
-          defaultValue: 30,
-          rules: [
-            { required: false, message: '请输入字体大小' }
-          ],
-          props: {
-            placeholder: '请输入字体大小',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'gauge-axisTick': {
-      type: 'collapse',
-      name: '刻度线设置',
-      switch: false,
-      defaultValue: true,
-      config: [
-        {
-          type: 'switch',
-          label: '展示',
-          key: 'series-axisTick-show',
-          defaultValue: false,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '刻度数',
-          key: 'series-axisTick-splitNumber',
-          defaultValue: 5,
-          rules: [
-            { required: false, message: '请输入刻度数' }
-          ],
-          props: {
-            placeholder: '请输入刻度数',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'gauge-splitLine': {
-      type: 'collapse',
-      name: '分割线设置',
-      switch: false,
-      defaultValue: true,
-      config: [
-        {
-          type: 'switch',
-          label: '分割线展示',
-          key: 'series-splitLine-show',
-          defaultValue: true,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '分割线长度',
-          key: 'series-splitLine-length',
-          defaultValue: 10,
-          rules: [
-            { required: false, message: '请输入分割线长度' }
-          ],
-          props: {
-            placeholder: '请输入分割线长度',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '分割线间距',
-          key: 'series-splitLine-distance',
-          defaultValue: 10,
-          rules: [
-            { required: false, message: '请输入分割线间距' }
-          ],
-          props: {
-            placeholder: '请输入分割线间距',
-            disabled: false
-          }
-        }
-      ]
-    },
-    'gauge-axisLabel': {
-      type: 'collapse',
-      name: '刻度标签设置',
-      switch: false,
-      defaultValue: true,
-      config: [
-        {
-          type: 'switch',
-          label: '刻度标签展示',
-          key: 'series-axisLabel-show',
-          defaultValue: true,
-          rules: [
-            { required: false, message: '请选择' }
-          ],
-          props: {
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '刻度标签字体大小',
-          key: 'series-axisLabel-fontSize',
-          defaultValue: 12,
-          rules: [
-            { required: false, message: '请输入刻度标签字体大小' }
-          ],
-          props: {
-            placeholder: '请输入刻度标签字体大小',
-            disabled: false
-          }
-        },
-        {
-          type: 'input-number',
-          label: '标签刻度线间距',
-          key: 'series-axisLabel-distance',
-          defaultValue: 15,
-          rules: [
-            { required: false, message: '请输入标签刻度线间距' }
-          ],
-          props: {
-            placeholder: '请输入标签刻度线间距',
-            disabled: false
-          }
-        }
-      ]
-    },
     'axis': {
       type: 'collapse',
       name: '坐标轴设置',
@@ -1346,6 +1012,459 @@ const config = {
           ],
           props: {
             placeholder: '请输入最小值',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'axisFlip': {
+      type: 'config',
+      config: [
+        {
+          type: 'switch',
+          label: '坐标轴翻转',
+          key: 'axisFlip',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'pie-series-label': {
+      type: 'collapse',
+      name: '文本标签设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'series-label-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'select',
+          label: '标签位置',
+          key: 'series-label-position',
+          defaultValue: 'outside',
+          rules: [
+            { required: false, message: '请选择标签位置' }
+          ],
+          props: {
+            placeholder: '请选择标签位置',
+            disabled: false,
+            options: [
+              { label: '扇区外侧', value: 'outside' },
+              { label: '扇区内部', value: 'inside' },
+              { label: '中心', value: 'center' }
+            ]
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'radius-Number': {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '半径',
+          key: 'radius',
+          defaultValue: 70,
+          rules: [
+            { required: false, message: '请输入半径' }
+          ],
+          props: {
+            placeholder: '请输入半径',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'radius-Array': {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '内半径',
+          key: 'radiusInner',
+          defaultValue: 40,
+          rules: [
+            { required: false, message: '请输入内半径' }
+          ],
+          props: {
+            placeholder: '请输入内半径',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '外半径',
+          key: 'radiusOuter',
+          defaultValue: 70,
+          rules: [
+            { required: false, message: '请输入外半径' }
+          ],
+          props: {
+            placeholder: '请输入外半径',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'funnel-basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '数据排序',
+          key: 'series-sort',
+          defaultValue: 'descending',
+          rules: [
+            { required: false, message: '请选择数据排序' }
+          ],
+          props: {
+            placeholder: '请选择数据排序',
+            disabled: false,
+            options: [
+              { label: '升序', value: 'ascending' },
+              { label: '降序', value: 'descending' },
+              { label: '无指定', value: 'none' }
+            ]
+          }
+        },
+        {
+          type: 'input-number',
+          label: '最小宽度占比',
+          key: 'series-minSize?percent',
+          defaultValue: 0,
+          rules: [
+            { required: false, message: '请输入最小宽度占比' }
+          ],
+          props: {
+            placeholder: '请输入最小宽度占比',
+            disabled: false,
+            formatter: value => `${value}%`,
+            parser: value => value.replace('%', '')
+          }
+        },
+        {
+          type: 'input-number',
+          label: '最大宽度占比',
+          key: 'series-maxSize?percent',
+          defaultValue: 100,
+          rules: [
+            { required: false, message: '请输入最大宽度占比' }
+          ],
+          props: {
+            placeholder: '请输入最大宽度占比',
+            disabled: false,
+            formatter: value => `${value}%`,
+            parser: value => value.replace('%', '')
+          }
+        },
+        {
+          type: 'input-number',
+          label: '上边距',
+          key: 'series-top',
+          defaultValue: 60,
+          rules: [
+            { required: false, message: '请输入上边距' }
+          ],
+          props: {
+            placeholder: '请输入上边距',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '下边距',
+          key: 'series-bottom',
+          defaultValue: 20,
+          rules: [
+            { required: false, message: '请输入下边距' }
+          ],
+          props: {
+            placeholder: '请输入下边距',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'funnel-series-label': {
+      type: 'collapse',
+      name: '文本标签设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '标签展示',
+          key: 'series-label-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'select',
+          label: '标签位置',
+          key: 'series-label-position',
+          defaultValue: 'outside',
+          rules: [
+            { required: false, message: '请选择标签位置' }
+          ],
+          props: {
+            placeholder: '请选择标签位置',
+            disabled: false,
+            options: [
+              { label: '漏斗图外侧', value: 'outside' },
+              { label: '漏斗图内部', value: 'inside' }
+            ]
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-label-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
+        }
+      ]
+    },
+    'gauge-basic': {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '进度条宽度',
+          key: 'series-progress-width',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入进度条宽度' }
+          ],
+          props: {
+            placeholder: '请输入进度条宽度',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '轴线宽度',
+          key: 'series-axisLine-lineStyle-width',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入轴线宽度' }
+          ],
+          props: {
+            placeholder: '请输入轴线宽度',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'gauge-series-detail': {
+      type: 'collapse',
+      name: '详情设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '详情展示',
+          key: 'series-detail-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'series-detail-fontSize',
+          defaultValue: 30,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'gauge-series-axisTick': {
+      type: 'collapse',
+      name: '刻度线设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '刻度线展示',
+          key: 'series-axisTick-show',
+          defaultValue: false,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '刻度数',
+          key: 'series-axisTick-splitNumber',
+          defaultValue: 5,
+          rules: [
+            { required: false, message: '请输入刻度数' }
+          ],
+          props: {
+            placeholder: '请输入刻度数',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'gauge-series-splitLine': {
+      type: 'collapse',
+      name: '分割线设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '分割线展示',
+          key: 'series-splitLine-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '分割线长度',
+          key: 'series-splitLine-length',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入分割线长度' }
+          ],
+          props: {
+            placeholder: '请输入分割线长度',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '分割线间距',
+          key: 'series-splitLine-distance',
+          defaultValue: 10,
+          rules: [
+            { required: false, message: '请输入分割线间距' }
+          ],
+          props: {
+            placeholder: '请输入分割线间距',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'gauge-series-axisLabel': {
+      type: 'collapse',
+      name: '刻度标签设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'switch',
+          label: '刻度标签展示',
+          key: 'series-axisLabel-show',
+          defaultValue: true,
+          rules: [
+            { required: false, message: '请选择' }
+          ],
+          props: {
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'series-axisLabel-fontSize',
+          defaultValue: 12,
+          rules: [
+            { required: false, message: '请输入字体大小' }
+          ],
+          props: {
+            placeholder: '请输入字体大小',
+            disabled: false
+          }
+        },
+        {
+          type: 'input-number',
+          label: '间距',
+          key: 'series-axisLabel-distance',
+          defaultValue: 15,
+          rules: [
+            { required: false, message: '请输入间距' }
+          ],
+          props: {
+            placeholder: '请输入间距',
+            disabled: false
+          }
+        }
+      ]
+    },
+    'radar-axisName': {
+      type: 'collapse',
+      name: '指示器颜色设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'radar-axisName-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
             disabled: false
           }
         }
@@ -1852,7 +1971,7 @@ const configMap = {
   'pie': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'radius-Number', 'legend', 'title']
+      config: ['basic', 'radius-Number', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -1866,7 +1985,7 @@ const configMap = {
   'pie-ring': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'radius-Array', 'legend', 'title']
+      config: ['basic', 'radius-Array', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -1880,7 +1999,7 @@ const configMap = {
   'pie-rose': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'radius-Number', 'legend', 'title']
+      config: ['basic', 'radius-Number', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -1894,7 +2013,7 @@ const configMap = {
   'funnel': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'funnel-basic', 'legend', 'title']
+      config: ['basic', 'funnel-basic', 'funnel-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -1908,7 +2027,7 @@ const configMap = {
   'gauge': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'gauge-basic', 'gauge-detail', 'gauge-axisTick', 'gauge-splitLine', 'gauge-axisLabel', 'title']
+      config: ['basic', 'gauge-basic', 'gauge-series-detail', 'gauge-series-axisTick', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -1950,7 +2069,7 @@ const configMap = {
   'radar': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'legend', 'title']
+      config: ['basic', 'radar-axisName', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',

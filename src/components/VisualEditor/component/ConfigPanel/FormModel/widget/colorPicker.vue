@@ -46,7 +46,13 @@ export default {
       }
     }
   },
+  mounted () {
+    this.init()
+  },
   methods: {
+    init () {
+      this.$refs.holder.style.background = this.color.hex
+    },
     onChange (value) {
       this.$refs.holder.style.background = value.hex
       this.form[this.config.key] = this.color

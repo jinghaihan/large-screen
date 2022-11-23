@@ -4,6 +4,7 @@ const sidebar = [
   { name: '可视化组件', key: 'chart', icon: 'area-chart', active: true },
   { name: '多媒体组件', key: 'multiMedia', icon: 'video-camera', active: true },
   { name: '文本组件', key: 'text', icon: 'font-colors', active: true },
+  { name: '表格组件', key: 'table', icon: 'table', active: true },
   { name: '剪贴板', key: 'clipBoard', icon: 'copy', active: true }
 ]
 const renderer = [

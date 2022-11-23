@@ -55,10 +55,6 @@ class Chart {
   change (data, type, switchKeys) {
     if (data.theme && data.theme !== this.configData.theme) {
       this.init(data.theme)
-      this.configData.formData = this.configData.formData ? {
-        ...this.configData.formData,
-        theme: data.theme
-      } : null
     }
     let option = handleOption(data, this.option)
     // 区域缩放

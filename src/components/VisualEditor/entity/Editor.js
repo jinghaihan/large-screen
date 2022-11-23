@@ -221,6 +221,7 @@ class Editor {
             this.cell[key].type,
             this.cell[key].configData.switch
           )
+          this.cell[key].configData.formData = formData
           break
         default:
           break
@@ -231,12 +232,12 @@ class Editor {
 
 // 字体颜色
 const fontColorList = [
-  'legend-textStyle-color',
   'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
-  'series-label-color',
+  'legend-textStyle-color',
   'radar-axisName-color',
   'geo-emphasis-label-color',
   'geo-label-color',
+  'series-label-color',
   'series-emphasis-label-color',
   'series-label-color',
   'series-detail-color',

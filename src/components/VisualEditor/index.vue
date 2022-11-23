@@ -164,6 +164,7 @@ export default {
       }
     },
     handleEdit () {
+      this.editor.changeComponent()
       this.editVisible = true
     },
     handleClose () {

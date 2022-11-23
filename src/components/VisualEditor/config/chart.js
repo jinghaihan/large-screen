@@ -728,7 +728,7 @@ const config = {
           key: 'yAxis-splitLine-lineStyle-color',
           defaultValue: { hex: '#ccc' },
           rules: [
-            { required: false, message: '请选择字体颜色' }
+            { required: false, message: '请选择分割线颜色' }
           ],
           props: {
             disabled: false
@@ -1322,6 +1322,18 @@ const config = {
             placeholder: '请输入字体大小',
             disabled: false
           }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-detail-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
+            disabled: false
+          }
         }
       ]
     },
@@ -1353,6 +1365,18 @@ const config = {
           ],
           props: {
             placeholder: '请输入刻度数',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '刻度线颜色',
+          key: 'series-axisTick-lineStyle-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择刻度线颜色' }
+          ],
+          props: {
             disabled: false
           }
         }
@@ -1401,6 +1425,18 @@ const config = {
             placeholder: '请输入分割线间距',
             disabled: false
           }
+        },
+        {
+          type: 'color-picker',
+          label: '分割线颜色',
+          key: 'series-splitLine-lineStyle-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择分割线颜色' }
+          ],
+          props: {
+            disabled: false
+          }
         }
       ]
     },
@@ -1445,6 +1481,18 @@ const config = {
           ],
           props: {
             placeholder: '请输入间距',
+            disabled: false
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'series-axisLabel-color',
+          defaultValue: { hex: '#333' },
+          rules: [
+            { required: false, message: '请选择字体颜色' }
+          ],
+          props: {
             disabled: false
           }
         }
@@ -2027,7 +2075,7 @@ const configMap = {
   'gauge': {
     'chartConfig': {
       name: '配置',
-      config: ['basic', 'gauge-basic', 'gauge-series-detail', 'gauge-series-axisTick', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'title']
+      config: ['basic', 'gauge-basic', 'gauge-series-detail', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'gauge-series-axisTick', 'title']
     },
     'dataSource': {
       name: '数据',

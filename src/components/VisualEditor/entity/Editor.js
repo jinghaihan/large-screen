@@ -214,8 +214,10 @@ class Editor {
       let componentType = this.cell[key].componentType
       switch (componentType) {
         case 'Chart':
+          let formData = _.cloneDeep(this.cell[key].configData.formData)
+          handleChartComponent(this.cell[key].config, data, formData)
           this.cell[key].change(
-            { ...this.cell[key].configData.formData, ...data },
+            formData,
             this.cell[key].type,
             this.cell[key].configData.switch
           )
@@ -225,6 +227,38 @@ class Editor {
       }
     })
   }
+}
+
+// 字体颜色Key
+const fontColorList = [
+  'legend-textStyle-color',
+  'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
+  'series-label-color',
+  'radar-axisName-color',
+  'geo-emphasis-label-color',
+  'geo-label-color',
+  'series-emphasis-label-color',
+  'series-label-color',
+  'series-detail-color',
+  'series-axisLabel-color'
+]
+function handleChartComponent (config, data, formData) {
+  Object.keys(data).forEach(key => {
+    switch (key) {
+      case 'fontColor':
+        Object.keys(formData).forEach(item => {
+          if (fontColorList.includes(item)) {
+            formData[item] = data[key]
+          }
+        })
+        break
+      default:
+        formData[key] = data[key]
+        break
+    }
+  })
+
+  return formData
 }
 
 export default Editor

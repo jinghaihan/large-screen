@@ -121,7 +121,12 @@ function handleOption (data, chartOption) {
       recursive(keys, option[key], data)
     } else {
       if (data || data === 0 || typeof data === 'boolean') {
-        option[key] = data.hex ? data.hex : data
+        if (key.match(/\?percent/g)) {
+          key = key.replace(/\?percent/g, '')
+          option[key] = data + '%'
+        } else {
+          option[key] = data.hex ? data.hex : data
+        }
       } else {
         delete option[key]
       }

@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "codemirror": "^5.41.0",
     "echarts": "^5.4.0",
     "hotkeys-js": "^3.10.0",
     "html2canvas": "^1.4.1",

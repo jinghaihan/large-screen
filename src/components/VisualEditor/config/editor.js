@@ -9,6 +9,7 @@ const sidebar = [
 ]
 const renderer = [
   { name: '复制', key: 'copy', icon: 'copy' },
+  { name: '查看源码', key: 'viewSource', icon: 'eye', only: ['chart'] },
   { name: '删除', key: 'delete', icon: 'delete' }
 ]
 const layer = [
@@ -39,26 +40,15 @@ const basic = [
     defaultValue: null,
     rules: [
       { required: true, message: '请输入名称', whitespace: true }
-    ],
-    props: {
-      placeholder: '请输入名称',
-      disabled: false,
-      allowClear: true
-    }
+    ]
   },
   {
     type: 'textarea',
     label: '描述',
     key: 'description',
     defaultValue: null,
-    rules: [
-      { required: false, message: '请输入描述', whitespace: true }
-    ],
     props: {
-      maxLength: 300,
-      placeholder: '请输入描述',
-      disabled: false,
-      allowClear: true
+      maxLength: 300
     }
   },
   {
@@ -68,11 +58,7 @@ const basic = [
     defaultValue: null,
     rules: [
       { required: true, message: '请输入长比例' }
-    ],
-    props: {
-      placeholder: '长比例',
-      disabled: false
-    }
+    ]
   },
   {
     type: 'input-number',
@@ -81,36 +67,20 @@ const basic = [
     defaultValue: null,
     rules: [
       { required: true, message: '请输入宽比例' }
-    ],
-    props: {
-      placeholder: '宽比例',
-      disabled: false
-    }
+    ]
   },
   {
     type: 'color-picker',
     label: '网格线颜色',
     key: 'gridColor',
-    defaultValue: null,
-    rules: [
-      { required: false, message: '请选择网格线颜色' }
-    ],
-    props: {
-      disabled: false
-    }
+    defaultValue: null
   },
   {
     type: 'material-library',
     libraryType: 'picture',
     label: '背景',
     key: 'background',
-    defaultValue: 'none',
-    rules: [
-      { required: false, message: '请选择背景' }
-    ],
-    props: {
-      disabled: false
-    }
+    defaultValue: 'none'
   }
 ]
 

@@ -15,7 +15,7 @@ Echarts.registerMap('china', chinaMap)
 class Chart {
   constructor (data) {
     let { vm, key, el, type, parentOption, parentConfig, parentConfigData } = data
-    this.componentType = 'Chart'
+    this.componentType = 'chart'
     this.vm = vm
     this.key = key
     this.el = el

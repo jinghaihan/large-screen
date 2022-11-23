@@ -96,7 +96,7 @@
       </div>
     </div>
     <!-- 批量修改 -->
-    <BatchEdit v-if="editVisible" :editor="editor" @close="onModalClose"></BatchEdit>
+    <BatchEditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></BatchEditModal>
   </div>
 </template>
 
@@ -108,13 +108,13 @@ import DragPanel from './component/DragPanel'
 import Paper from './component/Paper'
 import ToolBox from './component/ToolBox'
 import ConfigPanel from './component/ConfigPanel'
-import BatchEdit from './component/BatchEdit'
+import BatchEditModal from './component/BatchEditModal'
 import config from './config'
 import { getUUID } from './utils'
 
 export default {
   name: 'VisualEditor',
-  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, BatchEdit },
+  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, BatchEditModal },
   data () {
     return {
       editor: new Editor(),
@@ -128,7 +128,8 @@ export default {
       grid: { show: false, count: 100, color: { r: 240, g: 240, b: 240, a: 1 } },
       component: {},
       config,
-      editVisible: false
+      // 弹窗
+      batchEditVisible: false
     }
   },
   created () {
@@ -165,7 +166,7 @@ export default {
     },
     handleEdit () {
       this.editor.changeComponent()
-      this.editVisible = true
+      this.batchEditVisible = true
     },
     handleClose () {
       let _this = this
@@ -182,7 +183,7 @@ export default {
       })
     },
     onModalClose () {
-      this.editVisible = false
+      this.batchEditVisible = false
     },
     // 展开/收缩
     onTrigger (type) {

@@ -17,12 +17,15 @@
         </a-menu-item>
       </a-menu>
     </a-dropdown>
+    <!-- 查看源码 -->
+    <ViewSourceModal v-if="viewSourceVisible" :data="cell.option" @close="onModalClose"></ViewSourceModal>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import Chart from '../../../entity/Chart'
+import ViewSourceModal from './viewSourceModal.vue'
 
 export default {
   props: {
@@ -36,10 +39,26 @@ export default {
       required: true
     }
   },
+  components: { ViewSourceModal },
   data () {
     return {
       cell: null,
-      observer: null
+      observer: null,
+      // 弹窗
+      viewSourceVisible: false
+    }
+  },
+  computed: {
+    operation () {
+      let data = []
+      if (this.component.componentType) {
+        data = this.editor.operation.renderer.filter(item => {
+          if (!item.only || item.only.includes(this.component.componentType)) {
+            return true
+          }
+        })
+      }
+      return data
     }
   },
   mounted () {
@@ -116,12 +135,18 @@ export default {
             }
           })
           break
+        case 'viewSource':
+          this.viewSourceVisible = true
+          break
         default:
           break
       }
     },
     getStyle () {
       return this.component.key === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'
+    },
+    onModalClose () {
+      this.viewSourceVisible = false
     }
   }
 }

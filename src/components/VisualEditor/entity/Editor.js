@@ -213,7 +213,7 @@ class Editor {
     Object.keys(this.cell).forEach(key => {
       let componentType = this.cell[key].componentType
       switch (componentType) {
-        case 'Chart':
+        case 'chart':
           let formData = _.cloneDeep(this.cell[key].configData.formData)
           handleChartComponent(data, formData)
           this.cell[key].change(

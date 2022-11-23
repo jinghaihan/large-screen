@@ -21,12 +21,7 @@ const config = [
     label: '主题',
     key: 'theme',
     defaultValue: 'default',
-    rules: [
-      { required: false, message: '请选择主题' }
-    ],
     props: {
-      placeholder: '请选择主题',
-      disabled: false,
       options: [
         { label: '默认', value: 'default' },
         { label: 'light', value: 'light' },
@@ -41,13 +36,7 @@ const config = [
     type: 'color-picker',
     label: '字体颜色',
     key: 'fontColor',
-    defaultValue: { hex: '#333' },
-    rules: [
-      { required: false, message: '请选择字体颜色' }
-    ],
-    props: {
-      disabled: false
-    }
+    defaultValue: { hex: '#333' }
   }
 ]
 

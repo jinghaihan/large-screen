@@ -12,7 +12,7 @@
         </component>
       </div>
       <a-menu slot="overlay">
-        <a-menu-item v-for="item in editor.operation.renderer"
+        <a-menu-item v-for="item in operation"
                      :key="item.key"
                      @click="onOperation(item)">
           <div class="menu-item-container">
@@ -31,6 +31,7 @@ import _ from 'lodash'
 import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import ViewSourceModal from './viewSourceModal.vue'
+import { getThumbnail } from '../../../utils'
 
 export default {
   props: {
@@ -124,6 +125,7 @@ export default {
         this.cell = new Text({
           vm: this,
           key: this.data.props.key,
+          el: this.$refs.render,
           type: this.data.props.type,
           parentConfig: _.cloneDeep(cell.config),
           parentConfigData: _.cloneDeep(cell.configData)
@@ -135,6 +137,9 @@ export default {
       _this.observer = new ResizeObserver(function () {
         switch (_this.data.props.componentType) {
           case 'chart':
+            _this.cell.resize()
+            break
+          case 'text':
             _this.cell.resize()
             break
           default:
@@ -156,7 +161,8 @@ export default {
             ...this.data,
             props: {
               ...this.data.props,
-              image: this.cell.chart.getDataURL()
+              image: this.cell.componentType === 'chart' 
+                ? this.cell.chart.getDataURL() : await getThumbnail(this.$refs.render)
             }
           })
           break

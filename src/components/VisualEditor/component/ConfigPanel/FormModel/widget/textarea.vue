@@ -4,10 +4,10 @@
                 v-model="form[config.key]"
                 :placeholder="'请输入' + config.label"
                 v-bind="config.props || {}"
-                :class="config.props.maxLength ? 'textarea-has-marker' : ''"
+                :class="config.props && config.props.maxLength ? 'textarea-has-marker' : ''"
                 @change="onChange" />
     <!-- textarea角标 -->
-    <span v-if="config.type === 'textarea' && config.props.maxLength"
+    <span v-if="config.type === 'textarea' && config.props && config.props.maxLength"
           class="textarea-marker">
       {{form[config.key] ? form[config.key].length : 0}}/{{config.props.maxLength}}
     </span>

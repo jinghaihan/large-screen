@@ -1,17 +1,18 @@
-import _, { map } from 'lodash'
+import _ from 'lodash'
 import { config, configMap } from '../config/text'
-import { upperCaseFirst } from '../utils'
+import { handleConfigData, upperCaseFirst } from '../utils'
 
 class Text {
   constructor (data) {
-    let { vm, key, type, parentConfig, parentConfigData } = data
+    let { vm, key, el, type, parentConfig, parentConfigData } = data
     this.componentType = 'text'
     this.vm = vm
     this.key = key
+    this.el = el
     this.type = type
     this.component = null
 
-    this.config = parentConfig || handleConfigData(this.type)
+    this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
       formData: null,
       switch: null,
@@ -32,6 +33,7 @@ class Text {
     this.component = require(`../component/Text/${value}.vue`).default
   }
   update (data) {
+    if (!data) return
     let instance = this.vm.$refs.component
     instance.text = data.text
     instance.tooltip = data.tooltip
@@ -45,36 +47,15 @@ class Text {
         }
       }
     })
-    console.log(instance.style)
+  }
+  resize () {
+    this.update(this.configData.formData)
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({
       ...data
     })
   }
-}
-
-function handleConfigData (type) {
-  let result = []
-  Object.keys(configMap[type]).forEach(key => {
-    result.push({
-      name: configMap[type][key].name,
-      key: key
-    })
-  })
-  result.forEach(item => {
-    item.config = []
-    item.collapse = []
-    let data = _.cloneDeep(config[item.key])
-    configMap[type][item.key].config.forEach(key => {
-      item[data[key].type].push({
-        ...data[key],
-        type: key,
-        key
-      })
-    })
-  })
-  return result
 }
 
 export default Text

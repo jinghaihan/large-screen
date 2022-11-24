@@ -182,9 +182,6 @@ export default {
         onCancel () { }
       })
     },
-    onModalClose () {
-      this.batchEditVisible = false
-    },
     // 展开/收缩
     onTrigger (type) {
       switch (type) {
@@ -192,8 +189,8 @@ export default {
           let drag = $(this.$refs.drag)
           let paper = $(this.$refs.paper)
           if (this.trigger.drag === 'right') {
-            drag.css({ 'width': '280px', 'padding': '8px', 'transition': '0.3s' })
-            paper.css({ 'width': 'calc(100% - 280px)', 'transition': '0.3s' })
+            drag.css({ 'width': '240px', 'padding': '8px', 'transition': '0.3s' })
+            paper.css({ 'width': 'calc(100% - 240px)', 'transition': '0.3s' })
             this.trigger.drag = 'left'
           } else {
             drag.css({ 'width': '0px', 'padding': '0px', 'transition': '0.3s' })
@@ -220,6 +217,9 @@ export default {
       this.rendered = true
       this.editor.initHotKey()
       this.grid.show = true
+    },
+    onModalClose () {
+      this.batchEditVisible = false
     }
   }
 }
@@ -262,7 +262,7 @@ export default {
         padding: 0 8px;
         background: var(--normal-color);
         .library-container{
-          width: 280px;
+          width: 240px;
           .button{
             margin-right: 8px;
           }
@@ -280,7 +280,7 @@ export default {
         background: var(--normal-color);
         .drag-container{
           height: 100%;
-          width: 280px;
+          width: 240px;
           overflow-x: hidden;
           overflow-y: auto;
           background: var(--primary-color);
@@ -288,7 +288,7 @@ export default {
         .paper-container{
           position: relative;
           height: 100%;
-          width: calc(~"100% - 280px");
+          width: calc(~"100% - 240px");
           display: flex;
         }
         .config-container{

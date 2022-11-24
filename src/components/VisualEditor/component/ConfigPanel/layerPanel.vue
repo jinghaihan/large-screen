@@ -14,7 +14,7 @@
         </a-tooltip>
       </div>
       <!-- 图层 -->
-      <draggable
+      <Draggable
         v-if="!loading"
         class="layer-list-group"
         tag="ul"
@@ -45,13 +45,15 @@
           </a-card>
           </li>
         </transition-group>
-      </draggable>
+      </Draggable>
       <Modal v-if="modalVisible" :modalData="modalData" @close="onModalClose"></Modal>
     </div>
   </a-spin>
 </template>
 
 <script>
+import _ from 'lodash'
+import Draggable from 'vuedraggable'
 import TooltipIcon from '../TooltipIcon'
 import Modal from '../ToolBox/widget/LayerWidget/modal.vue'
 import { getThumbnail } from '../../utils'
@@ -68,7 +70,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, Modal },
+  components: { Draggable, TooltipIcon, Modal },
   data () {
     return {
       loading: false,

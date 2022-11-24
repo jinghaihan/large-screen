@@ -5,7 +5,7 @@ const text = {
     image: require('@/assets/VisualEditor/component/text/single-line.png'),
     col: 12,
     w: 10,
-    h: 2,
+    h: 4,
     props: {}
   },
   'multi-line': {
@@ -13,8 +13,8 @@ const text = {
     type: 'multi-line',
     image: require('@/assets/VisualEditor/component/text/multi-line.png'),
     col: 12,
-    w: 20,
-    h: 10,
+    w: 10,
+    h: 8,
     props: {}
   },
   'billboard': {

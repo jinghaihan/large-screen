@@ -9,6 +9,7 @@ import 'echarts/theme/roma'
 import chinaMap from '@/assets/VisualEditor/map/china.json'
 
 import { option, config, configMap } from '../config/chart'
+import { handleConfigData } from '../utils'
 
 Echarts.registerMap('china', chinaMap)
 
@@ -23,7 +24,7 @@ class Chart {
     this.option = parentOption || _.cloneDeep(option[this.type])
     this.chart = null
 
-    this.config = parentConfig || handleConfigData(this.type)
+    this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
       theme: 'default',
       axisFlip: null,
@@ -253,30 +254,6 @@ function handleUselessOption (type, chartOption, config, keys) {
       }
     }
   }
-}
-
-// 配置面板数据
-function handleConfigData (type) {
-  let result = []
-  Object.keys(configMap[type]).forEach(key => {
-    result.push({
-      name: configMap[type][key].name,
-      key: key
-    })
-  })
-  result.forEach(item => {
-    item.config = []
-    item.collapse = []
-    let data = _.cloneDeep(config[item.key])
-    configMap[type][item.key].config.forEach(key => {
-      item[data[key].type].push({
-        ...data[key],
-        type: key,
-        key
-      })
-    })
-  })
-  return result
 }
 
 export default Chart

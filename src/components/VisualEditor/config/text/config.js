@@ -1,15 +1,9 @@
 const config = {
   // 配置
   textConfig: {
-    'single-line': {
+    'basic': {
       type: 'config',
       config: [
-        {
-          type: 'input',
-          label: '文本内容',
-          key: 'text',
-          defaultValue: '单行文本'
-        },
         {
           type: 'color-picker',
           label: '字体颜色',
@@ -20,7 +14,7 @@ const config = {
           type: 'input-number',
           label: '字体大小',
           key: 'fontSize?pixel',
-          defaultValue: 14
+          defaultValue: 24
         },
         {
           type: 'select',
@@ -53,7 +47,29 @@ const config = {
           type: 'switch',
           label: '提示框',
           key: 'tooltip',
-          defaultValue: true
+          defaultValue: false
+        }
+      ]
+    },
+    'single-line': {
+      type: 'config',
+      config: [
+        {
+          type: 'input',
+          label: '文本内容',
+          key: 'text',
+          defaultValue: '单行文本'
+        }
+      ]
+    },
+    'multi-line': {
+      type: 'config',
+      config: [
+        {
+          type: 'textarea',
+          label: '文本内容',
+          key: 'text',
+          defaultValue: '多行文本'
         }
       ]
     }

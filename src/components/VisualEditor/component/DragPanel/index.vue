@@ -203,7 +203,7 @@ export default {
       justify-content: center;
     }
     .image-col12{
-      height: 95px;
+      height: 80px;
     }
     .action{
       margin-right: 8px;

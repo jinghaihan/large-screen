@@ -36,11 +36,10 @@ export default {
     }
   },
   watch: {
-    color: {
+    data: {
       immediate: true,
       deep: true,
       handler: function (value) {
-        this.data = value
         if (this.$refs.holder) {
           this.onChange(value)
         }

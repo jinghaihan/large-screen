@@ -1,15 +1,19 @@
 <template>
   <div class="billboard-container">
-    <a-statistic :value="value"
-                 :value-style="valueStyle"
-                 :suffix="suffix"
-                 :prefix="prefix">
-      <div slot="title" :style="titleStyle">{{title}}</div>
-    </a-statistic>
+    <a-statistic-countdown ref="statistic"
+                           :title="title"
+                           :value="value"
+                           :value-style="valueStyle"
+                           :suffix="suffix"
+                           :prefix="prefix"
+                           :format="format">
+    </a-statistic-countdown>
   </div>
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
   data () {
     return {
@@ -17,6 +21,7 @@ export default {
       value: 0,
       prefix: '',
       suffix: '',
+      format: '',
       titleStyle: {
         color: '',
         fontSize: '',
@@ -28,6 +33,27 @@ export default {
         fontWeight: ''
       }
     }
+  },
+  watch: {
+    titleStyle: {
+      deep: true,
+      immediate: true,
+      handler: function (value) {
+        this.handleTitleStyle()
+      }
+    }
+  },
+  mounted () {
+    this.handleTitleStyle()
+  },
+  methods: {
+    handleTitleStyle () {
+      if (this.$refs.statistic) {
+        let el = this.$refs.statistic.$el
+        let title = $(el).find('.ant-statistic-title')
+        title.css(this.titleStyle)
+      }
+    }
   }
 }
 </script>
@@ -36,5 +62,9 @@ export default {
   .billboard-container{
     height: 100%;
     width: 100%;
+  }
+  /deep/.ant-statistic-title{
+    color: #00000073;
+    font-size: 24px;
   }
 </style>

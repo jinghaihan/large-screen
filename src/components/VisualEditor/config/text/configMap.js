@@ -44,7 +44,7 @@ const configMap = {
   'billboard-countdown': {
     'textConfig': {
       name: '配置',
-      config: ['billboard-title', 'billboard-value']
+      config: ['billboard-countdown', 'billboard-countdown-title', 'billboard-countdown-value']
     },
     'dataSource': {
       name: '数据',

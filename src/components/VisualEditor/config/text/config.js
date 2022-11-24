@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const config = {
   // 配置
   textConfig: {
@@ -141,6 +143,109 @@ const config = {
           label: '数值内容',
           key: 'value',
           defaultValue: 112893
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'valueStyle-color',
+          defaultValue: { hex: '#000000D9' }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'valueStyle-fontSize?pixel',
+          defaultValue: 34
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'valueStyle-fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        }
+      ]
+    },
+    'billboard-countdown': {
+      type: 'config',
+      config: [
+        {
+          type: 'input',
+          label: '数值前缀',
+          key: 'prefix',
+          defaultValue: ''
+        },
+        {
+          type: 'input',
+          label: '数值后缀',
+          key: 'suffix',
+          defaultValue: ''
+        },
+        {
+          type: 'input',
+          label: '格式化',
+          key: 'format',
+          defaultValue: 'HH:mm:ss'
+        }
+      ]
+    },
+    'billboard-countdown-title': {
+      type: 'collapse',
+      name: '标题设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input',
+          label: '倒计时',
+          key: 'title',
+          defaultValue: '倒计时'
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'titleStyle-color',
+          defaultValue: { hex: '#00000073' }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'titleStyle-fontSize?pixel',
+          defaultValue: 24
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'titleStyle-fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        }
+      ]
+    },
+    'billboard-countdown-value': {
+      type: 'collapse',
+      name: '数值设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input',
+          label: '数值内容',
+          key: 'value',
+          defaultValue: moment().add(1, 'days').format('YYYY-MM-DD')
         },
         {
           type: 'color-picker',

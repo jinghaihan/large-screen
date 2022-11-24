@@ -32,7 +32,18 @@ class Text {
     this.component = require(`../component/Text/${value}.vue`).default
   }
   update (data) {
-    this.vm.$refs.component.text = data.text
+    const whiteList = ['text']
+    let instance = this.vm.$refs.component
+    instance.text = data.text
+    Object.keys(data).forEach(key => {
+      if (!whiteList.includes(key)) {
+        if (key.match(/\?pixel/g)) {
+          instance.style[key.replace(/\?pixel/g, '')] = data[key] + 'px'
+        } else {
+          instance.style[key] = data[key].hex ? data[key].hex : data[key]
+        }
+      }
+    })
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({

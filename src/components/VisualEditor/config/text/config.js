@@ -8,7 +8,7 @@ const config = {
           type: 'input',
           label: '文本内容',
           key: 'text',
-          defaultValue: null
+          defaultValue: '单行文本'
         },
         {
           type: 'switch',
@@ -19,7 +19,7 @@ const config = {
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'fontSize',
+          key: 'fontSize?pixel',
           defaultValue: 14
         },
         {

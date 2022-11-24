@@ -54,6 +54,20 @@ const configMap = {
       name: '交互',
       config: []
     }
+  },
+  'notable': {
+    'textConfig': {
+      name: '配置',
+      config: ['notable']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'interaction': {
+      name: '交互',
+      config: []
+    }
   }
 }
 

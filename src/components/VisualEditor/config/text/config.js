@@ -274,6 +274,52 @@ const config = {
           }
         }
       ]
+    },
+    'notable': {
+      type: 'config',
+      config: [
+        {
+          type: 'input',
+          label: '文本内容',
+          key: 'text',
+          defaultValue: '走马灯'
+        },
+        {
+          type: 'input-number',
+          label: '滚动速度(S)',
+          key: 'duration',
+          defaultValue: 4,
+          props: {
+            mine: 0
+          }
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'style-color',
+          defaultValue: { hex: '#333' }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'style-fontSize?pixel',
+          defaultValue: 24
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'style-fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        }
+      ]
     }
   },
   // 数据

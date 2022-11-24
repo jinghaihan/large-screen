@@ -17,6 +17,15 @@ const text = {
     h: 8,
     props: {}
   },
+  'notable': {
+    name: '走马灯',
+    type: 'notable',
+    image: require('@/assets/VisualEditor/component/text/notable.png'),
+    col: 12,
+    w: 10,
+    h: 4,
+    props: {}
+  },
   'billboard': {
     name: '数据看板',
     type: 'billboard',

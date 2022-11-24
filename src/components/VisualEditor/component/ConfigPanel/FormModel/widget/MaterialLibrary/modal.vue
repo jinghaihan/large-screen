@@ -1,7 +1,6 @@
 <template>
   <a-modal
     :visible="true"
-    @ok="onSubmit"
     @cancel="closeModal()"
     :maskClosable="false"
     :keyboard="false"
@@ -80,6 +79,9 @@ export default {
       if (!data.image) return
       this.$emit('submit', data.image)
       this.$emit('close')
+    },
+    onUpload () {
+
     },
     closeModal (data) {
       this.$emit('close', data)

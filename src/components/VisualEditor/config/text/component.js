@@ -26,6 +26,15 @@ const text = {
     h: 10,
     props: {}
   },
+  'billboard-countdown': {
+    name: '倒计时看板',
+    type: 'billboard-countdown',
+    image: require('@/assets/VisualEditor/component/text/billboard-countdown.png'),
+    col: 12,
+    w: 20,
+    h: 10,
+    props: {}
+  },
   'clock': {
     name: '时钟',
     type: 'clock',

@@ -7,19 +7,19 @@ const config = {
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'color',
+          key: 'style-color',
           defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'fontSize?pixel',
+          key: 'style-fontSize?pixel',
           defaultValue: 24
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'fontWeight',
+          key: 'style-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -33,7 +33,7 @@ const config = {
         {
           type: 'select',
           label: '对齐方式',
-          key: 'textAlign',
+          key: 'style-textAlign',
           defaultValue: 'center',
           props: {
             options: [
@@ -42,12 +42,6 @@ const config = {
               { label: '右对齐', value: 'right' }
             ]
           }
-        },
-        {
-          type: 'switch',
-          label: '提示框',
-          key: 'tooltip',
-          defaultValue: false
         }
       ]
     },
@@ -70,6 +64,109 @@ const config = {
           label: '文本内容',
           key: 'text',
           defaultValue: '多行文本'
+        }
+      ]
+    },
+    'billboard': {
+      type: 'config',
+      config: [
+        {
+          type: 'input',
+          label: '数值前缀',
+          key: 'prefix',
+          defaultValue: ''
+        },
+        {
+          type: 'input',
+          label: '数值后缀',
+          key: 'suffix',
+          defaultValue: ''
+        },
+        {
+          type: 'input',
+          label: '千分位标识符',
+          key: 'groupSeparator',
+          defaultValue: ','
+        }
+      ]
+    },
+    'billboard-title': {
+      type: 'collapse',
+      name: '标题设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input',
+          label: '数值标题',
+          key: 'title',
+          defaultValue: '访问量'
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'titleStyle-color',
+          defaultValue: { hex: '#00000073' }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'titleStyle-fontSize?pixel',
+          defaultValue: 24
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'titleStyle-fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        }
+      ]
+    },
+    'billboard-value': {
+      type: 'collapse',
+      name: '数值设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'input-number',
+          label: '数值内容',
+          key: 'value',
+          defaultValue: 112893
+        },
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'valueStyle-color',
+          defaultValue: { hex: '#000000D9' }
+        },
+        {
+          type: 'input-number',
+          label: '字体大小',
+          key: 'valueStyle-fontSize?pixel',
+          defaultValue: 34
+        },
+        {
+          type: 'select',
+          label: '字体粗细',
+          key: 'valueStyle-fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
         }
       ]
     }

@@ -34,19 +34,26 @@ class Text {
   }
   update (data) {
     if (!data) return
+
     let instance = this.vm.$refs.component
-    instance.text = data.text
-    instance.tooltip = data.tooltip
-    const whiteList = ['text', 'tooltip']
-    Object.keys(data).forEach(key => {
-      if (!whiteList.includes(key)) {
+    Object.keys(data).forEach(item => {
+      recursive(item.split('-'), instance, data[item])
+    })
+
+    function recursive (keys, target, data) {
+      let key = keys[0]
+      keys.splice(0, 1)
+      if (keys.length) {
+        recursive(keys, target[key], data)
+      } else {
         if (key.match(/\?pixel/g)) {
-          instance.style[key.replace(/\?pixel/g, '')] = data[key] + 'px'
+          key = key.replace(/\?pixel/g, '')
+          target[key] = data + 'px'
         } else {
-          instance.style[key] = data[key].hex ? data[key].hex : data[key]
+          target[key] = data && data.hex ? data.hex : data
         }
       }
-    })
+    }
   }
   resize () {
     this.update(this.configData.formData)

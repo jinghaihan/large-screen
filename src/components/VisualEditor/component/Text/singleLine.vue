@@ -1,9 +1,5 @@
 <template>
-  <a-tooltip v-if="tooltip">
-    <template slot="title">{{text}}</template>
-    <div class="single-line-container" :style="style">{{text}}</div>
-  </a-tooltip>
-  <div v-else class="single-line-container" :style="style">{{text}}</div>
+  <div class="single-line-container" :style="style">{{text}}</div>
 </template>
 
 <script>
@@ -16,8 +12,7 @@ export default {
         fontSize: '',
         fontWeight: '',
         textAlign: ''
-      },
-      tooltip: true
+      }
     }
   }
 }

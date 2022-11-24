@@ -21,3 +21,10 @@ export function getThumbnail (el, ratio) {
     })
   })
 }
+
+export function upperCaseFirst (str) {
+  str = str.toLowerCase()
+  return str.replace(/\b\w|\s\w/g, fw => {
+    return fw.toUpperCase()
+  })
+}

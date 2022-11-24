@@ -2,7 +2,7 @@ const chart = {
   'bar': {
     name: '柱状图',
     type: 'bar',
-    image: require('@/assets/VisualEditor/component/bar.png'),
+    image: require('@/assets/VisualEditor/component/chart/bar.png'),
     col: 12,
     w: 25,
     h: 20,
@@ -11,7 +11,7 @@ const chart = {
   'bar-stack': {
     name: '堆叠柱状图',
     type: 'bar-stack',
-    image: require('@/assets/VisualEditor/component/bar-stack.png'),
+    image: require('@/assets/VisualEditor/component/chart/bar-stack.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -20,7 +20,7 @@ const chart = {
   'line': {
     name: '折线图',
     type: 'line',
-    image: require('@/assets/VisualEditor/component/line.png'),
+    image: require('@/assets/VisualEditor/component/chart/line.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -29,7 +29,7 @@ const chart = {
   'line-area': {
     name: '面积图',
     type: 'line-area',
-    image: require('@/assets/VisualEditor/component/line-area.png'),
+    image: require('@/assets/VisualEditor/component/chart/line-area.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -38,7 +38,7 @@ const chart = {
   'pie': {
     name: '饼状图',
     type: 'pie',
-    image: require('@/assets/VisualEditor/component/pie.png'),
+    image: require('@/assets/VisualEditor/component/chart/pie.png'),
     col: 12,
     w: 25,
     h: 25,
@@ -47,7 +47,7 @@ const chart = {
   'pie-ring': {
     name: '环状图',
     type: 'pie-ring',
-    image: require('@/assets/VisualEditor/component/pie-ring.png'),
+    image: require('@/assets/VisualEditor/component/chart/pie-ring.png'),
     col: 12,
     w: 25,
     h: 25,
@@ -56,7 +56,7 @@ const chart = {
   'pie-rose': {
     name: '玫瑰图',
     type: 'pie-rose',
-    image: require('@/assets/VisualEditor/component/pie-rose.png'),
+    image: require('@/assets/VisualEditor/component/chart/pie-rose.png'),
     col: 12,
     w: 25,
     h: 25,
@@ -65,7 +65,7 @@ const chart = {
   'funnel': {
     name: '漏斗图',
     type: 'funnel',
-    image: require('@/assets/VisualEditor/component/funnel.png'),
+    image: require('@/assets/VisualEditor/component/chart/funnel.png'),
     col: 12,
     w: 30,
     h: 20,
@@ -74,7 +74,7 @@ const chart = {
   'gauge': {
     name: '仪表盘',
     type: 'gauge',
-    image: require('@/assets/VisualEditor/component/gauge.png'),
+    image: require('@/assets/VisualEditor/component/chart/gauge.png'),
     col: 12,
     w: 25,
     h: 25,
@@ -83,7 +83,7 @@ const chart = {
   'scatter': {
     name: '散点图',
     type: 'scatter',
-    image: require('@/assets/VisualEditor/component/scatter.png'),
+    image: require('@/assets/VisualEditor/component/chart/scatter.png'),
     col: 12,
     w: 20,
     h: 20,
@@ -92,7 +92,7 @@ const chart = {
   'bubble': {
     name: '气泡图',
     type: 'bubble',
-    image: require('@/assets/VisualEditor/component/bubble.png'),
+    image: require('@/assets/VisualEditor/component/chart/bubble.png'),
     col: 12,
     w: 40,
     h: 30,
@@ -101,7 +101,7 @@ const chart = {
   'radar': {
     name: '雷达图',
     type: 'radar',
-    image: require('@/assets/VisualEditor/component/radar.png'),
+    image: require('@/assets/VisualEditor/component/chart/radar.png'),
     col: 12,
     w: 30,
     h: 30,
@@ -110,7 +110,7 @@ const chart = {
   'map-scatter': {
     name: '散点地图',
     type: 'map-scatter',
-    image: require('@/assets/VisualEditor/component/map-scatter.png'),
+    image: require('@/assets/VisualEditor/component/chart/map-scatter.png'),
     col: 12,
     w: 40,
     h: 30,
@@ -119,7 +119,7 @@ const chart = {
   'map-density': {
     name: '密度地图',
     type: 'map-density',
-    image: require('@/assets/VisualEditor/component/map-density.png'),
+    image: require('@/assets/VisualEditor/component/chart/map-density.png'),
     col: 12,
     w: 40,
     h: 30,

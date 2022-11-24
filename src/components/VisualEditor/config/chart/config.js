@@ -838,8 +838,8 @@ const config = {
   },
   // 数据
   dataSource: {}, 
-  // 事件
-  event: {}
+  // 交互
+  interaction: {}
 }
 
 export default config

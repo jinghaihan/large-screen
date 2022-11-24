@@ -102,6 +102,9 @@ export default {
         case 'chart':
           this.cell.change(formData, this.component.type, this.switchKeys)
           break
+        case 'text':
+          this.cell.update(formData)
+          break
         default:
           break
       }

@@ -5,7 +5,11 @@
       <div ref="render"
            class="render-container"
            @click="e => e.preventDefault()">
-        {{data.i}}
+        <!-- 动态加载组件 -->
+        <component ref="component"
+                   v-if="cell && cell.component"
+                   :is="cell.component">
+        </component>
       </div>
       <a-menu slot="overlay">
         <a-menu-item v-for="item in editor.operation.renderer"
@@ -25,6 +29,7 @@
 <script>
 import _ from 'lodash'
 import Chart from '../../../entity/Chart'
+import Text from '../../../entity/Text'
 import ViewSourceModal from './viewSourceModal.vue'
 
 export default {
@@ -76,6 +81,9 @@ export default {
           case 'chart':
             this.handleChart()
             break
+          case 'text':
+            this.handleText()
+            break
           default:
             break
         }
@@ -83,6 +91,7 @@ export default {
         this.observe()
       }
     },
+    // Chart类型
     handleChart () {
       let cell = this.editor.cell[this.data.props.key]
       if (cell) {
@@ -100,6 +109,22 @@ export default {
           el: this.$refs.render,
           type: this.data.props.type,
           parentOption: _.cloneDeep(cell.option),
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
+      }
+    },
+    // 文本类型
+    handleText () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        this.cell = new Text({
+          vm: this,
+          key: this.data.props.key,
+          type: this.data.props.type,
           parentConfig: _.cloneDeep(cell.config),
           parentConfigData: _.cloneDeep(cell.configData)
         })

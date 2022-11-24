@@ -8,8 +8,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -22,8 +22,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -36,8 +36,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -50,8 +50,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -64,8 +64,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -78,8 +78,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -92,8 +92,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -106,8 +106,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -120,8 +120,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -134,8 +134,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -148,8 +148,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -162,8 +162,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -176,8 +176,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   },
@@ -190,8 +190,8 @@ const configMap = {
       name: '数据',
       config: []
     },
-    'event': {
-      name: '事件',
+    'interaction': {
+      name: '交互',
       config: []
     }
   }

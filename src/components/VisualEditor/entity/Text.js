@@ -32,9 +32,10 @@ class Text {
     this.component = require(`../component/Text/${value}.vue`).default
   }
   update (data) {
-    const whiteList = ['text']
     let instance = this.vm.$refs.component
     instance.text = data.text
+    instance.tooltip = data.tooltip
+    const whiteList = ['text', 'tooltip']
     Object.keys(data).forEach(key => {
       if (!whiteList.includes(key)) {
         if (key.match(/\?pixel/g)) {
@@ -44,6 +45,7 @@ class Text {
         }
       }
     })
+    console.log(instance.style)
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({

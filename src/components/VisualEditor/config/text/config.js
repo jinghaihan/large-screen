@@ -11,10 +11,10 @@ const config = {
           defaultValue: '单行文本'
         },
         {
-          type: 'switch',
-          label: '提示框',
-          key: 'tooltip',
-          defaultValue: true
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'color',
+          defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',
@@ -23,10 +23,37 @@ const config = {
           defaultValue: 14
         },
         {
-          type: 'color-picker',
-          label: '字体颜色',
-          key: 'color',
-          defaultValue: { hex: '#333' }
+          type: 'select',
+          label: '字体粗细',
+          key: 'fontWeight',
+          defaultValue: 'normal',
+          props: {
+            options: [
+              { label: '默认', value: 'normal' },
+              { label: '粗', value: 'bold' },
+              { label: '加粗', value: 'bolder' },
+              { label: '细', value: 'lighter' }
+            ]
+          }
+        },
+        {
+          type: 'select',
+          label: '对齐方式',
+          key: 'textAlign',
+          defaultValue: 'center',
+          props: {
+            options: [
+              { label: '左对齐', value: 'left' },
+              { label: '居中', value: 'center' },
+              { label: '右对齐', value: 'right' }
+            ]
+          }
+        },
+        {
+          type: 'switch',
+          label: '提示框',
+          key: 'tooltip',
+          defaultValue: true
         }
       ]
     }

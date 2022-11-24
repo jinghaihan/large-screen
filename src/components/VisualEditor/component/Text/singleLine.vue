@@ -1,20 +1,23 @@
 <template>
-  <div ref="container"
-       class="single-line-container"
-       :style="style">
-    {{text}}
-  </div>
+  <a-tooltip v-if="tooltip">
+    <template slot="title">{{text}}</template>
+    <div class="single-line-container" :style="style">{{text}}</div>
+  </a-tooltip>
+  <div v-else class="single-line-container" :style="style">{{text}}</div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      text: '文本内容',
+      text: '',
       style: {
-        fontSize: '14px',
-        color: '#333'
-      }
+        color: '',
+        fontSize: '',
+        fontWeight: '',
+        textAlign: ''
+      },
+      tooltip: true
     }
   }
 }

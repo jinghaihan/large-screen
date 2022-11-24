@@ -3,7 +3,7 @@
     <a-dropdown @visibleChange="onChange">
       <div ref="holder" class="holder"></div>
       <template slot="overlay">
-        <ColorPicker v-model="color"></ColorPicker>
+        <ColorPicker v-model="data"></ColorPicker>
       </template>
     </a-dropdown>
   </div>
@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-
+      data: this.color
     }
   },
   watch: {
@@ -40,6 +40,7 @@ export default {
       immediate: true,
       deep: true,
       handler: function (value) {
+        this.data = value
         if (this.$refs.holder) {
           this.onChange(value)
         }
@@ -51,11 +52,11 @@ export default {
   },
   methods: {
     init () {
-      this.$refs.holder.style.background = this.color.hex
+      this.$refs.holder.style.background = this.data.hex
     },
     onChange (value) {
       this.$refs.holder.style.background = value.hex
-      this.form[this.config.key] = this.color
+      this.form[this.config.key] = this.data
     }
   }
 }

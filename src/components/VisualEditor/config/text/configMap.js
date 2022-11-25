@@ -68,6 +68,20 @@ const configMap = {
       name: '交互',
       config: []
     }
+  },
+  'clock': {
+    'textConfig': {
+      name: '配置',
+      config: ['clock', 'clock-font', 'clock-border']
+    },
+    'dataSource': {
+      name: '数据',
+      config: []
+    },
+    'interaction': {
+      name: '交互',
+      config: []
+    }
   }
 }
 

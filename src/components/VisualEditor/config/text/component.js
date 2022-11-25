@@ -45,7 +45,7 @@ const text = {
     props: {}
   },
   'clock': {
-    name: '时钟',
+    name: '数字时钟',
     type: 'clock',
     image: require('@/assets/VisualEditor/component/text/clock.png'),
     col: 12,

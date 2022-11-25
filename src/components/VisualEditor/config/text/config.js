@@ -203,7 +203,7 @@ const config = {
       config: [
         {
           type: 'input',
-          label: '倒计时',
+          label: '数值标题',
           key: 'title',
           defaultValue: '倒计时'
         },
@@ -340,7 +340,7 @@ const config = {
           type: 'color-picker',
           label: '背景颜色',
           key: 'cardStyle-background',
-          defaultValue: { hex: '#0056DC' }
+          defaultValue: { hex: '#fff' }
         }
       ]
     },
@@ -354,7 +354,7 @@ const config = {
           type: 'color-picker',
           label: '字体颜色',
           key: 'cardStyle-color',
-          defaultValue: { hex: '#fff' }
+          defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',

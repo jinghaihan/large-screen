@@ -212,20 +212,24 @@ class Editor {
   batchEdit (data) {
     Object.keys(this.cell).forEach(key => {
       let componentType = this.cell[key].componentType
+      let formData = _.cloneDeep(this.cell[key].configData.formData)
       switch (componentType) {
         case 'chart':
-          let formData = _.cloneDeep(this.cell[key].configData.formData)
           handleChartComponent(data, formData)
           this.cell[key].change(
             formData,
             this.cell[key].type,
             this.cell[key].configData.switch
           )
-          this.cell[key].configData.formData = formData
+          break
+        case 'text':
+          handleTextComponent(data, formData)
+          this.cell[key].update(formData)
           break
         default:
           break
       }
+      this.cell[key].configData.formData = formData
     })
   }
 }
@@ -258,8 +262,23 @@ function handleChartComponent (data, formData) {
         break
     }
   })
+}
 
-  return formData
+function handleTextComponent (data, formData) {
+  Object.keys(data).forEach(key => {
+    switch (key) {
+      case 'fontColor':
+        Object.keys(formData).forEach(item => {
+          if (item.match(/-color/g)) {
+            formData[item] = data[key]
+          }
+        })
+        break
+      default:
+        formData[key] = data[key]
+        break
+    }
+  })
 }
 
 export default Editor

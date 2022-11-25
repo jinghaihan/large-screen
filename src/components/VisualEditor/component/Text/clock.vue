@@ -17,9 +17,6 @@ export default {
   data () {
     return {
       time: {
-        // year: '',
-        // month: '',
-        // date: '',
         hours: '',
         minutes: '',
         seconds: ''
@@ -55,9 +52,6 @@ export default {
   methods: {
     getTime () {
       let date = moment(new Date())
-      // this.time.year = date.year()
-      // this.time.month = date.month() + 1
-      // this.time.date = date.date()
       this.time.hours = date.hours() < 10 ? '0' + date.hours() : date.hours()
       this.time.minutes = date.minutes() < 10 ? '0' + date.minutes() : date.minutes()
       this.time.seconds = date.seconds() < 10 ? '0' + date.seconds() : date.seconds()
@@ -74,7 +68,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    /deep/.ant-card-boredered{
+    /deep/.ant-card-bordered{
       border: none;
     }
   }

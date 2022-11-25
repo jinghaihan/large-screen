@@ -30,6 +30,7 @@
 import _ from 'lodash'
 import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
+import Media from '../../../entity/Media'
 import ViewSourceModal from './viewSourceModal.vue'
 import { getThumbnail } from '../../../utils'
 
@@ -85,6 +86,9 @@ export default {
           case 'text':
             this.handleText()
             break
+          case 'image':
+            this.handleMedia()
+            break
           default:
             break
         }
@@ -131,6 +135,26 @@ export default {
           parentConfigData: _.cloneDeep(cell.configData)
         })
       }
+    },
+    // 多媒体类型
+    handleMedia () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        console.log(this.data.props)
+        this.cell = new Media({
+          vm: this,
+          key: this.data.props.key,
+          el: this.$refs.render,
+          type: this.data.props.type,
+          src: this.data.props.src,
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
+      }
+      console.log(this.data)
     },
     observe () {
       let _this = this

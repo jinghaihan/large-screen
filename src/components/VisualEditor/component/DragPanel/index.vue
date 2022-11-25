@@ -1,34 +1,38 @@
 <template>
   <div class="drag-panel-container">
-    <!-- 查询条件 -->
-    <a-input-search class="search"
-                    v-model="queryParam"
-                    placeholder="请输入组件名称">
-    </a-input-search>
-    <!-- 拖拽元素 -->
-    <a-row :gutter="[8, 8]"
-            v-if="Object.keys(configData).length">
-      <a-col v-for="conf in configData"
-              :key="conf.name"
-              :span="conf.col">
-          <div class="droppable-element"
-              @drag="drag($event, conf)"
-              @dragend="dragEnd($event, conf)"
-              draggable="true"
-              unselectable="on">
-            <a-card hoverable size="small" :title="conf.name">
-              <div slot="extra" v-if="type === 'clipBoard'">
-                <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
-              </div>
-              <img :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
-            </a-card>
-          </div>
-      </a-col>
-    </a-row>
-    <!-- 无数据样式 -->
-    <div class="empty-container" v-else>
-      <a-empty></a-empty>
-    </div>
+    <a-spin :spinning="loading">
+      <!-- 查询条件 -->
+      <a-input-search class="search"
+                      v-model="queryParam"
+                      placeholder="请输入组件名称"
+                      v-if="!mediaTypeList.includes(type)"
+                      @change="onChange">
+      </a-input-search>
+      <!-- 拖拽元素 -->
+      <a-row :gutter="[8, 8]"
+              v-if="Object.keys(configData).length">
+        <a-col v-for="conf in configData"
+                :key="conf.name"
+                :span="conf.col">
+            <div class="droppable-element"
+                @drag="drag($event, conf)"
+                @dragend="dragEnd($event, conf)"
+                draggable="true"
+                unselectable="on">
+              <a-card hoverable size="small" :title="conf.name">
+                <div slot="extra" v-if="type === 'clipBoard'">
+                  <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
+                </div>
+                <img :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
+              </a-card>
+            </div>
+        </a-col>
+      </a-row>
+      <!-- 无数据样式 -->
+      <div class="empty-container" v-else>
+        <a-empty></a-empty>
+      </div>
+    </a-spin>
   </div>
 </template>
 
@@ -59,7 +63,11 @@ export default {
   data () {
     return {
       instance: null,
-      queryParam: null
+      queryParam: null,
+      configData: {},
+      loading: false,
+      // 多媒体组件
+      mediaTypeList: ['image', 'video', 'audio']
     }
   },
   watch: {
@@ -74,23 +82,7 @@ export default {
       immediate: true,
       handler: function () {
         this.queryParam = null
-      }
-    }
-  },
-  computed: {
-    configData () {
-      let originData = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
-      
-      if (!this.queryParam) {
-        return originData || {}
-      } else {
-        let result = {}
-        Object.keys(originData || {}).forEach(key => {
-          if (originData[key].name.includes(this.queryParam)) {
-            result[key] = originData[key]
-          }
-        })
-        return result
+        this.onChange()
       }
     }
   },
@@ -103,6 +95,47 @@ export default {
     } catch (error) { }
   },
   methods: {
+    onChange () {
+      if (this.mediaTypeList.includes(this.type)) {
+        this.handleRequest()
+      } else {
+        let data = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
+        if (!data) {
+          this.configData = {}
+          return
+        }
+      
+        if (!this.queryParam) {
+          this.configData = data
+        } else {
+          let result = {}
+          Object.keys(data).forEach(key => {
+            if (data[key].name.includes(this.queryParam)) {
+              result[key] = data[key]
+            }
+          })
+          this.configData = result
+        }
+      }
+    },
+    async handleRequest () {
+      this.loading = true
+
+      this.configData = {}
+      let key = getUUID()
+      this.configData[key] = {
+        type: 'image',
+        image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
+        col: 24,
+        w: 20,
+        h: 10,
+        props: {
+          src: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
+        }
+      }
+
+      this.loading = false
+    },
     init () {
       try {
         this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
@@ -172,7 +205,8 @@ export default {
             name: item.name,
             type: item.type,
             componentType: item.props.componentType || this.type,
-            parentKey: item.props.parentKey
+            parentKey: item.props.parentKey,
+            src: item.props.src
           }
         })
         this.editor.changeComponent(this.instance.layout[this.instance.layout.length - 1])
@@ -208,6 +242,10 @@ export default {
     .action{
       margin-right: 8px;
     }
+    .pagination{
+      position: fixed;
+      bottom: 8px;
+    }
   }
   /deep/.ant-card{
     background: var(--primary-color);
@@ -231,5 +269,11 @@ export default {
   }
   /deep/.ant-card-bordered{
     border-color: var(--highlight-color);
+  }
+  /deep/.ant-spin-nested-loading{
+    height: 100%;
+    .ant-spin-container{
+      height: 100%;
+    }
   }
 </style>

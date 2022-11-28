@@ -156,6 +156,7 @@ export default {
           el: this.$refs.render,
           type: this.data.props.type,
           src: cell.src || this.data.props.src,
+          thumbnail: this.data.props.thumbnail,
           parentConfig: _.cloneDeep(cell.config),
           parentConfigData: _.cloneDeep(cell.configData)
         })
@@ -191,7 +192,8 @@ export default {
             props: {
               ...this.data.props,
               image: this.cell.componentType === 'chart' 
-                ? this.cell.chart.getDataURL() : await getThumbnail(this.$refs.render)
+                ? this.cell.chart.getDataURL() 
+                : (this.cell.type === 'video' ? this.cell.thumbnail : await getThumbnail(this.cell.el))
             }
           })
           break

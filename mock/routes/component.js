@@ -15,6 +15,7 @@ router.get('/image', (request, response) => {
         'rows|1-2': [
           {
             'id': '@guid()',
+            'name': '@word()',
             'type': 'image',
             'src': 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
             'col': 24,
@@ -38,6 +39,7 @@ router.get('/video', (request, response) => {
         'rows|1-2': [
           {
             'id': '@guid()',
+            'name': '@word()',
             'type': 'video',
             'src': 'https://img-blog.csdnimg.cn/2019110817503031.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzE5NTUxMg==,size_16,color_FFFFFF,t_70',
             'col': 24,
@@ -64,6 +66,7 @@ router.get('/audio', (request, response) => {
         'rows|1-2': [
           {
             'id': '@guid()',
+            'name': '@word()',
             'type': 'audio',
             'src': 'http://vjs.zencdn.net/v/oceans.mp4',
             'col': 24,

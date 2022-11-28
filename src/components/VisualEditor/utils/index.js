@@ -31,6 +31,7 @@ export function upperCaseFirst (str) {
 }
 
 export function handleConfigData (config, configMap, type) {
+  if (!configMap[type]) return {}
   let result = []
   Object.keys(configMap[type]).forEach(key => {
     result.push({

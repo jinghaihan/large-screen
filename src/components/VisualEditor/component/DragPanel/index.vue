@@ -142,11 +142,13 @@ export default {
       response.data.data.rows.forEach(item => {
         this.configData[item.id] = {
           type: type,
+          name: item.name,
           image: item.src,
           col: item.col,
           w: item.w,
           h: item.h,
           props: {
+            thumbnail: type === 'video' ? item.src : undefined,
             src: item.props && item.props.src ? item.props.src : item.src
           }
         }
@@ -220,6 +222,7 @@ export default {
           i: key,
           props: {
             key,
+            ...item.props,
             name: item.name,
             type: item.type,
             componentType: item.props.componentType || this.type,

@@ -4,13 +4,14 @@ import { handleConfigData, upperCaseFirst } from '../utils'
 
 class Meida {
   constructor (data) {
-    let { vm, key, el, type, src, parentConfig, parentConfigData } = data
+    let { vm, key, el, type, src, thumbnail, parentConfig, parentConfigData } = data
     this.componentType = 'media'
     this.vm = vm
     this.key = key
     this.el = el
     this.type = type
     this.src = src
+    this.thumbnail = thumbnail
     this.component = null
 
     this.config = parentConfig || handleConfigData(config, configMap, this.type)

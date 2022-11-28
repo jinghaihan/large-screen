@@ -43,7 +43,8 @@ class Editor {
         props: {
           ...component,
           image: cell.componentType === 'chart' 
-            ? cell.chart.getDataURL() : await getThumbnail(cell.el)
+            ? cell.chart.getDataURL() 
+            : (cell.type === 'video' ? cell.thumbnail : await getThumbnail(cell.el))
         }
       })
     })

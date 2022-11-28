@@ -1,4 +1,6 @@
-import { upperCaseFirst } from '../utils'
+import _ from 'lodash'
+import { config, configMap } from '../config/media'
+import { handleConfigData, upperCaseFirst } from '../utils'
 
 class Meida {
   constructor (data) {
@@ -11,7 +13,7 @@ class Meida {
     this.src = src
     this.component = null
 
-    this.config = parentConfig || {}
+    this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
       formData: null,
       switch: null,
@@ -30,6 +32,34 @@ class Meida {
       }
     })
     this.component = require(`../component/Media/${value}.vue`).default
+  }
+  update (data) {
+    let instance = this.vm.$refs.component
+    Object.keys(data).forEach(item => {
+      recursive(item.split('-'), instance, data[item])
+    })
+
+    function recursive (keys, target, data) {
+      let key = keys[0]
+      keys.splice(0, 1)
+      if (keys.length) {
+        recursive(keys, target[key], data)
+      } else {
+        target[key] = data && data.hex ? data.hex : data
+      }
+    }
+
+    // 自动播放
+    if (data['option-autoplay']) {
+      instance.$refs.video.play()
+    } else {
+      instance.$refs.video.pause()
+    }
+  }
+  setConfigData (data) {
+    this.configData = _.cloneDeep({
+      ...data
+    })
   }
 }
 

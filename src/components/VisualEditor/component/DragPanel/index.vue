@@ -39,7 +39,7 @@
 <script>
 import TooltipIcon from '../TooltipIcon'
 import { getUUID } from '../../utils'
-import { getImageComponent } from '@/api/component'
+import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }
@@ -129,8 +129,10 @@ export default {
           response = await getImageComponent()
           break
         case 'video':
+          response = await getVideoComponent()
           break
         case 'audio':
+          response = await getAudioComponent()
           break
       }
       if (!response.data.success) {
@@ -145,7 +147,7 @@ export default {
           w: item.w,
           h: item.h,
           props: {
-            src: item.src
+            src: item.props && item.props.src ? item.props.src : item.src
           }
         }
       })

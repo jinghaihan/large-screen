@@ -90,6 +90,12 @@ export default {
           case 'image':
             this.handleMedia()
             break
+          case 'video':
+            this.handleMedia()
+            break
+          case 'audio':
+            this.handleMedia()
+            break
           default:
             break
         }

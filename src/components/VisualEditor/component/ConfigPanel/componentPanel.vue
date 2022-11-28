@@ -102,10 +102,8 @@ export default {
         case 'chart':
           this.cell.change(formData, this.component.type, this.switchKeys)
           break
-        case 'text':
-          this.cell.update(formData)
-          break
         default:
+          this.cell.update(formData)
           break
       }
       this.cell.setConfigData({
@@ -119,8 +117,8 @@ export default {
       this.collapseKeys = []
       this.switchKeys = []
       this.cell = this.editor.cell[this.component.key]
-      
-      if (this.cell.componentType !== 'media') {
+
+      if (this.cell.config && this.cell.config.length) {
         await this.$nextTick()
         this.initConfig()
         this.initKey()

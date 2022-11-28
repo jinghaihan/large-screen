@@ -39,6 +39,7 @@
 <script>
 import TooltipIcon from '../TooltipIcon'
 import { getUUID } from '../../utils'
+import { getImageComponent } from '@/api/component'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }
@@ -97,7 +98,7 @@ export default {
   methods: {
     onChange () {
       if (this.mediaTypeList.includes(this.type)) {
-        this.handleRequest()
+        this.handleRequest(this.type)
       } else {
         let data = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
         if (!data) {
@@ -118,21 +119,36 @@ export default {
         }
       }
     },
-    async handleRequest () {
+    async handleRequest (type) {
       this.loading = true
 
       this.configData = {}
-      let key = getUUID()
-      this.configData[key] = {
-        type: 'image',
-        image: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-        col: 24,
-        w: 20,
-        h: 10,
-        props: {
-          src: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
-        }
+      let response = null
+      switch (type) {
+        case 'image':
+          response = await getImageComponent()
+          break
+        case 'video':
+          break
+        case 'audio':
+          break
       }
+      if (!response.data.success) {
+        this.$notification.error({ message: '错误', description: response.data.desc })
+        return
+      }
+      response.data.data.rows.forEach(item => {
+        this.configData[item.id] = {
+          type: type,
+          image: item.src,
+          col: item.col,
+          w: item.w,
+          h: item.h,
+          props: {
+            src: item.src
+          }
+        }
+      })
 
       this.loading = false
     },

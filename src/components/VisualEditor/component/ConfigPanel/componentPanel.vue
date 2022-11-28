@@ -120,10 +120,12 @@ export default {
       this.switchKeys = []
       this.cell = this.editor.cell[this.component.key]
       
-      await this.$nextTick()
-      this.initConfig()
-      this.initKey()
-      this.onChange()
+      if (this.cell.componentType !== 'media') {
+        await this.$nextTick()
+        this.initConfig()
+        this.initKey()
+        this.onChange()
+      }
     },
     initConfig () {
       let formData = this.cell.configData.formData

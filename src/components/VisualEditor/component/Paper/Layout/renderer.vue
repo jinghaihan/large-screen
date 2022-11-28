@@ -8,7 +8,8 @@
         <!-- 动态加载组件 -->
         <component ref="component"
                    v-if="cell && cell.component"
-                   :is="cell.component">
+                   :is="cell.component"
+                   :src="cell.src">
         </component>
       </div>
       <a-menu slot="overlay">
@@ -143,7 +144,6 @@ export default {
         this.cell = cell
       } else {
         let cell = this.editor.cell[this.data.props.parentKey] || {}
-        console.log(this.data.props)
         this.cell = new Media({
           vm: this,
           key: this.data.props.key,
@@ -154,7 +154,6 @@ export default {
           parentConfigData: _.cloneDeep(cell.configData)
         })
       }
-      console.log(this.data)
     },
     observe () {
       let _this = this

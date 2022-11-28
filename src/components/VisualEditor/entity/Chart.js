@@ -9,7 +9,7 @@ import 'echarts/theme/roma'
 import chinaMap from '@/assets/VisualEditor/map/china.json'
 
 import { option, config, configMap } from '../config/chart'
-import { handleConfigData } from '../utils'
+import { handleConfigData } from '../utils/config'
 
 Echarts.registerMap('china', chinaMap)
 

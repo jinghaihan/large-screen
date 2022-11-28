@@ -56,7 +56,7 @@ import _ from 'lodash'
 import Draggable from 'vuedraggable'
 import TooltipIcon from '../TooltipIcon'
 import Modal from '../ToolBox/widget/LayerWidget/modal.vue'
-import { getThumbnail } from '../../utils'
+import { getImage } from '../../utils'
 
 export default {
   props: {
@@ -120,7 +120,7 @@ export default {
           visible: item.visible,
           current: index === this.layer.current,
           layer: index,
-          image: item.visible ? await getThumbnail(el, 0.5) : ''
+          image: item.visible ? await getImage(el, 0.5) : ''
         }
       })).then(result => {
         this.list = _.cloneDeep(result)

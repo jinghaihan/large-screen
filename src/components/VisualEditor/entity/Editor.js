@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
-import { getUUID, getThumbnail, downloadFile } from '../utils'
+import { getUUID, getImage, getPdf } from '../utils'
+import { downloadFile } from '../utils/output'
 import config from '../config'
 
 class Editor {
@@ -44,7 +45,7 @@ class Editor {
           ...component,
           image: cell.componentType === 'chart' 
             ? cell.chart.getDataURL() 
-            : (cell.type === 'video' ? cell.thumbnail : await getThumbnail(cell.el))
+            : (cell.type === 'video' ? cell.thumbnail : await getImage(cell.el))
         }
       })
     })
@@ -249,7 +250,26 @@ class Editor {
       this.cell[key].configData.formData = formData
     })
   }
-  async screenshot () {
+  async output (type) {
+    let data = await this.beforeExport()
+    let base64
+    switch (type) {
+      case 'png':
+        base64 = await getImage(this.instance.layout.$el)
+        break
+      case 'pdf':
+        base64 = await getPdf(this.instance.layout.$el)
+        break
+      default:
+        break
+    }
+    let fileName = this.instance.basicPanel.formData && this.instance.basicPanel.formData.name
+      ? this.instance.basicPanel.formData.name : (type === 'png' ? '截图' : '文件')
+    downloadFile(fileName + '-' + moment().format('HH:mm:ss') + `.${type}`, base64)
+
+    this.afterExport(data)
+  }
+  async beforeExport () {
     let editor = this.instance.editor
     let grid = editor.grid
     let layer = editor.layer
@@ -258,17 +278,16 @@ class Editor {
     editor.grid = _.cloneDeep({ ...editor.grid, show: false })
     editor.layer = _.cloneDeep({ ...editor.layer, current: 0 })
     await editor.$nextTick()
-    let base64 = await getThumbnail(this.instance.layout.$el)
-    let fileName = this.instance.basicPanel.formData && this.instance.basicPanel.formData.name
-      ? this.instance.basicPanel.formData.name : '截图'
-    console.log()
-    downloadFile(fileName + '-' + moment().format('HH:mm:ss'), base64)
 
-    if (grid.show) {
+    return { grid, layer }
+  }
+  afterExport (data) {
+    let editor = this.instance.editor
+    if (data.grid.show) {
       editor.grid = _.cloneDeep({ ...editor.grid, show: true })
     }
-    if (layer.current) {
-      editor.layer = _.cloneDeep({ ...editor.layer, current: layer.current })
+    if (data.layer.current) {
+      editor.layer = _.cloneDeep({ ...editor.layer, current: data.layer.current })
     }
   }
   getConfig () {

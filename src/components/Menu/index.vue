@@ -1,4 +1,5 @@
 <script>
+import _ from 'lodash'
 import { generateOpenKeys } from '@/utils/menu'
 
 export default {

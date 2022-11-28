@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { config, configMap } from '../config/text'
-import { handleConfigData, upperCaseFirst } from '../utils'
+import { upperCaseFirst } from '../utils'
+import { handleConfigData } from '../utils/config'
 
 class Text {
   constructor (data) {

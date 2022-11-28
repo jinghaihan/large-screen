@@ -33,7 +33,7 @@ import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
 import ViewSourceModal from './viewSourceModal.vue'
-import { getThumbnail } from '../../../utils'
+import { getImage } from '../../../utils'
 
 export default {
   props: {
@@ -193,7 +193,7 @@ export default {
               ...this.data.props,
               image: this.cell.componentType === 'chart' 
                 ? this.cell.chart.getDataURL() 
-                : (this.cell.type === 'video' ? this.cell.thumbnail : await getThumbnail(this.cell.el))
+                : (this.cell.type === 'video' ? this.cell.thumbnail : await getImage(this.cell.el))
             }
           })
           break

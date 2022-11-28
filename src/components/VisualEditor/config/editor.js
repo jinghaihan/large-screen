@@ -25,6 +25,7 @@ const library = [
 const navbar = [
   { name: '批量修改', icon: 'edit', key: 'edit' },
   { name: '截图', icon: 'picture', key: 'screenshot' },
+  { name: '生成PDf', icon: 'file-pdf', key: 'pdf' },
   { name: '保存', icon: 'save', key: 'save' }
 ]
 const configPanel = [

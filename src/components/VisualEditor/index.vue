@@ -158,7 +158,10 @@ export default {
           _this.handleEdit()
           break
         case 'screenshot':
-          _this.handleScreenshot()
+          this.editor.output('png')
+          break
+        case 'pdf':
+          this.editor.output('pdf')
           break
         case 'save':
           _this.handleSave()
@@ -173,9 +176,6 @@ export default {
     handleEdit () {
       this.editor.changeComponent()
       this.batchEditVisible = true
-    },
-    handleScreenshot () {
-      this.editor.screenshot()
     },
     handleSave () {
       let config = this.editor.getConfig()

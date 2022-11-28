@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { config, configMap } from '../config/media'
-import { handleConfigData, upperCaseFirst } from '../utils'
+import { upperCaseFirst } from '../utils'
+import { handleConfigData } from '../utils/config'
 
 class Meida {
   constructor (data) {

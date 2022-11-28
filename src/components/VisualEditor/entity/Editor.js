@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
-import { getUUID } from '../utils'
+import { getUUID, getThumbnail } from '../utils'
 import config from '../config'
 
 class Editor {
@@ -29,6 +29,22 @@ class Editor {
       this.instance.editor.grid = _.cloneDeep({
         ...this.instance.editor.grid,
         show: !this.instance.editor.grid.show
+      })
+    })
+    hotkeys('ctrl+c, command+c', async (event) => {
+      let component = this.instance.editor.component
+      let cell = this.cell[component.key]
+      if (!component || !cell) {
+        return
+      }
+
+      this.copyCell({
+        ...cell.vm.data,
+        props: {
+          ...component,
+          image: cell.componentType === 'chart' 
+            ? cell.chart.getDataURL() : await getThumbnail(cell.el)
+        }
       })
     })
     hotkeys('delete, backspace', (event) => {

@@ -19,9 +19,10 @@ export default {
   data () {
     return {
       hotkeys: [
-        { combo: ['ctrl > up', 'command > up'], description: '放大画布' },
-        { combo: ['ctrl > down', 'command > down'], description: '缩小画布' },
+        { combo: ['ctrl + up', 'command + up'], description: '放大画布' },
+        { combo: ['ctrl + down', 'command + down'], description: '缩小画布' },
         { combo: ['ctrl+shift > k', 'command+shift > k'], description: '画布网格线' },
+        { combo: ['ctrl + c', 'command + c'], description: '复制组件' },
         { combo: ['delete', 'backsapce'], description: '删除组件' }
       ]
     }

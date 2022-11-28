@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
-import { getUUID, getThumbnail } from '../utils'
+import { getUUID, getThumbnail, downloadFile } from '../utils'
 import config from '../config'
 
 class Editor {
@@ -249,8 +249,27 @@ class Editor {
       this.cell[key].configData.formData = formData
     })
   }
-  screenshot () {
-    console.log(this.instance)
+  async screenshot () {
+    let editor = this.instance.editor
+    let grid = editor.grid
+    let layer = editor.layer
+
+    this.changeComponent()
+    editor.grid = _.cloneDeep({ ...editor.grid, show: false })
+    editor.layer = _.cloneDeep({ ...editor.layer, current: 0 })
+    await editor.$nextTick()
+    let base64 = await getThumbnail(this.instance.layout.$el)
+    let fileName = this.instance.basicPanel.formData && this.instance.basicPanel.formData.name
+      ? this.instance.basicPanel.formData.name : '截图'
+    console.log()
+    downloadFile(fileName + '-' + moment().format('HH:mm:ss'), base64)
+
+    if (grid.show) {
+      editor.grid = _.cloneDeep({ ...editor.grid, show: true })
+    }
+    if (layer.current) {
+      editor.layer = _.cloneDeep({ ...editor.layer, current: layer.current })
+    }
   }
   getConfig () {
     

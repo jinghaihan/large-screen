@@ -26,7 +26,8 @@ export default {
   data () {
     return {
       visible: false,
-      config: []
+      config: [],
+      formData: null
     }
   },
   created () {
@@ -34,6 +35,7 @@ export default {
   },
   methods: {
     init () {
+      this.editor.setInstance({ basicPanel: this })
       this.config = this.editor.config.basic.map(item => {
         switch (item.key) {
           case 'ratioWidth':
@@ -66,6 +68,7 @@ export default {
         if (data['background']) {
           this.editor.changeBackground(data['background'])
         }
+        this.formData = data
       }
     }
   }

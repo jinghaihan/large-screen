@@ -149,7 +149,7 @@ export default {
           key: this.data.props.key,
           el: this.$refs.render,
           type: this.data.props.type,
-          src: this.data.props.src,
+          src: cell.src || this.data.props.src,
           parentConfig: _.cloneDeep(cell.config),
           parentConfigData: _.cloneDeep(cell.configData)
         })

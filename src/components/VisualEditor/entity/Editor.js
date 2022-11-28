@@ -156,7 +156,7 @@ class Editor {
     delete this.cell[data.key]
   }
   copyCell (data) {
-    let key = data.props.name + '-' + moment().format('HH:mm:ss')
+    let key = data.props.name ? data.props.name + '-' + moment().format('HH:mm:ss') : moment().format('HH:mm:ss')
     this.clipBoard[key] = {
       name: key,
       type: data.props.type,

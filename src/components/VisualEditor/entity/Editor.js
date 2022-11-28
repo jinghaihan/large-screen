@@ -249,6 +249,15 @@ class Editor {
       this.cell[key].configData.formData = formData
     })
   }
+  screenshot () {
+    console.log(this.instance)
+  }
+  getConfig () {
+    
+  }
+  setConfig () {
+    
+  }
 }
 
 // 字体颜色

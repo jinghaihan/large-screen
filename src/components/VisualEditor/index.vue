@@ -157,6 +157,12 @@ export default {
         case 'edit':
           _this.handleEdit()
           break
+        case 'screenshot':
+          _this.handleScreenshot()
+          break
+        case 'save':
+          _this.handleSave()
+          break
         case 'close':
           _this.handleClose()
           break
@@ -167,6 +173,12 @@ export default {
     handleEdit () {
       this.editor.changeComponent()
       this.batchEditVisible = true
+    },
+    handleScreenshot () {
+      this.editor.screenshot()
+    },
+    handleSave () {
+      let config = this.editor.getConfig()
     },
     handleClose () {
       let _this = this

@@ -296,6 +296,9 @@ export default {
   }
   /deep/.ant-spin-nested-loading{
     height: 100%;
+    .ant-spin{
+      max-height: none;
+    }
     .ant-spin-container{
       height: 100%;
     }

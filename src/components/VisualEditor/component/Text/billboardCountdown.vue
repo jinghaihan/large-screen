@@ -1,5 +1,5 @@
 <template>
-  <div class="billboard-container">
+  <div class="billboard-container" :style="containerStyle">
     <a-statistic-countdown ref="statistic"
                            :title="title"
                            :value="value"
@@ -31,6 +31,11 @@ export default {
         color: '',
         fontSize: '',
         fontWeight: ''
+      },
+      containerStyle: {
+        borderWidth: '',
+        borderStyle: '',
+        borderColor: ''
       }
     }
   },

@@ -30,7 +30,7 @@ const configMap = {
   'billboard': {
     'textConfig': {
       name: '配置',
-      config: ['billboard', 'billboard-title', 'billboard-value']
+      config: ['billboard', 'billboard-title', 'billboard-value', 'container-border']
     },
     'dataSource': {
       name: '数据',
@@ -44,7 +44,7 @@ const configMap = {
   'billboard-countdown': {
     'textConfig': {
       name: '配置',
-      config: ['billboard-countdown', 'billboard-countdown-title', 'billboard-countdown-value']
+      config: ['billboard-countdown', 'billboard-countdown-title', 'billboard-countdown-value', 'container-border']
     },
     'dataSource': {
       name: '数据',
@@ -72,7 +72,7 @@ const configMap = {
   'clock': {
     'textConfig': {
       name: '配置',
-      config: ['clock', 'clock-font', 'clock-border']
+      config: ['clock', 'clock-font', 'clock-border', 'container-border']
     },
     'dataSource': {
       name: '数据',

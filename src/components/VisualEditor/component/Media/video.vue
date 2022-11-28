@@ -1,12 +1,9 @@
 <template>
   <div class="video-container">
     <video class="video"
-           ref="video"
-           :src="src"
-           type="video/mp4"
-           :controls="option.controls"
-           :autoplay="option.autoplay"
-           :muted="option.muted">
+           ref="player"
+           v-bind="option">
+      <source :src="src" type="video/mp4" />
     </video>
   </div>
 </template>

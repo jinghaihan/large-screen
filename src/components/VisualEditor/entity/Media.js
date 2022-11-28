@@ -50,11 +50,13 @@ class Meida {
       }
     }
 
-    // 自动播放
+    // 自动播放 / 循环播放
     if (data['option-autoplay']) {
-      instance.$refs.video.play()
+      instance.$refs.player.play()
     } else {
-      instance.$refs.video.pause()
+      if (!data['option-loop']) {
+        instance.$refs.player.pause()
+      }
     }
   }
   setConfigData (data) {

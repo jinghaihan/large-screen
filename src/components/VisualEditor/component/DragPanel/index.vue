@@ -140,15 +140,18 @@ export default {
         return
       }
       response.data.data.rows.forEach(item => {
+        item.src = type !== 'audio' ? item.src : require('@/assets/VisualEditor/component/media/audio.png')
+        item.thumbnail = type !== 'image' ? item.src : undefined
+
         this.configData[item.id] = {
           type: type,
           name: item.name,
           image: item.src,
-          col: item.col,
+          col: type !== 'audio' ? 24 : 8,
           w: item.w,
           h: item.h,
           props: {
-            thumbnail: type === 'video' ? item.src : undefined,
+            thumbnail: item.thumbnail,
             src: item.props && item.props.src ? item.props.src : item.src
           }
         }

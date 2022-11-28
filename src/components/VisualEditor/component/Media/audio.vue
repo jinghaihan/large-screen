@@ -1,6 +1,10 @@
 <template>
   <div class="audio-container">
-    <audio class="audio" :src="src"></audio>
+    <audio class="audio"
+           ref="player"
+           v-bind="option">
+      <source :src="src" type="audio/mpeg" />
+    </audio>
   </div>
 </template>
 
@@ -10,6 +14,15 @@ export default {
     src: {
       type: String,
       required: true
+    }
+  },
+  data () {
+    return {
+      option: {
+        controls: true,
+        autoplay: false,
+        loop: false
+      }
     }
   }
 }

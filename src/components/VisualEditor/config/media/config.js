@@ -1,7 +1,7 @@
 const config = {
   // 配置
   mediaConfig: {
-    'video': {
+    'player': {
       type: 'config',
       config: [
         {
@@ -16,6 +16,17 @@ const config = {
           key: 'option-autoplay',
           defaultValue: false
         },
+        {
+          type: 'switch',
+          label: '循环播放',
+          key: 'option-loop',
+          defaultValue: false
+        }
+      ]
+    },
+    'video': {
+      type: 'config',
+      config: [
         {
           type: 'switch',
           label: '静音播放',

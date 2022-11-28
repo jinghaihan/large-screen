@@ -2,7 +2,17 @@ const configMap = {
   'video': {
     'mediaConfig': {
       name: '配置',
-      config: ['video']
+      config: ['player', 'video']
+    },
+    'interaction': {
+      name: '交互',
+      config: []
+    }
+  },
+  'audio': {
+    'mediaConfig': {
+      name: '配置',
+      config: ['player']
     },
     'interaction': {
       name: '交互',

@@ -3,7 +3,9 @@
              ref="decoration"
              :is="props.component"
              v-bind="{
-              color: [props.primaryColor, props.deputyColor]
+              color: props.primaryColor ? [props.primaryColor, props.deputyColor] : [],
+              dur: props.duration ? props.duration : 6,
+              reverse: props.reverse
              }">
   </component>
 </template>

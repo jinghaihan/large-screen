@@ -27,9 +27,11 @@ class Decoration {
   }
   update (data) {
     this.props = {
-      ...this.props,
-      primaryColor: data.primaryColor.hex8 || data.primaryColor.hex || this.props.primaryColor,
-      deputyColor: data.deputyColor.hex8 || data.deputyColor.hex || this.props.deputyColor
+      component: this.props.component,
+      primaryColor: data.primaryColor.hex || this.props.primaryColor,
+      deputyColor: data.deputyColor.hex || this.props.deputyColor,
+      duration: data.duration,
+      reverse: data.reverse
     }
     this.vm.$refs.component.props = this.props
   }

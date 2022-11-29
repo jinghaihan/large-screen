@@ -29,6 +29,24 @@ const globalConfig = {
               { label: '边框13', value: 'dv-border-box-13' }
             ]
           }
+        },
+        {
+          type: 'input-number',
+          label: '内边距',
+          key: 'vm-border-padding',
+          defaultValue: 0
+        },
+        {
+          type: 'color-picker',
+          label: '主颜色',
+          key: 'vm-border-primaryColor',
+          defaultValue: { hex: '#4fd2dd' }
+        },
+        {
+          type: 'color-picker',
+          label: '副颜色',
+          key: 'vm-border-deputyColor',
+          defaultValue: { hex: '#235fa7' }
         }
       ]
     }

@@ -40,9 +40,15 @@ class Meida {
     
     let props = { ...data }
     delete props['vm-border-component']
+    delete props['vm-border-padding']
+    delete props['vm-border-primaryColor']
+    delete props['vm-border-deputyColor']
     handleVmData(props, this.vm.$refs.component)
     handleVmData({
-      'vm-border-component': data['vm-border-component']
+      'vm-border-component': data['vm-border-component'],
+      'vm-border-padding': data['vm-border-padding'],
+      'vm-border-primaryColor': data['vm-border-primaryColor'],
+      'vm-border-deputyColor': data['vm-border-deputyColor']
     }, this.vm, true)
 
     // 自动播放 / 循环播放

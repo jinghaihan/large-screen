@@ -1,8 +1,11 @@
 <template>
-  <div class="border-container">
+  <div class="border-container" :style="{ padding: data.padding + 'px' }">
     <component class="component"
                :is="data.component"
-               ref="border">
+               ref="border"
+               v-bind="{
+                color: [data.primaryColor, data.deputyColor],
+               }">
     </component>
     <slot></slot>
   </div>
@@ -22,7 +25,9 @@ export default {
   methods: {
     resize () {
       if (this.data.component !== 'none') {
-        this.$refs.border.initWH()
+        try {
+          this.$refs.border.initWH()
+        } catch (error) {}
       }
     }
   }

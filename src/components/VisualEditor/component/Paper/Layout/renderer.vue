@@ -57,9 +57,10 @@ export default {
       observer: null,
       border: {
         component: 'none',
-        primaryColor: '',
-        deputyColor: '',
-        backgroundColor: ''
+        primaryColor: '#4fd2dd',
+        deputyColor: '#235fa7',
+        backgroundColor: '',
+        padding: 0
       },
       // 弹窗
       viewSourceVisible: false
@@ -142,6 +143,7 @@ export default {
         this.cell = cell
       } else {
         let cell = this.editor.cell[this.data.props.parentKey] || {}
+
         this.cell = new Text({
           vm: this,
           key: this.data.props.key,

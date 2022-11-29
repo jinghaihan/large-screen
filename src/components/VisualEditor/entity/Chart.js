@@ -93,7 +93,10 @@ let whiteList = [
   'radius',
   'radiusInner',
   'radiusOuter',
-  'vm-border-component'
+  'vm-border-component',
+  'vm-border-padding',
+  'vm-border-primaryColor',
+  'vm-border-deputyColor'
 ]
 function handleOption (data, chartOption) {
   let option = { ...chartOption }

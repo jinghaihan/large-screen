@@ -7,6 +7,8 @@
     :width="900"
     :footer="null"
     title="素材库"
+    :getContainer="getContainer()"
+    wrapClassName="visual-editor-modal"
   >
     <div class="container">
     <a-spin :spinning="loading">
@@ -85,6 +87,9 @@ export default {
     },
     closeModal (data) {
       this.$emit('close', data)
+    },
+    getContainer () {
+      return () => document.getElementById('visual-editor-container')
     }
   }
 }

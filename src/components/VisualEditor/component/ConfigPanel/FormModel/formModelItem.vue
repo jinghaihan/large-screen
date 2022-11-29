@@ -2,7 +2,8 @@
   <a-form-model-item :ref="config.key"
                      :prop="config.key"
                      :title="getTitle(form[config.key], config)"
-                     :label="config.label">
+                     :label="config.label"
+                     v-bind="layout">
     <!-- 输入框 -->
     <a-input v-if="config.type === 'input'"
               v-model="form[config.key]"
@@ -103,6 +104,10 @@ export default {
       required: true
     },
     form: {
+      type: Object,
+      required: true
+    },
+    layout: {
       type: Object,
       required: true
     }

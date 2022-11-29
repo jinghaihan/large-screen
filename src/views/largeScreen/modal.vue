@@ -38,7 +38,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  /deep/.ant-modal-body{
+  /deep/.ant-modal:first-of-type {
+    padding-bottom: 0;
+    top: 0 !important;
+  }
+  /deep/.ant-modal-body:first-of-type{
+    height: 100vh !important;
+    max-height: none !important;
     padding: 0;
   }
 </style>

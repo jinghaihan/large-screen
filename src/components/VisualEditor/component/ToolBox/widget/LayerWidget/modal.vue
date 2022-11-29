@@ -7,6 +7,8 @@
     :keyboard="false"
     :width="500"
     title="图层"
+    :getContainer="getContainer()"
+    wrapClassName="visual-editor-modal"
   >
     <a-form :form="form" autocomplete="off">
       <a-row :gutter="24">
@@ -60,6 +62,9 @@ export default {
     },
     closeModal (data) {
       this.$emit('close', data)
+    },
+    getContainer () {
+      return () => document.getElementById('visual-editor-container')
     }
   }
 }

@@ -7,6 +7,8 @@
     :width="900"
     :footer="null"
     title="查看源码"
+    :getContainer="getContainer()"
+    wrapClassName="visual-editor-modal"
   >
     <div class="content">
       <textarea ref="textarea"></textarea>
@@ -43,6 +45,9 @@ export default {
     },
     closeModal (data) {
       this.$emit('close', data)
+    },
+    getContainer () {
+      return () => document.getElementById('visual-editor-container')
     }
   }
 }

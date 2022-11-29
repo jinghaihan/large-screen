@@ -333,6 +333,9 @@ export default {
       }
     }
   }
+  /deep/.visual-editor-modal{
+    padding-top: 100px;
+  }
   .action{
     height: 45px;
     width: 45px;

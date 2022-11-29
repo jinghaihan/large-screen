@@ -4,13 +4,14 @@
     ref="form"
     :model="form"
     :rules="rules"
-    :label-col="labelCol"
-    :wrapper-col="wrapperCol"
   >
     <a-row>
-      <a-col v-for="conf in configData" :key="conf.key">
+      <a-col v-for="conf in configData"
+            :key="conf.key"
+            :span="conf.col || 24">
         <FormModelItem :config="conf"
-                       :form.sync="form">
+                       :form.sync="form"
+                       :layout="conf.layout || layout">
         </FormModelItem>
       </a-col>
     </a-row>
@@ -39,8 +40,10 @@ export default {
       form: {},
       rules: {},
       configData: _.cloneDeep(this.config),
-      labelCol: { span: 6 },
-      wrapperCol: { span: 17 }
+      layout: {
+        labelCol: { span: 6 },
+        wrapperCol: { span: 17 }
+      }
     }
   },
   watch: {

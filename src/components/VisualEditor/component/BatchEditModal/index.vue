@@ -7,16 +7,16 @@
     :keyboard="false"
     :width="600"
     title="批量修改"
+    :getContainer="getContainer()"
+    wrapClassName="visual-editor-modal"
   >
-    <div id="batch-edit-modal">
-      <FormModel :config="config" @change="onChange"></FormModel>
-    </div>
+    <FormModel :config="config" @change="onChange"></FormModel>
   </a-modal>
 </template>
 
 <script>
 import FormModel from '../ConfigPanel/FormModel/formModel.vue'
-import config from './config'
+import config from '../../config/batch'
 
 export default {
   props: {
@@ -39,17 +39,14 @@ export default {
     },
     closeModal (data) {
       this.$emit('close', data)
+    },
+    getContainer () {
+      return () => document.getElementById('visual-editor-container')
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  #batch-edit-modal{
-    --primary-color: #fff;
-    --normal-color: #f5f5f5;
-    --shadow-color: #f0f0f0;
-    --font-color: #333;
-    --highlight-color: #ddd;
-  }
+  
 </style>

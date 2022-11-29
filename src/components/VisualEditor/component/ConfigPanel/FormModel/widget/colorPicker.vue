@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Chrome } from 'vue-color'
+import { Sketch } from 'vue-color'
 
 export default {
   props: {
@@ -28,7 +28,7 @@ export default {
     }
   },
   components: {
-    ColorPicker: Chrome
+    ColorPicker: Sketch
   },
   data () {
     return {
@@ -51,10 +51,10 @@ export default {
   },
   methods: {
     init () {
-      this.$refs.holder.style.background = this.data.hex
+      this.$refs.holder.style.background = this.data.hex8 || this.data.hex
     },
     onChange (value) {
-      this.$refs.holder.style.background = value.hex
+      this.$refs.holder.style.background = value.hex8 || value.hex
       this.form[this.config.key] = this.data
     }
   }

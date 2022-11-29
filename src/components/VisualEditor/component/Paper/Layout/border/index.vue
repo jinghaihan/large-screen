@@ -5,6 +5,7 @@
                ref="border"
                v-bind="{
                 color: [data.primaryColor, data.deputyColor],
+                backgroundColor: data.backgroundColor
                }">
     </component>
     <slot></slot>

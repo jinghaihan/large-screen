@@ -141,7 +141,7 @@ function handleOption (data, chartOption) {
           key = key.replace(/\?percent/g, '')
           option[key] = data + '%'
         } else {
-          option[key] = data.hex ? data.hex : data
+          option[key] = data.hex ? data.hex8 || data.hex : data
         }
       } else {
         delete option[key]

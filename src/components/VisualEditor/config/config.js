@@ -47,6 +47,12 @@ const globalConfig = {
           label: '副颜色',
           key: 'vm-border-deputyColor',
           defaultValue: { hex: '#235fa7' }
+        },
+        {
+          type: 'color-picker',
+          label: '背景颜色',
+          key: 'vm-border-backgroundColor',
+          defaultValue: { hex: '#00000000' }
         }
       ]
     }

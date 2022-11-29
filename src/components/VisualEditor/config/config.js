@@ -9,7 +9,7 @@ const globalConfig = {
         {
           type: 'select',
           label: '边框样式',
-          key: 'renderer-border-component',
+          key: 'vm-border-component',
           defaultValue: 'none',
           props: {
             options: [

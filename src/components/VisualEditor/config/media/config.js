@@ -7,19 +7,19 @@ const config = {
         {
           type: 'switch',
           label: '展示控件',
-          key: 'option-controls',
+          key: 'vm-option-controls',
           defaultValue: true
         },
         {
           type: 'switch',
           label: '自动播放',
-          key: 'option-autoplay',
+          key: 'vm-option-autoplay',
           defaultValue: false
         },
         {
           type: 'switch',
           label: '循环播放',
-          key: 'option-loop',
+          key: 'vm-option-loop',
           defaultValue: false
         }
       ]
@@ -30,7 +30,7 @@ const config = {
         {
           type: 'switch',
           label: '静音播放',
-          key: 'option-muted',
+          key: 'vm-option-muted',
           defaultValue: false
         }
       ]

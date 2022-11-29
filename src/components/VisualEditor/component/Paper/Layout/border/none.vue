@@ -1,11 +1,11 @@
 <template>
-  <div class="none-container">
+  <div class="border-none-container">
     <slot></slot>
   </div>
 </template>
 
 <style lang="less" scoped>
-  .none-container{
+  .border-none-container{
     height: 100%;
     width: 100%;
   }

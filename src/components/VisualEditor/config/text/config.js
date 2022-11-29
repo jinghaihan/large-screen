@@ -9,19 +9,19 @@ const config = {
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'style-color',
+          key: 'vm-style-color',
           defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'style-fontSize?pixel',
+          key: 'vm-style-fontSize?pixel',
           defaultValue: 24
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'style-fontWeight',
+          key: 'vm-style-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -35,7 +35,7 @@ const config = {
         {
           type: 'select',
           label: '对齐方式',
-          key: 'style-textAlign',
+          key: 'vm-style-textAlign',
           defaultValue: 'center',
           props: {
             options: [
@@ -53,7 +53,7 @@ const config = {
         {
           type: 'input',
           label: '文本内容',
-          key: 'text',
+          key: 'vm-text',
           defaultValue: '单行文本'
         }
       ]
@@ -64,7 +64,7 @@ const config = {
         {
           type: 'textarea',
           label: '文本内容',
-          key: 'text',
+          key: 'vm-text',
           defaultValue: '多行文本'
         }
       ]
@@ -75,19 +75,19 @@ const config = {
         {
           type: 'input',
           label: '数值前缀',
-          key: 'prefix',
+          key: 'vm-prefix',
           defaultValue: ''
         },
         {
           type: 'input',
           label: '数值后缀',
-          key: 'suffix',
+          key: 'vm-suffix',
           defaultValue: ''
         },
         {
           type: 'input',
           label: '千分位标识符',
-          key: 'groupSeparator',
+          key: 'vm-groupSeparator',
           defaultValue: ','
         }
       ]
@@ -101,25 +101,25 @@ const config = {
         {
           type: 'input',
           label: '数值标题',
-          key: 'title',
+          key: 'vm-title',
           defaultValue: '访问量'
         },
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'titleStyle-color',
+          key: 'vm-titleStyle-color',
           defaultValue: { hex: '#00000073' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'titleStyle-fontSize?pixel',
+          key: 'vm-titleStyle-fontSize?pixel',
           defaultValue: 24
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'titleStyle-fontWeight',
+          key: 'vm-titleStyle-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -141,25 +141,25 @@ const config = {
         {
           type: 'input-number',
           label: '数值内容',
-          key: 'value',
+          key: 'vm-value',
           defaultValue: 112893
         },
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'valueStyle-color',
+          key: 'vm-valueStyle-color',
           defaultValue: { hex: '#000000D9' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'valueStyle-fontSize?pixel',
+          key: 'vm-valueStyle-fontSize?pixel',
           defaultValue: 34
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'valueStyle-fontWeight',
+          key: 'vm-valueStyle-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -178,19 +178,19 @@ const config = {
         {
           type: 'input',
           label: '数值前缀',
-          key: 'prefix',
+          key: 'vm-prefix',
           defaultValue: ''
         },
         {
           type: 'input',
           label: '数值后缀',
-          key: 'suffix',
+          key: 'vm-suffix',
           defaultValue: ''
         },
         {
           type: 'input',
           label: '格式化',
-          key: 'format',
+          key: 'vm-format',
           defaultValue: 'HH:mm:ss'
         }
       ]
@@ -204,25 +204,25 @@ const config = {
         {
           type: 'input',
           label: '数值标题',
-          key: 'title',
+          key: 'vm-title',
           defaultValue: '倒计时'
         },
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'titleStyle-color',
+          key: 'vm-titleStyle-color',
           defaultValue: { hex: '#00000073' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'titleStyle-fontSize?pixel',
+          key: 'vm-titleStyle-fontSize?pixel',
           defaultValue: 24
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'titleStyle-fontWeight',
+          key: 'vm-titleStyle-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -244,25 +244,25 @@ const config = {
         {
           type: 'input',
           label: '数值内容',
-          key: 'value',
+          key: 'vm-value',
           defaultValue: moment().add(1, 'days').format('YYYY-MM-DD')
         },
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'valueStyle-color',
+          key: 'vm-valueStyle-color',
           defaultValue: { hex: '#000000D9' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'valueStyle-fontSize?pixel',
+          key: 'vm-valueStyle-fontSize?pixel',
           defaultValue: 34
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'valueStyle-fontWeight',
+          key: 'vm-valueStyle-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -281,13 +281,13 @@ const config = {
         {
           type: 'input',
           label: '文本内容',
-          key: 'text',
+          key: 'vm-text',
           defaultValue: '走马灯'
         },
         {
           type: 'input-number',
           label: '滚动速度(S)',
-          key: 'duration',
+          key: 'vm-duration',
           defaultValue: 4,
           props: {
             mine: 0
@@ -296,19 +296,19 @@ const config = {
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'style-color',
+          key: 'vm-style-color',
           defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'style-fontSize?pixel',
+          key: 'vm-style-fontSize?pixel',
           defaultValue: 24
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'style-fontWeight',
+          key: 'vm-style-fontWeight',
           defaultValue: 'normal',
           props: {
             options: [
@@ -327,19 +327,19 @@ const config = {
         {
           type: 'input-number',
           label: '卡片高度',
-          key: 'cardStyle-height?pixel',
+          key: 'vm-cardStyle-height?pixel',
           defaultValue: 100
         },
         {
           type: 'input-number',
           label: '卡片宽度',
-          key: 'cardStyle-width?pixel',
+          key: 'vm-cardStyle-width?pixel',
           defaultValue: 70
         },
         {
           type: 'color-picker',
           label: '背景颜色',
-          key: 'cardStyle-background',
+          key: 'vm-cardStyle-background',
           defaultValue: { hex: '#fff' }
         }
       ]
@@ -353,19 +353,19 @@ const config = {
         {
           type: 'color-picker',
           label: '字体颜色',
-          key: 'cardStyle-color',
+          key: 'vm-cardStyle-color',
           defaultValue: { hex: '#333' }
         },
         {
           type: 'input-number',
           label: '字体大小',
-          key: 'cardStyle-fontSize?pixel',
+          key: 'vm-cardStyle-fontSize?pixel',
           defaultValue: 36
         },
         {
           type: 'select',
           label: '字体粗细',
-          key: 'cardStyle-fontWeight',
+          key: 'vm-cardStyle-fontWeight',
           defaultValue: 'bold',
           props: {
             options: [
@@ -387,19 +387,19 @@ const config = {
         {
           type: 'color-picker',
           label: '边框颜色',
-          key: 'cardStyle-borderColor',
+          key: 'vm-cardStyle-borderColor',
           defaultValue: { hex: '#e8e8e8' }
         },
         {
           type: 'input-number',
           label: '边框宽度',
-          key: 'cardStyle-borderWidth?pixel',
+          key: 'vm-cardStyle-borderWidth?pixel',
           defaultValue: 1
         },
         {
           type: 'select',
           label: '边框样式',
-          key: 'cardStyle-borderStyle',
+          key: 'vm-cardStyle-borderStyle',
           defaultValue: 'solid',
           props: {
             options: [

@@ -2,7 +2,7 @@
   <div :class="getStyle()"
        @click="onClick">
     <a-dropdown :trigger="['contextmenu']">
-      <component :is="border.component">
+      <Border ref="border" :data="border">
         <div ref="render"
             class="render-container"
             @click="e => e.preventDefault()">
@@ -13,7 +13,7 @@
                     :src="cell.src">
           </component>
         </div>
-      </component>
+      </Border>
       <a-menu slot="overlay">
         <a-menu-item v-for="item in operation"
                      :key="item.key"
@@ -35,7 +35,7 @@ import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
 import ViewSourceModal from './viewSourceModal.vue'
-import None from './none.vue'
+import Border from './border/index.vue'
 import { getImage } from '../../../utils'
 
 export default {
@@ -50,7 +50,7 @@ export default {
       required: true
     }
   },
-  components: { ViewSourceModal, none: None },
+  components: { ViewSourceModal, Border },
   data () {
     return {
       cell: null,
@@ -184,6 +184,7 @@ export default {
           default:
             break
         }
+        _this.$refs.border.resize()
       })
       _this.observer.observe(_this.$refs.render)
     },

@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import { config, configMap } from '../config/text'
 import { upperCaseFirst } from '../utils'
-import { handleConfigData } from '../utils/config'
-
+import { handleConfigData, handleVmData } from '../utils/config'
 class Text {
   constructor (data) {
     let { vm, key, el, type, parentConfig, parentConfigData } = data
@@ -36,25 +35,12 @@ class Text {
   update (data) {
     if (!data) return
 
-    let instance = this.vm.$refs.component
-    Object.keys(data).forEach(item => {
-      recursive(item.split('-'), instance, data[item])
-    })
-
-    function recursive (keys, target, data) {
-      let key = keys[0]
-      keys.splice(0, 1)
-      if (keys.length) {
-        recursive(keys, target[key], data)
-      } else {
-        if (key.match(/\?pixel/g)) {
-          key = key.replace(/\?pixel/g, '')
-          target[key] = data + 'px'
-        } else {
-          target[key] = data && data.hex ? data.hex : data
-        }
-      }
-    }
+    let props = { ...data }
+    delete props['vm-border-component']
+    handleVmData(props, this.vm.$refs.component)
+    handleVmData({
+      'vm-border-component': data['vm-border-component']
+    }, this.vm, true)
   }
   resize () {
     this.update(this.configData.formData)

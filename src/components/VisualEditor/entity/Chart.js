@@ -9,7 +9,7 @@ import 'echarts/theme/roma'
 import chinaMap from '@/assets/VisualEditor/map/china.json'
 
 import { option, config, configMap } from '../config/chart'
-import { handleConfigData } from '../utils/config'
+import { handleConfigData, handleVmData } from '../utils/config'
 
 Echarts.registerMap('china', chinaMap)
 
@@ -65,7 +65,8 @@ class Chart {
     handleRadiusOption(data, option)
     // 清除无用配置
     handleUselessOption(type, option, this.config, switchKeys)
-
+    // 边框样式
+    handleVmData(data, this.vm)
     this.update(option)
   }
   changeAttr (data) {
@@ -82,10 +83,21 @@ class Chart {
   }
 }
 
+let whiteList = [
+  'theme',
+  'dataZoomX',
+  'dataZoomXHeight',
+  'dataZoomY',
+  'dataZoomXWidth',
+  'axisFlip',
+  'radius',
+  'radiusInner',
+  'radiusOuter',
+  'vm-border-component'
+]
 function handleOption (data, chartOption) {
   let option = { ...chartOption }
   let list = Object.keys(data)
-  let whiteList = ['theme', 'dataZoomX', 'dataZoomXHeight', 'dataZoomY', 'dataZoomXWidth', 'axisFlip', 'radius', 'radiusInner', 'radiusOuter']
   
   list.forEach(key => {
     if (whiteList.includes(key)) return

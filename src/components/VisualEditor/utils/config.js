@@ -24,3 +24,27 @@ export function handleConfigData (config, configMap, type) {
   })
   return result
 }
+
+export function handleVmData (data, vm) {
+  Object.keys(data).forEach(item => {
+    if (item.includes('vm-')) {
+      let key = item.replace('vm-', '')
+      recursive(key.split('-'), vm, data[item])
+    }
+  })
+
+  function recursive (keys, target, data) {
+    let key = keys[0]
+    keys.splice(0, 1)
+    if (keys.length) {
+      recursive(keys, target[key], data)
+    } else {
+      if (key.match(/\?pixel/g)) {
+        key = key.replace(/\?pixel/g, '')
+        target[key] = data + 'px'
+      } else {
+        target[key] = data && data.hex ? data.hex : data
+      }
+    }
+  }
+}

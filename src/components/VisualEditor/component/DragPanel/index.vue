@@ -23,7 +23,8 @@
                 <div slot="extra" v-if="type === 'clipBoard'">
                   <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
                 </div>
-                <img :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
+                <img v-if="conf.image" :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
+                <Decoration class="decoration" v-else :data="conf.props"></Decoration>
               </a-card>
             </div>
         </a-col>
@@ -38,6 +39,7 @@
 
 <script>
 import TooltipIcon from '../TooltipIcon'
+import Decoration from '../Decoration'
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
 
@@ -60,7 +62,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon },
+  components: { TooltipIcon, Decoration },
   data () {
     return {
       instance: null,
@@ -262,6 +264,9 @@ export default {
     }
     .image-col12{
       height: 80px;
+    }
+    .decoration{
+      height: 40px;
     }
     .action{
       margin-right: 8px;

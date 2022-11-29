@@ -4,6 +4,7 @@ const sidebar = [
   { name: '可视化组件', key: 'chart', icon: 'area-chart', active: true },
   { name: '文本组件', key: 'text', icon: 'font-colors', active: true },
   { name: '表格组件', key: 'table', icon: 'table', active: true },
+  { name: '装饰', key: 'decoration', icon: 'shopping-cart', active: true },
   { name: '图片', key: 'image', icon: 'picture', active: true },
   { name: '视频', key: 'video', icon: 'video-camera', active: true },
   { name: '音频', key: 'audio', icon: 'audio', active: true },
@@ -19,7 +20,7 @@ const layer = [
   { name: '删除图层', icon: 'delete', key: 'delete' }
 ]
 const library = [
-  { name: '模板库', icon: 'fund', key: 'template', type: 'primary' },
+  { name: '模板库', icon: 'layout', key: 'template', type: 'primary' },
   { name: '主题库', icon: 'bg-colors', key: 'theme', type: 'danger' }
 ]
 const navbar = [

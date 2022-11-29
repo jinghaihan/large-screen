@@ -55,6 +55,7 @@ export default {
     return {
       cell: null,
       observer: null,
+      // 边框
       border: {
         component: 'none',
         primaryColor: '#4fd2dd',

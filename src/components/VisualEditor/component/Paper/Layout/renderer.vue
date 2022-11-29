@@ -10,7 +10,8 @@
           <component ref="component"
                     v-if="cell && cell.component"
                     :is="cell.component"
-                    :src="cell.src">
+                    :src="cell.src"
+                    :data="cell.props">
           </component>
         </div>
       </Border>
@@ -34,8 +35,9 @@ import _ from 'lodash'
 import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
-import ViewSourceModal from './viewSourceModal.vue'
+import Decoration from '../../../entity/Decoration'
 import Border from './border/index.vue'
+import ViewSourceModal from './viewSourceModal.vue'
 import { getImage } from '../../../utils'
 
 export default {
@@ -58,8 +60,8 @@ export default {
       // 边框
       border: {
         component: 'none',
-        primaryColor: '#4fd2dd',
-        deputyColor: '#235fa7',
+        primaryColor: '#235fa7',
+        deputyColor: '#4fd2dd',
         backgroundColor: '',
         padding: 0
       },
@@ -106,6 +108,9 @@ export default {
             break
           case 'audio':
             this.handleMedia()
+            break
+          case 'decoration':
+            this.handleDecoration()
             break
           default:
             break
@@ -169,6 +174,24 @@ export default {
           type: this.data.props.type,
           src: cell.src || this.data.props.src,
           thumbnail: this.data.props.thumbnail,
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
+      }
+    },
+    // 装饰类型
+    handleDecoration () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        this.cell = new Decoration({
+          vm: this,
+          key: this.data.props.key,
+          el: this.$refs.render,
+          type: this.data.props.type,
+          props: cell.props || this.data.props,
           parentConfig: _.cloneDeep(cell.config),
           parentConfigData: _.cloneDeep(cell.configData)
         })

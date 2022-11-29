@@ -9,8 +9,8 @@ for (let i = 1; i < 13; i++) {
     h: 10,
     props: {
       component: 'dv-decoration-' + i,
-      primaryColor: '#4fd2dd',
-      deputyColor: '#235fa7'
+      primaryColor: '#235fa7',
+      deputyColor: '#4fd2dd'
     }
   }
 }

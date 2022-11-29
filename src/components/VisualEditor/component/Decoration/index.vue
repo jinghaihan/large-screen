@@ -1,8 +1,9 @@
 <template>
   <component class="decoration"
-             :is="data.component"
+             ref="decoration"
+             :is="props.component"
              v-bind="{
-              color: [data.primaryColor, data.deputyColor]
+              color: [props.primaryColor, props.deputyColor]
              }">
   </component>
 </template>
@@ -13,6 +14,18 @@ export default {
     data: {
       type: Object,
       required: true
+    }
+  },
+  data () {
+    return {
+      props: this.data
+    }
+  },
+  methods: {
+    resize () {
+      try {
+        this.$refs.decoration.initWH()
+      } catch (error) {}
     }
   }
 }

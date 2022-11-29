@@ -40,13 +40,13 @@ const globalConfig = {
           type: 'color-picker',
           label: '主颜色',
           key: 'vm-border-primaryColor',
-          defaultValue: { hex: '#4fd2dd' }
+          defaultValue: { hex: '#235fa7' }
         },
         {
           type: 'color-picker',
           label: '副颜色',
           key: 'vm-border-deputyColor',
-          defaultValue: { hex: '#235fa7' }
+          defaultValue: { hex: '#4fd2dd' }
         },
         {
           type: 'color-picker',

@@ -39,7 +39,7 @@ const config = [
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     },
-    defaultValue: { hex: '#4fd2dd' }
+    defaultValue: { hex: '#235fa7' }
   },
   {
     type: 'color-picker',
@@ -50,7 +50,7 @@ const config = [
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     },
-    defaultValue: { hex: '#235fa7' }
+    defaultValue: { hex: '#4fd2dd' }
   },
   {
     type: 'color-picker',

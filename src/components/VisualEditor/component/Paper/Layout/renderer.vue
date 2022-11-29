@@ -1,6 +1,7 @@
 <template>
   <div :class="getStyle()"
-       @click="onClick">
+       @click="onClick"
+       @contextmenu="onClick">
     <a-dropdown :trigger="['contextmenu']">
       <Border ref="border" :data="border">
         <div ref="render"
@@ -81,6 +82,9 @@ export default {
       }
       return data
     }
+  },
+  created () {
+    this.onClick = _.debounce(this.onClick, 150)
   },
   mounted () {
     this.init()
@@ -207,6 +211,9 @@ export default {
           case 'text':
             _this.cell.resize()
             break
+          case 'decoration':
+            _this.cell.resize()
+            break
           default:
             break
         }
@@ -214,7 +221,7 @@ export default {
       })
       _this.observer.observe(_this.$refs.render)
     },
-    onClick () {
+    onClick (e) {
       this.editor.changeComponent(this.data)
     },
     async onOperation (operation) {

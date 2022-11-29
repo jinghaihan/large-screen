@@ -34,7 +34,7 @@ class Decoration {
     this.vm.$refs.component.props = this.props
   }
   resize () {
-    this.vmm.$refs.component.resize()
+    this.vm.$refs.component.resize()
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({

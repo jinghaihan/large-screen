@@ -8,37 +8,15 @@
     :width="600"
     title="批量修改"
   >
-    <FormModel :config="config" @change="onChange"></FormModel>
+    <div id="batch-edit-modal">
+      <FormModel :config="config" @change="onChange"></FormModel>
+    </div>
   </a-modal>
 </template>
 
 <script>
 import FormModel from '../ConfigPanel/FormModel/formModel.vue'
-
-const config = [
-  {
-    type: 'select',
-    label: '主题',
-    key: 'theme',
-    defaultValue: 'default',
-    props: {
-      options: [
-        { label: '默认', value: 'default' },
-        { label: 'light', value: 'light' },
-        { label: 'macarons', value: 'macarons' },
-        { label: 'infographic', value: 'infographic' },
-        { label: 'shine', value: 'shine' },
-        { label: 'roma', value: 'roma' }
-      ]
-    }
-  },
-  {
-    type: 'color-picker',
-    label: '字体颜色',
-    key: 'fontColor',
-    defaultValue: { hex: '#333' }
-  }
-]
+import config from './config'
 
 export default {
   props: {
@@ -67,5 +45,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  
+  #batch-edit-modal{
+    --primary-color: #fff;
+    --normal-color: #f5f5f5;
+    --shadow-color: #f0f0f0;
+    --font-color: #333;
+    --highlight-color: #ddd;
+  }
 </style>

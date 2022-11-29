@@ -1,8 +1,8 @@
 const configMap = {
   'bar': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'axisFlip', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -14,9 +14,9 @@ const configMap = {
     }
   },
   'bar-stack': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axisFlip', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'axisFlip', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -28,9 +28,9 @@ const configMap = {
     }
   },
   'line': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -42,9 +42,9 @@ const configMap = {
     }
   },
   'line-area': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -56,9 +56,9 @@ const configMap = {
     }
   },
   'pie': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'radius-Number', 'pie-series-label', 'legend', 'title']
+      config: ['basic', 'radius-Number', 'border', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -70,9 +70,9 @@ const configMap = {
     }
   },
   'pie-ring': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'radius-Array', 'pie-series-label', 'legend', 'title']
+      config: ['basic', 'radius-Array', 'border', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -84,9 +84,9 @@ const configMap = {
     }
   },
   'pie-rose': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'radius-Number', 'pie-series-label', 'legend', 'title']
+      config: ['basic', 'radius-Number', 'border', 'pie-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -98,9 +98,9 @@ const configMap = {
     }
   },
   'funnel': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'funnel-basic', 'funnel-series-label', 'legend', 'title']
+      config: ['basic', 'funnel-basic', 'border', 'funnel-series-label', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -112,9 +112,9 @@ const configMap = {
     }
   },
   'gauge': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'gauge-basic', 'gauge-series-detail', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'gauge-series-axisTick', 'title']
+      config: ['basic', 'gauge-basic', 'border', 'gauge-series-detail', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'gauge-series-axisTick', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -126,9 +126,9 @@ const configMap = {
     }
   },
   'scatter': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -140,9 +140,9 @@ const configMap = {
     }
   },
   'bubble': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'grid', 'axis', 'legend', 'title', 'dataZoom']
+      config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
     'dataSource': {
       name: '数据',
@@ -154,9 +154,9 @@ const configMap = {
     }
   },
   'radar': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'radar-axisName', 'legend', 'title']
+      config: ['basic', 'border', 'radar-axisName', 'legend', 'title']
     },
     'dataSource': {
       name: '数据',
@@ -168,9 +168,9 @@ const configMap = {
     }
   },
   'map-scatter': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'map-geo-basic', 'map-scatter-rippleEffect', 'title', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
+      config: ['basic', 'map-geo-basic', 'border', 'map-scatter-rippleEffect', 'title', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
     },
     'dataSource': {
       name: '数据',
@@ -182,9 +182,9 @@ const configMap = {
     }
   },
   'map-density': {
-    'chartConfig': {
+    'config': {
       name: '配置',
-      config: ['basic', 'map-series-basic', 'visualMap', 'title', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
+      config: ['basic', 'map-series-basic', 'border', 'visualMap', 'title', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
     },
     'dataSource': {
       name: '数据',

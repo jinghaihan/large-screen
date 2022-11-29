@@ -2,16 +2,18 @@
   <div :class="getStyle()"
        @click="onClick">
     <a-dropdown :trigger="['contextmenu']">
-      <div ref="render"
-           class="render-container"
-           @click="e => e.preventDefault()">
-        <!-- 动态加载组件 -->
-        <component ref="component"
-                   v-if="cell && cell.component"
-                   :is="cell.component"
-                   :src="cell.src">
-        </component>
-      </div>
+      <component :is="border.component">
+        <div ref="render"
+            class="render-container"
+            @click="e => e.preventDefault()">
+          <!-- 动态加载组件 -->
+          <component ref="component"
+                    v-if="cell && cell.component"
+                    :is="cell.component"
+                    :src="cell.src">
+          </component>
+        </div>
+      </component>
       <a-menu slot="overlay">
         <a-menu-item v-for="item in operation"
                      :key="item.key"
@@ -33,6 +35,7 @@ import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
 import ViewSourceModal from './viewSourceModal.vue'
+import None from './none.vue'
 import { getImage } from '../../../utils'
 
 export default {
@@ -47,11 +50,17 @@ export default {
       required: true
     }
   },
-  components: { ViewSourceModal },
+  components: { ViewSourceModal, none: None },
   data () {
     return {
       cell: null,
       observer: null,
+      border: {
+        component: 'none',
+        primaryColor: '',
+        deputyColor: '',
+        backgroundColor: ''
+      },
       // 弹窗
       viewSourceVisible: false
     }

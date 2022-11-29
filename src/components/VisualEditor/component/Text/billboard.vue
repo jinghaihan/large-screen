@@ -1,5 +1,5 @@
 <template>
-  <div class="billboard-container" :style="containerStyle">
+  <div class="billboard-container">
     <a-statistic :value="value"
                  :value-style="valueStyle"
                  :suffix="suffix"
@@ -28,11 +28,6 @@ export default {
         color: '',
         fontSize: '',
         fontWeight: ''
-      },
-      containerStyle: {
-        borderWidth: '',
-        borderStyle: '',
-        borderColor: ''
       }
     }
   }

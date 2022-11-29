@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import globalConfig from '../config/config'
 
 export function handleConfigData (config, configMap, type) {
   if (!configMap[type]) return {}
@@ -12,7 +13,7 @@ export function handleConfigData (config, configMap, type) {
   result.forEach(item => {
     item.config = []
     item.collapse = []
-    let data = _.cloneDeep(config[item.key])
+    let data = { ...globalConfig[item.key], ..._.cloneDeep(config[item.key]) }
     configMap[type][item.key].config.forEach(key => {
       item[data[key].type].push({
         ...data[key],

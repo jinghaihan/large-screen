@@ -42,6 +42,20 @@
         "children": []
       },
       {
+        "title": "素材中心",
+        "icon": "picture",
+        "target": "material",
+        "activeRule": "/large-screen/",
+        "children": []
+      },
+      {
+        "title": "主题中心",
+        "icon": "bar-chart",
+        "target": "theme",
+        "activeRule": "/large-screen/",
+        "children": []
+      },
+      {
         "title": "大屏配置",
         "icon": "fullscreen",
         "target": "largeScreen",

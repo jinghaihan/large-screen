@@ -1,6 +1,6 @@
 const configMap = {
   'single-line': {
-    'textConfig': {
+    'config': {
       name: '配置',
       config: ['single-line', 'basic']
     },
@@ -14,7 +14,7 @@ const configMap = {
     }
   },
   'multi-line': {
-    'textConfig': {
+    'config': {
       name: '配置',
       config: ['multi-line', 'basic']
     },
@@ -28,9 +28,9 @@ const configMap = {
     }
   },
   'billboard': {
-    'textConfig': {
+    'config': {
       name: '配置',
-      config: ['billboard', 'billboard-title', 'billboard-value', 'container-border']
+      config: ['billboard', 'billboard-title', 'billboard-value']
     },
     'dataSource': {
       name: '数据',
@@ -42,9 +42,9 @@ const configMap = {
     }
   },
   'billboard-countdown': {
-    'textConfig': {
+    'config': {
       name: '配置',
-      config: ['billboard-countdown', 'billboard-countdown-title', 'billboard-countdown-value', 'container-border']
+      config: ['billboard-countdown', 'billboard-countdown-title', 'billboard-countdown-value']
     },
     'dataSource': {
       name: '数据',
@@ -56,7 +56,7 @@ const configMap = {
     }
   },
   'notable': {
-    'textConfig': {
+    'config': {
       name: '配置',
       config: ['notable']
     },
@@ -70,9 +70,9 @@ const configMap = {
     }
   },
   'clock': {
-    'textConfig': {
+    'config': {
       name: '配置',
-      config: ['clock', 'clock-font', 'clock-border', 'container-border']
+      config: ['clock', 'clock-font', 'clock-border']
     },
     'dataSource': {
       name: '数据',

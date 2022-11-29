@@ -1,5 +1,5 @@
 <template>
-  <div class="clock-container" :style="containerStyle">
+  <div class="clock-container">
     <a-card v-for="key in Object.keys(time)"
             :key="key"
             :bodyStyle="cardStyle"
@@ -35,11 +35,6 @@ export default {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
-      },
-      containerStyle: {
-        borderWidth: '',
-        borderStyle: '',
-        borderColor: ''
       },
       interval: null
     }

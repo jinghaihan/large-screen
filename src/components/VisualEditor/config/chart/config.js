@@ -1,6 +1,6 @@
 const config = {
   // 配置
-  chartConfig: {
+  config: {
     // 公用配置
     'basic': {
       type: 'config',

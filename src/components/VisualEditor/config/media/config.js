@@ -1,6 +1,6 @@
 const config = {
   // 配置
-  mediaConfig: {
+  config: {
     'player': {
       type: 'config',
       config: [

@@ -1,6 +1,6 @@
 const configMap = {
   'video': {
-    'mediaConfig': {
+    'config': {
       name: '配置',
       config: ['player', 'video']
     },
@@ -10,7 +10,7 @@ const configMap = {
     }
   },
   'audio': {
-    'mediaConfig': {
+    'config': {
       name: '配置',
       config: ['player']
     },

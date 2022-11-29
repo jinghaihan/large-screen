@@ -2,7 +2,7 @@ import moment from 'moment'
 
 const config = {
   // 配置
-  textConfig: {
+  config: {
     'basic': {
       type: 'config',
       config: [
@@ -380,7 +380,7 @@ const config = {
     },
     'clock-border': {
       type: 'collapse',
-      name: '边框设置',
+      name: '时钟边框设置',
       switch: false,
       defaultValue: true,
       config: [
@@ -400,44 +400,6 @@ const config = {
           type: 'select',
           label: '边框样式',
           key: 'cardStyle-borderStyle',
-          defaultValue: 'solid',
-          props: {
-            options: [
-              { label: '实线边框', value: 'solid' },
-              { label: '点线边框', value: 'dotted' },
-              { label: '虚线边框', value: 'dashed' },
-              { label: '双边框', value: 'double' },
-              { label: '3D沟槽边框', value: 'groove' },
-              { label: '3D脊边框', value: 'ridge' },
-              { label: '3D嵌入边框', value: 'inset' },
-              { label: '3D突出边框', value: 'outset' }
-            ]
-          }
-        }
-      ]
-    },
-    'container-border': {
-      type: 'collapse',
-      name: '外边框设置',
-      switch: false,
-      defaultValue: true,
-      config: [
-        {
-          type: 'color-picker',
-          label: '外边框颜色',
-          key: 'containerStyle-borderColor',
-          defaultValue: { hex: '#e8e8e8' }
-        },
-        {
-          type: 'input-number',
-          label: '外边框宽度',
-          key: 'containerStyle-borderWidth?pixel',
-          defaultValue: 1
-        },
-        {
-          type: 'select',
-          label: '外边框样式',
-          key: 'containerStyle-borderStyle',
           defaultValue: 'solid',
           props: {
             options: [

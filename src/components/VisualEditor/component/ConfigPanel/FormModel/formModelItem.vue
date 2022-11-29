@@ -89,6 +89,12 @@
                      :config="config"
                      :form="form">
     </MaterialLibrary>
+    <!-- 气泡卡片选择 -->
+    <PopoverSelect v-if="config.type === 'popover-select'"
+                  :config="config"
+                  :form="form"
+                  @change="onChange">
+    </PopoverSelect>
   </a-form-model-item>
 </template>
 
@@ -96,6 +102,7 @@
 import Textarea from './widget/textarea.vue'
 import ColorPicker from './widget/colorPicker.vue'
 import MaterialLibrary from './widget/MaterialLibrary'
+import PopoverSelect from './widget/popoverSelect.vue'
 
 export default {
   props: {
@@ -112,7 +119,7 @@ export default {
       required: true
     }
   },
-  components: { Textarea, ColorPicker, MaterialLibrary },
+  components: { Textarea, ColorPicker, MaterialLibrary, PopoverSelect },
   data () {
     return {}
   },

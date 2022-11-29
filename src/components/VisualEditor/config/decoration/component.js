@@ -1,3 +1,5 @@
+import color from '../color'
+
 const decoration = {
   'dv-decoration-1': {
     'name': '装饰1',
@@ -86,8 +88,8 @@ const decoration = {
 Object.keys(decoration).forEach(key => {
   decoration[key].props = {
     ...decoration[key].props,
-    'primaryColor': '#4fd2dd',
-    'deputyColor': '#235fa7'
+    'primaryColor': color['dataV-primary-color'],
+    'deputyColor': color['dataV-deputy-color']
   }
 })
 

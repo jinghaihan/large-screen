@@ -1,3 +1,5 @@
+import color from '../color'
+
 const config = {
   config: {
     color: {
@@ -7,13 +9,13 @@ const config = {
           type: 'color-picker',
           label: '主颜色',
           key: 'primaryColor',
-          defaultValue: { hex: '#235fa7' }
+          defaultValue: { hex: color['dataV-primary-color'] }
         },
         {
           type: 'color-picker',
           label: '副颜色',
           key: 'deputyColor',
-          defaultValue: { hex: '#4fd2dd' }
+          defaultValue: { hex: color['dataV-deputy-color'] }
         }
       ]
     },

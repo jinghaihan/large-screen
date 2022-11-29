@@ -37,8 +37,9 @@ import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
 import Decoration from '../../../entity/Decoration'
-import Border from './border/index.vue'
+import Border from '../../Border'
 import ViewSourceModal from './viewSourceModal.vue'
+import color from '../../../config/color'
 import { getImage } from '../../../utils'
 
 export default {
@@ -61,9 +62,9 @@ export default {
       // 边框
       border: {
         component: 'none',
-        primaryColor: '#235fa7',
-        deputyColor: '#4fd2dd',
-        backgroundColor: '',
+        primaryColor: color['dataV-primary-color'],
+        deputyColor: color['dataV-deputy-color'],
+        backgroundColor: color['dataV-background-color'],
         padding: 0
       },
       // 弹窗

@@ -1,3 +1,5 @@
+import color from './color'
+
 const config = [
   {
     type: 'select',
@@ -39,7 +41,7 @@ const config = [
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     },
-    defaultValue: { hex: '#235fa7' }
+    defaultValue: { hex: color['dataV-primary-color'] }
   },
   {
     type: 'color-picker',
@@ -50,7 +52,7 @@ const config = [
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     },
-    defaultValue: { hex: '#4fd2dd' }
+    defaultValue: { hex: color['dataV-deputy-color'] }
   },
   {
     type: 'color-picker',
@@ -61,7 +63,7 @@ const config = [
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
     },
-    defaultValue: { hex: '#00000000' }
+    defaultValue: { hex: color['dataV-background-color'] }
   }
 ]
 

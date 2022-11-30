@@ -33,15 +33,15 @@
 
 <script>
 import _ from 'lodash'
-import Chart from '../../../entity/Chart'
-import Text from '../../../entity/Text'
-import Media from '../../../entity/Media'
-import Decoration from '../../../entity/Decoration'
-import Search from '../../../entity/Search'
-import Border from '../../Border'
+import Chart from '../../entity/Chart'
+import Text from '../../entity/Text'
+import Media from '../../entity/Media'
+import Decoration from '../../entity/Decoration'
+import Search from '../../entity/Search'
+import Border from '../Border'
 import ViewSourceModal from './viewSourceModal.vue'
-import color from '../../../config/color'
-import { getImage } from '../../../utils'
+import color from '../../config/color'
+import { getImage } from '../../utils'
 
 export default {
   props: {

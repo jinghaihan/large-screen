@@ -84,9 +84,8 @@ export default {
           if (!item.enable || item.enable.includes(this.component.componentType)) {
             flag = true
           }
-          // 查询面板/禁止复制
-          if (this.component.componentType === 'search' && this.component.type === 'panel') {
-            if (item.key === 'copy') flag = false
+          if (item.disable && item.disable.includes(this.component.componentType)) {
+            flag = false
           }
           return flag
         })

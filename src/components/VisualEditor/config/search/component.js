@@ -21,6 +21,9 @@ const search = {
       enable: false
     }
   }
+  // 'input-multiple': {
+    
+  // }
   // 'select': {
 
   // },

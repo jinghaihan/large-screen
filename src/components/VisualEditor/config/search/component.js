@@ -14,7 +14,7 @@ const search = {
     name: '输入框',
     type: 'input',
     col: 12,
-    w: 15,
+    w: 10,
     h: 5,
     props: {
       component: 'Input',

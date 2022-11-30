@@ -113,13 +113,14 @@ export default {
       })
     },
     async init () {
+      await this.$nextTick()
+
       this.configData = []
       this.collapseKeys = []
       this.switchKeys = []
       this.cell = this.editor.cell[this.component.key]
 
       if (this.cell.config && this.cell.config.length) {
-        await this.$nextTick()
         this.initConfig()
         this.initKey()
         this.onChange()

@@ -15,6 +15,7 @@
                 :key="conf.name"
                 :span="conf.col">
             <div class="droppable-element"
+                @dragstart="dragStart($event, conf)"
                 @drag="drag($event, conf)"
                 @dragend="dragEnd($event, conf)"
                 draggable="true"
@@ -26,7 +27,11 @@
                 <!-- 图片展示 -->
                 <img v-if="conf.image" :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
                 <!-- 组件展示 -->
-                <component v-else class="component" :is="conf.props.component" :data="conf.props"></component>
+                <component v-else
+                           class="component"
+                           :is="conf.props.component"
+                           :data="conf.props">
+                </component>
               </a-card>
             </div>
         </a-col>
@@ -80,13 +85,6 @@ export default {
     }
   },
   watch: {
-    layer: {
-      deep: true,
-      immediate: true,
-      handler: function () {
-        this.init()
-      }
-    },
     type: {
       immediate: true,
       handler: function () {
@@ -167,11 +165,16 @@ export default {
 
       this.loading = false
     },
-    init () {
+    updateInstance (data) {
       try {
         this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
       } catch (error) { }
-      this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+      // 查询组件
+      if (this.type === 'search' && data && data.type !== 'panel') {
+        this.instance = this.editor.instance['searchPanel']
+      } else {
+        this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+      }
       try {
         this.instance.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
       } catch (error) {}
@@ -179,6 +182,9 @@ export default {
     updateMouse (e) {
       mouseXY.x = e.clientX
       mouseXY.y = e.clientY
+    },
+    dragStart (e, item) {
+      this.updateInstance(item)
     },
     drag (e, item) {
       let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
@@ -224,13 +230,7 @@ export default {
         this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
 
-        const gridSize = {
-          x: this.editor.instance.editor.grid.count,
-          y: Math.ceil(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
-        }
-        if (DragPos.x + item.w > gridSize.x || DragPos.y + item.h > gridSize.y) {
-          return
-        }
+        if (!this.validatePosition(item)) return
 
         let key = getUUID()
         this.instance.layout.push({
@@ -254,6 +254,16 @@ export default {
           this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'block'
         } catch (error) { }
       }
+    },
+    validatePosition (el) {
+      const gridSize = {
+        x: this.editor.instance.editor.grid.count,
+        y: Math.ceil(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
+      }
+      if (DragPos.x + el.w > gridSize.x || DragPos.y + el.h > gridSize.y) {
+        return false
+      }
+      return true
     },
     onDelete (data) {
       this.editor.deleteClipBoardCell(data)

@@ -11,6 +11,8 @@
           <component ref="component"
                     v-if="cell && cell.component"
                     :is="cell.component"
+                    :editor="editor"
+                    :component="component"
                     :src="cell.src"
                     :data="cell.props">
           </component>

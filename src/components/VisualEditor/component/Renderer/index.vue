@@ -80,9 +80,15 @@ export default {
       let data = []
       if (this.component.componentType) {
         data = this.editor.operation.renderer.filter(item => {
-          if (!item.only || item.only.includes(this.component.componentType)) {
-            return true
+          let flag
+          if (!item.enable || item.enable.includes(this.component.componentType)) {
+            flag = true
           }
+          // 查询面板/禁止复制
+          if (this.component.componentType === 'search' && this.component.type === 'panel') {
+            if (item.key === 'copy') flag = false
+          }
+          return flag
         })
       }
       return data

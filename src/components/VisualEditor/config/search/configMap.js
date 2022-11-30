@@ -2,7 +2,7 @@ const configMap = {
   'panel': {
     'config': {
       name: '配置',
-      config: ['border']
+      config: ['panel', 'border']
     }
   },
   'input': {

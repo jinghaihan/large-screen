@@ -13,7 +13,7 @@ const sidebar = [
 ]
 const renderer = [
   { name: '复制', key: 'copy', icon: 'copy' },
-  { name: '查看源码', key: 'viewSource', icon: 'eye', only: ['chart'] },
+  { name: '查看源码', key: 'viewSource', icon: 'eye', enable: ['chart'] },
   { name: '删除', key: 'delete', icon: 'delete' }
 ]
 const layer = [

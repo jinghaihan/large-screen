@@ -3,9 +3,11 @@
     <!-- 组件面板展示 -->
     <div v-if="!data.enable" class="holder"> 查询面板 </div>
     <div v-else ref="content" class="content">
+      <!-- 无组件样式 -->
       <div v-if="!layout.length" class="holder">
         <a-empty></a-empty>
       </div>
+      <!-- 画布布局 -->
       <GridLayout ref="gridLayout"
                   :layout.sync="layout"
                   :col-num="grid.count"
@@ -30,11 +32,17 @@
           <Renderer :editor="editor" :data="item" :component="component" @delete="onDelete"></Renderer>
         </GridItem>
       </GridLayout>
+      <!-- 按钮 -->
+      <div ref="button" class="button-container">
+        <a-button class="button" :size="button.size" :type="button.search">查询</a-button>
+        <a-button class="button" :size="button.size" :type="button.reset">重置</a-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import $ from 'jquery'
 import { GridLayout, GridItem } from 'vue-grid-layout'
 
 const Renderer = () => import('../Renderer/index.vue')
@@ -63,6 +71,22 @@ export default {
         count: 0,
         maxRows: 0,
         rowHeight: 0
+      },
+      button: {
+        bottom: 0,
+        right: 0,
+        margin: '8px',
+        size: 'default',
+        search: 'primary',
+        reset: 'default'
+      }
+    }
+  },
+  watch: {
+    button: {
+      deep: true,
+      handler (value) {
+        this.updateButtonStyle(value)
       }
     }
   },
@@ -115,6 +139,13 @@ export default {
         this.grid.maxRows = Math.ceil(this.grid.count / rect.width * rect.height)
         this.grid.rowHeight = rect.width / this.grid.count
       }
+    },
+    updateButtonStyle (value) {
+      $(this.$refs.button).css({
+        right: value.right || 0,
+        bottom: value.bottom || 0
+      })
+      $(this.$refs.button).find('.button').eq(0).css('margin-right', value.margin || (8 + 'px'))
     }
   }
 }
@@ -125,6 +156,8 @@ export default {
     height: 100%;
     width: 100%;
     position: relative;
+    overflow: hidden;
+    overflow-y: auto;
     .holder{
       height: 100%;
       width: 100%;
@@ -142,6 +175,14 @@ export default {
       }
       .holder{
         z-index: -1;
+      }
+    }
+    .button-container{
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      .button:first-of-type{
+        margin-right: 8px;
       }
     }
   }

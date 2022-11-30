@@ -37,6 +37,7 @@ import Chart from '../../../entity/Chart'
 import Text from '../../../entity/Text'
 import Media from '../../../entity/Media'
 import Decoration from '../../../entity/Decoration'
+import Search from '../../../entity/Search'
 import Border from '../../Border'
 import ViewSourceModal from './viewSourceModal.vue'
 import color from '../../../config/color'
@@ -100,22 +101,25 @@ export default {
       if (this.data.props) {
         switch (this.data.props.componentType) {
           case 'chart':
-            this.handleChart()
+            this.handleChartComponent()
             break
           case 'text':
-            this.handleText()
+            this.handleTextComponent()
             break
           case 'image':
-            this.handleMedia()
+            this.handleMediaComponent()
             break
           case 'video':
-            this.handleMedia()
+            this.handleMediaComponent()
             break
           case 'audio':
-            this.handleMedia()
+            this.handleMediaComponent()
             break
           case 'decoration':
-            this.handleDecoration()
+            this.handleDecorationComponent()
+            break
+          case 'search':
+            this.handleSearchComponent()
             break
           default:
             break
@@ -125,7 +129,7 @@ export default {
       }
     },
     // Chart类型
-    handleChart () {
+    handleChartComponent () {
       let cell = this.editor.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
@@ -148,7 +152,7 @@ export default {
       }
     },
     // 文本类型
-    handleText () {
+    handleTextComponent () {
       let cell = this.editor.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
@@ -166,7 +170,7 @@ export default {
       }
     },
     // 多媒体类型
-    handleMedia () {
+    handleMediaComponent () {
       let cell = this.editor.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
@@ -185,13 +189,31 @@ export default {
       }
     },
     // 装饰类型
-    handleDecoration () {
+    handleDecorationComponent () {
       let cell = this.editor.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
         let cell = this.editor.cell[this.data.props.parentKey] || {}
         this.cell = new Decoration({
+          vm: this,
+          key: this.data.props.key,
+          el: this.$refs.render,
+          type: this.data.props.type,
+          props: cell.props || this.data.props,
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
+      }
+    },
+    // 查询类型
+    handleSearchComponent () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        this.cell = new Search({
           vm: this,
           key: this.data.props.key,
           el: this.$refs.render,

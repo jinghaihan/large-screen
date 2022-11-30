@@ -23,7 +23,9 @@
                 <div slot="extra" v-if="type === 'clipBoard'">
                   <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
                 </div>
+                <!-- 图片展示 -->
                 <img v-if="conf.image" :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
+                <!-- 组件展示 -->
                 <component v-else class="component" :is="conf.props.component" :data="conf.props"></component>
               </a-card>
             </div>
@@ -39,8 +41,11 @@
 
 <script>
 import TooltipIcon from '../TooltipIcon'
+// 装饰组件
 import Decoration from '../Decoration'
+// 查询组件
 import SearchPanel from '../Search/panel.vue'
+import Input from '../Search/input.vue'
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
 
@@ -63,7 +68,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, Decoration, SearchPanel },
+  components: { TooltipIcon, Decoration, SearchPanel, Input },
   data () {
     return {
       instance: null,

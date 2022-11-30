@@ -3,15 +3,24 @@ const search = {
     name: '查询面板',
     type: 'panel',
     col: 12,
-    w: 10,
-    h: 8,
+    w: 100,
+    h: 10,
     props: {
-      component: 'SearchPanel'
+      component: 'SearchPanel',
+      enable: false
+    }
+  },
+  'input': {
+    name: '输入框',
+    type: 'input',
+    col: 12,
+    w: 15,
+    h: 5,
+    props: {
+      component: 'Input',
+      enable: false
     }
   }
-  // 'input': {
-    
-  // },
   // 'select': {
 
   // },

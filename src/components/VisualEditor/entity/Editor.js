@@ -291,7 +291,22 @@ class Editor {
     }
   }
   getConfig () {
-    
+    let _this = this
+    const layout = _.cloneDeep(_this.instance.editor.layout)
+    const cell = {}
+    Object.keys(_this.cell).forEach(key => {
+      cell[key] = { ..._this.cell[key].configData }
+    })
+    let config = {
+      layout,
+      cell
+    }
+    layout.forEach((item, index) => {
+      let data = _this.instance.layout.$refs.layer[index].layout
+      layout[index].layout = data
+    })
+
+    console.log('config', config)
   }
   setConfig () {
     

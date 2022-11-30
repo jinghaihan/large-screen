@@ -218,6 +218,14 @@ export default {
         this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
         this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
 
+        const gridSize = {
+          x: this.editor.instance.editor.grid.count,
+          y: Math.ceil(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
+        }
+        if (DragPos.x + item.w > gridSize.x || DragPos.y + item.h > gridSize.y) {
+          return
+        }
+
         let key = getUUID()
         this.instance.layout.push({
           x: DragPos.x,

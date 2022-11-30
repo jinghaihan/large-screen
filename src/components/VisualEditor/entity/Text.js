@@ -37,16 +37,19 @@ class Text {
 
     let props = { ...data }
     delete props['vm-border-component']
-    delete props['vm-border-padding']
     delete props['vm-border-primaryColor']
     delete props['vm-border-deputyColor']
+    delete props['vm-border-backgroundColor']
+    delete props['vm-border-padding']
     handleVmData(props, this.vm.$refs.component)
+    
     handleVmData({
       'vm-border-component': data['vm-border-component'],
-      'vm-border-padding': data['vm-border-padding'],
       'vm-border-primaryColor': data['vm-border-primaryColor'],
-      'vm-border-deputyColor': data['vm-border-deputyColor']
-    }, this.vm, true)
+      'vm-border-deputyColor': data['vm-border-deputyColor'],
+      'vm-border-backgroundColor': data['vm-border-backgroundColor'],
+      'vm-border-padding': data['vm-border-padding']
+    }, this.vm)
   }
   resize () {
     this.update(this.configData.formData)

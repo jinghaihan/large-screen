@@ -43,7 +43,7 @@ export function handleVmData (data, vm) {
         key = key.replace(/\?pixel/g, '')
         target[key] = data + 'px'
       } else {
-        target[key] = data && data.hex ? (data.hex8 || data.hex) : data
+        target[key] = (data && data.hex) ? (data.hex8 || data.hex) : data
       }
     }
   }

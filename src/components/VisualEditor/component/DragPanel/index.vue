@@ -165,19 +165,37 @@ export default {
 
       this.loading = false
     },
-    updateInstance (data) {
+    removeListener () {
       try {
         this.instance.$refs.gridLayout.$el.removeEventListener('dragover', this.updateMouse)
       } catch (error) { }
-      // 查询组件
-      if (this.type === 'search' && data && data.type !== 'panel') {
-        this.instance = this.editor.instance['searchPanel']
-      } else {
-        this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
-      }
+    },
+    addListener () {
       try {
         this.instance.$refs.gridLayout.$el.addEventListener('dragover', this.updateMouse, false)
       } catch (error) {}
+    },
+    updateInstance (data) {
+      this.removeListener()
+      if (this.type === 'search' && data) {
+        if (data.type !== 'panel') {
+          this.instance = this.editor.instance['searchPanel']
+          if (!this.instance) {
+            this.$notification.error({ message: '错误', description: '请先拖入查询面板' })
+            return
+          }
+        } else {
+          if (this.editor.instance['searchPanel']) {
+            this.$notification.error({ message: '错误', description: '画布仅可存在一个查询面板' })
+            return
+          } else {
+            this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+          }
+        }
+      } else {
+        this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+      }
+      this.addListener()
     },
     updateMouse (e) {
       mouseXY.x = e.clientX
@@ -187,73 +205,77 @@ export default {
       this.updateInstance(item)
     },
     drag (e, item) {
-      let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
-      let mouseInGrid = false
-      if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
-        mouseInGrid = true
-      }
-      if (mouseInGrid === true && (this.instance.layout.findIndex(item => item.i === 'drop')) === -1) {
-        this.instance.layout.push({
-          x: (this.instance.layout.length * 2) % this.instance.grid.count,
-          y: this.instance.layout.length + this.instance.grid.count,
-          w: item.w,
-          h: item.h,
-          i: 'drop'
-        })
-      }
-      let index = this.instance.layout.findIndex(item => item.i === 'drop')
-      if (index !== -1) {
-        try {
-          this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'none'
-        } catch (error) { }
-        let el = this.instance.$refs.gridLayout.$children[index]
-        el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
-        let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
-        if (mouseInGrid === true) {
-          this.instance.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
-          DragPos.x = this.instance.layout[index].x
-          DragPos.y = this.instance.layout[index].y
+      try {
+        let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
+        let mouseInGrid = false
+        if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
+          mouseInGrid = true
         }
-        if (mouseInGrid === false) {
-          this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
-          this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
+        if (mouseInGrid === true && (this.instance.layout.findIndex(item => item.i === 'drop')) === -1) {
+          this.instance.layout.push({
+            x: (this.instance.layout.length * 2) % this.instance.grid.count,
+            y: this.instance.layout.length + this.instance.grid.count,
+            w: item.w,
+            h: item.h,
+            i: 'drop'
+          })
         }
-      }
+        let index = this.instance.layout.findIndex(item => item.i === 'drop')
+        if (index !== -1) {
+          try {
+            this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'none'
+          } catch (error) { }
+          let el = this.instance.$refs.gridLayout.$children[index]
+          el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
+          let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
+          if (mouseInGrid === true) {
+            this.instance.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
+            DragPos.x = this.instance.layout[index].x
+            DragPos.y = this.instance.layout[index].y
+          }
+          if (mouseInGrid === false) {
+            this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
+            this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
+          }
+        }
+      } catch (error) {}
     },
     dragEnd (e, item) {
-      let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
-      let mouseInGrid = false
-      if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
-        mouseInGrid = true
-      }
-      if (mouseInGrid === true) {
-        this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
-        this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
+      try {
+        let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
+        let mouseInGrid = false
+        if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
+          mouseInGrid = true
+        }
+        if (mouseInGrid === true) {
+          this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, item.h, item.w)
+          this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
 
-        if (!this.validatePosition(item)) return
+          if (!this.validatePosition(item)) return
 
-        let key = getUUID()
-        this.instance.layout.push({
-          x: DragPos.x,
-          y: DragPos.y,
-          w: item.w,
-          h: item.h,
-          i: key,
-          props: {
-            key,
-            ...item.props,
-            name: item.name,
-            type: item.type,
-            componentType: item.props.componentType || this.type,
-            parentKey: item.props.parentKey,
-            src: item.props.src
-          }
-        })
-        this.editor.changeComponent(this.instance.layout[this.instance.layout.length - 1])
-        try {
-          this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'block'
-        } catch (error) { }
-      }
+          let key = getUUID()
+          this.instance.layout.push({
+            x: DragPos.x,
+            y: DragPos.y,
+            w: item.w,
+            h: item.h,
+            i: key,
+            props: {
+              key,
+              ...item.props,
+              name: item.name,
+              type: item.type,
+              componentType: item.props.componentType || this.type,
+              parentKey: item.props.parentKey,
+              src: item.props.src
+            }
+          })
+          this.editor.changeComponent(this.instance.layout[this.instance.layout.length - 1])
+          try {
+            this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'block'
+          } catch (error) { }
+        }
+      } catch (error) { }
     },
     validatePosition (el) {
       const gridSize = {

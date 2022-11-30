@@ -1,7 +1,7 @@
 <template>
   <div :class="getStyle()"
-       @click="onClick"
-       @contextmenu="onClick">
+       @click.stop="onClick"
+       @contextmenu.stop="onClick">
     <a-dropdown :trigger="['contextmenu']">
       <Border ref="border" :data="border">
         <div ref="render"

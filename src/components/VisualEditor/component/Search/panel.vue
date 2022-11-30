@@ -2,15 +2,15 @@
   <div class="search-panel-container">
     <!-- 组件面板展示 -->
     <div v-if="!data.enable" class="holder"> 查询面板 </div>
-    <div v-else class="content">
+    <div v-else ref="content" class="content">
       <div v-if="!layout.length" class="holder">
-        请拖入查询组件
+        <a-empty></a-empty>
       </div>
       <GridLayout ref="gridLayout"
                   :layout.sync="layout"
                   :col-num="grid.count"
-                  :max-rows="maxH"
-                  :row-height="rowH"
+                  :max-rows="grid.maxRows"
+                  :row-height="grid.rowHeight"
                   :is-draggable="data.enable"
                   :is-resizable="data.enable"
                   :vertical-compact="false"
@@ -24,7 +24,7 @@
                   :h="item.h"
                   :i="item.i"
                   :maxW="grid.count"
-                  :maxH="maxH"
+                  :maxH="grid.maxRows"
                   @move="onMove(item)"
                   @resize="onResize(item)">
           <Renderer :editor="editor" :data="item" :component="component" @delete="onDelete"></Renderer>
@@ -49,6 +49,10 @@ export default {
     data: {
       type: Object,
       required: false
+    },
+    item: {
+      type: Object,
+      required: false
     }
   },
   components: { GridLayout, GridItem, Renderer },
@@ -56,14 +60,17 @@ export default {
     return {
       layout: [],
       grid: {
-        count: 0
-      },
-      maxH: 10,
-      rowH: 10
+        count: 0,
+        maxRows: 0,
+        rowHeight: 0
+      }
     }
   },
   created () {
     this.init()
+  },
+  mounted () {
+    this.calcGrid()
   },
   beforeDestroy () {
     if (this.data.enable) {
@@ -74,7 +81,6 @@ export default {
     init () {
       if (this.data.enable) {
         this.editor.setInstance({ 'searchPanel': this })
-        this.grid.count = this.editor.instance.editor.grid.count
       }
     },
     onDelete (data) {
@@ -98,6 +104,17 @@ export default {
     },
     onResize (data) {
       this.editor.changeComponent(data)
+    },
+    resize () {
+      this.calcGrid()
+    },
+    calcGrid () {
+      if (this.$refs.content) {
+        const rect = this.$refs.content.getBoundingClientRect()
+        this.grid.count = this.item.w
+        this.grid.maxRows = Math.ceil(this.grid.count / rect.width * rect.height)
+        this.grid.rowHeight = rect.width / this.grid.count
+      }
     }
   }
 }
@@ -124,8 +141,6 @@ export default {
         height: 100% !important;
       }
       .holder{
-        font-size: 24px;
-        font-weight: bold;
         z-index: -1;
       }
     }

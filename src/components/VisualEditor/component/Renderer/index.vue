@@ -13,6 +13,7 @@
                     :is="cell.component"
                     :editor="editor"
                     :component="component"
+                    :item="data"
                     :src="cell.src"
                     :data="cell.props">
           </component>
@@ -237,6 +238,9 @@ export default {
             _this.cell.resize()
             break
           case 'decoration':
+            _this.cell.resize()
+            break
+          case 'search':
             _this.cell.resize()
             break
           default:

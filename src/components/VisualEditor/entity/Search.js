@@ -57,7 +57,9 @@ class Search {
     }, this.vm)
   }
   resize () {
-
+    if (this.vm.$refs.component.resize) {
+      this.vm.$refs.component.resize()
+    }
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({

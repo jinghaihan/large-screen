@@ -24,7 +24,7 @@
                   <TooltipIcon class="action" icon="close-circle" title="删除" @click="onDelete(conf)"></TooltipIcon>
                 </div>
                 <img v-if="conf.image" :class="'image-col' + conf.col" slot="cover" :src="conf.image" />
-                <Decoration class="decoration" v-else :data="conf.props"></Decoration>
+                <component v-else class="component" :is="conf.props.component" :data="conf.props"></component>
               </a-card>
             </div>
         </a-col>
@@ -40,6 +40,7 @@
 <script>
 import TooltipIcon from '../TooltipIcon'
 import Decoration from '../Decoration'
+import SearchPanel from '../Search/panel.vue'
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
 
@@ -62,7 +63,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, Decoration },
+  components: { TooltipIcon, Decoration, SearchPanel },
   data () {
     return {
       instance: null,
@@ -273,7 +274,7 @@ export default {
     .image-col12{
       height: 80px;
     }
-    .decoration{
+    .component{
       height: 40px;
     }
     .action{

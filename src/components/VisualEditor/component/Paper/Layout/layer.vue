@@ -73,6 +73,14 @@ export default {
       visible: false
     }
   },
+  watch: {
+    ratio: {
+      deep: true,
+      handler: function (value) {
+        this.maxH = parseInt((this.grid.count / this.ratio.width * this.ratio.height).toFixed(0))
+      }
+    }
+  },
   methods: {
     onClick (e) {
       let srcElement = e.srcElement

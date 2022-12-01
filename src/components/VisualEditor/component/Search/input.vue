@@ -1,12 +1,18 @@
 <template>
   <div class="search-input-container">
-    <a-input placeholder="请输入"></a-input>
+    <a-input placeholder="请输入" v-bind="props"></a-input>
   </div>
 </template>
 
 <script>
 export default {
-  
+  data () {
+    return {
+      props: {
+        size: 'default'
+      }
+    }
+  }
 }
 </script>
 

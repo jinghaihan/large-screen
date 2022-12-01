@@ -63,6 +63,24 @@ const config = {
           }
         }
       ]
+    },
+    'size': {
+      type: 'config',
+      config: [
+        {
+          type: 'select',
+          label: '控件大小',
+          key: 'vm-props-size',
+          defaultValue: 'default',
+          props: {
+            options: [
+              { label: '小', value: 'small' },
+              { label: '默认', value: 'default' },
+              { label: '大', value: 'large' }
+            ]
+          }
+        }
+      ]
     }
   }
 }

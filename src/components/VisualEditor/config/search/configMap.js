@@ -8,7 +8,7 @@ const configMap = {
   'input': {
     'config': {
       name: '配置',
-      config: []
+      config: ['size', 'border']
     }
   }
 }

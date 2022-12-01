@@ -1,7 +1,10 @@
 <template>
   <div class="paper-zoom-container"
        ref="zoom"
-       :style="getZoomStyle()">
+       :style="{
+          width: width * scale + 'px',
+          height: height * scale + 'px',
+        }">
     <div id="paper-scale-container"
         class="paper-scale-container"
         ref="scale"
@@ -63,8 +66,8 @@ export default {
   },
   methods: {
     handleChange () {
-      this.width = this.ratio.width * 120 * this.scale
-      this.height = this.ratio.height * 120 * this.scale
+      this.width = this.ratio.width * 120
+      this.height = this.ratio.height * 120
       this.setScale()
     },
     getScale () {
@@ -72,27 +75,23 @@ export default {
         const { width, height } = this
         const wh = (window.innerHeight - 95) * 0.9 / height
         const ww = (window.innerWidth - 335) * 0.9 / width
-        return ww < wh ? wh : ww
+        return ww < wh ? ww : wh
       }
     },
     setScale () {
       this.transformScale = this.getScale() * this.scale
       this.$emit('scale', this.transformScale)
+
       if (this.$refs.scale) {
         this.$refs.scale.style.setProperty('--scale', this.transformScale)
         if (this.scale > 1) {
           $(this.$refs.zoom).css({ position: 'relative' })
           $(this.container).css({ overflow: 'auto' })
         } else {
+          this.container.scrollTo(0, 0)
           $(this.$refs.zoom).css({ position: 'static' })
           $(this.container).css({ overflow: 'hidden' })
         }
-      }
-    },
-    getZoomStyle () {
-      return {
-        width: this.ratio.width * 120 * this.scale + 'px',
-        height: this.ratio.height * 120 * this.scale + 'px'
       }
     }
   }

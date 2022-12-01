@@ -36,8 +36,9 @@ export default {
   data () {
     return {
       transformScale: 1,
-      width: this.ratio.width * 120,
-      height: this.ratio.height * 120
+      coefficient: 120,
+      width: 0,
+      height: 0
     }
   },
   watch: {
@@ -55,6 +56,8 @@ export default {
     }
   },
   created () {
+    this.width = this.ratio.width * this.coefficient
+    this.height = this.ratio.height * this.coefficient
     this.setScale = _.debounce(this.setScale, 50)
   },
   mounted () {
@@ -66,8 +69,8 @@ export default {
   },
   methods: {
     handleChange () {
-      this.width = this.ratio.width * 120
-      this.height = this.ratio.height * 120
+      this.width = this.ratio.width * this.coefficient
+      this.height = this.ratio.height * this.coefficient
       this.setScale()
     },
     getScale () {

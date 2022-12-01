@@ -11,11 +11,14 @@
           <component ref="component"
                     v-if="cell && cell.component"
                     :is="cell.component"
-                    :editor="editor"
-                    :component="component"
-                    :item="data"
-                    :src="cell.src"
-                    :data="cell.props">
+                    v-bind="{
+                      editor: editor,
+                      component: component,
+                      transformScale: transformScale,
+                      item: data,
+                      src: cell.src,
+                      data: cell.props
+                    }">
           </component>
         </div>
       </Border>
@@ -55,6 +58,10 @@ export default {
     },
     component: {
       type: Object,
+      required: true
+    },
+    transformScale: {
+      type: Number,
       required: true
     }
   },

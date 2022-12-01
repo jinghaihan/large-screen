@@ -17,7 +17,8 @@
                   :is-resizable="data.enable"
                   :vertical-compact="false"
                   :prevent-collision="true"
-                  :margin="[0, 0]">
+                  :margin="[0, 0]"
+                  :transformScale="transformScale">
         <GridItem v-for="item in layout"
                   :key="item.i"
                   :x="item.x"
@@ -29,7 +30,7 @@
                   :maxH="grid.maxRows"
                   @move="onMove(item)"
                   @resize="onResize(item)">
-          <Renderer :editor="editor" :data="item" :component="component" @delete="onDelete"></Renderer>
+          <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
         </GridItem>
       </GridLayout>
       <!-- 按钮 -->
@@ -60,6 +61,10 @@ export default {
     },
     item: {
       type: Object,
+      required: false
+    },
+    transformScale: {
+      type: Number,
       required: false
     }
   },

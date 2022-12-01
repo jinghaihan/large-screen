@@ -22,7 +22,7 @@
                 :maxH="maxH"
                 @move="onMove(item)"
                 @resize="onResize(item)">
-        <Renderer :editor="editor" :data="item" :component="component" @delete="onDelete"></Renderer>
+        <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
       </GridItem>
     </GridLayout>
   </div>

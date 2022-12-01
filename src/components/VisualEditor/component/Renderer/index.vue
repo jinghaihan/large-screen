@@ -1,5 +1,5 @@
 <template>
-  <div :class="getStyle()"
+  <div :class="getClass()"
        @click.stop="onClick"
        @contextmenu.stop="onClick">
     <a-dropdown :trigger="['contextmenu']">
@@ -281,7 +281,7 @@ export default {
           break
       }
     },
-    getStyle () {
+    getClass () {
       return this.component.key === this.data.i ? 'draggable-element draggable-element-selected' : 'draggable-element'
     },
     onModalClose () {

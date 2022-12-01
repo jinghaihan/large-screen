@@ -9,7 +9,8 @@
                 :is-resizable="resizable"
                 :vertical-compact="false"
                 :prevent-collision="true"
-                :margin="[0, 0]">
+                :margin="[0, 0]"
+                :transformScale="transformScale">
       <GridItem v-for="item in layout"
                 :key="item.i"
                 :x="item.x"
@@ -60,6 +61,10 @@ export default {
       required: true
     },
     rowHeight: {
+      type: Number,
+      required: true
+    },
+    transformScale: {
       type: Number,
       required: true
     }

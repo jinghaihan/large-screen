@@ -58,10 +58,19 @@ const search = {
       type: 'SelectMultiple',
       enable: false
     }
+  },
+  'radio': {
+    name: '单选框',
+    type: 'radio',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'Radio',
+      enable: false
+    }
   }
-  // 'radio': {
-
-  // },
   // 'checkbox': {
 
   // },

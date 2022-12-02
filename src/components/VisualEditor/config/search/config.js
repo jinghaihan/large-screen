@@ -100,6 +100,17 @@ const config = {
       type: 'config',
       config: [
         {
+          type: 'input',
+          label: '标签',
+          key: 'vm-props-label',
+          defaultValue: '标签'
+        }
+      ]
+    },
+    'size': {
+      type: 'config',
+      config: [
+        {
           type: 'select',
           label: '控件大小',
           key: 'vm-props-size',
@@ -111,12 +122,6 @@ const config = {
               { label: '大', value: 'large' }
             ]
           }
-        },
-        {
-          type: 'input',
-          label: '标签',
-          key: 'vm-props-label',
-          defaultValue: '标签'
         }
       ]
     },
@@ -128,6 +133,38 @@ const config = {
           label: '占位文本',
           key: 'vm-props-placeholder',
           defaultValue: null
+        }
+      ]
+    },
+    'checked-color': {
+      type: 'collapse',
+      name: '颜色设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'vm-color-color',
+          defaultValue: { hex: '#000000A6' }
+        },
+        {
+          type: 'color-picker',
+          label: '背景颜色',
+          key: 'vm-color-backgroundColor',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '选中颜色',
+          key: 'vm-color-checkedColor',
+          defaultValue: { hex: '#1890ff' }
+        },
+        {
+          type: 'color-picker',
+          label: '边框颜色',
+          key: 'vm-color-borderColor',
+          defaultValue: { hex: '#d9d9d9' }
         }
       ]
     }

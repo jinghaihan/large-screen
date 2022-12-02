@@ -11,6 +11,7 @@ import Input from './input.vue'
 import InputMultiple from './inputMultiple.vue'
 import Select from './select.vue'
 import SelectMultiple from './selectMultiple.vue'
+import Radio from './radio.vue'
 
 export default {
   props: {
@@ -19,7 +20,7 @@ export default {
       required: true
     }
   },
-  components: { Panel, Input, InputMultiple, Select, SelectMultiple }
+  components: { Panel, Input, InputMultiple, Select, SelectMultiple, Radio }
 }
 </script>
 

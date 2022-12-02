@@ -16,6 +16,7 @@
 import None from './none.vue'
 
 export default {
+  name: 'Border',
   props: {
     data: {
       type: Object,

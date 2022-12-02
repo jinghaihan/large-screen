@@ -50,6 +50,7 @@ import color from '../../config/color'
 import { getImage } from '../../utils'
 
 export default {
+  name: 'Renderer',
   props: {
     editor: null,
     data: {

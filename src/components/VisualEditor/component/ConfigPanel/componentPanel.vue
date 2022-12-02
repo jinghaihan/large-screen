@@ -143,7 +143,7 @@ export default {
           return item
         })
       } else {
-        this.configData = this.cell.config
+        this.configData = _.cloneDeep(this.cell.config)
       }
     },
     getValue (value, defaultValue) {

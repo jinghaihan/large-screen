@@ -282,7 +282,7 @@ export default {
         x: this.editor.instance.editor.grid.count,
         y: Math.ceil(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
       }
-      if (DragPos.x + el.w > gridSize.x || DragPos.y + el.h > gridSize.y) {
+      if (DragPos.y + el.h > gridSize.y) {
         return false
       }
       return true

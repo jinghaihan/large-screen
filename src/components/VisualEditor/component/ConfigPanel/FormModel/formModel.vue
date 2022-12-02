@@ -53,6 +53,13 @@ export default {
       handler: function (form) {
         this.onChange()
       }
+    },
+    config: {
+      deep: true,
+      handler: function (config) {
+        this.configData = _.cloneDeep(config)
+        this.init()
+      }
     }
   },
   created () {

@@ -7,6 +7,7 @@
 
 <script>
 export default {
+  name: 'None',
   props: {
     backgroundColor: {
       required: true,

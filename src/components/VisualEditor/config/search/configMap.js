@@ -46,6 +46,12 @@ const configMap = {
       name: '配置',
       config: ['basic', 'size', 'color', 'border']
     }
+  },
+  'range-picker': {
+    'config': {
+      name: '配置',
+      config: ['basic', 'size', 'color', 'border']
+    }
   }
 }
 

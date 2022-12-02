@@ -94,10 +94,19 @@ const search = {
       type: 'DatePicker',
       enable: false
     }
+  },
+  'range-picker': {
+    name: '时间范围选择框',
+    type: 'range-picker',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'RangePicker',
+      enable: false
+    }
   }
-  // 'range-picker': {
-
-  // }
 }
 
 export default search

@@ -1,16 +1,16 @@
 <template>
   <div ref="container" 
-       class="search-datepicker-container"
-       id="search-datepicker-container">
+       class="search-rangepicker-container"
+       id="search-rangepicker-container">
     <div v-if="!data.enable" class="mask"></div>
     <label v-if="props.label"
            class="label"
            :style="{ color: color.color }">
       {{props.label}}：
     </label>
-    <a-date-picker
-      class="datepicker"
-      v-bind="{ ...props, placeholder: data.enable ? '请选择日期' : '' }"
+    <a-range-picker
+      class="rangepicker"
+      v-bind="{ ...props, placeholder: data.enable ? ['开始日期', '结束日期'] : [] }"
       style="width: 100%"/>
   </div>
 </template>
@@ -63,10 +63,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #search-datepicker-container{
+  #search-rangepicker-container{
     --color: #bfbfbf;
   }
-  .search-datepicker-container{
+  .search-rangepicker-container{
     height: 100%;
     width: 100%;
     display: flex;

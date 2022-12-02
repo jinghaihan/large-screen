@@ -16,6 +16,18 @@ const configMap = {
       name: '配置',
       config: ['basic', 'placeholder', 'color', 'border']
     }
+  },
+  'select': {
+    'config': {
+      name: '配置',
+      config: ['basic', 'placeholder', 'color', 'border']
+    }
+  },
+  'select-multiple': {
+    'config': {
+      name: '配置',
+      config: ['basic', 'placeholder', 'color', 'border']
+    }
   }
 }
 

@@ -9,6 +9,8 @@
 import Panel from './panel.vue'
 import Input from './input.vue'
 import InputMultiple from './inputMultiple.vue'
+import Select from './select.vue'
+import SelectMultiple from './selectMultiple.vue'
 
 export default {
   props: {
@@ -17,7 +19,7 @@ export default {
       required: true
     }
   },
-  components: { Panel, Input, InputMultiple }
+  components: { Panel, Input, InputMultiple, Select, SelectMultiple }
 }
 </script>
 

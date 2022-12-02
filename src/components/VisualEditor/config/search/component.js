@@ -34,13 +34,31 @@ const search = {
       type: 'InputMultiple',
       enable: false
     }
+  },
+  'select': {
+    name: '下拉框',
+    type: 'select',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'Select',
+      enable: false
+    }
+  },
+  'select-multiple': {
+    name: '多值下拉框',
+    type: 'select-multiple',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'SelectMultiple',
+      enable: false
+    }
   }
-  // 'select': {
-
-  // },
-  // 'select-multiple': {
-
-  // },
   // 'radio': {
 
   // },

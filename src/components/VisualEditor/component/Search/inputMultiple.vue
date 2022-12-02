@@ -2,6 +2,7 @@
   <div ref="container" 
        class="search-input-multiple-container"
        id="search-input-multiple-container">
+    <div v-if="!data.enable" class="mask"></div>
     <label v-if="props.label"
            class="label"
            :style="{ color: color.color }">
@@ -83,8 +84,18 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     .label{
       flex-shrink: 0;
     }
+  }
+  .mask{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: 1;
   }
 </style>

@@ -82,10 +82,19 @@ const search = {
       type: 'Checkbox',
       enable: false
     }
+  },
+  'date-picker': {
+    name: '日期选择框',
+    type: 'date-picker',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'DatePicker',
+      enable: false
+    }
   }
-  // 'date-picker': {
-
-  // },
   // 'range-picker': {
 
   // }

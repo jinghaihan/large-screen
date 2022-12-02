@@ -13,6 +13,7 @@ import Select from './select.vue'
 import SelectMultiple from './selectMultiple.vue'
 import Radio from './radio.vue'
 import Checkbox from './checkbox.vue'
+import DatePicker from './datePicker.vue'
 
 export default {
   props: {
@@ -21,7 +22,7 @@ export default {
       required: true
     }
   },
-  components: { Panel, Input, InputMultiple, Select, SelectMultiple, Radio, Checkbox }
+  components: { Panel, Input, InputMultiple, Select, SelectMultiple, Radio, Checkbox, DatePicker }
 }
 </script>
 

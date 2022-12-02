@@ -56,7 +56,9 @@ export default {
     },
     config: {
       deep: true,
-      handler: function (config) {
+      handler: async function (config) {
+        this.visible = false
+        await this.$nextTick()
         this.configData = _.cloneDeep(config)
         this.init()
       }

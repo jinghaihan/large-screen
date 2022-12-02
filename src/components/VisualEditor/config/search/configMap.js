@@ -40,6 +40,12 @@ const configMap = {
       name: '配置',
       config: ['basic', 'checkbox-color', 'border']
     }
+  },
+  'date-picker': {
+    'config': {
+      name: '配置',
+      config: ['basic', 'size', 'color', 'border']
+    }
   }
 }
 

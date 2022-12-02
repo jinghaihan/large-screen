@@ -32,7 +32,13 @@ const configMap = {
   'radio': {
     'config': {
       name: '配置',
-      config: ['basic', 'checked-color', 'border']
+      config: ['basic', 'radio-color', 'border']
+    }
+  },
+  'checkbox': {
+    'config': {
+      name: '配置',
+      config: ['basic', 'checkbox-color', 'border']
     }
   }
 }

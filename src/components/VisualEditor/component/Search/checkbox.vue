@@ -1,16 +1,16 @@
 <template>
   <div ref="container"
-       class="search-radio-container"
-       id="search-radio-container">
+       class="search-checkbox-container"
+       id="search-checkbox-container">
     <div v-if="!data.enable" class="mask"></div>
     <label v-if="props.label"
            class="label"
            :style="{ color: color.color }">
       {{props.label}}：
     </label>
-    <a-radio-group :value="value">
-      <a-radio v-for="opt in options" :key="opt.value" :value="opt.value" @click="onClick">{{opt.label}}</a-radio>
-    </a-radio-group>
+    <a-checkbox-group :value="value">
+      <a-checkbox v-for="opt in options" :key="opt.value" :value="opt.value" @click="onClick">{{opt.label}}</a-checkbox>
+    </a-checkbox-group>
   </div>
 </template>
 
@@ -38,10 +38,11 @@ export default {
         color: '',
         backgroundColor: '',
         borderColor: '',
-        checkedColor: ''
+        checkedBorderColor: '',
+        checkedBackgroundColor: ''
       },
       options: this.data.enable ? options : [options[0]],
-      value: 'A'
+      value: []
     }
   },
   watch: {
@@ -56,28 +57,35 @@ export default {
   methods: {
     handleColor () {
       if (this.$refs.container) {
-        const { color, backgroundColor, borderColor, checkedColor } = this.color
-        $(this.$refs.container).find('.ant-radio-wrapper').css({
+        const { color, backgroundColor, borderColor, checkedBorderColor, checkedBackgroundColor } = this.color
+        $(this.$refs.container).find('.ant-checkbox-wrapper').css({
           color
         })
-        $(this.$refs.container).find('.ant-radio-inner').css({
+        $(this.$refs.container).find('.ant-checkbox-inner').css({
           backgroundColor, borderColor
         })
-        this.$refs.container.style.setProperty('--color', checkedColor)
+        console.log(checkedBorderColor, checkedBackgroundColor)
+        this.$refs.container.style.setProperty('--borderColor', checkedBorderColor)
+        this.$refs.container.style.setProperty('--backgroundColor', checkedBackgroundColor)
       }
     },
     onClick (e) {
-      this.value = e.target.value
+      if (!this.value.includes(e.target.value)) {
+        this.value.push(e.target.value)
+      } else {
+        this.value = this.value.filter(item => item !== e.target.value)
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  #search-radio-container{
-    --color: #1890ff;
+  #search-checkbox-container{
+    --borderColor: #fff;
+    --backgroundColor: #1890ff;
   }
-  .search-radio-container{
+  .search-checkbox-container{
     height: 100%;
     width: 100%;
     display: flex;
@@ -88,8 +96,13 @@ export default {
       flex-shrink: 0;
     }
   }
-  /deep/.ant-radio-inner::after{
-    background-color: var(--color);
+  /deep/.ant-checkbox-checked{
+    .ant-checkbox-inner{
+      background-color: var(--backgroundColor) !important;
+    }
+    .ant-checkbox-inner::after{
+      border-color: var(--borderColor);
+    }
   }
   .mask{
     position: absolute;

@@ -136,7 +136,7 @@ const config = {
         }
       ]
     },
-    'checked-color': {
+    'radio-color': {
       type: 'collapse',
       name: '颜色设置',
       switch: false,
@@ -158,6 +158,44 @@ const config = {
           type: 'color-picker',
           label: '选中颜色',
           key: 'vm-color-checkedColor',
+          defaultValue: { hex: '#1890ff' }
+        },
+        {
+          type: 'color-picker',
+          label: '边框颜色',
+          key: 'vm-color-borderColor',
+          defaultValue: { hex: '#d9d9d9' }
+        }
+      ]
+    },
+    'checkbox-color': {
+      type: 'collapse',
+      name: '颜色设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'vm-color-color',
+          defaultValue: { hex: '#000000A6' }
+        },
+        {
+          type: 'color-picker',
+          label: '背景颜色',
+          key: 'vm-color-backgroundColor',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '选中颜色',
+          key: 'vm-color-checkedBorderColor',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '选中背景颜色',
+          key: 'vm-color-checkedBackgroundColor',
           defaultValue: { hex: '#1890ff' }
         },
         {

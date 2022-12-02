@@ -70,10 +70,19 @@ const search = {
       type: 'Radio',
       enable: false
     }
+  },
+  'checkbox': {
+    name: '多选框',
+    type: 'checkbox',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'Checkbox',
+      enable: false
+    }
   }
-  // 'checkbox': {
-
-  // },
   // 'date-picker': {
 
   // },

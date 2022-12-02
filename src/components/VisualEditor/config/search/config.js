@@ -64,7 +64,39 @@ const config = {
         }
       ]
     },
-    'size': {
+    'color': {
+      type: 'collapse',
+      name: '颜色设置',
+      switch: false,
+      defaultValue: true,
+      config: [
+        {
+          type: 'color-picker',
+          label: '字体颜色',
+          key: 'vm-color-color',
+          defaultValue: { hex: '#000000A6' }
+        },
+        {
+          type: 'color-picker',
+          label: '占位文本颜色',
+          key: 'vm-color-placeholderColor',
+          defaultValue: { hex: '#808080' }
+        },
+        {
+          type: 'color-picker',
+          label: '背景颜色',
+          key: 'vm-color-backgroundColor',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '边框颜色',
+          key: 'vm-color-borderColor',
+          defaultValue: { hex: '#d9d9d9' }
+        }
+      ]
+    },
+    'basic': {
       type: 'config',
       config: [
         {
@@ -79,6 +111,23 @@ const config = {
               { label: '大', value: 'large' }
             ]
           }
+        },
+        {
+          type: 'input',
+          label: '标签',
+          key: 'vm-props-label',
+          defaultValue: '标签'
+        }
+      ]
+    },
+    'placeholder': {
+      type: 'config',
+      config: [
+        {
+          type: 'input',
+          label: '占位文本',
+          key: 'vm-props-placeholder',
+          defaultValue: null
         }
       ]
     }

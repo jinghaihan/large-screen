@@ -49,8 +49,8 @@ import TooltipIcon from '../TooltipIcon'
 // 装饰组件
 import Decoration from '../Decoration'
 // 查询组件
-import SearchPanel from '../Search/panel.vue'
-import Input from '../Search/input.vue'
+import Search from '../Search'
+
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
 
@@ -73,7 +73,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, Decoration, SearchPanel, Input },
+  components: { TooltipIcon, Decoration, Search },
   data () {
     return {
       instance: null,

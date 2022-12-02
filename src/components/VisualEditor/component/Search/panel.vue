@@ -142,7 +142,7 @@ export default {
         const rect = this.$refs.content.getBoundingClientRect()
         this.grid.count = this.item.w
         this.grid.maxRows = Math.ceil(this.grid.count / rect.width * rect.height)
-        this.grid.rowHeight = rect.width / this.grid.count
+        this.grid.rowHeight = rect.width / this.grid.count / this.transformScale
       }
     },
     updateButtonStyle (value) {

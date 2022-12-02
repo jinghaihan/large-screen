@@ -1,15 +1,25 @@
 <template>
-  <div ref="container" class="search-input-container" id="search-input-container">
+  <div ref="container" 
+       class="search-input-multiple-container"
+       id="search-input-multiple-container">
     <label v-if="props.label"
            class="label"
            :style="{ color: color.color }">
       {{props.label}}：
     </label>
-    <a-input class="input"
+    <a-select
+      class="select"
+      mode="tags"
       v-bind="{
-      ...props,
-      placeholder: props.placeholder || '请输入'
-    }"></a-input>
+        ...props,
+        placeholder: props.placeholder || '请输入'
+      }"
+      style="width: 100%"
+      :getPopupContainer="triggerNode => {
+        return triggerNode.parentNode || document.body;
+      }"
+    >
+    </a-select>
   </div>
 </template>
 
@@ -51,10 +61,15 @@ export default {
     handleColor () {
       if (this.$refs.container) {
         const { color, backgroundColor, borderColor, placeholderColor } = this.color
-        $(this.$refs.container).find('.ant-input').css({
-          color, backgroundColor, borderColor
+        $(this.$refs.container).find('.ant-select').css({
+          color 
         })
-        this.$refs.container.style.setProperty('--color', placeholderColor)
+        $(this.$refs.container).find('.ant-select-selection').css({
+          backgroundColor, borderColor
+        })
+        $(this.$refs.container).find('.ant-select-selection__placeholder').css({
+          color: placeholderColor
+        })
       }
     }
   }
@@ -62,10 +77,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #search-input-container{
-    --color: #808080;
-  }
-  .search-input-container{
+  .search-input-multiple-container{
     height: 100%;
     width: 100%;
     display: flex;
@@ -74,8 +86,5 @@ export default {
     .label{
       flex-shrink: 0;
     }
-  }
-  ::-webkit-input-placeholder {
-    color: var(--color);
   }
 </style>

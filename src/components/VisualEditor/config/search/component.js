@@ -6,7 +6,8 @@ const search = {
     w: 100,
     h: 10,
     props: {
-      component: 'SearchPanel',
+      component: 'Search',
+      type: 'Panel',
       enable: false
     }
   },
@@ -17,13 +18,23 @@ const search = {
     w: 10,
     h: 5,
     props: {
-      component: 'Input',
+      component: 'Search',
+      type: 'Input',
+      enable: false
+    }
+  },
+  'input-multiple': {
+    name: '多值输入框',
+    type: 'input-multiple',
+    col: 12,
+    w: 10,
+    h: 5,
+    props: {
+      component: 'Search',
+      type: 'InputMultiple',
       enable: false
     }
   }
-  // 'input-multiple': {
-    
-  // }
   // 'select': {
 
   // },

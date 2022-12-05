@@ -52,7 +52,7 @@ import Decoration from '../Decoration'
 import Search from '../Search'
 
 import { getUUID } from '../../utils'
-import { getImageComponent, getVideoComponent, getAudioComponent } from '@/api/component'
+import { getImageComponent, getVideoComponent, getAudioComponent } from '../../service/component'
 
 let mouseXY = { 'x': null, 'y': null }
 let DragPos = { 'x': null, 'y': null, 'i': null }

@@ -98,11 +98,11 @@ const model = [
     type: 'select',
     label: '模型',
     key: 'model',
+    defaultValue: undefined,
     layout: {
       labelCol: { span: 4 },
       wrapperCol: { span: 18 }
     },
-    defaultValue: undefined,
     props: {
       options: []
     }

@@ -80,7 +80,9 @@ export default {
         if (data.key) {
           this.activeKey = 'component'
         } else {
-          this.activeKey = 'basic'
+          if (this.activeKey === 'component') {
+            this.activeKey = 'basic'
+          }
         }
       }
     }

@@ -45,7 +45,7 @@ export default {
       model: undefined,
       config: _.cloneDeep(this.editor.config.model)[0],
       // 模型数据
-      modelData: null,
+      modelData: {},
       content: [
         { name: '维度', key: 'model' },
         { name: '维度', key: 'dimensions' },
@@ -111,6 +111,9 @@ export default {
       this.modelData = res.data.data
       this.loading = false
       this.model = value
+      if (this.editor.instance['conditionPanel']) {
+        this.editor.instance['conditionPanel'].getModelConfig()
+      }
     },
     filterOptions (input, option) {
       return (

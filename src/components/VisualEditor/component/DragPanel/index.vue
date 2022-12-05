@@ -179,7 +179,6 @@ export default {
     },
     updateInstance (data) {
       this.removeListener()
-      console.log(data)
       if (data && data.restriction) {
         // 限制个数
         if (data.restriction.unique) {

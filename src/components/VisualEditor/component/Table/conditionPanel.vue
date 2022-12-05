@@ -7,8 +7,13 @@
            :key="item.key">
         <div class="name-container">{{item.name}}</div>
         <div class="column-container">
-          <div class="tag-container" v-for="name in tag" :key="name">
-            <a-tag class="tag">{{name}}</a-tag>
+          <div class="tag-container"
+               v-for="column in modelData[item.key] || []"
+               :key="column.id">
+            <a-checkable-tag :checked="item.checked[column.id]"
+                             @change="handleChecked($event, item, column)">
+              {{column.name}}
+            </a-checkable-tag>
           </div>
         </div>
         <div class="more-container" @click="onMore(item)">
@@ -21,10 +26,6 @@
 
 <script>
 
-const tag = []
-for (let i = 0; i < 60; i++) {
-  tag.push('column' + i)
-}
 export default {
   props: {
     editor: null,
@@ -35,14 +36,17 @@ export default {
   },
   data () {
     return {
+      // 展开面板
       condition: [
-        { name: '可选维度', key: 'dimension' },
-        { name: '已选维度组合', key: 'dimension-selected' },
-        { name: '可选指标', key: 'measure' },
-        { name: '已选指标', key: 'measure-selected' }
+        { name: '可选维度', key: 'dimensions', checked: {} },
+        { name: '已选维度组合', key: 'dimensions-selected', checked: {} },
+        { name: '可选指标', key: 'measures', checked: {} },
+        { name: '已选指标', key: 'measures-selected', checked: {} }
       ],
       collapse: [],
-      tag
+      // 模型
+      model: null,
+      modelData: {}
     }
   },
   created () {
@@ -55,8 +59,14 @@ export default {
       if (this.data.enable) {
         this.editor.setInstance({ conditionPanel: this })
       }
+      this.getModelConfig()
+    },
+    getModelConfig () {
       let instance = this.editor.instance.modelPanel
-      console.log('条件面板', instance.model, instance.modelData)
+      if (instance) {
+        this.model = instance.model
+        this.modelData = instance.modelData
+      }
     },
     onMore (data) {
       if (this.collapse.includes(data.key)) {
@@ -64,6 +74,13 @@ export default {
       } else {
         this.collapse.push(data.key)
       }
+    },
+    getColumnTag () {
+
+    },
+    handleChecked (checked, condition, column) {
+      condition.checked[column.id] = checked
+      this.$forceUpdate()
     }
   }
 }

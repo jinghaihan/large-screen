@@ -2,7 +2,9 @@ const configMap = {
   conditionPanel: {
     'config': {
       name: '配置',
-      config: []
+      config: ['border']
     }
   }
 }
+
+export default configMap

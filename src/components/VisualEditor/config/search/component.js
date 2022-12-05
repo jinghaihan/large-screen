@@ -5,6 +5,11 @@ const search = {
     col: 12,
     w: 100,
     h: 10,
+    restriction: {
+      instance: 'searchPanel',
+      instanceName: '查询面板',
+      unique: true
+    },
     props: {
       component: 'Search',
       type: 'searchPanel',
@@ -17,6 +22,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'Input',
@@ -29,6 +38,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'InputMultiple',
@@ -41,6 +54,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'Select',
@@ -53,6 +70,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'SelectMultiple',
@@ -65,6 +86,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'Radio',
@@ -77,6 +102,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'Checkbox',
@@ -89,6 +118,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'DatePicker',
@@ -101,6 +134,10 @@ const search = {
     col: 12,
     w: 10,
     h: 5,
+    restriction: {
+      dependentInstance: 'searchPanel',
+      dependentInstanceName: '查询面板'
+    },
     props: {
       component: 'Search',
       type: 'RangePicker',

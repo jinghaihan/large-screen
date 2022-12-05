@@ -109,7 +109,7 @@ export default {
   methods: {
     init () {
       if (this.data.enable) {
-        this.editor.setInstance({ 'searchPanel': this })
+        this.editor.setInstance({ searchPanel: this })
       }
     },
     onDelete (data) {

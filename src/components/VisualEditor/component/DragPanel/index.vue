@@ -50,6 +50,8 @@ import TooltipIcon from '../TooltipIcon'
 import Decoration from '../Decoration'
 // 查询组件
 import Search from '../Search'
+// 表格组件
+import Table from '../Table'
 
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '../../service/component'
@@ -73,7 +75,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, Decoration, Search },
+  components: { TooltipIcon, Decoration, Search, Table },
   data () {
     return {
       instance: null,
@@ -177,19 +179,23 @@ export default {
     },
     updateInstance (data) {
       this.removeListener()
-      if (this.type === 'search' && data) {
-        if (data.type !== 'searchPanel') {
-          this.instance = this.editor.instance['searchPanel']
-          if (!this.instance) {
-            this.$notification.error({ message: '错误', description: '请先拖入查询面板' })
-            return
-          }
-        } else {
-          if (this.editor.instance['searchPanel']) {
-            this.$notification.error({ message: '错误', description: '画布仅可存在一个查询面板' })
+      console.log(data)
+      if (data && data.restriction) {
+        // 限制个数
+        if (data.restriction.unique) {
+          if (this.editor.instance[data.restriction.instance]) {
+            this.$notification.error({ message: '错误', description: `画布仅可存在一个${data.restriction.instanceName}` })
             return
           } else {
             this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+          }
+        }
+        // 依赖父级
+        if (data.restriction.dependentInstance) {
+          this.instance = this.editor.instance[data.restriction.dependentInstance]
+          if (!this.editor.instance[data.dependentInstance]) {
+            this.$notification.error({ message: '错误', description: `请先拖入${data.restriction.dependentInstanceName}` })
+            return
           }
         }
       } else {

@@ -178,7 +178,7 @@ export default {
     updateInstance (data) {
       this.removeListener()
       if (this.type === 'search' && data) {
-        if (data.type !== 'panel') {
+        if (data.type !== 'searchPanel') {
           this.instance = this.editor.instance['searchPanel']
           if (!this.instance) {
             this.$notification.error({ message: '错误', description: '请先拖入查询面板' })

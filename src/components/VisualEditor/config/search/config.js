@@ -1,6 +1,6 @@
 const config = {
   config: {
-    'panel': {
+    'searchPanel': {
       type: 'config',
       config: [
         {

@@ -1,8 +1,8 @@
 const configMap = {
-  'panel': {
+  'searchPanel': {
     'config': {
       name: '配置',
-      config: ['panel', 'border']
+      config: ['searchPanel', 'border']
     }
   },
   'input': {

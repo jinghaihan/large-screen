@@ -1,13 +1,13 @@
 const search = {
-  'panel': {
+  'searchPanel': {
     name: '查询面板',
-    type: 'panel',
+    type: 'searchPanel',
     col: 12,
     w: 100,
     h: 10,
     props: {
       component: 'Search',
-      type: 'Panel',
+      type: 'searchPanel',
       enable: false
     }
   },

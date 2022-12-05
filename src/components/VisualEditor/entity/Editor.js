@@ -171,6 +171,13 @@ class Editor {
     this.cell[data.key] = cell
   }
   deleteCell (data) {
+    if (data.type === 'searchPanel') {
+      Object.keys(this.cell).forEach(key => {
+        if (this.cell[key].componentType === 'search') {
+          delete this.cell[key]
+        }
+      })
+    }
     delete this.cell[data.key]
   }
   copyCell (data) {

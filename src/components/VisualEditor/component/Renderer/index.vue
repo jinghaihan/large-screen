@@ -44,6 +44,7 @@ import Text from '../../entity/Text'
 import Media from '../../entity/Media'
 import Decoration from '../../entity/Decoration'
 import Search from '../../entity/Search'
+import Table from '../../entity/Table'
 import Border from '../Border'
 import ViewSourceModal from './viewSourceModal.vue'
 import color from '../../config/color'
@@ -136,6 +137,9 @@ export default {
             break
           case 'search':
             this.handleSearchComponent()
+            break
+          case 'table':
+            this.handleTableComponent()
             break
           default:
             break
@@ -230,6 +234,24 @@ export default {
       } else {
         let cell = this.editor.cell[this.data.props.parentKey] || {}
         this.cell = new Search({
+          vm: this,
+          key: this.data.props.key,
+          el: this.$refs.render,
+          type: this.data.props.type,
+          props: cell.props || this.data.props,
+          parentConfig: _.cloneDeep(cell.config),
+          parentConfigData: _.cloneDeep(cell.configData)
+        })
+      }
+    },
+    // 表格类型
+    handleTableComponent () {
+      let cell = this.editor.cell[this.data.props.key]
+      if (cell) {
+        this.cell = cell
+      } else {
+        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        this.cell = new Table({
           vm: this,
           key: this.data.props.key,
           el: this.$refs.render,

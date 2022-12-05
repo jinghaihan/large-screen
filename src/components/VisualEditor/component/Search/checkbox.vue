@@ -64,7 +64,6 @@ export default {
         $(this.$refs.container).find('.ant-checkbox-inner').css({
           backgroundColor, borderColor
         })
-        console.log(checkedBorderColor, checkedBackgroundColor)
         this.$refs.container.style.setProperty('--borderColor', checkedBorderColor)
         this.$refs.container.style.setProperty('--backgroundColor', checkedBackgroundColor)
       }

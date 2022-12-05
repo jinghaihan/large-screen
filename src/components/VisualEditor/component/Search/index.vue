@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Panel from './panel.vue'
+import SearchPanel from './searchPanel.vue'
 import Input from './input.vue'
 import InputMultiple from './inputMultiple.vue'
 import Select from './select.vue'
@@ -24,7 +24,7 @@ export default {
     }
   },
   components: {
-    Panel,
+    SearchPanel,
     Input,
     InputMultiple,
     Select,

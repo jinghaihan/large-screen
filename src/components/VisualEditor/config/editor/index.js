@@ -1,3 +1,5 @@
+import color from '../color'
+
 // 操作按钮
 const sidebar = [
   { name: '返回', key: 'close', icon: 'rollback', active: false },
@@ -33,6 +35,7 @@ const navbar = [
 const configPanel = [
   { name: '基础配置', key: 'basic' },
   { name: '图层配置', key: 'layer' },
+  { name: '模型配置', key: 'model' },
   { name: '组件配置', key: 'component' }
 ]
 
@@ -89,4 +92,89 @@ const basic = [
   }
 ]
 
-export { sidebar, renderer, layer, library, navbar, configPanel, basic }
+// 模型配置
+const model = [
+  {
+    type: 'select',
+    label: '模型',
+    key: 'model',
+    layout: {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 18 }
+    },
+    defaultValue: undefined,
+    props: {
+      options: []
+    }
+  }
+]
+
+// 批量修改
+const batch = [
+  {
+    type: 'select',
+    label: '主题',
+    key: 'theme',
+    layout: {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 18 }
+    },
+    defaultValue: 'default',
+    props: {
+      options: [
+        { label: '默认', value: 'default' },
+        { label: 'light', value: 'light' },
+        { label: 'macarons', value: 'macarons' },
+        { label: 'infographic', value: 'infographic' },
+        { label: 'shine', value: 'shine' },
+        { label: 'roma', value: 'roma' }
+      ]
+    }
+  },
+  {
+    type: 'color-picker',
+    label: '字体颜色',
+    key: 'fontColor',
+    col: 12,
+    layout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    },
+    defaultValue: { hex: '#333' }
+  },
+  {
+    type: 'color-picker',
+    label: '边框主色',
+    key: 'vm-border-primaryColor',
+    col: 12,
+    layout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    },
+    defaultValue: { hex: color['dataV-primary-color'] }
+  },
+  {
+    type: 'color-picker',
+    label: '边框副色',
+    key: 'vm-border-deputyColor',
+    col: 12,
+    layout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    },
+    defaultValue: { hex: color['dataV-deputy-color'] }
+  },
+  {
+    type: 'color-picker',
+    label: '边框背景色',
+    key: 'vm-border-backgroundColor',
+    col: 12,
+    layout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    },
+    defaultValue: { hex: color['dataV-background-color'] }
+  }
+]
+
+export { sidebar, renderer, layer, library, navbar, configPanel, basic, model, batch }

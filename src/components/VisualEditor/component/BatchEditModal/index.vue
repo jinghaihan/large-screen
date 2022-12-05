@@ -10,13 +10,12 @@
     :getContainer="getContainer()"
     wrapClassName="visual-editor-modal"
   >
-    <FormModel :config="config" @change="onChange"></FormModel>
+    <FormModel :config="editor.config.batch" @change="onChange"></FormModel>
   </a-modal>
 </template>
 
 <script>
 import FormModel from '../ConfigPanel/FormModel/formModel.vue'
-import config from '../../config/batch'
 
 export default {
   props: {
@@ -25,7 +24,6 @@ export default {
   components: { FormModel },
   data () {
     return {
-      config,
       formData: null
     }
   },

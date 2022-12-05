@@ -43,7 +43,7 @@
 
 <script>
 import _ from 'lodash'
-import FormModel from './FormModel/formModel.vue'
+import FormModel from '../FormModel/formModel.vue'
 
 export default {
   props: {

@@ -9,7 +9,7 @@ class Editor {
   constructor () {
     this.instance = {}
     this.operation = { ...config.operation }
-    this.config = { basic: config.basic }
+    this.config = { basic: config.basic, model: config.model, batch: config.batch }
     this.cell = {}
     this.clipBoard = {}
     this.maxClipBoard = 20

@@ -14,6 +14,10 @@
                   :layout="layout"
                   :layer="layer">
       </LayerPanel>
+      <ModelPanel v-show="activeKey === 'model'"
+                  :editor="editor"
+      >
+      </ModelPanel>
       <!-- 组件配置 -->
       <ComponentPanel v-show="activeKey === 'component'"
                       :editor="editor"
@@ -33,9 +37,10 @@
 </template>
 
 <script>
-import BasicPanel from './basicPanel.vue'
-import LayerPanel from './layerPanel.vue'
-import ComponentPanel from './componentPanel.vue'
+import BasicPanel from './Panel/basicPanel.vue'
+import LayerPanel from './Panel/layerPanel.vue'
+import ComponentPanel from './Panel/componentPanel.vue'
+import ModelPanel from './Panel/modelPanel.vue'
 
 export default {
   props: {
@@ -61,7 +66,7 @@ export default {
       required: true
     }
   },
-  components: { BasicPanel, LayerPanel, ComponentPanel },
+  components: { BasicPanel, LayerPanel, ComponentPanel, ModelPanel },
   data () {
     return {
       activeKey: null

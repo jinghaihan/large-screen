@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import globalConfig from '../config/config'
+import globalConfig from '../config/global'
 
 export function handleConfigData (config, configMap, type) {
   if (!configMap[type]) return {}

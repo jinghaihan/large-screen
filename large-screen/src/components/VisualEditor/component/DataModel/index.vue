@@ -1,6 +1,8 @@
 <template>
   <div class="data-model-container">
-    <component :is="data.component"></component>
+    <component :is="data.component"
+               v-bind="{ editor, component }">
+    </component>
   </div>
 </template>
 
@@ -9,6 +11,11 @@ import SearchDataModel from './search.vue'
 
 export default {
   props: {
+    editor: null,
+    component: {
+      type: Object,
+      required: true
+    },
     data: {
       type: Object,
       required: true

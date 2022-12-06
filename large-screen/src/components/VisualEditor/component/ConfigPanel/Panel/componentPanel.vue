@@ -39,8 +39,10 @@
         <div v-for="comp in tab.component"
              :key="comp.key">
           <component :is="comp.component"
-                     :data="{
-                        component: comp.config
+                     v-bind="{
+                      data: { component: comp.config},
+                      editor,
+                      component
                      }">
           </component>
         </div>
@@ -55,6 +57,7 @@
 <script>
 import _ from 'lodash'
 import FormModel from '../FormModel/formModel.vue'
+// 数据模型
 import DataModel from '../../DataModel'
 
 export default {
@@ -138,8 +141,6 @@ export default {
         this.initKey()
         this.onChange()
       }
-
-      console.log(this.configData)
     },
     initConfig () {
       if (this.cell.configData[this.cell.config[0].key + 'Data']) {

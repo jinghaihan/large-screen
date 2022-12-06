@@ -13,6 +13,7 @@ export function handleConfigData (config, configMap, type) {
   result.forEach(item => {
     item.config = []
     item.collapse = []
+    item.component = []
     let data = { ..._.cloneDeep(globalConfig[item.key]), ..._.cloneDeep(config[item.key]) }
     configMap[type][item.key].config.forEach(key => {
       item[data[key].type].push({

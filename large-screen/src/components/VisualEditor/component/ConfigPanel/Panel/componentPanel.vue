@@ -3,7 +3,7 @@
     <a-tab-pane v-for="tab in configData"
                 :key="tab.key"
                 :tab="tab.name">
-      <!-- 常规配置 -->
+      <!-- 基础类型 -->
       <div v-if="tab.config.length" class="component-basic-container">
         <FormModel ref="basicForm"
                    v-for="conf in tab.config"
@@ -12,7 +12,7 @@
                    @change="onChange">
         </FormModel>
       </div>
-      <!-- 折叠面板配置 -->
+      <!-- 折叠面板类型 -->
       <a-collapse v-if="tab.collapse.length"
                   :activeKey="collapseKeys"
                   :bordered="false">
@@ -34,6 +34,17 @@
           </FormModel>
         </a-collapse-panel>
       </a-collapse>
+      <!-- 组件类型 -->
+      <template v-if="tab.component.length">
+        <div v-for="comp in tab.component"
+             :key="comp.key">
+          <component :is="comp.component"
+                     :data="{
+                        component: comp.config
+                     }">
+          </component>
+        </div>
+      </template>
     </a-tab-pane>
   </a-tabs>
   <div class="empty-container" v-else>
@@ -44,6 +55,7 @@
 <script>
 import _ from 'lodash'
 import FormModel from '../FormModel/formModel.vue'
+import DataModel from '../../DataModel'
 
 export default {
   props: {
@@ -53,7 +65,7 @@ export default {
       required: true
     }
   },
-  components: { FormModel },
+  components: { FormModel, DataModel },
   data () {
     return {
       cell: null,
@@ -126,6 +138,8 @@ export default {
         this.initKey()
         this.onChange()
       }
+
+      console.log(this.configData)
     },
     initConfig () {
       if (this.cell.configData[this.cell.config[0].key + 'Data']) {

@@ -39,6 +39,7 @@ class Decoration {
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({
+      ...this.configData,
       ...data
     })
   }

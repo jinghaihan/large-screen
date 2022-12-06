@@ -76,6 +76,7 @@ class Chart {
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({
+      ...this.configData,
       ...data,
       theme: this.configData.theme,
       axisFlip: this.configData.axisFlip

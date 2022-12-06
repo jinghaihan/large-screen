@@ -14,7 +14,7 @@ const sidebar = [
   { name: '剪贴板', key: 'clipBoard', icon: 'copy', active: true }
 ]
 const renderer = [
-  { name: '复制', key: 'copy', icon: 'copy', disable: ['search'] },
+  { name: '复制', key: 'copy', icon: 'copy', disable: ['search', 'table'] },
   { name: '查看源码', key: 'viewSource', icon: 'eye', enable: ['chart'] },
   { name: '删除', key: 'delete', icon: 'delete' }
 ]

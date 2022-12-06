@@ -40,10 +40,11 @@
              :key="comp.key">
           <component :is="comp.component"
                      v-bind="{
-                      data: { component: comp.config},
+                      data: { component: comp.config },
                       editor,
                       component
-                     }">
+                     }"
+                     @change="onChange">
           </component>
         </div>
       </template>
@@ -102,17 +103,22 @@ export default {
     this.onChange = _.debounce(this.onChange, 50)
   },
   methods: {
-    onChange () {
+    onChange (value, enable) {
       let formData = {}
-      const formType = ['basicForm', 'collapseForm']
-      formType.forEach(type => {
-        if (this.$refs[type] && this.$refs[type].length) {
-          let refs = this.$refs[type]
-          refs.forEach(ref => {
-            formData = { ...formData, ...ref.form }
-          })
-        }
-      })
+      if (!enable) {
+        const formType = ['basicForm', 'collapseForm']
+        formType.forEach(type => {
+          if (this.$refs[type] && this.$refs[type].length) {
+            let refs = this.$refs[type]
+            refs.forEach(ref => {
+              formData = { ...formData, ...ref.form }
+            })
+          }
+        })
+      } else {
+        formData = value
+      }
+      
       switch (this.component.componentType) {
         case 'chart':
           this.cell.change(formData, this.component.type, this.switchKeys)

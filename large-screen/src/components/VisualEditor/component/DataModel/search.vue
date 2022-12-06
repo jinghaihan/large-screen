@@ -109,17 +109,50 @@ export default {
       ]
     }
   },
+  watch: {
+    component: {
+      deep: true,
+      handler: function (curr, prev) {
+        if (curr.key) {
+          prev = prev || {}
+          if (curr.key !== prev.key) {
+            this.init()
+          }
+        } else {
+          this.cell = {}
+          this.form = {}
+          this.rules = {}
+        }
+      }
+    }
+  },
   created () {
     this.init()
   },
   methods: {
     init () {
       this.cell = this.editor.cell[this.component.key]
+      this.handleForm()
+
       // 存在全局模型配置
       if (this.editor.instance['modelPanel']) {
         this.modelData = this.editor.instance['modelPanel'].modelData
       }
       this.$forceUpdate()
+    },
+    handleForm () {
+      // 配置回显
+      let data = this.cell.configData.dataModelData
+      if (data) {
+        this.form = { ...data }
+      } else {
+        this.form = {
+          required: false,
+          isOpenParam: false,
+          lock: false,
+          hide: false
+        }
+      }
     },
     filterOptions (input, option) {
       return (
@@ -127,7 +160,7 @@ export default {
       )
     },
     onChange () {
-      
+      this.$emit('change', this.form, 'component')
     }
   }
 }

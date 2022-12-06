@@ -1,7 +1,8 @@
 <template>
   <div class="data-model-container">
     <component :is="data.component"
-               v-bind="{ editor, component }">
+               v-bind="{ editor, component }"
+               @change="onChange">
     </component>
   </div>
 </template>
@@ -21,7 +22,12 @@ export default {
       required: true
     }
   },
-  components: { SearchDataModel }
+  components: { SearchDataModel },
+  methods: {
+    onChange (data) {
+      this.$emit('change', data, true)
+    }
+  }
 }
 </script>
 

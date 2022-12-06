@@ -268,7 +268,7 @@ class Editor {
         default:
           break
       }
-      this.cell[key].configData.formData = formData
+      this.cell[key].configData.configData = formData
     })
   }
   batchEditChart (data, formData) {
@@ -406,6 +406,7 @@ class Editor {
   }
   getCellData (data) {
     data = data || {}
+
     // 数据模型
     const dataModel = {
       dimensionId: data.dimension,

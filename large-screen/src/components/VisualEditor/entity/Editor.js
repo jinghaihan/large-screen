@@ -5,6 +5,20 @@ import { getUUID, getImage, getPdf } from '../utils'
 import { downloadFile } from '../utils/output'
 import config from '../config'
 
+// 字体颜色
+const fontColorList = [
+  'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
+  'legend-textStyle-color',
+  'radar-axisName-color',
+  'geo-emphasis-label-color',
+  'geo-label-color',
+  'series-label-color',
+  'series-emphasis-label-color',
+  'series-label-color',
+  'series-detail-color',
+  'series-axisLabel-color'
+]
+
 class Editor {
   constructor () {
     this.instance = {}
@@ -237,10 +251,10 @@ class Editor {
   batchEdit (data) {
     Object.keys(this.cell).forEach(key => {
       let componentType = this.cell[key].componentType
-      let formData = _.cloneDeep(this.cell[key].configData.formData)
+      let formData = _.cloneDeep(this.cell[key].configData.configData)
       switch (componentType) {
         case 'chart':
-          handleChartComponent(data, formData)
+          this.batchEditChart(data, formData)
           this.cell[key].change(
             formData,
             this.cell[key].type,
@@ -248,13 +262,45 @@ class Editor {
           )
           break
         case 'text':
-          handleTextComponent(data, formData)
+          this.batchEditText(data, formData)
           this.cell[key].update(formData)
           break
         default:
           break
       }
       this.cell[key].configData.formData = formData
+    })
+  }
+  batchEditChart (data, formData) {
+    Object.keys(data).forEach(key => {
+      switch (key) {
+        case 'fontColor':
+          Object.keys(formData).forEach(item => {
+            if (fontColorList.includes(item)) {
+              formData[item] = data[key]
+            }
+          })
+          break
+        default:
+          formData[key] = data[key]
+          break
+      }
+    })
+  }
+  batchEditText (data, formData) {
+    Object.keys(data).forEach(key => {
+      switch (key) {
+        case 'fontColor':
+          Object.keys(formData).forEach(item => {
+            if (item.match(/-color/g)) {
+              formData[item] = data[key]
+            }
+          })
+          break
+        default:
+          formData[key] = data[key]
+          break
+      }
     })
   }
   async output (type) {
@@ -298,73 +344,91 @@ class Editor {
     }
   }
   getConfig () {
-    let _this = this
-    const layout = _.cloneDeep(_this.instance.editor.layout)
-    const cell = {}
-    Object.keys(_this.cell).forEach(key => {
-      cell[key] = { ..._this.cell[key].configData }
-    })
+    let cell = this.getCell()
     let config = {
-      layout,
-      cell
+      global: this.getGlobal(),
+      layout: this.getLayout(),
+      conditions: cell.conditions,
+      views: cell.views
     }
-    layout.forEach((item, index) => {
-      let data = _this.instance.layout.$refs.layer[index].layout
-      layout[index].layout = data
-    })
 
     console.log('config', config)
+  }
+  getGlobal () {
+    const global = {
+      style: this.instance.basicPanel.formData
+    }
+    // 全局模型
+    if (this.instance.modelPanel) {
+      global.data = {
+        dataModel: {
+          type: 'dataModel',
+          id: this.instance.modelPanel.model
+        },
+        builtinConditions: {}
+      }
+    }
+    return global
+  }
+  getLayout () {
+    const layout = _.cloneDeep(this.instance.editor.layout)
+    layout.forEach((item, index) => {
+      let data = this.instance.layout.$refs.layer[index].layout
+      layout[index].layout = data
+    })
+    return layout
+  }
+  getCell () {
+    const cell = {
+      conditions: {},
+      views: {}
+    }
+    Object.keys(this.cell).forEach(key => {
+      let { configData, dataModelData, theme, axisFlip } = this.cell[key].configData
+      let target = 'views'
+      // 非查询面板类型的查询组件
+      if (this.cell[key].componentType === 'search') {
+        if (this.cell[key].type !== 'searchPanel') target = 'conditions'
+      }
+      cell[target][key] = { 
+        type: this.cell[key].type,
+        id: key,
+        style: {
+          ui: configData,
+          switch: this.cell[key].configData.switch,
+          collapse: this.cell[key].configData.collapse,
+          theme,
+          axisFlip
+        },
+        data: this.getCellData(_.cloneDeep(dataModelData))
+      }
+    })
+  }
+  getCellData (data) {
+    data = data || {}
+    // 数据模型
+    const dataModel = {
+      dimensionId: data.dimension,
+      values: data.defaultValue instanceof Array ? data.defaultValue : [data.defaultValue]
+    }
+    delete data.dimension
+    delete data.defaultValue
+
+    // 外链
+    const open = {
+      'isOpenParam': data.isOpenParam,
+      'lock': data.lock,
+      'hide': data.hide
+    }
+    delete data.isOpenParam
+    delete data.lock
+    delete data.hide
+
+    return { ...data, open, dataModel }
   }
   setConfig () {
     
   }
-}
-
-// 字体颜色
-const fontColorList = [
-  'xAxis-axisLine-lineStyle-color/yAxis-axisLine-lineStyle-color',
-  'legend-textStyle-color',
-  'radar-axisName-color',
-  'geo-emphasis-label-color',
-  'geo-label-color',
-  'series-label-color',
-  'series-emphasis-label-color',
-  'series-label-color',
-  'series-detail-color',
-  'series-axisLabel-color'
-]
-function handleChartComponent (data, formData) {
-  Object.keys(data).forEach(key => {
-    switch (key) {
-      case 'fontColor':
-        Object.keys(formData).forEach(item => {
-          if (fontColorList.includes(item)) {
-            formData[item] = data[key]
-          }
-        })
-        break
-      default:
-        formData[key] = data[key]
-        break
-    }
-  })
-}
-
-function handleTextComponent (data, formData) {
-  Object.keys(data).forEach(key => {
-    switch (key) {
-      case 'fontColor':
-        Object.keys(formData).forEach(item => {
-          if (item.match(/-color/g)) {
-            formData[item] = data[key]
-          }
-        })
-        break
-      default:
-        formData[key] = data[key]
-        break
-    }
-  })
 }
 
 export default Editor

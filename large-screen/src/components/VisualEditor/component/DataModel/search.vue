@@ -31,10 +31,10 @@
         </a-col>
         <!-- 默认维度值 -->
         <a-col :span="24" v-if="form.dimension">
-          <a-form-model-item ref="default"
-                             prop="default"
+          <a-form-model-item ref="defaultValue"
+                             prop="defaultValue"
                              label="默认维度值">
-            <a-input v-model="form.default"
+            <a-input v-model="form.defaultValue"
                       placeholder="请输入默认维度值"
                       @change="onChange" >
             </a-input>

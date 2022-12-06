@@ -106,11 +106,12 @@ export default {
           this.cell.update(formData)
           break
       }
-      this.cell.setConfigData({
-        formData,
+      let data = {
         collapse: this.collapseKeys,
         switch: this.switchKeys
-      })
+      }
+      data[this.activeKey + 'Data'] = formData
+      this.cell.setConfigData(data)
     },
     async init () {
       await this.$nextTick()
@@ -127,15 +128,15 @@ export default {
       }
     },
     initConfig () {
-      let formData = this.cell.configData.formData
-      if (formData) {
+      if (this.cell.configData[this.cell.config[0].key + 'Data']) {
         let keys = ['config', 'collapse']
         this.configData = this.cell.config.map(item => {
+          let config = this.cell.configData[item.key + 'Data']
           keys.forEach(key => {
             if (item[key] && item[key].length) {
               item[key].forEach(data => {
                 data.config.forEach(conf => {
-                  conf.defaultValue = this.getValue(formData[conf.key], conf.defaultValue)
+                  conf.defaultValue = this.getValue(config[conf.key], conf.defaultValue)
                 })
               })
             }

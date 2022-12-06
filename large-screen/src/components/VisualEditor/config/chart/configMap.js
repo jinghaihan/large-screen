@@ -4,8 +4,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'axisFlip', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -18,8 +18,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'axisFlip', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -32,8 +32,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -46,8 +46,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -60,8 +60,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'radius-Number', 'border', 'pie-series-label', 'legend', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -74,8 +74,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'radius-Array', 'border', 'pie-series-label', 'legend', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -88,8 +88,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'radius-Number', 'border', 'pie-series-label', 'legend', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -102,8 +102,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'funnel-basic', 'border', 'funnel-series-label', 'legend', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -116,8 +116,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'gauge-basic', 'border', 'gauge-series-detail', 'gauge-series-splitLine', 'gauge-series-axisLabel', 'gauge-series-axisTick', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -130,8 +130,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -144,8 +144,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'grid', 'border', 'axis', 'legend', 'title', 'dataZoom']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -158,8 +158,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'border', 'radar-axisName', 'legend', 'title']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -172,8 +172,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'map-geo-basic', 'border', 'map-scatter-rippleEffect', 'title', 'map-geo-label', 'map-geo-itemStyle', 'map-geo-emphasis']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {
@@ -186,8 +186,8 @@ const configMap = {
       name: '配置',
       config: ['basic', 'map-series-basic', 'border', 'visualMap', 'title', 'map-series-label', 'map-series-itemStyle', 'map-series-emphasis']
     },
-    'dataSource': {
-      name: '数据',
+    'dataModel': {
+      name: '数据模型',
       config: []
     },
     'interaction': {

@@ -14,7 +14,6 @@ class Text {
 
     this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
-      formData: null,
       switch: null,
       collapse: null
     }
@@ -52,7 +51,7 @@ class Text {
     }, this.vm)
   }
   resize () {
-    this.update(this.configData.formData)
+    this.update(this.configData.configData)
   }
   setConfigData (data) {
     this.configData = _.cloneDeep({

@@ -19,7 +19,6 @@ class Table {
 
     this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
-      formData: null,
       switch: null,
       collapse: null
     }

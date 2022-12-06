@@ -416,11 +416,7 @@ const config = {
         }
       ]
     }
-  },
-  // 数据
-  dataSource: {}, 
-  // 交互
-  interaction: {}
+  }
 }
 
 export default config

@@ -35,9 +35,7 @@ const config = {
         }
       ]
     }
-  },
-  // 交互
-  interaction: {}
+  }
 }
 
 export default config

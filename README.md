@@ -2,12 +2,12 @@
 
 ## Project setup
 ```
-yarn install
+yarn install-all
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn dev
+yarn serve-all
 ```
 
 ### Compiles and minifies for production

@@ -192,7 +192,7 @@ export default {
         // 依赖父级
         if (data.restriction.dependentInstance) {
           this.instance = this.editor.instance[data.restriction.dependentInstance]
-          if (!this.editor.instance[data.dependentInstance]) {
+          if (!this.instance) {
             this.$notification.error({ message: '错误', description: `请先拖入${data.restriction.dependentInstanceName}` })
             return
           }

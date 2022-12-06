@@ -8,12 +8,20 @@
         <div class="name-container">{{item.name}}</div>
         <div class="column-container">
           <div class="tag-container"
-               v-for="column in modelData[item.key] || []"
+               v-for="column in getColumnTag(modelData[item.key])"
                :key="column.id">
             <a-checkable-tag :checked="item.checked[column.id]"
                              @change="handleChecked($event, item, column)">
               {{column.name}}
             </a-checkable-tag>
+          </div>
+          <!-- 已选维度组合 -->
+          <div v-if="item.key === 'dimensions-selected'">
+            {{getDimensionsSelected()}}
+          </div>
+          <!-- 已选指标 -->
+          <div v-if="item.key === 'measures-selected'">
+            {{getMeasuresSelected()}}
           </div>
         </div>
         <div class="more-container" @click="onMore(item)">
@@ -75,12 +83,54 @@ export default {
         this.collapse.push(data.key)
       }
     },
-    getColumnTag () {
-
+    getColumnTag (data) {
+      return data ? [{ id: 'all', name: '全选' }].concat(data) : []
     },
     handleChecked (checked, condition, column) {
+      if (column.id === 'all') {
+        this.modelData[condition.key].forEach(item => {
+          condition.checked[item.id] = checked
+        })
+      }
       condition.checked[column.id] = checked
+
+      // 判断全选选中状态
+      if (column.id !== 'all') {
+        let flag = true
+        condition.checked['all'] = true
+        this.modelData[condition.key].forEach(item => {
+          if (!condition.checked[item.id]) {
+            flag = false
+          }
+        })
+        condition.checked['all'] = flag
+      }
       this.$forceUpdate()
+    },
+    getDimensionsSelected () {
+      if (!this.modelData['dimensions']) return
+
+      let string = ''
+      this.modelData['dimensions'].forEach(item => {
+        if (this.condition[0].checked[item.id]) {
+          string += item.name + ' + '
+        }
+      })
+      string = string.slice(0, string.length - 3)
+
+      return string
+    },
+    getMeasuresSelected () {
+      if (!this.modelData['measures']) return
+      let string = ''
+      this.modelData['measures'].forEach(item => {
+        if (this.condition[2].checked[item.id]) {
+          string += item.name + ' '
+        }
+      })
+      string = string.slice(0, string.length - 1)
+
+      return string
     }
   }
 }

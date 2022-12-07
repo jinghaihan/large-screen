@@ -1,6 +1,7 @@
 <template>
   <div class="data-model-container">
-    <component :is="data.component"
+    <component ref="component"
+               :is="data.component"
                v-bind="{ editor, component }"
                @change="onChange">
     </component>
@@ -27,6 +28,11 @@ export default {
   methods: {
     onChange (data) {
       this.$emit('change', data, true)
+    },
+    onModelChange () {
+      if (this.$refs.component) {
+        this.$refs.component.getModelData()
+      }
     }
   }
 }

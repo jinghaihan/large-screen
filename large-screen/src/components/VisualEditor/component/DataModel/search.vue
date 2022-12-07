@@ -180,7 +180,7 @@ export default {
 
       // 存在全局模型配置
       if (this.editor.instance['modelPanel']) {
-        this.modelData = this.editor.instance['modelPanel'].modelData
+        this.getModelData()
       }
       this.$forceUpdate()
     },
@@ -227,6 +227,9 @@ export default {
     },
     onChange () {
       this.$emit('change', this.form, 'component')
+    },
+    getModelData () {
+      this.modelData = this.editor.instance['modelPanel'].modelData
     }
   }
 }

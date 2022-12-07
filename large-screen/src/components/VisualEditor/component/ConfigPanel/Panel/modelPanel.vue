@@ -86,14 +86,14 @@ export default {
       let _this = this
       if (_this.model) {
         _this.$confirm({
-          title: `您确定删除模型吗？`,
-          content: '更改模型将清空当前所有配置',
+          title: `您确定切换模型吗？`,
+          content: '更改模型将清空当前所有数据模型配置',
           confirmLoading: true,
           okText: '确定',
           cancelText: '取消',
           async onOk () {
             await _this.changeModel(value)
-            _this.editor.clear()
+            _this.editor.clearDataModelConfig()
           },
           onCancel () { }
         })
@@ -111,8 +111,13 @@ export default {
       this.modelData = res.data.data
       this.loading = false
       this.model = value
+      // 通知条件面板实例
       if (this.editor.instance['conditionPanel']) {
         this.editor.instance['conditionPanel'].getModelConfig()
+      }
+      // 通知组件面板实例
+      if (this.editor.instance['componentPanel']) {
+        this.editor.instance['componentPanel'].onModelChange()
       }
     },
     filterOptions (input, option) {

@@ -38,7 +38,8 @@
       <template v-if="tab.component.length">
         <div v-for="comp in tab.component"
              :key="comp.key">
-          <component :is="comp.component"
+          <component ref="component"
+                     :is="comp.component"
                      v-bind="{
                       data: { component: comp.config },
                       editor,
@@ -100,6 +101,7 @@ export default {
     }
   },
   created () {
+    this.editor.setInstance({ componentPanel: this })
     this.onChange = _.debounce(this.onChange, 50)
   },
   methods: {
@@ -208,6 +210,16 @@ export default {
       }
       await this.$nextTick()
       this.onChange()
+    },
+    onModelChange () {
+      let refs = this.$refs.component
+      if (refs && refs.length) {
+        refs.forEach(ref => {
+          if (ref.onModelChange) {
+            ref.onModelChange()
+          }
+        })
+      }
     }
   }
 }

@@ -9,7 +9,7 @@
                   :grid="grid">
       </BasicPanel>
       <!-- 图层配置 -->
-      <LayerPanel v-if="activeKey === 'layer'"
+      <LayerPanel v-show="activeKey === 'layer'"
                   :editor="editor"
                   :layout="layout"
                   :layer="layer">

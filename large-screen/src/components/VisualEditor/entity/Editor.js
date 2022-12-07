@@ -343,6 +343,12 @@ class Editor {
       editor.layer = _.cloneDeep({ ...editor.layer, current: data.layer.current })
     }
   }
+  clearDataModelConfig () {
+    Object.keys(this.cell).forEach(key => {
+      delete this.cell[key].configData.dataModelData
+    })
+    this.changeComponent()
+  }
   getConfig () {
     let cell = this.getCell()
     let config = {

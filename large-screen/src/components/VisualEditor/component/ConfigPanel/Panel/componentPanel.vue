@@ -59,7 +59,7 @@
 <script>
 import _ from 'lodash'
 import FormModel from '../FormModel/formModel.vue'
-// 数据模型
+// 数据模型配置
 import DataModel from '../DataModel'
 
 export default {

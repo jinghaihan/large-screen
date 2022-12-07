@@ -8,7 +8,7 @@ const configMap = {
   'conditionPanel': {
     'config': {
       name: '配置',
-      config: ['border']
+      config: ['conditionPanel', 'border']
     }
   },
   'input': {

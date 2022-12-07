@@ -1,12 +1,19 @@
 <template>
-  <div class="condition-panel-container">
+  <div ref="container" id="condition-panel-container" class="condition-panel-container">
     <div v-if="!data.enable" class="holder"> 条件面板 </div>
-    <div v-else ref="content" class="content">
+    <div v-else
+         ref="content"
+         class="content"
+         :style="{ backgroundColor: columnStyle.backgroundColor }">
       <div :class="collapse.includes(item.key) ? 'condition-container condition-container-expand' : 'condition-container'"
            v-for="item in condition"
            :key="item.key">
-        <div class="name-container">{{item.name}}</div>
-        <div class="column-container">
+        <div class="title-container"
+            :style="titleStyle">
+            {{item.name}}
+        </div>
+        <div class="column-container"
+             :style="columnStyle">
           <div class="tag-container"
                v-for="column in getColumnTag(modelData[item.key])"
                :key="column.id">
@@ -16,11 +23,11 @@
             </a-checkable-tag>
           </div>
           <!-- 已选维度组合 -->
-          <div v-if="item.key === 'dimensions-selected'">
+          <div class="selected-container" v-if="item.key === 'dimensions-selected'">
             {{getDimensionsSelected()}}
           </div>
           <!-- 已选指标 -->
-          <div v-if="item.key === 'measures-selected'">
+          <div class="selected-container" v-if="item.key === 'measures-selected'">
             {{getMeasuresSelected()}}
           </div>
         </div>
@@ -54,7 +61,27 @@ export default {
       collapse: [],
       // 模型
       model: null,
-      modelData: {}
+      modelData: {},
+      // 颜色配置
+      titleStyle: {
+        color: '#fff',
+        backgroundColor: '#1890ff'
+      },
+      columnStyle: {
+        color: '#333',
+        backgroundColor: '#fff',
+        tagColor: '#1890ff',
+        tagHighlightColor: '#fff'
+      }
+    }
+  },
+  watch: {
+    columnStyle: {
+      deep: true,
+      immediate: true,
+      handler: function (value) {
+        this.handleColor()
+      }
     }
   },
   created () {
@@ -131,19 +158,28 @@ export default {
       string = string.slice(0, string.length - 1)
 
       return string
+    },
+    handleColor () {
+      this.$refs.container.style.setProperty('--color', this.columnStyle.color)
+      this.$refs.container.style.setProperty('--tagColor', this.columnStyle.tagColor)
+      this.$refs.container.style.setProperty('--tagHighlightColor', this.columnStyle.tagHighlightColor)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+  #condition-panel-container{
+    --color: #333;
+    --tagColor: #1890ff;
+    --tagHighlightColor: #fff;
+  }
   .condition-panel-container{
     height: 100%;
     width: 100%;
     position: relative;
     overflow: hidden;
     overflow-y: auto;
-    background: #fff;
     .holder{
       height: 100%;
       width: 100%;
@@ -160,11 +196,9 @@ export default {
         height: 25%;
         display: flex;
         border-bottom: 1px solid var(--highlight-color);
-        .name-container{
+        .title-container{
           height: 100%;
           width: 100px;
-          background: #1890ff;
-          color: #fff;
           display: flex;
           align-items: center;
           justify-content: left;
@@ -185,6 +219,9 @@ export default {
             justify-content: center;
           }
         }
+        .selected-container{
+          font-size: 12px;
+        }
         .more-container{
           cursor: pointer;
           width: 80px;
@@ -194,13 +231,17 @@ export default {
       }
       .condition-container-expand{
         height: auto;
-        .name-container{
+        .title-container{
           height: auto;
-        }
-        .tag-container{
-          margin: 8px 0;
         }
       }
     }
+  }
+  /deep/.ant-tag{
+    color: var(--color);
+  }
+  /deep/.ant-tag-checkable-checked{
+    color: var(--tagHighlightColor);
+    background-color: var(--tagColor);
   }
 </style>

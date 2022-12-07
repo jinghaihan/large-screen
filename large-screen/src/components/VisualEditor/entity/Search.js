@@ -46,6 +46,8 @@ class Search {
     delete props['vm-border-backgroundColor']
     delete props['vm-border-padding']
     handleVmData(props, this.vm.$refs.component)
+
+    console.log(this.vm.$refs.component.nameStyle)
     
     handleVmData({
       'vm-border-component': data['vm-border-component'],

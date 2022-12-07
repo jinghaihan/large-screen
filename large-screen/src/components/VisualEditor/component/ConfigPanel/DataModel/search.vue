@@ -28,8 +28,14 @@
         <!-- 绑定维度 -->
         <a-col :span="24">
           <a-form-model-item ref="dimension"
-                             prop="dimension"
-                             label="绑定维度">
+                             prop="dimension">
+            <span class="help-label" slot="label">
+              绑定维度
+              <TooltipIcon title="提示：选择绑定维度后将同步更改查询组件标签。"
+                           class="help"
+                           icon="question-circle">
+              </TooltipIcon>
+            </span>
             <a-select v-model="form.dimension"
                       placeholder="请选择绑定维度"
                       :show-search="true"
@@ -136,6 +142,7 @@
 </template>
 
 <script>
+import TooltipIcon from '../../Widget/TooltipIcon'
 
 export default {
   props: {
@@ -145,6 +152,7 @@ export default {
       required: true
     }
   },
+  components: { TooltipIcon },
   data () {
     return {
       cell: {},
@@ -219,9 +227,9 @@ export default {
       )
     },
     onDimensionChange () {
+      let dimension = this.modelData['dimensions'].find(item => item.id === this.form.dimension)
       // 时间类型查询组件联动修改format
       if (this.cell.type === 'date-picker' || this.cell.type === 'range-picker') {
-        let dimension = this.modelData['dimensions'].filter(item => item.id === this.form.dimension)[0]
         this.form.format = dimension.format
       }
       // 关联父维度
@@ -237,6 +245,13 @@ export default {
           })
         }
       }
+      let data = {
+        ...this.cell.configData.configData,
+        'vm-props-label': dimension.name
+      }
+      // 修改查询组件标签
+      this.cell.update(data)
+      this.cell.setConfigData({ configData: data })
       
       this.onChange()
     },
@@ -257,6 +272,13 @@ export default {
       display: inline-block;
       color: #f5222d;
       margin-bottom: 8px;
+    }
+    .help-label{
+      display: flex;
+      align-items: center;
+      .help{
+        color: #1890ff;
+      }
     }
   }
 </style>

@@ -5,13 +5,13 @@ const config = {
       config: [
         {
           type: 'input-number',
-          label: '按钮右偏移',
+          label: '按钮右偏移量',
           key: 'vm-button-right?pixel',
           defaultValue: 0
         },
         {
           type: 'input-number',
-          label: '按钮下偏移',
+          label: '按钮下偏移量',
           key: 'vm-button-bottom?pixel',
           defaultValue: 0
         },
@@ -61,6 +61,47 @@ const config = {
               { label: 'danger', value: 'danger' }
             ]
           }
+        }
+      ]
+    },
+    'conditionPanel': {
+      type: 'config',
+      config: [
+        {
+          type: 'color-picker',
+          label: '标题字体颜色',
+          key: 'vm-titleStyle-color',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '标题背景颜色',
+          key: 'vm-titleStyle-backgroundColor',
+          defaultValue: { hex: '#1890ff' }
+        },
+        {
+          type: 'color-picker',
+          label: '标签字体颜色',
+          key: 'vm-columnStyle-color',
+          defaultValue: { hex: '#333' }
+        },
+        {
+          type: 'color-picker',
+          label: '标签背景颜色',
+          key: 'vm-columnStyle-backgroundColor',
+          defaultValue: { hex: '#fff' }
+        },
+        {
+          type: 'color-picker',
+          label: '标签颜色',
+          key: 'vm-columnStyle-tagColor',
+          defaultValue: { hex: '#1890ff' }
+        },
+        {
+          type: 'color-picker',
+          label: '标签高亮颜色',
+          key: 'vm-columnStyle-tagHighlightColor',
+          defaultValue: { hex: '#fff' }
         }
       ]
     },

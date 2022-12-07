@@ -144,8 +144,6 @@ export default {
     onModalSubmit (data, type) {
       let value = this.data.find(item => item.id === this.modalData.id)
       value[type] = data
-
-      console.log(this.data)
     },
     onModalClose () {
       this.modalData = {}

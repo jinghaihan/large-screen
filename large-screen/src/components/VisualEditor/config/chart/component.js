@@ -4,8 +4,8 @@ const chart = {
     type: 'bar',
     image: require('@/assets/VisualEditor/component/chart/bar.png'),
     col: 12,
-    w: 25,
-    h: 20,
+    w: 20,
+    h: 15,
     props: {}
   },
   'bar-stack': {
@@ -13,8 +13,8 @@ const chart = {
     type: 'bar-stack',
     image: require('@/assets/VisualEditor/component/chart/bar-stack.png'),
     col: 12,
-    w: 30,
-    h: 20,
+    w: 20,
+    h: 15,
     props: {}
   },
   'line': {
@@ -22,8 +22,8 @@ const chart = {
     type: 'line',
     image: require('@/assets/VisualEditor/component/chart/line.png'),
     col: 12,
-    w: 30,
-    h: 20,
+    w: 20,
+    h: 15,
     props: {}
   },
   'line-area': {
@@ -31,8 +31,8 @@ const chart = {
     type: 'line-area',
     image: require('@/assets/VisualEditor/component/chart/line-area.png'),
     col: 12,
-    w: 30,
-    h: 20,
+    w: 20,
+    h: 15,
     props: {}
   },
   'pie': {
@@ -40,8 +40,8 @@ const chart = {
     type: 'pie',
     image: require('@/assets/VisualEditor/component/chart/pie.png'),
     col: 12,
-    w: 25,
-    h: 25,
+    w: 20,
+    h: 20,
     props: {}
   },
   'pie-ring': {
@@ -49,8 +49,8 @@ const chart = {
     type: 'pie-ring',
     image: require('@/assets/VisualEditor/component/chart/pie-ring.png'),
     col: 12,
-    w: 25,
-    h: 25,
+    w: 20,
+    h: 20,
     props: {}
   },
   'pie-rose': {
@@ -58,8 +58,8 @@ const chart = {
     type: 'pie-rose',
     image: require('@/assets/VisualEditor/component/chart/pie-rose.png'),
     col: 12,
-    w: 25,
-    h: 25,
+    w: 20,
+    h: 20,
     props: {}
   },
   'funnel': {
@@ -67,8 +67,8 @@ const chart = {
     type: 'funnel',
     image: require('@/assets/VisualEditor/component/chart/funnel.png'),
     col: 12,
-    w: 30,
-    h: 20,
+    w: 20,
+    h: 15,
     props: {}
   },
   'gauge': {
@@ -76,8 +76,8 @@ const chart = {
     type: 'gauge',
     image: require('@/assets/VisualEditor/component/chart/gauge.png'),
     col: 12,
-    w: 25,
-    h: 25,
+    w: 20,
+    h: 20,
     props: {}
   },
   'scatter': {
@@ -94,8 +94,8 @@ const chart = {
     type: 'bubble',
     image: require('@/assets/VisualEditor/component/chart/bubble.png'),
     col: 12,
-    w: 40,
-    h: 30,
+    w: 20,
+    h: 15,
     props: {}
   },
   'radar': {
@@ -103,8 +103,8 @@ const chart = {
     type: 'radar',
     image: require('@/assets/VisualEditor/component/chart/radar.png'),
     col: 12,
-    w: 30,
-    h: 30,
+    w: 20,
+    h: 20,
     props: {}
   },
   'map-scatter': {
@@ -112,8 +112,8 @@ const chart = {
     type: 'map-scatter',
     image: require('@/assets/VisualEditor/component/chart/map-scatter.png'),
     col: 12,
-    w: 40,
-    h: 30,
+    w: 20,
+    h: 20,
     props: {}
   },
   'map-density': {
@@ -121,8 +121,8 @@ const chart = {
     type: 'map-density',
     image: require('@/assets/VisualEditor/component/chart/map-density.png'),
     col: 12,
-    w: 40,
-    h: 30,
+    w: 20,
+    h: 20,
     props: {}
   }
 }

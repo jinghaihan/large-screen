@@ -31,8 +31,8 @@ const text = {
     type: 'billboard',
     image: require('@/assets/VisualEditor/component/text/billboard.png'),
     col: 12,
-    w: 20,
-    h: 10,
+    w: 10,
+    h: 8,
     props: {}
   },
   'billboard-countdown': {
@@ -40,8 +40,8 @@ const text = {
     type: 'billboard-countdown',
     image: require('@/assets/VisualEditor/component/text/billboard-countdown.png'),
     col: 12,
-    w: 20,
-    h: 10,
+    w: 10,
+    h: 8,
     props: {}
   },
   'clock': {
@@ -49,8 +49,8 @@ const text = {
     type: 'clock',
     image: require('@/assets/VisualEditor/component/text/clock.png'),
     col: 12,
-    w: 20,
-    h: 10,
+    w: 10,
+    h: 8,
     props: {}
   }
 }

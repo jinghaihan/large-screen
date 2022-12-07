@@ -210,40 +210,38 @@ export default {
       this.updateInstance(item)
     },
     drag (e, item) {
-      try {
-        let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
-        let mouseInGrid = false
-        if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
-          mouseInGrid = true
+      let parentRect = this.instance.$refs.gridLayout.$el.getBoundingClientRect()
+      let mouseInGrid = false
+      if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
+        mouseInGrid = true
+      }
+      if (mouseInGrid === true && (this.instance.layout.findIndex(item => item.i === 'drop')) === -1) {
+        this.instance.layout.push({
+          x: (this.instance.layout.length * 2) % this.instance.grid.count,
+          y: this.instance.layout.length + this.instance.grid.count,
+          w: item.w,
+          h: item.h,
+          i: 'drop'
+        })
+      }
+      let index = this.instance.layout.findIndex(item => item.i === 'drop')
+      if (index !== -1) {
+        try {
+          this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'none'
+        } catch (error) { }
+        let el = this.instance.$refs.gridLayout.$children[index]
+        el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
+        let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
+        if (mouseInGrid === true) {
+          this.instance.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
+          DragPos.x = this.instance.layout[index].x
+          DragPos.y = this.instance.layout[index].y
         }
-        if (mouseInGrid === true && (this.instance.layout.findIndex(item => item.i === 'drop')) === -1) {
-          this.instance.layout.push({
-            x: (this.instance.layout.length * 2) % this.instance.grid.count,
-            y: this.instance.layout.length + this.instance.grid.count,
-            w: item.w,
-            h: item.h,
-            i: 'drop'
-          })
+        if (mouseInGrid === false) {
+          this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
+          this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
         }
-        let index = this.instance.layout.findIndex(item => item.i === 'drop')
-        if (index !== -1) {
-          try {
-            this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'none'
-          } catch (error) { }
-          let el = this.instance.$refs.gridLayout.$children[index]
-          el.dragging = { 'top': mouseXY.y - parentRect.top, 'left': mouseXY.x - parentRect.left }
-          let newPos = el.calcXY(mouseXY.y - parentRect.top, mouseXY.x - parentRect.left)
-          if (mouseInGrid === true) {
-            this.instance.$refs.gridLayout.dragEvent('dragstart', 'drop', newPos.x, newPos.y, item.h, item.w)
-            DragPos.x = this.instance.layout[index].x
-            DragPos.y = this.instance.layout[index].y
-          }
-          if (mouseInGrid === false) {
-            this.instance.$refs.gridLayout.dragEvent('dragend', 'drop', newPos.x, newPos.y, item.h, item.w)
-            this.instance.layout = this.instance.layout.filter(obj => obj.i !== 'drop')
-          }
-        }
-      } catch (error) {}
+      }
     },
     dragEnd (e, item) {
       try {

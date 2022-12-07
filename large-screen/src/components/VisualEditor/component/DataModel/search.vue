@@ -11,6 +11,20 @@
         <a-col :span="24" v-if="config.hasTip.includes(cell.type)">
           <span class="tip">提示：出于性能考虑，若您需要绑定的维度并非来自维度表，不建议选择本组件，建议您使用“输入框”或“多值输入框”组件替代。</span>
         </a-col>
+        <!-- 聚合控制 -->
+        <a-col :span="24">
+          <a-form-model-item ref="isGroupBy"
+                             prop="isGroupBy"
+                             label="聚合控制">
+            <a-radio-group v-model="form.isGroupBy"
+                          :options="[
+                            { label: '允许聚合', value: true },
+                            { label: '不再聚合', value: false }
+                          ]"
+                          @change="onChange">
+            </a-radio-group>
+          </a-form-model-item>
+        </a-col>
         <!-- 绑定维度 -->
         <a-col :span="24">
           <a-form-model-item ref="dimension"
@@ -191,6 +205,7 @@ export default {
         this.form = { ...data }
       } else {
         this.form = {
+          isGroupBy: true,
           required: false,
           isOpenParam: false,
           lock: false,

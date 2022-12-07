@@ -11,6 +11,20 @@
         <a-col :span="24">
           <span class="tip">注：若您绑定的维度，维度值过多，报表展示时默认只展示前100维度值下的数据情况。</span>
         </a-col>
+        <!-- 聚合控制 -->
+        <a-col :span="24">
+          <a-form-model-item ref="isGroupBy"
+                             prop="isGroupBy"
+                             label="聚合控制">
+            <a-radio-group v-model="form.isGroupBy"
+                          :options="[
+                            { label: '允许聚合', value: true },
+                            { label: '不再聚合', value: false }
+                          ]"
+                          @change="onChange">
+            </a-radio-group>
+          </a-form-model-item>
+        </a-col>
         <!-- 维度 -->
         <a-col :span="24">
           <a-form-model-item ref="dimension"
@@ -32,12 +46,11 @@
         </a-col>
         <!-- 指标 -->
         <a-col :span="24">
-          <a-form-model-item ref="measure"
-                             prop="measure">
+          <a-form-model-item>
             <div class="label" slot="label" @click="onAdd">
               指标 <a-icon class="action" type="plus-square"></a-icon>
             </div>
-            <Measure ref="measure" :modelData="modelData"></Measure>
+            <Measure ref="measure" :modelData="modelData" :form="from"></Measure>
           </a-form-model-item>
         </a-col>
         <!-- 默认排序 -->
@@ -55,9 +68,9 @@
           </a-form-model-item>
           <!-- 默认排序 -->
           <a-form-model-item v-if="form.fieldId"
-                             ref="type"
-                             prop="type">
-            <a-radio-group v-model="form.type"
+                             ref="orderType"
+                             prop="orderType">
+            <a-radio-group v-model="form.orderType"
                            :options="[
                             { label: config.circle.includes(cell.type) ? '顺时针升序' : '升序', value: 'ASC' },
                             { label: config.circle.includes(cell.type) ? '顺时针降序' : '降序', value: 'DESC' }
@@ -135,7 +148,9 @@ export default {
       if (data) {
         this.form = { ...data }
       } else {
-        this.form = {}
+        this.form = {
+          isGroupBy: true
+        }
       }
     },
     filterOptions (input, option) {

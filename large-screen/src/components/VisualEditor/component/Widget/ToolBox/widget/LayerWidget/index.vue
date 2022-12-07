@@ -43,7 +43,7 @@
 
 <script>
 import Modal from './modal.vue'
-import TooltipIcon from '../../../TooltipIcon'
+import TooltipIcon from '../../../../Widget/TooltipIcon'
 
 export default {
   props: {

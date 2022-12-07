@@ -28,14 +28,14 @@
       <a-col :span="2">
         <a-tooltip>
           <template slot="title">点击配置指标乘除计算</template>
-          <img v-show="data[index].measure" class="action" :src="icon['mduCalc']" @click="onMduCalc(item)">
+          <img v-show="data[index].measure" class="action" :src="icon['calculate']" @click="onCalculate(item)">
         </a-tooltip>
       </a-col>
       <!-- 小数点规整 -->
       <a-col :span="2">
         <a-tooltip>
           <template slot="title">点击配置小数点规整</template>
-          <img v-show="data[index].measure" class="action" :src="icon['dimPoint']" @click="onDimPoint(item)">
+          <img v-show="data[index].measure" class="action" :src="icon['point']" @click="onPoint(item)">
         </a-tooltip>
       </a-col>
       <!-- 删除按钮 -->
@@ -47,15 +47,15 @@
       </a-col>
     </a-row>
 
-    <MduCalcModal v-if="mduVisible" :modalData="modalData" @close="onModalClose"></MduCalcModal>
+    <CalculateModal v-if="calculateVisible" :modalData="modalData" @submit="onModalSubmit" @close="onModalClose"></CalculateModal>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { getUUID } from '../../../utils/index'
-import TooltipIcon from '../../TooltipIcon'
-import MduCalcModal from './mduCalcModal.vue'
+import { getUUID } from '../../../../utils'
+import TooltipIcon from '../../../Widget/TooltipIcon'
+import CalculateModal from './calculateModal.vue'
 
 const aggregationOptions = [
   {
@@ -95,20 +95,20 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon, MduCalcModal },
+  components: { TooltipIcon, CalculateModal },
   data () {
     return {
       data: [],
       aggregationOptions,
       icon: {
-        mduCalc: require('@/assets/VisualEditor/icon/mduCalc.png'),
-        mduCalcDisabled: require('@/assets/VisualEditor/icon/mduCalc_disabled.png'),
-        dimPoint: require('@/assets/VisualEditor/icon/dimPoint.png'),
-        dimPointDisabled: require('@/assets/VisualEditor/icon/dimPoint_disabled.png')
+        calculate: require('@/assets/VisualEditor/icon/measure_calculate.png'),
+        calculateDisabled: require('@/assets/VisualEditor/icon/measure_calculate_disabled.png'),
+        point: require('@/assets/VisualEditor/icon/decimal_point.png'),
+        pointDisabled: require('@/assets/VisualEditor/icon/decimal_point_disabled.png')
       },
       modalData: {},
-      mduVisible: false,
-      dimVisible: false
+      calculateVisible: false,
+      pointVisible: false
     }
   },
   methods: {
@@ -129,22 +129,28 @@ export default {
         option.componentOptions.children[0].text.includes(input)
       )
     },
-    onMduCalc (data) {
+    onCalculate (data) {
       this.modalData = _.cloneDeep(data)
       this.modalData.measureName = this.modelData['measures'].filter(item => item.id === data.measure)[0].name
       this.modalData.isGroupBy = this.form.isGroupBy
-      this.mduVisible = true
+      this.calculateVisible = true
     },
-    onDimPoint (data) {
+    onPoint (data) {
       this.modalData = _.cloneDeep(data)
       this.modalData.measureName = this.modelData['measures'].filter(item => item.id === data.measure)[0].name
       this.modalData.isGroupBy = this.form.isGroupBy
-      this.dimVisible = true
+      this.pointVisible = true
+    },
+    onModalSubmit (data, type) {
+      let value = this.data.find(item => item.id === this.modalData.id)
+      value[type] = data
+
+      console.log(this.data)
     },
     onModalClose () {
-      this.modelData = {}
-      this.mduVisible = false
-      this.dimVisible = false
+      this.modalData = {}
+      this.calculateVisible = false
+      this.pointVisible = false
     }
   }
 }

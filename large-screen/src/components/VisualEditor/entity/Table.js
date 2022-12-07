@@ -34,7 +34,7 @@ class Table {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Table/${value}.vue`).default
+    this.component = require(`../component/Template/Table/${value}.vue`).default
   }
   update (data) {
     if (!data) return

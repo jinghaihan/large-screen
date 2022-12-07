@@ -32,7 +32,7 @@ class Meida {
         value += upperCaseFirst(item)
       }
     })
-    this.component = require(`../component/Media/${value}.vue`).default
+    this.component = require(`../component/Template/Media/${value}.vue`).default
   }
   update (data) {
     let instance = this.vm.$refs.component

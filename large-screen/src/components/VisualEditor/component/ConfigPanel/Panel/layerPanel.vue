@@ -54,8 +54,8 @@
 <script>
 import _ from 'lodash'
 import Draggable from 'vuedraggable'
-import TooltipIcon from '../../TooltipIcon'
-import Modal from '../../ToolBox/widget/LayerWidget/modal.vue'
+import TooltipIcon from '../../Widget/TooltipIcon'
+import Modal from '../../Widget/ToolBox/widget/LayerWidget/modal.vue'
 import { getImage } from '../../../utils'
 
 export default {

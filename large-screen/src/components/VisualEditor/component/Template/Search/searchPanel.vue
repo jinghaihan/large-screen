@@ -46,7 +46,7 @@
 import $ from 'jquery'
 import { GridLayout, GridItem } from 'vue-grid-layout'
 
-const Renderer = () => import('../Renderer/index.vue')
+const Renderer = () => import('../../Renderer/index.vue')
 
 export default {
   props: {

@@ -18,8 +18,8 @@
                              label="聚合控制">
             <a-radio-group v-model="form.isGroupBy"
                           :options="[
-                            { label: '允许聚合', value: true },
-                            { label: '不再聚合', value: false }
+                            { label: '允许聚合', value: '1' },
+                            { label: '不再聚合', value: '0' }
                           ]"
                           @change="onChange">
             </a-radio-group>
@@ -205,7 +205,7 @@ export default {
         this.form = { ...data }
       } else {
         this.form = {
-          isGroupBy: true,
+          isGroupBy: '1',
           required: false,
           isOpenParam: false,
           lock: false,

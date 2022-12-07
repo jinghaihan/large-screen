@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Border from '../../../Border'
+import Border from '../../../Renderer/Border'
 import color from '../../../../config/color'
 
 export default {

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import TooltipIcon from '../../TooltipIcon'
+import TooltipIcon from '../../../Widget/TooltipIcon'
 
 export default {
   props: {

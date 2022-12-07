@@ -69,7 +69,31 @@ export default {
   },
   methods: {
     onSubmit () {
-      
+      let { calculation, number, aggregatePriority } = this.data
+      let and = calculation && (number || number === 0) && (this.modalData.isGroupBy === '1' ? aggregatePriority || aggregatePriority === 0 : true)
+      let or = calculation || (number || number === 0) || (this.modalData.isGroupBy === '1' ? aggregatePriority || aggregatePriority === 0 : false)
+
+      if (or && !and) {
+        this.$notification.error({ message: '错误', description: '乘除计算配置项未完整填充，请检查' })
+        return false
+      }
+
+      if (calculation && (number || number === 0) && (this.modalData.isGroupBy === '1' ? aggregatePriority || 0 : true)) {
+        // 校验数字
+        if (!Number.isInteger(+number)) {
+          if (number.toString().split('.')[1].length > 4) {
+            this.$notification.error({ message: '错误', description: '请输入小数点后4位' })
+            return false
+          }
+        }
+        if (number === 0 && calculation === '/') {
+          this.$notification.error({ message: '错误', description: '乘除计算配置项不能除以0' })
+          return false
+        }
+      }
+
+      this.$emit('submit', this.data, 'calculate')
+      this.$emit('close')
     },
     closeModal () {
       this.$emit('close')

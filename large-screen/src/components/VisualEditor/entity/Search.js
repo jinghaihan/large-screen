@@ -34,7 +34,7 @@ class Search {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Search/${value}.vue`).default
+    this.component = require(`../component/Template/Search/${value}.vue`).default
   }
   update (data) {
     if (!data) return

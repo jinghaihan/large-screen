@@ -18,8 +18,8 @@
                              label="聚合控制">
             <a-radio-group v-model="form.isGroupBy"
                           :options="[
-                            { label: '允许聚合', value: true },
-                            { label: '不再聚合', value: false }
+                            { label: '允许聚合', value: '1' },
+                            { label: '不再聚合', value: '0' }
                           ]"
                           @change="onChange">
             </a-radio-group>
@@ -50,7 +50,7 @@
             <div class="label" slot="label" @click="onAdd">
               指标 <a-icon class="action" type="plus-square"></a-icon>
             </div>
-            <Measure ref="measure" :modelData="modelData" :form="from"></Measure>
+            <Measure ref="measure" :modelData="modelData" :form="form"></Measure>
           </a-form-model-item>
         </a-col>
         <!-- 默认排序 -->
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import Measure from './measure'
+import Measure from './Measure'
 
 export default {
   props: {
@@ -149,7 +149,7 @@ export default {
         this.form = { ...data }
       } else {
         this.form = {
-          isGroupBy: true
+          isGroupBy: '1'
         }
       }
     },

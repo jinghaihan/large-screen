@@ -29,7 +29,7 @@ class Text {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Text/${value}.vue`).default
+    this.component = require(`../component/Template/Text/${value}.vue`).default
   }
   update (data) {
     if (!data) return

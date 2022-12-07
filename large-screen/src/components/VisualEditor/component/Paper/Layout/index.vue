@@ -39,7 +39,7 @@
 <script>
 import _ from 'lodash'
 import Layer from './layer.vue'
-import ScaleBox from '../../ScaleBox'
+import ScaleBox from '../../Widget/ScaleBox'
 
 export default {
   props: {

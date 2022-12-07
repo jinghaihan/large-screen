@@ -18,7 +18,7 @@
 import LayerWidget from './widget/LayerWidget'
 import ScaleWidget from './widget/scaleWidget.vue'
 import HotkeyWidget from './widget/hotkeyWidget.vue'
-import TooltipIcon from '../TooltipIcon'
+import TooltipIcon from '../../Widget/TooltipIcon'
 
 export default {
   props: {

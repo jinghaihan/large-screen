@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import TooltipIcon from '../TooltipIcon'
+import TooltipIcon from '../Widget/TooltipIcon'
 // 装饰组件
-import Decoration from '../Decoration'
+import Decoration from '../Template/Decoration'
 // 查询组件
-import Search from '../Search'
+import Search from '../Template/Search'
 // 表格组件
-import Table from '../Table'
+import Table from '../Template/Table'
 
 import { getUUID } from '../../utils'
 import { getImageComponent, getVideoComponent, getAudioComponent } from '../../service/component'

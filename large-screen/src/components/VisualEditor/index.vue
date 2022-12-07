@@ -96,25 +96,25 @@
       </div>
     </div>
     <!-- 批量修改 -->
-    <BatchEditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></BatchEditModal>
+    <EditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></EditModal>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
 import Editor from './entity/Editor'
-import TooltipIcon from './component/TooltipIcon'
 import DragPanel from './component/DragPanel'
 import Paper from './component/Paper'
-import ToolBox from './component/ToolBox'
 import ConfigPanel from './component/ConfigPanel'
-import BatchEditModal from './component/BatchEditModal'
+import ToolBox from './component/Widget/ToolBox'
+import EditModal from './component/Widget/EditModal'
+import TooltipIcon from './component/Widget/TooltipIcon'
 import config from './config'
 import { getUUID } from './utils'
 
 export default {
   name: 'VisualEditor',
-  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, BatchEditModal },
+  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, EditModal },
   data () {
     return {
       editor: new Editor(),

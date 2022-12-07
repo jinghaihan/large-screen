@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import FormModel from '../ConfigPanel/FormModel/formModel.vue'
+import FormModel from '../../ConfigPanel/FormModel/formModel.vue'
 
 export default {
   props: {

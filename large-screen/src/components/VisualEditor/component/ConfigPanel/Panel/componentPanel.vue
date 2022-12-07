@@ -60,7 +60,7 @@
 import _ from 'lodash'
 import FormModel from '../FormModel/formModel.vue'
 // 数据模型
-import DataModel from '../../DataModel'
+import DataModel from '../DataModel'
 
 export default {
   props: {

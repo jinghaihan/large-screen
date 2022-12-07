@@ -22,7 +22,7 @@ class Decoration {
     this.init()
   }
   init () {
-    this.component = require(`../component/Decoration/index.vue`).default
+    this.component = require(`../component/Template/Decoration/index.vue`).default
   }
   update (data) {
     this.props = {

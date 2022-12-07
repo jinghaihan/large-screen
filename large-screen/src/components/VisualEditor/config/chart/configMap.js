@@ -6,7 +6,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -20,7 +20,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -34,7 +34,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -48,7 +48,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -62,7 +62,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -76,7 +76,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -90,7 +90,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -104,7 +104,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -118,7 +118,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -132,7 +132,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -146,7 +146,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -160,7 +160,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -174,7 +174,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',
@@ -188,7 +188,7 @@ const configMap = {
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     },
     'interaction': {
       name: '交互',

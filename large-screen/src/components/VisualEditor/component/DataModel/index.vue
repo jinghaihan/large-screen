@@ -9,6 +9,7 @@
 
 <script>
 import SearchDataModel from './search.vue'
+import ChartDataModel from './chart.vue'
 
 export default {
   props: {
@@ -22,7 +23,7 @@ export default {
       required: true
     }
   },
-  components: { SearchDataModel },
+  components: { SearchDataModel, ChartDataModel },
   methods: {
     onChange (data) {
       this.$emit('change', data, true)

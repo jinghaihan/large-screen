@@ -836,8 +836,14 @@ const config = {
       ]
     }
   },
-  // 数据
-  dataSource: {}, 
+  // 数据模型
+  dataModel: {
+    'data-model': {
+      type: 'component',
+      component: 'DataModel',
+      config: 'ChartDataModel'
+    }
+  },
   // 交互
   interaction: {}
 }

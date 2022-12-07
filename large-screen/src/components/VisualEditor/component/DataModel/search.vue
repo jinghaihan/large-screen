@@ -217,12 +217,7 @@ export default {
               this.parentVisible = true
               this.form.hasParent = true
               this.form.parentDim = item.parentId
-              this.parentDimOptions = [
-                {
-                  label: item.parentName,
-                  value: item.parentId
-                }
-              ]
+              this.parentDimOptions = [{ label: item.parentName, value: item.parentId }]
             }
           })
         }

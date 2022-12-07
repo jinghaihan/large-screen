@@ -226,7 +226,7 @@ export default {
       this.onChange()
     },
     onChange () {
-      this.$emit('change', this.form, 'component')
+      this.$emit('change', this.form)
     },
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData

@@ -105,9 +105,9 @@ export default {
     this.onChange = _.debounce(this.onChange, 50)
   },
   methods: {
-    onChange (value, enable) {
+    onChange (value, fromComponent) {
       let formData = {}
-      if (!enable) {
+      if (!fromComponent) {
         const formType = ['basicForm', 'collapseForm']
         formType.forEach(type => {
           if (this.$refs[type] && this.$refs[type].length) {
@@ -123,7 +123,9 @@ export default {
       
       switch (this.component.componentType) {
         case 'chart':
-          this.cell.change(formData, this.component.type, this.switchKeys)
+          if (!fromComponent) {
+            this.cell.change(formData, this.component.type, this.switchKeys)
+          }
           break
         default:
           this.cell.update(formData)

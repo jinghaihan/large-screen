@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import ConditionPanel from './conditionPanel.vue'
 
 export default {
   props: {
@@ -14,9 +13,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  components: {
-    ConditionPanel
   }
 }
 </script>

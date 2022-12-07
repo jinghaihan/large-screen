@@ -7,6 +7,7 @@
 
 <script>
 import SearchPanel from './searchPanel.vue'
+import ConditionPanel from './conditionPanel.vue'
 import Input from './input.vue'
 import InputMultiple from './inputMultiple.vue'
 import Select from './select.vue'
@@ -25,6 +26,7 @@ export default {
   },
   components: {
     SearchPanel,
+    ConditionPanel,
     Input,
     InputMultiple,
     Select,

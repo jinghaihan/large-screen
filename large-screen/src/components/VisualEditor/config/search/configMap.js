@@ -5,6 +5,12 @@ const configMap = {
       config: ['searchPanel', 'border']
     }
   },
+  'conditionPanel': {
+    'config': {
+      name: '配置',
+      config: ['border']
+    }
+  },
   'input': {
     'config': {
       name: '配置',

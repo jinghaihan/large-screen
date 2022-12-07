@@ -403,6 +403,7 @@ class Editor {
         data: this.getCellData(_.cloneDeep(dataModelData))
       }
     })
+    return cell
   }
   getCellData (data) {
     data = data || {}

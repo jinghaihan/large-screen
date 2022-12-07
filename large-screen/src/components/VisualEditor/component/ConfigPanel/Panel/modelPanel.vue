@@ -6,13 +6,13 @@
               v-for="item in content"
               :key="item.key">
           <label class="label">{{item.name}}</label>
-          <template v-if="item.key !== 'model'">
+          <div class="list-container" v-if="item.key !== 'model'">
             <a-list item-layout="horizontal" :data-source="modelData ? modelData[item.key] : []">
               <a-list-item slot="renderItem" slot-scope="item">
                 <a-icon class="icon" :type="columnType[item.columnType].icon"></a-icon>{{item.name}}
               </a-list-item>
             </a-list>
-          </template>
+          </div>
           <div v-else class="model-container">
             <a-select :value="model"
                       :placeholder="'请选择' + config.label"
@@ -127,7 +127,6 @@ export default {
 <style lang="less" scoped>
   .model-panel-container{
     height: 100%;
-    padding: 24px;
     .container{
       height: 100%;
       display: flex;
@@ -136,6 +135,18 @@ export default {
       justify-content: space-between;
       .content-container{
         height: calc(~"(100% - 64px) / 2");
+        padding: 24px;
+        padding-bottom: 0;
+        padding-right: 0;
+        .list-container{
+          height: calc(~"100% - 24px");
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+      }
+      .model-content-container{
+        padding: 24px;
+        padding-bottom: 0;
       }
       .content-container,
       .model-content-container{

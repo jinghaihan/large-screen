@@ -4,7 +4,7 @@ import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
 export function getUUID () {
-  return uuid()
+  return uuid().replace(/-/g, '')
 }
 
 export function getImage (el, ratio) {

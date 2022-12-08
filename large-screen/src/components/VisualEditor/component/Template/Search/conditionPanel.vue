@@ -78,7 +78,6 @@ export default {
   watch: {
     columnStyle: {
       deep: true,
-      immediate: true,
       handler: function (value) {
         if (this.data.enable) {
           this.handleColor()

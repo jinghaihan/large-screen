@@ -98,6 +98,7 @@ export default {
       this.data.push({
         fieldId: getUUID()
       })
+      this.$forceUpdate()
       this.onChange()
     },
     onDelete (data) {
@@ -149,7 +150,7 @@ export default {
       this.pointVisible = true
     },
     onModalSubmit (data, type) {
-      let value = this.data.find(item => item.id === this.modalData.id)
+      let value = this.data.find(item => item.fieldId === this.modalData.fieldId)
       value[type] = data
       this.onChange()
     },

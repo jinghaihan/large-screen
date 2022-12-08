@@ -55,10 +55,10 @@
         </a-col>
         <!-- 默认排序 -->
         <a-col :span="24">
-          <a-form-model-item ref="fieldId"
-                             prop="fieldId"
+          <a-form-model-item ref="orderFieldId"
+                             prop="orderFieldId"
                              label="默认排序">
-            <a-select v-model="form.fieldId"
+            <a-select v-model="form.orderFieldId"
                       placeholder="请选择默认排序"
                       :show-search="true"
                       :filter-option="filterOptions"
@@ -68,7 +68,7 @@
             </a-select>
           </a-form-model-item>
           <!-- 默认排序 -->
-          <a-form-model-item v-if="form.fieldId"
+          <a-form-model-item v-if="form.orderFieldId"
                              ref="orderType"
                              prop="orderType">
             <a-radio-group v-model="form.orderType"
@@ -149,10 +149,11 @@ export default {
       let options = []
       if (this.dimensionMap && this.measureMap) {
         if (this.form.dimension && this.form.dimension instanceof Array) {
-          this.form.dimension.forEach(item => {
+          this.form.dimension.forEach(value => {
+            // value: value - label - fieldId
             options.push({
-              label: this.dimensionMap[item.split('-')[0]].name,
-              value: item + '-' + '-dimension'
+              label: this.dimensionMap[value.split('-')[0]].name,
+              value: value + '-' + '-dimension'
             })
           })
         }
@@ -162,6 +163,7 @@ export default {
             if (aggregation) {
               let label = this.measureMap[item.measure.split('-')[0]].name + `（${aggregation.label}）`
               if (!options.find(option => option.lablel === label)) {
+                // item.measure: value - label
                 options.push({
                   label: label,
                   value: item.measure + '-' + item.fieldId + '-measure'
@@ -252,9 +254,9 @@ export default {
     },
     // 校验当前选择默认排序字段，是否在枚举中
     validateField () {
-      if (!this.form.fieldId) return
-      if (!this.fieldOptions.find(item => item.value === this.form.fieldId)) {
-        this.form.fieldId = undefined
+      if (!this.form.orderFieldId) return
+      if (!this.fieldOptions.find(item => item.value === this.form.orderFieldId)) {
+        this.form.orderFieldId = undefined
         this.form.orderType = undefined
       }
     },
@@ -267,8 +269,16 @@ export default {
       if (this.modelData.dimensions && this.modelData.measures) {
         this.dimensionMap = {}
         this.measureMap = {}
+
+        // 已选维度-回显相同uuid
+        let fieldIdMap = {}
+        if (this.form.dimension && this.form.dimension.length) {
+          this.form.dimension.forEach(item => {
+            fieldIdMap[item.split('-')[0]] = item.split('-')[2]
+          })
+        }
         this.modelData['dimensions'].forEach(item => {
-          this.dimensionMap[item.id] = { ...item, fieldId: getUUID() }
+          this.dimensionMap[item.id] = { ...item, fieldId: fieldIdMap[item.id] || getUUID() }
         })
         this.modelData['measures'].forEach(item => {
           this.measureMap[item.id] = item

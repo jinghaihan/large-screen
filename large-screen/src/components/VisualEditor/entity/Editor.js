@@ -440,15 +440,14 @@ class Editor {
     delete data.measure
 
     // 默认排序配置
-    let arr = data.fieldId.split('-')
+    let arr = data.orderFieldId.split('-')
     const order = {
       fieldId: arr[2],
-      keyId: arr[0],
-      keyType: arr[3],
+      fieldType: arr[3],
       orderType: data.orderType
     }
     delete data.orderType
-    delete data.fieldId
+    delete data.orderFieldId
 
     return { ...data, dimension, measure, order } 
   }

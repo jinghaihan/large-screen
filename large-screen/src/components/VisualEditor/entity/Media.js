@@ -17,8 +17,8 @@ class Meida {
 
     this.config = parentConfig || handleConfigData(config, configMap, this.type)
     this.configData = parentConfigData || {
-      switch: null,
-      collapse: null
+      switchKeys: null,
+      collapseKeys: null
     }
 
     this.init()

@@ -153,7 +153,7 @@ export default {
             // value: value - label - fieldId
             options.push({
               label: this.dimensionMap[value.split('-')[0]].name,
-              value: value + '-' + '-dimension'
+              value: value + '-dimension'
             })
           })
         }

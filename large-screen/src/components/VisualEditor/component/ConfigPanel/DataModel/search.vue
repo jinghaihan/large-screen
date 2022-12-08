@@ -114,26 +114,26 @@
         </a-col>
         <!-- 是否作为外链入参条件 -->
         <a-col :span="24">
-          <a-form-model-item ref="isOpenParam"
-                             prop="isOpenParam"
+          <a-form-model-item ref="isOpen"
+                             prop="isOpen"
                              label="是否作为外链入参条件">
-            <a-radio-group v-model="form.isOpenParam" :options="radioOptions" @change="onChange"></a-radio-group>
+            <a-radio-group v-model="form.isOpen" :options="radioOptions" @change="onChange"></a-radio-group>
           </a-form-model-item>
         </a-col>
         <!-- 外链入参后是否锁定 -->
-        <a-col :span="24" v-if="form.isOpenParam">
-          <a-form-model-item ref="lock"
-                             prop="lock"
+        <a-col :span="24" v-if="form.isOpen">
+          <a-form-model-item ref="isLock"
+                             prop="isLock"
                              label="外链入参后是否锁定">
-            <a-radio-group v-model="form.lock" :options="radioOptions" @change="onChange"></a-radio-group>
+            <a-radio-group v-model="form.isLock" :options="radioOptions" @change="onChange"></a-radio-group>
           </a-form-model-item>
         </a-col>
         <!-- 外链入参后是否隐藏 -->
-        <a-col :span="24" v-if="form.isOpenParam">
-          <a-form-model-item ref="hide"
-                             prop="hide"
+        <a-col :span="24" v-if="form.isOpen">
+          <a-form-model-item ref="isHide"
+                             prop="isHide"
                              label="外链入参后是否隐藏">
-            <a-radio-group v-model="form.hide" :options="radioOptions" @change="onChange"></a-radio-group>
+            <a-radio-group v-model="form.isHide" :options="radioOptions" @change="onChange"></a-radio-group>
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -215,9 +215,9 @@ export default {
         this.form = {
           isGroupBy: '1',
           required: false,
-          isOpenParam: false,
-          lock: false,
-          hide: false
+          isOpen: false,
+          isLock: false,
+          isHide: false
         }
       }
     },

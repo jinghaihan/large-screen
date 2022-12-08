@@ -132,8 +132,8 @@ export default {
           break
       }
       let data = {
-        collapse: this.collapseKeys,
-        switch: this.switchKeys
+        collapseKeys: this.collapseKeys,
+        switchKeys: this.switchKeys
       }
       data[this.activeKey + 'Data'] = formData
       this.cell.setConfigData(data)
@@ -180,8 +180,8 @@ export default {
     },
     initKey () {
       this.activeKey = this.configData[0].key
-      let switchKeys = this.cell.configData.switch
-      let collapseKeys = this.cell.configData.collapse
+      let switchKeys = this.cell.configData.switchKeys
+      let collapseKeys = this.cell.configData.collapseKeys
 
       if (switchKeys || collapseKeys) {
         this.switchKeys = switchKeys

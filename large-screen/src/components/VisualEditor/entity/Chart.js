@@ -52,8 +52,8 @@ class Chart {
     this.configData = parentConfigData || {
       theme: 'default',
       axisFlip: null,
-      switch: null,
-      collapse: null
+      switchKeys: null,
+      collapseKeys: null
     }
 
     this.init(this.configData.theme)

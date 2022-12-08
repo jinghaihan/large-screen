@@ -394,15 +394,15 @@ class Editor {
       let target = 'views'
       // 非查询面板类型的查询组件
       if (this.cell[key].componentType === 'search') {
-        if (this.cell[key].type !== 'searchPanel') target = 'searchs'
+        if (this.cell[key].type !== 'searchPanel' && this.cell[key].type !== 'conditionPanel') target = 'searchs'
       }
       cell[target][key] = { 
         type: this.cell[key].type,
         id: key,
         style: {
           ui: configData,
-          switch: this.cell[key].configData.switch,
-          collapse: this.cell[key].configData.collapse,
+          switchKeys: this.cell[key].configData.switchKeys,
+          collapseKeys: this.cell[key].configData.collapseKeys,
           theme,
           axisFlip
         },
@@ -464,13 +464,13 @@ class Editor {
 
     // 外链
     const open = {
-      'isOpenParam': data.isOpenParam,
-      'lock': data.lock,
-      'hide': data.hide
+      isOpen: data.isOpen,
+      isLock: data.isLock,
+      isHide: data.isHide
     }
-    delete data.isOpenParam
-    delete data.lock
-    delete data.hide
+    delete data.isOpen
+    delete data.isLock
+    delete data.isHide
 
     return { ...data, open, dataModel }
   }

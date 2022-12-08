@@ -12,7 +12,7 @@
       <!-- 计算方式 -->
       <a-col :span="8">
         <a-select v-model="data.calculation"
-                  placeholder="请选择计算方式"
+                  placeholder="计算方式"
                   :show-search="true"
                   :filter-option="filterOptions"
                   :options="calculationOptions"
@@ -28,9 +28,9 @@
                         style="width: 100%;" />
       </a-col>
       <!-- 计算与聚合优先级 -->
-      <a-col :span="8">
+      <a-col :span="8" v-if="modalData.isGroupBy === '1'">
         <a-select v-model="data.aggregatePriority"
-                  placeholder="请选择计算与聚合优先级"
+                  placeholder="计算与聚合优先级"
                   :show-search="true"
                   :filter-option="filterOptions"
                   :options="aggregatePriorityOptions"
@@ -67,7 +67,15 @@ export default {
       aggregatePriorityOptions
     }
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      if (this.modalData.calculate) {
+        this.data = { ...this.modalData.calculate }
+      }
+    },
     onSubmit () {
       let { calculation, number, aggregatePriority } = this.data
       let and = calculation && (number || number === 0) && (this.modalData.isGroupBy === '1' ? aggregatePriority || aggregatePriority === 0 : true)

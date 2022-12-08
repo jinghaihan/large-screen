@@ -48,6 +48,7 @@
     </a-row>
 
     <CalculateModal v-if="calculateVisible" :modalData="modalData" @submit="onModalSubmit" @close="onModalClose"></CalculateModal>
+    <PointModal v-if="pointVisible" :modalData="modalData" @submit="onModalSubmit" @close="onModalClose"></PointModal>
   </div>
 </template>
 
@@ -56,6 +57,7 @@ import _ from 'lodash'
 import { getUUID } from '../../../../utils'
 import TooltipIcon from '../../../Widget/TooltipIcon'
 import CalculateModal from './calculateModal.vue'
+import PointModal from './pointModal.vue'
 
 const aggregationOptions = [
   {
@@ -93,12 +95,16 @@ export default {
     form: {
       type: Object,
       required: true
+    },
+    measureData: {
+      type: Array,
+      required: true
     }
   },
-  components: { TooltipIcon, CalculateModal },
+  components: { TooltipIcon, CalculateModal, PointModal },
   data () {
     return {
-      data: [],
+      data: _.cloneDeep(this.measureData),
       aggregationOptions,
       icon: {
         calculate: require('@/assets/VisualEditor/icon/measure_calculate.png'),
@@ -122,12 +128,17 @@ export default {
       this.data = this.data.filter(item => item.id !== data.id)
     },
     onChange () {
-
+      this.$emit('change', this.form)
     },
-    filterOptions (input, option) {
-      return (
-        option.componentOptions.children[0].text.includes(input)
-      )
+    onGroupByChange () {
+      // 不再聚合，删除指标乘除计算的聚合优先级配置
+      if (this.form.isGroupBy === '0') {
+        this.data.forEach(item => {
+          if (item.calculate && item.calculate.aggregatePriority) {
+            delete item.calculate.aggregatePriority
+          }
+        })
+      }
     },
     onCalculate (data) {
       this.modalData = _.cloneDeep(data)
@@ -144,11 +155,17 @@ export default {
     onModalSubmit (data, type) {
       let value = this.data.find(item => item.id === this.modalData.id)
       value[type] = data
+      this.onChange()
     },
     onModalClose () {
       this.modalData = {}
       this.calculateVisible = false
       this.pointVisible = false
+    },
+    filterOptions (input, option) {
+      return (
+        option.componentOptions.children[0].text.includes(input)
+      )
     }
   }
 }

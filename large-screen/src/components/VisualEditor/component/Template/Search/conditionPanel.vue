@@ -80,7 +80,9 @@ export default {
       deep: true,
       immediate: true,
       handler: function (value) {
-        this.handleColor()
+        if (this.data.enable) {
+          this.handleColor()
+        }
       }
     }
   },

@@ -221,11 +221,6 @@ export default {
         }
       }
     },
-    filterOptions (input, option) {
-      return (
-        option.componentOptions.children[0].text.includes(input)
-      )
-    },
     onDimensionChange () {
       let dimension = this.modelData['dimensions'].find(item => item.id === this.form.dimension)
       // 时间类型查询组件联动修改format
@@ -260,6 +255,11 @@ export default {
     },
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData
+    },
+    filterOptions (input, option) {
+      return (
+        option.componentOptions.children[0].text.includes(input)
+      )
     }
   }
 }

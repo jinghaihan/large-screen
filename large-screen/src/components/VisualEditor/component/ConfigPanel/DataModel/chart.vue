@@ -21,7 +21,7 @@
                             { label: '允许聚合', value: '1' },
                             { label: '不再聚合', value: '0' }
                           ]"
-                          @change="onChange">
+                          @change="onGroupByChange">
             </a-radio-group>
           </a-form-model-item>
         </a-col>
@@ -50,7 +50,7 @@
             <div class="label" slot="label" @click="onAdd">
               指标 <a-icon class="action" type="plus-square"></a-icon>
             </div>
-            <Measure ref="measure" :modelData="modelData" :form="form"></Measure>
+            <Measure ref="measure" :measureData="form.measure" :modelData="modelData" :form="form" @change="onMeasureChange"></Measure>
           </a-form-model-item>
         </a-col>
         <!-- 默认排序 -->
@@ -132,13 +132,18 @@ export default {
     this.init()
   },
   methods: {
-    init () {
+    async init () {
       this.cell = this.editor.cell[this.component.key]
       this.handleForm()
 
       // 存在全局模型配置
       if (this.editor.instance['modelPanel']) {
         this.getModelData()
+      }
+
+      if (!this.form.measure.length) {
+        await this.$nextTick()
+        this.onAdd()
       }
       this.$forceUpdate()
     },
@@ -149,14 +154,20 @@ export default {
         this.form = { ...data }
       } else {
         this.form = {
-          isGroupBy: '1'
+          isGroupBy: '1',
+          measure: []
         }
       }
     },
-    filterOptions (input, option) {
-      return (
-        option.componentOptions.children[0].text.includes(input)
-      )
+    onAdd () {
+      this.$refs.measure.onAdd()
+    },
+    onGroupByChange () {
+      this.onChange()
+      this.$refs.measure.onGroupByChange()
+    },
+    onMeasureChange (data) {
+      this.form.measure.push(data)
     },
     onChange () {
       this.$emit('change', this.form)
@@ -164,8 +175,10 @@ export default {
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData
     },
-    onAdd () {
-      this.$refs.measure.onAdd()
+    filterOptions (input, option) {
+      return (
+        option.componentOptions.children[0].text.includes(input)
+      )
     }
   }
 }

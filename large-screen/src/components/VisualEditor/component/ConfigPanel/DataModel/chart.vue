@@ -38,7 +38,7 @@
                       @change="onDimensionChange" >
               <a-select-option v-for="option in (modelData.dimensions || [])"
                                :key="option.id"
-                               :value="option.id">
+                               :value="option.id + '-' + option.name +  '-' + dimensionMap[option.id].fieldId">
                 {{option.name}}
               </a-select-option>
             </a-select>
@@ -151,8 +151,8 @@ export default {
         if (this.form.dimension && this.form.dimension instanceof Array) {
           this.form.dimension.forEach(item => {
             options.push({
-              label: this.dimensionMap[item].name,
-              value: this.dimensionMap[item].fieldId
+              label: this.dimensionMap[item.split('-')[0]].name,
+              value: item + '-' + '-dimension'
             })
           })
         }
@@ -160,11 +160,11 @@ export default {
           this.form.measure.forEach(item => {
             let aggregation = this.aggregationOptions.find(option => option.value === item.aggregationType)
             if (aggregation) {
-              let label = this.measureMap[item.measure].name + `（${aggregation.label}）`
+              let label = this.measureMap[item.measure.split('-')[0]].name + `（${aggregation.label}）`
               if (!options.find(option => option.lablel === label)) {
                 options.push({
                   label: label,
-                  value: item.fieldId
+                  value: item.measure + '-' + item.fieldId + '-measure'
                 })
               }
             }

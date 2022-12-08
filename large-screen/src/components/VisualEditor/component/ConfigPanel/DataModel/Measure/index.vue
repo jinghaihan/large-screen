@@ -10,7 +10,7 @@
                   @change="onChange" >
           <a-select-option v-for="option in (modelData.measures || [])"
                             :key="option.id"
-                            :value="option.id">
+                            :value="option.id + '-' + option.name">
             {{option.name}}
           </a-select-option>
         </a-select>
@@ -28,14 +28,14 @@
       <a-col :span="2">
         <a-tooltip>
           <template slot="title">点击配置指标乘除计算</template>
-          <img v-show="data[index].measure" class="action" :src="icon['calculate']" @click="onCalculate(item)">
+          <img v-show="data[index].measure" class="action" :src="data[index].calculate ? icon['calculate'] : icon['calculateUnused']" @click="onCalculate(item)">
         </a-tooltip>
       </a-col>
       <!-- 小数点规整 -->
       <a-col :span="2">
         <a-tooltip>
           <template slot="title">点击配置小数点规整</template>
-          <img v-show="data[index].measure" class="action" :src="icon['point']" @click="onPoint(item)">
+          <img v-show="data[index].measure" class="action" :src="data[index].point ? icon['point'] : icon['pointUnused']" @click="onPoint(item)">
         </a-tooltip>
       </a-col>
       <!-- 删除按钮 -->
@@ -84,9 +84,9 @@ export default {
       data: _.cloneDeep(this.measureData),
       icon: {
         calculate: require('@/assets/VisualEditor/icon/measure_calculate.png'),
-        calculateDisabled: require('@/assets/VisualEditor/icon/measure_calculate_disabled.png'),
+        calculateUnused: require('@/assets/VisualEditor/icon/measure_calculate_unused.png'),
         point: require('@/assets/VisualEditor/icon/decimal_point.png'),
-        pointDisabled: require('@/assets/VisualEditor/icon/decimal_point_disabled.png')
+        pointUnused: require('@/assets/VisualEditor/icon/decimal_point_unused.png')
       },
       modalData: {},
       calculateVisible: false,
@@ -136,13 +136,15 @@ export default {
     },
     onCalculate (data) {
       this.modalData = _.cloneDeep(data)
-      this.modalData.measureName = this.modelData['measures'].filter(item => item.id === data.measure)[0].name
+      let id = data.measure.split('-')[0]
+      this.modalData.measureName = this.modelData['measures'].find(item => item.id === id).name
       this.modalData.isGroupBy = this.form.isGroupBy
       this.calculateVisible = true
     },
     onPoint (data) {
       this.modalData = _.cloneDeep(data)
-      this.modalData.measureName = this.modelData['measures'].filter(item => item.id === data.measure)[0].name
+      let id = data.measure.split('-')[0]
+      this.modalData.measureName = this.modelData['measures'].filter(item => item.id === id).name
       this.modalData.isGroupBy = this.form.isGroupBy
       this.pointVisible = true
     },

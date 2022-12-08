@@ -354,7 +354,7 @@ class Editor {
     let config = {
       global: this.getGlobal(),
       layout: this.getLayout(),
-      conditions: cell.conditions,
+      searchs: cell.searchs,
       views: cell.views
     }
 
@@ -386,7 +386,7 @@ class Editor {
   }
   getCell () {
     const cell = {
-      conditions: {},
+      searchs: {},
       views: {}
     }
     Object.keys(this.cell).forEach(key => {
@@ -394,7 +394,7 @@ class Editor {
       let target = 'views'
       // 非查询面板类型的查询组件
       if (this.cell[key].componentType === 'search') {
-        if (this.cell[key].type !== 'searchPanel') target = 'conditions'
+        if (this.cell[key].type !== 'searchPanel') target = 'searchs'
       }
       cell[target][key] = { 
         type: this.cell[key].type,
@@ -406,13 +406,54 @@ class Editor {
           theme,
           axisFlip
         },
-        data: this.getCellData(_.cloneDeep(dataModelData))
+        data: target === 'views' ? this.getViewsCellData(_.cloneDeep(dataModelData)) : this.getSearchCellData(_.cloneDeep(dataModelData))
       }
     })
     return cell
   }
-  getCellData (data) {
-    data = data || {}
+  getViewsCellData (data) {
+    if (!data) return {}
+
+    // 维度配置
+    const dimension = data.dimension.map(item => {
+      let arr = item.split('-')
+      return {
+        fieldId: arr[2],
+        id: arr[0],
+        name: arr[1]
+      }
+    })
+    delete data.dimension
+
+    // 指标配置
+    const measure = data.measure.map(item => {
+      let arr = item.measure.split('-')
+      return {
+        fieldId: item.fieldId,
+        id: arr[0],
+        name: arr[1],
+        aggregationType: item.aggregationType,
+        ...item.calculate,
+        ...item.point
+      }
+    })
+    delete data.measure
+
+    // 默认排序配置
+    let arr = data.fieldId.split('-')
+    const order = {
+      fieldId: arr[2],
+      keyId: arr[0],
+      keyType: arr[3],
+      orderType: data.orderType
+    }
+    delete data.orderType
+    delete data.fieldId
+
+    return { ...data, dimension, measure, order } 
+  }
+  getSearchCellData (data) {
+    if (!data) return {}
 
     // 数据模型
     const dataModel = {

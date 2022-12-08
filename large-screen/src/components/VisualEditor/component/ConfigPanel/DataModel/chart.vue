@@ -35,7 +35,7 @@
                       :show-search="true"
                       :filter-option="filterOptions"
                       mode="multiple"
-                      @change="onChange" >
+                      @change="onDimensionChange" >
               <a-select-option v-for="option in (modelData.dimensions || [])"
                                :key="option.id"
                                :value="option.id">
@@ -50,7 +50,7 @@
             <div class="label" slot="label" @click="onAdd">
               指标 <a-icon class="action" type="plus-square"></a-icon>
             </div>
-            <Measure ref="measure" :measureData="form.measure" :modelData="modelData" :form="form" @change="onMeasureChange"></Measure>
+            <Measure ref="measure" :measureData="form.measure" :modelData="modelData" :form="form" :aggregationOptions="aggregationOptions" @change="onMeasureChange"></Measure>
           </a-form-model-item>
         </a-col>
         <!-- 默认排序 -->
@@ -63,7 +63,8 @@
                       :show-search="true"
                       :filter-option="filterOptions"
                       allowClear
-                      @change="onChange" >
+                      :options="fieldOptions"
+                      @change="onFieldChange" >
             </a-select>
           </a-form-model-item>
           <!-- 默认排序 -->
@@ -85,7 +86,36 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Measure from './Measure'
+import { getUUID } from '../../../utils'
+
+const aggregationOptions = [
+  {
+    label: '总和',
+    value: 'SUM'
+  },
+  {
+    label: '最大值',
+    value: 'MAX'
+  },
+  {
+    label: '最小值',
+    value: 'MIN'
+  },
+  {
+    label: '平均值',
+    value: 'AVG'
+  },
+  {
+    label: '数量',
+    value: 'COUNT'
+  },
+  {
+    label: '数量(去重)',
+    value: 'COUNT_DISTINCT'
+  }
+]
 
 export default {
   props: {
@@ -100,6 +130,8 @@ export default {
     return {
       cell: {},
       modelData: {},
+      dimensionMap: {},
+      measureMap: {},
       config: {
         circle: ['pie', 'pie-ring', 'pie-rose', 'radar']
       },
@@ -108,7 +140,38 @@ export default {
       layout: {
         labelCol: { span: 24 },
         wrapperCol: { span: 24 }
+      },
+      aggregationOptions
+    }
+  },
+  computed: {
+    fieldOptions () {
+      let options = []
+      if (this.dimensionMap && this.measureMap) {
+        if (this.form.dimension && this.form.dimension instanceof Array) {
+          this.form.dimension.forEach(item => {
+            options.push({
+              label: this.dimensionMap[item].name,
+              value: this.dimensionMap[item].fieldId
+            })
+          })
+        }
+        if (this.form.measure && this.form.measure instanceof Array) {
+          this.form.measure.forEach(item => {
+            let aggregation = this.aggregationOptions.find(option => option.value === item.aggregationType)
+            if (aggregation) {
+              let label = this.measureMap[item.measure].name + `（${aggregation.label}）`
+              if (!options.find(option => option.lablel === label)) {
+                options.push({
+                  label: label,
+                  value: item.fieldId
+                })
+              }
+            }
+          })
+        }
       }
+      return options
     }
   },
   watch: {
@@ -172,15 +235,45 @@ export default {
       this.onChange()
       this.$refs.measure.onGroupByChange()
     },
-    onMeasureChange (data) {
-      this.form.measure = data
+    onDimensionChange () {
+      this.validateField()
       this.onChange()
+    },
+    onMeasureChange (data) {
+      this.form.measure = _.cloneDeep(data)
+      this.validateField()
+      this.onChange()
+    },
+    onFieldChange () {
+      if (!this.form.orderType && typeof this.form.orderType !== 'boolean') {
+        this.form.orderType = 'ASC'
+      }
+      this.onChange()
+    },
+    // 校验当前选择默认排序字段，是否在枚举中
+    validateField () {
+      if (!this.form.fieldId) return
+      if (!this.fieldOptions.find(item => item.value === this.form.fieldId)) {
+        this.form.fieldId = undefined
+        this.form.orderType = undefined
+      }
     },
     onChange () {
       this.$emit('change', this.form)
     },
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData
+      
+      if (this.modelData.dimensions && this.modelData.measures) {
+        this.dimensionMap = {}
+        this.measureMap = {}
+        this.modelData['dimensions'].forEach(item => {
+          this.dimensionMap[item.id] = { ...item, fieldId: getUUID() }
+        })
+        this.modelData['measures'].forEach(item => {
+          this.measureMap[item.id] = item
+        })
+      }
     },
     filterOptions (input, option) {
       return (

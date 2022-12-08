@@ -1,6 +1,6 @@
 <template>
   <div class="measure-config-container">
-    <a-row :gutter="8" v-for="(item, index) in data" :key="item.id">
+    <a-row :gutter="8" v-for="(item, index) in data" :key="item.fieldId">
       <!-- 指标枚举 -->
       <a-col :span="9">
         <a-select v-model="data[index].measure"
@@ -59,33 +59,6 @@ import TooltipIcon from '../../../Widget/TooltipIcon'
 import CalculateModal from './calculateModal.vue'
 import PointModal from './pointModal.vue'
 
-const aggregationOptions = [
-  {
-    label: '总和',
-    value: 'SUM'
-  },
-  {
-    label: '最大值',
-    value: 'MAX'
-  },
-  {
-    label: '最小值',
-    value: 'MIN'
-  },
-  {
-    label: '平均值',
-    value: 'AVG'
-  },
-  {
-    label: '数量',
-    value: 'COUNT'
-  },
-  {
-    label: '数量(去重)',
-    value: 'COUNT_DISTINCT'
-  }
-]
-
 export default {
   props: {
     modelData: {
@@ -99,13 +72,16 @@ export default {
     measureData: {
       type: Array,
       required: true
+    },
+    aggregationOptions: {
+      type: Array,
+      required: true
     }
   },
   components: { TooltipIcon, CalculateModal, PointModal },
   data () {
     return {
       data: _.cloneDeep(this.measureData),
-      aggregationOptions,
       icon: {
         calculate: require('@/assets/VisualEditor/icon/measure_calculate.png'),
         calculateDisabled: require('@/assets/VisualEditor/icon/measure_calculate_disabled.png'),
@@ -120,15 +96,32 @@ export default {
   methods: {
     onAdd () {
       this.data.push({
-        id: getUUID(),
-        aggregationType: 'SUM'
+        fieldId: getUUID()
       })
+      this.onChange()
     },
     onDelete (data) {
-      this.data = this.data.filter(item => item.id !== data.id)
+      this.data = this.data.filter(item => item.fieldId !== data.fieldId)
+      this.onChange()
     },
     onChange () {
-      this.$emit('change', this.data)
+      if (this.validate()) {
+        this.$emit('change', this.data)
+      }
+    },
+    // 校验指标 + 聚合方式是否存在完全相同
+    validate () {
+      let arr = []
+      this.data.forEach(item => {
+        if (item.measure && item.aggregationType) {
+          arr.push(item.measure + '-' + item.aggregationType)
+        }
+      })
+      if (arr.length !== [...new Set(arr)].length) {
+        this.$notification.error({ message: '错误', description: '存在指标与聚合方式相同配置，请检查' })
+        return false
+      }
+      return true
     },
     onGroupByChange () {
       // 不再聚合，删除指标乘除计算的聚合优先级配置
@@ -139,6 +132,7 @@ export default {
           }
         })
       }
+      this.onChange()
     },
     onCalculate (data) {
       this.modalData = _.cloneDeep(data)

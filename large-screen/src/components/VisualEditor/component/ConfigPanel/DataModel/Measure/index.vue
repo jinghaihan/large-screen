@@ -128,7 +128,7 @@ export default {
       this.data = this.data.filter(item => item.id !== data.id)
     },
     onChange () {
-      this.$emit('change', this.form)
+      this.$emit('change', this.data)
     },
     onGroupByChange () {
       // 不再聚合，删除指标乘除计算的聚合优先级配置

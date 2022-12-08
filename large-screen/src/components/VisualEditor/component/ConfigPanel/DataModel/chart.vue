@@ -134,13 +134,16 @@ export default {
   methods: {
     async init () {
       this.cell = this.editor.cell[this.component.key]
+      if (this.$refs.measure) {
+        this.$refs.measure.data = []
+      }
       this.handleForm()
 
       // 存在全局模型配置
       if (this.editor.instance['modelPanel']) {
         this.getModelData()
       }
-
+      // 没有指标配置-自动添加一行
       if (!this.form.measure.length) {
         await this.$nextTick()
         this.onAdd()
@@ -152,6 +155,9 @@ export default {
       let data = this.cell.configData.dataModelData
       if (data) {
         this.form = { ...data }
+        if (this.$refs.measure) {
+          this.$refs.measure.data = data.measure
+        }
       } else {
         this.form = {
           isGroupBy: '1',
@@ -167,7 +173,8 @@ export default {
       this.$refs.measure.onGroupByChange()
     },
     onMeasureChange (data) {
-      this.form.measure.push(data)
+      this.form.measure = data
+      this.onChange()
     },
     onChange () {
       this.$emit('change', this.form)

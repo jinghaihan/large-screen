@@ -77,7 +77,8 @@ export default {
       configData: [],
       activeKey: null,
       collapseKeys: [],
-      switchKeys: []
+      switchKeys: [],
+      sheetSelector: {}
     }
   },
   watch: {
@@ -213,12 +214,25 @@ export default {
       await this.$nextTick()
       this.onChange()
     },
+    // 模型配置-模型选择
     onModelChange () {
       let refs = this.$refs.component
       if (refs && refs.length) {
         refs.forEach(ref => {
           if (ref.onModelChange) {
             ref.onModelChange()
+          }
+        })
+      }
+    },
+    // 表格配置-表格选择
+    onSheetChange (data) {
+      this.sheetSelector = data
+      let refs = this.$refs.component
+      if (refs && refs.length) {
+        refs.forEach(ref => {
+          if (ref.onSheetChange) {
+            ref.onSheetChange(data)
           }
         })
       }

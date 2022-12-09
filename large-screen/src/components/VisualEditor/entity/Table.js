@@ -61,9 +61,14 @@ class Table {
     }
   }
   setConfigData (data) {
+    let dataModelData = {
+      ...this.configData.dataModelData || {},
+      ...data.dataModelData || {}
+    }
     this.configData = _.cloneDeep({
       ...this.configData,
-      ...data
+      ...data,
+      dataModelData
     })
   }
 }

@@ -34,6 +34,11 @@ export default {
       if (this.$refs.component) {
         this.$refs.component.getModelData()
       }
+    },
+    onSheetChange (data) {
+      if (this.$refs.component) {
+        this.$refs.component.init()
+      }
     }
   }
 }

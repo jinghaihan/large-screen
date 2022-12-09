@@ -57,6 +57,7 @@
                     :show-search="true"
                     :filter-option="filterOptions"
                     :options="typeOptions"
+                    :disabled="component.type === 'simpleTable'"
                     @change="onTypeChange" >
           </a-select>
         </a-form-model-item>
@@ -87,7 +88,7 @@
                 show-search
                 :filterTreeNode='filterTreeOptions'
                 tree-default-expand-all
-                @select="onFieldDataChange"
+                @change="onFieldDataChange"
               >
               </a-tree-select>
             </a-col>
@@ -267,14 +268,19 @@ export default {
       this.$forceUpdate()
     },
     handleForm () {
+      this.selector = this.editor.instance['componentPanel'].sheetSelector
       // 配置回显
-      let data = this.cell.configData.dataModelData
+      let data = this.cell.configData.dataModelData ? this.cell.configData.dataModelData[this.selector.ci + '-' + this.selector.ri] : null
       if (data) {
         this.form = { ...data }
       } else {
         this.form = {
           isGroupBy: '1'
         }
+      }
+      // 简单表格数据类型为字段
+      if (this.component.type === 'simpleTable') {
+        this.form.type = 'field'
       }
     },
     getModelData () {
@@ -340,7 +346,17 @@ export default {
       }
       this.onChange()
     },
-    onTypeChange () {
+    onTypeChange (value) {
+      if (value === 'text') {
+        // 文字类型
+        delete this.form.fieldData
+        delete this.form.aggregationType
+        delete this.form.calculate
+        delete this.form.point
+      } else {
+        // 字段类型
+        delete this.form.textValue
+      }
       this.onChange()
     },
     onFieldDataChange (value, node) {
@@ -350,10 +366,14 @@ export default {
         delete this.form.calculate
         delete this.form.point
       }
+
       this.onChange()
     },
     onChange () {
-      this.$emit('change', this.form)
+      this.$forceUpdate()
+      let data = {}
+      data[this.selector.ci + '-' + this.selector.ri] = _.cloneDeep(this.form)
+      this.$emit('change', data)
     },
     filterOptions (input, option) {
       return (

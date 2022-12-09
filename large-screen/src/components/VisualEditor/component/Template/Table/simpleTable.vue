@@ -18,6 +18,7 @@ import SpreadSheet from '../../SpreadSheet'
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: true
@@ -43,15 +44,27 @@ export default {
       }
     }
   },
+  created () {
+    if (this.data.enable) {
+      this.init()
+    }
+  },
   methods: {
+    init () {
+      this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
+    },
     onUpdate (data) {
-      console.log('onUpdate', data)
+      // 简单表格-回填维度/指标
     },
     onChange (data) {
-      console.log('onChange', data)
+      // console.log('onChange', data)
     },
     onSelect (data) {
-      console.log('onSelect', data)
+      // 更新数据模型面板配置
+      if (!data.mutiple) {
+        let { ci, ri } = data.dataProxy.selector
+        this.editor.instance['componentPanel'].onSheetChange({ ci, ri })
+      }
     },
     resize () {
       this.$refs.sheet.xsSheet.sheet.reload()

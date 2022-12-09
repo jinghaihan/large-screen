@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import SimpleTable from './simpleTable.vue'
+import ComplexTable from './complexTable.vue'
 
 export default {
   props: {
@@ -13,7 +15,8 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
+  components: { SimpleTable, ComplexTable }
 }
 </script>
 

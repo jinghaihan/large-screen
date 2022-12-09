@@ -88,7 +88,7 @@
 <script>
 import _ from 'lodash'
 import Measure from './Measure'
-import { getUUID } from '../../../utils'
+import { getUUID } from '../../../../utils'
 
 const aggregationOptions = [
   {

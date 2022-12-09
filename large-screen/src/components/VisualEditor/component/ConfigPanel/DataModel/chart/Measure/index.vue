@@ -54,8 +54,8 @@
 
 <script>
 import _ from 'lodash'
-import { getUUID } from '../../../../utils'
-import TooltipIcon from '../../../Widget/TooltipIcon'
+import { getUUID } from '../../../../../utils'
+import TooltipIcon from '../../../../Widget/TooltipIcon'
 import CalculateModal from './calculateModal.vue'
 import PointModal from './pointModal.vue'
 

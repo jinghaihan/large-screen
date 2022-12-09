@@ -77,24 +77,82 @@
         <a-form-model-item ref="fieldData"
                            prop="fieldData"
                            label="数据字段">
-          <a-tree-select
-            v-model="form.fieldData"
-            placeholder="请选择数据字段"
-            :tree-data="[]"
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            tree-default-expand-all
-            show-search
-            :filterTreeNode='filterTreeOptions'
-            @select="onChange"
-          >
-          </a-tree-select>
+          <a-row :gutter="8">
+            <a-col :span="form.isGroupBy === '1' && fieldDataType === 'measure' ? 10 : 20">
+              <a-tree-select
+                v-model="form.fieldData"
+                placeholder="请选择数据字段"
+                :tree-data="fieldTree"
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                show-search
+                :filterTreeNode='filterTreeOptions'
+                tree-default-expand-all
+                @select="onFieldDataChange"
+              >
+              </a-tree-select>
+            </a-col>
+            <a-col :span="10" v-if="form.isGroupBy === '1' && fieldDataType === 'measure'">
+              <a-select v-model="form.aggregationType"
+                        placeholder="请选择"
+                        :show-search="true"
+                        :filter-option="filterOptions"
+                        :options="aggregationOptions"
+                        @change="onChange" >
+              </a-select>
+            </a-col>
+            <a-col :span="2">
+              <a-tooltip>
+                <template slot="title">点击配置指标乘除计算</template>
+                <img v-show="fieldDataType === 'measure'" class="action" :src="form.calculate ? icon['calculate'] : icon['calculateUnused']" @click="onCalculate()">
+              </a-tooltip>
+            </a-col>
+            <a-col :span="2">
+              <a-tooltip>
+                <template slot="title">点击配置小数点规整</template>
+                <img v-show="fieldDataType === 'measure'" class="action" :src="form.point ? icon['point'] : icon['pointUnused']" @click="onPoint()">
+              </a-tooltip>
+            </a-col>
+          </a-row>
         </a-form-model-item>
       </a-col>
     </a-form-model>
+
+    <CalculateModal v-if="calculateVisible" :modalData="modalData" @submit="onModalSubmit" @close="onModalClose"></CalculateModal>
+    <PointModal v-if="pointVisible" :modalData="modalData" @submit="onModalSubmit" @close="onModalClose"></PointModal>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+import CalculateModal from './chart/Measure/calculateModal.vue'
+import PointModal from './chart/Measure/pointModal.vue'
+
+const aggregationOptions = [
+  {
+    label: '总和',
+    value: 'SUM'
+  },
+  {
+    label: '最大值',
+    value: 'MAX'
+  },
+  {
+    label: '最小值',
+    value: 'MIN'
+  },
+  {
+    label: '平均值',
+    value: 'AVG'
+  },
+  {
+    label: '数量',
+    value: 'COUNT'
+  },
+  {
+    label: '数量(去重)',
+    value: 'COUNT_DISTINCT'
+  }
+]
 
 const typeOptions = [
   { label: '文字', value: 'text' },
@@ -109,6 +167,7 @@ export default {
       required: true
     }
   },
+  components: { CalculateModal, PointModal },
   data () {
     return {
       cell: {},
@@ -122,7 +181,19 @@ export default {
         wrapperCol: { span: 24 }
       },
       fieldOptions: [],
-      typeOptions
+      typeOptions,
+      aggregationOptions,
+      // 图标
+      icon: {
+        calculate: require('@/assets/VisualEditor/icon/measure_calculate.png'),
+        calculateUnused: require('@/assets/VisualEditor/icon/measure_calculate_unused.png'),
+        point: require('@/assets/VisualEditor/icon/decimal_point.png'),
+        pointUnused: require('@/assets/VisualEditor/icon/decimal_point_unused.png')
+      },
+      // 弹窗
+      modalData: {},
+      calculateVisible: false,
+      pointVisible: false
     }
   },
   watch: {
@@ -140,6 +211,45 @@ export default {
           this.rules = {}
         }
       }
+    }
+  },
+  computed: {
+    fieldTree () {
+      let options = []
+      let map = { 'dimension': '维度', 'measure': '指标' }
+      this.fieldOptions.forEach(item => {
+        let index = options.findIndex(option => option.value === item.type)
+        if (index === -1) {
+          options.push({
+            label: map[item.type],
+            value: item.type,
+            children: [],
+            isLeaf: false
+          })
+          index = options.length - 1
+        }
+        options[index].children.push({
+          label: item.label,
+          value: item.value,
+          isLeaf: true,
+          type: item.type
+        })
+      })
+      return options
+    },
+    fieldDataType () {
+      let type = ''
+      try {
+        this.fieldTree.forEach(item => {
+          item.children.forEach(option => {
+            if (option.value === this.form.fieldData) {
+              type = item.value
+              throw new Error()
+            }
+          })
+        })
+      } catch (error) {}
+      return type
     }
   },
   created () {
@@ -177,20 +287,51 @@ export default {
         this.modelData['dimensions'].forEach(item => {
           this.fieldOptions.push({
             label: item.name,
-            value: item.id
+            value: item.id,
+            type: 'dimension'
           })
           this.dimensionMap[item.id] = item
         })
         this.modelData['measures'].forEach(item => {
           this.fieldOptions.push({
             label: item.name,
-            value: item.id
+            value: item.id,
+            type: 'measure'
           })
           this.measureMap[item.id] = item
         })
       }
     },
+    onCalculate () {
+      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData]
+      this.modalData.isGroupBy = this.form.isGroupBy
+      this.modalData.measureName = measure.name
+      this.modalData.calculate = _.cloneDeep(this.form.calculate)
+      this.calculateVisible = true
+    },
+    onPoint () {
+      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData]
+      this.modalData.isGroupBy = this.form.isGroupBy
+      this.modalData.measureName = measure.name
+      this.modalData.point = _.cloneDeep(this.form.point)
+      this.pointVisible = true
+    },
+    onModalSubmit (data, type) {
+      this.form[type] = data
+      this.onChange()
+    },
+    onModalClose () {
+      this.modalData = {}
+      this.calculateVisible = false
+      this.pointVisible = false
+    },
     onGroupByChange () {
+      // 不再聚合，删除指标乘除计算的聚合优先级配置
+      if (this.form.isGroupBy === '0') {
+        if (this.form.calculate && this.form.calculate.aggregatePriority) {
+          delete this.form.calculate.aggregatePriority
+        }
+      }
       this.onChange()
     },
     onFieldChange () {
@@ -200,6 +341,15 @@ export default {
       this.onChange()
     },
     onTypeChange () {
+      this.onChange()
+    },
+    onFieldDataChange (value, node) {
+      // 维度类型-删除指标相关配置项
+      if (this.fieldDataType === 'dimension') {
+        delete this.form.aggregationType
+        delete this.form.calculate
+        delete this.form.point
+      }
       this.onChange()
     },
     onChange () {
@@ -230,5 +380,10 @@ export default {
 <style lang="less" scoped>
   .table-data-model-container{
     padding: 0 24px;
+    .action{
+      cursor: pointer;
+      height: 24px;
+      width: 24px;
+    }
   }
 </style>

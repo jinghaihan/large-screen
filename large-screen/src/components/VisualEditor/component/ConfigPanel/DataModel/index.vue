@@ -10,7 +10,7 @@
 
 <script>
 import SearchDataModel from './search.vue'
-import ChartDataModel from './chart.vue'
+import ChartDataModel from './chart/index.vue'
 import TableDataModel from './table.vue'
 
 export default {

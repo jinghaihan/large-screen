@@ -11,6 +11,7 @@
 <script>
 import SearchDataModel from './search.vue'
 import ChartDataModel from './chart.vue'
+import TableDataModel from './table.vue'
 
 export default {
   props: {
@@ -24,7 +25,7 @@ export default {
       required: true
     }
   },
-  components: { SearchDataModel, ChartDataModel },
+  components: { SearchDataModel, ChartDataModel, TableDataModel },
   methods: {
     onChange (data) {
       this.$emit('change', data, true)

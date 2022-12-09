@@ -1,22 +1,22 @@
 const configMap = {
-  'searchTable': {
+  'simpleTable': {
     'config': {
       name: '配置',
-      config: []
+      config: ['border']
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     }
   },
   'complexTable': {
     'config': {
       name: '配置',
-      config: []
+      config: ['border']
     },
     'dataModel': {
       name: '数据模型',
-      config: []
+      config: ['data-model']
     }
   }
 }

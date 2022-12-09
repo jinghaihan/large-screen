@@ -2,13 +2,19 @@
   <div class="simple-table-container">
     <div v-if="!data.enable" class="holder"> 简单表格 </div>
     <div v-else class="content">
-      <Spread ref="sheet" :sheetId="data.key" :config="sheetConfig"></Spread>
+      <SpreadSheet ref="sheet"
+                   :sheetId="data.key"
+                   :config="sheetConfig"
+                   @update="onUpdate"
+                   @change="onChange"
+                   @select="onSelect">
+      </SpreadSheet>
     </div>
   </div>
 </template>
 
 <script>
-import Spread from '../../Spread'
+import SpreadSheet from '../../SpreadSheet'
 
 export default {
   props: {
@@ -17,23 +23,36 @@ export default {
       required: true
     }
   },
-  components: { Spread },
+  components: { SpreadSheet },
   data () {
     return {
       sheetConfig: {
+        mode: 'read',
+        showToolbar: false,
+        showGrid: true,
+        showContextmenu: false,
         row: {
+          len: 100,
           height: 25
         },
         col: {
           len: 50,
           width: 100,
-          indexWidth: 60,
-          minWidth: 60
+          indexWidth: 60
         }
       }
     }
   },
   methods: {
+    onUpdate (data) {
+      console.log('onUpdate', data)
+    },
+    onChange (data) {
+      console.log('onChange', data)
+    },
+    onSelect (data) {
+      console.log('onSelect', data)
+    },
     resize () {
       this.$refs.sheet.xsSheet.sheet.reload()
     }

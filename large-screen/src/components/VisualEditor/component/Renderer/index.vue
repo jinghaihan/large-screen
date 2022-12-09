@@ -278,6 +278,9 @@ export default {
           case 'search':
             _this.cell.resize()
             break
+          case 'table':
+            _this.cell.resize()
+            break
           default:
             break
         }

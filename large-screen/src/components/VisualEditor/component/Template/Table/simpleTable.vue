@@ -1,15 +1,41 @@
 <template>
   <div class="simple-table-container">
     <div v-if="!data.enable" class="holder"> 简单表格 </div>
+    <div v-else class="content">
+      <Spread ref="sheet" :sheetId="data.key" :config="sheetConfig"></Spread>
+    </div>
   </div>
 </template>
 
 <script>
+import Spread from '../../Spread'
+
 export default {
   props: {
     data: {
       type: Object,
       required: true
+    }
+  },
+  components: { Spread },
+  data () {
+    return {
+      sheetConfig: {
+        row: {
+          height: 25
+        },
+        col: {
+          len: 50,
+          width: 100,
+          indexWidth: 60,
+          minWidth: 60
+        }
+      }
+    }
+  },
+  methods: {
+    resize () {
+      this.$refs.sheet.xsSheet.sheet.reload()
     }
   }
 }
@@ -21,7 +47,6 @@ export default {
     width: 100%;
     position: relative;
     overflow: hidden;
-    overflow-y: auto;
     .holder{
       height: 100%;
       width: 100%;
@@ -31,6 +56,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .content{
+      height: 100%;
     }
   }
 </style>

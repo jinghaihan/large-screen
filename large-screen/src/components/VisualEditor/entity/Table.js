@@ -47,8 +47,9 @@ class Table {
         let data = modelData.dimensions.concat(modelData.measures)
         data.forEach((item, col) => {
           this.configData.dataModelData['0-' + col] = {
+            isGroupBy: '1',
             type: 'field',
-            fieldData: item.id + '-' + item.name
+            fieldData: item.id + '-' + (col > modelData.dimensions.length ? 'measure' : 'dimension') + '-' + item.name
           }
         })
 
@@ -89,7 +90,7 @@ class Table {
           rows[pos[0]].cells[pos[1]] = {
             text: this.configData.dataModelData[coord].type === 'text'
               ? this.configData.dataModelData[coord].fieldData
-              : '【' + this.configData.dataModelData[coord].fieldData.split('-')[1] + '】'
+              : '【' + this.configData.dataModelData[coord].fieldData.split('-')[2] + '】'
           }
         }
       }

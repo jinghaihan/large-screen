@@ -362,7 +362,8 @@ class Editor {
       global: this.getGlobal(),
       layout: this.getLayout(),
       searchs: cell.searchs,
-      views: cell.views
+      views: cell.views,
+      tables: cell.tables
     }
 
     console.log('config', config)
@@ -394,16 +395,13 @@ class Editor {
   getCell () {
     const cell = {
       searchs: {},
-      views: {}
+      views: {},
+      tables: {}
     }
     Object.keys(this.cell).forEach(key => {
       let { configData, dataModelData, theme, axisFlip } = this.cell[key].configData
-      let target = 'views'
-      // 非查询面板类型的查询组件
-      if (this.cell[key].componentType === 'search') {
-        if (this.cell[key].type !== 'searchPanel' && this.cell[key].type !== 'conditionPanel') target = 'searchs'
-      }
-      cell[target][key] = { 
+      // 数据模型配置
+      let config = { 
         type: this.cell[key].type,
         id: key,
         style: {
@@ -413,11 +411,37 @@ class Editor {
           theme,
           axisFlip
         },
-        data: target === 'views' ? this.getViewsCellData(_.cloneDeep(dataModelData)) : this.getSearchCellData(_.cloneDeep(dataModelData))
+        data: null
       }
+      let target
+      switch (this.cell[key].componentType) {
+        // 查询组件
+        case 'search':
+          if (this.cell[key].type !== 'searchPanel' && this.cell[key].type !== 'conditionPanel') {
+            target = 'searchs'
+            config.data = this.getSearchCellData(_.cloneDeep(dataModelData))
+          } else {
+            target = 'views'
+            config.data = this.getViewsCellData(_.cloneDeep(dataModelData))
+          }
+          break
+        // 表格组件
+        case 'table':
+          target = 'tables'
+          config.data = this.getTableCellData(_.cloneDeep(dataModelData))
+          break
+        // 其余组件
+        default:
+          target = 'views'
+          config.data = this.getViewsCellData(_.cloneDeep(dataModelData))
+          break
+      }
+      
+      cell[target][key] = config
     })
     return cell
   }
+  // chart / decoration / media / text
   getViewsCellData (data) {
     if (!data) return {}
 
@@ -458,6 +482,7 @@ class Editor {
 
     return { ...data, dimension, measure, order } 
   }
+  // 除searchPanel和conditionPanel以为的查询组件
   getSearchCellData (data) {
     if (!data) return {}
 
@@ -480,6 +505,45 @@ class Editor {
     delete data.isHide
 
     return { ...data, open, dataModel }
+  }
+  // table
+  getTableCellData (data) {
+    if (!data) return {}
+
+    Object.keys(data).forEach(coord => {
+      let arr
+      if (data[coord].orderFieldId) {
+        arr = data[coord].orderFieldId.split('-')
+        const order = {
+          fieldId: arr[0],
+          fieldType: arr[1],
+          orderType: data[coord].orderType
+        }
+        delete data[coord].orderFieldId
+        delete data[coord].orderType
+        data[coord].order = order
+      }
+
+      if (data[coord].fieldData) {
+        arr = data[coord].fieldData.split('-')
+        const obj = {
+          type: data[coord].type,
+          filedId: arr.length > 1 ? arr[0] : undefined,
+          filedType: arr.length > 1 ? arr[1] : undefined,
+          aggregationType: data[coord].aggregationType,
+          ...data[coord].calculate,
+          ...data[coord].point
+        }
+        delete data[coord].type
+        delete data[coord].fieldData
+        delete data[coord].aggregationType
+        delete data[coord].calculate
+        delete data[coord].point
+        data[coord].data = obj
+      }
+    })
+
+    return { ...data }
   }
   setConfig () {
     

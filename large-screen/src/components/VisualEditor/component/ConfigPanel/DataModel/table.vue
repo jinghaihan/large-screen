@@ -293,7 +293,7 @@ export default {
         this.modelData['dimensions'].forEach(item => {
           this.fieldOptions.push({
             label: item.name,
-            value: item.id,
+            value: item.id + '-dimension',
             type: 'dimension'
           })
           this.dimensionMap[item.id] = item
@@ -301,7 +301,7 @@ export default {
         this.modelData['measures'].forEach(item => {
           this.fieldOptions.push({
             label: item.name,
-            value: item.id,
+            value: item.id + '-measure',
             type: 'measure'
           })
           this.measureMap[item.id] = item
@@ -309,14 +309,14 @@ export default {
       }
     },
     onCalculate () {
-      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData]
+      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData.split('-')[0]]
       this.modalData.isGroupBy = this.form.isGroupBy
       this.modalData.measureName = measure.name
       this.modalData.calculate = _.cloneDeep(this.form.calculate)
       this.calculateVisible = true
     },
     onPoint () {
-      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData]
+      let measure = this[this.fieldDataType + 'Map'][this.form.fieldData.split('-')[0]]
       this.modalData.isGroupBy = this.form.isGroupBy
       this.modalData.measureName = measure.name
       this.modalData.point = _.cloneDeep(this.form.point)

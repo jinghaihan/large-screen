@@ -64,10 +64,10 @@
       </a-col>
       <!-- 文字内容 -->
       <a-col :span="24" v-if="form.type === 'text'">
-        <a-form-model-item ref="textData"
-                            prop="textData"
+        <a-form-model-item ref="fieldData"
+                            prop="fieldData"
                             label="文字内容">
-          <a-input  v-model="form.textData"
+          <a-input  v-model="form.fieldData"
                     placeholder="请选择文字内容"
                     @change="onChange" >
           </a-input>

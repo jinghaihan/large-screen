@@ -23,11 +23,6 @@ export default {
       sheetConfig: {}
     }
   },
-  watch: {
-    xsSheet (value) {
-      this.$emit('update', value)
-    }
-  },
   mounted () {
     this.init()
   },
@@ -48,6 +43,7 @@ export default {
       this.xsSheet.selectCell(function (dataProxy, mutiple) {
         _this.onSelect(dataProxy, mutiple)
       })
+      this.$emit('init')
     },
     onChange (a, b) {
       this.$emit('change', { a, b })

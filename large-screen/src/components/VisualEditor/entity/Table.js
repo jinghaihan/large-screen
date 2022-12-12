@@ -36,6 +36,26 @@ class Table {
     })
     this.component = require(`../component/Template/Table/${value}.vue`).default
   }
+  initDimensionAndMeasure (modelData) {
+    if (this.type === 'simpleTable') {
+      // 首行展示dimension和measure
+      if (modelData.dimensions && modelData.measures) {
+        // dataModelData初始化 -> 调用loadData
+        if (!this.configData.dataModelData) {
+          this.configData.dataModelData = {}
+        }
+        let data = modelData.dimensions.concat(modelData.measures)
+        data.forEach((item, col) => {
+          this.configData.dataModelData['0-' + col] = {
+            type: 'field',
+            fieldData: item.id + '-' + item.name
+          }
+        })
+
+        this.loadData()
+      }
+    }
+  }
   update (data) {
     if (!data) return
 
@@ -60,15 +80,17 @@ class Table {
     let rows = { len: 100 }
     // 整理rows数据
     Object.keys(this.configData.dataModelData).forEach(coord => {
-      let pos = coord.split('-')
-      if (!rows[pos[0]]) {
-        rows[pos[0]] = { cells: {} }
-      }
-      if (!rows[pos[0]].cells[pos[1]]) {
-        rows[pos[0]].cells[pos[1]] = {
-          text: this.configData.dataModelData[coord].type === 'text'
-            ? this.configData.dataModelData[coord].textData
-            : '【' + this.configData.dataModelData[coord].fieldData.split('-')[1] + '】'
+      if (this.configData.dataModelData[coord].type && this.configData.dataModelData[coord].fieldData) {
+        let pos = coord.split('-')
+        if (!rows[pos[0]]) {
+          rows[pos[0]] = { cells: {} }
+        }
+        if (!rows[pos[0]].cells[pos[1]]) {
+          rows[pos[0]].cells[pos[1]] = {
+            text: this.configData.dataModelData[coord].type === 'text'
+              ? this.configData.dataModelData[coord].fieldData
+              : '【' + this.configData.dataModelData[coord].fieldData.split('-')[1] + '】'
+          }
         }
       }
     })

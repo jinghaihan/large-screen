@@ -92,8 +92,9 @@ export default {
           okText: '确定',
           cancelText: '取消',
           async onOk () {
-            await _this.changeModel(value)
+            // 清空数据模型配置
             _this.editor.clearDataModelConfig()
+            await _this.changeModel(value)
           },
           onCancel () { }
         })
@@ -119,6 +120,8 @@ export default {
       if (this.editor.instance['componentPanel']) {
         this.editor.instance['componentPanel'].onModelChange()
       }
+      // 通知表格组件
+      this.editor.notifyTableComponent(this.modelData)
     },
     filterOptions (input, option) {
       return (

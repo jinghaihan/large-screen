@@ -349,6 +349,13 @@ class Editor {
     })
     this.changeComponent()
   }
+  notifyTableComponent (modelData) {
+    Object.keys(this.cell).forEach(key => {
+      if (this.cell[key].componentType === 'table') {
+        this.cell[key].initDimensionAndMeasure(modelData)
+      }
+    })
+  }
   getConfig () {
     let cell = this.getCell()
     let config = {

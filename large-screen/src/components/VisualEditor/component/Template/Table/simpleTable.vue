@@ -5,7 +5,7 @@
       <SpreadSheet ref="sheet"
                    :sheetId="data.key"
                    :config="sheetConfig"
-                   @update="onUpdate"
+                   @init="onInit"
                    @change="onChange"
                    @select="onSelect">
       </SpreadSheet>
@@ -27,6 +27,7 @@ export default {
   components: { SpreadSheet },
   data () {
     return {
+      cell: {},
       sheetConfig: {
         mode: 'read',
         showToolbar: false,
@@ -53,8 +54,12 @@ export default {
     init () {
       this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
     },
-    onUpdate (data) {
+    onInit () {
       // 简单表格-回填维度/指标
+      this.cell = this.editor.cell[this.data.key]
+      if (this.editor.instance['modelPanel']) {
+        this.cell.initDimensionAndMeasure(this.editor.instance['modelPanel'].modelData)
+      }
     },
     onChange (data) {
       // console.log('onChange', data)

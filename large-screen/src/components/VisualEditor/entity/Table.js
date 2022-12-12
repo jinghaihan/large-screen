@@ -55,6 +55,26 @@ class Table {
       'vm-border-padding': data['vm-border-padding']
     }, this.vm)
   }
+  loadData () {
+    let sheetData = this.vm.$refs.component.$refs.sheet.xsSheet.getData()
+    let rows = { len: 100 }
+    // 整理rows数据
+    Object.keys(this.configData.dataModelData).forEach(coord => {
+      let pos = coord.split('-')
+      if (!rows[pos[0]]) {
+        rows[pos[0]] = { cells: {} }
+      }
+      if (!rows[pos[0]].cells[pos[1]]) {
+        rows[pos[0]].cells[pos[1]] = {
+          text: this.configData.dataModelData[coord].type === 'text'
+            ? this.configData.dataModelData[coord].textData
+            : '【' + this.configData.dataModelData[coord].fieldData.split('-')[1] + '】'
+        }
+      }
+    })
+    sheetData.rows = rows
+    this.vm.$refs.component.$refs.sheet.xsSheet.loadData(sheetData)
+  }
   resize () {
     if (this.vm.$refs.component.resize) {
       this.vm.$refs.component.resize()
@@ -70,6 +90,8 @@ class Table {
       ...data,
       dataModelData
     })
+
+    this.loadData()
   }
 }
 

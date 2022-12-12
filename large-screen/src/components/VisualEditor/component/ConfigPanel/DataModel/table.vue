@@ -231,7 +231,7 @@ export default {
         }
         options[index].children.push({
           label: item.label,
-          value: item.value,
+          value: item.value + '-' + item.label,
           isLeaf: true,
           type: item.type
         })
@@ -270,7 +270,7 @@ export default {
     handleForm () {
       this.selector = this.editor.instance['componentPanel'].sheetSelector
       // 配置回显
-      let data = this.cell.configData.dataModelData ? this.cell.configData.dataModelData[this.selector.ci + '-' + this.selector.ri] : null
+      let data = this.cell.configData.dataModelData ? this.cell.configData.dataModelData[this.selector.ri + '-' + this.selector.ci] : null
       if (data) {
         this.form = { ...data }
       } else {
@@ -372,7 +372,7 @@ export default {
     onChange () {
       this.$forceUpdate()
       let data = {}
-      data[this.selector.ci + '-' + this.selector.ri] = _.cloneDeep(this.form)
+      data[this.selector.ri + '-' + this.selector.ci] = _.cloneDeep(this.form)
       this.$emit('change', data)
     },
     filterOptions (input, option) {

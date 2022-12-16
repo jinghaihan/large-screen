@@ -6,6 +6,7 @@
       :rules="rules"
       v-bind="layout"
     >
+      <a-divider class="divider">全局配置</a-divider>
       <!-- 聚合控制 -->
       <a-col :span="24">
         <a-form-model-item ref="isGroupBy"
@@ -43,10 +44,11 @@
                           { label: '升序', value: 'ASC' },
                           { label: '降序', value: 'DESC' }
                           ]"
-                          @change="onChange">
+                          @change="onOrderChange">
           </a-radio-group>
         </a-form-model-item>
       </a-col>
+      <a-divider class="divider">字段配置</a-divider>
       <!-- 数据类型 -->
       <a-col :span="24">
         <a-form-model-item ref="type"
@@ -278,10 +280,6 @@ export default {
           isGroupBy: '1'
         }
       }
-      // 简单表格数据类型为字段
-      if (this.component.type === 'simpleTable') {
-        this.form.type = 'field'
-      }
     },
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData
@@ -338,13 +336,37 @@ export default {
           delete this.form.calculate.aggregatePriority
         }
       }
-      this.onChange()
+      this.onGlobalChange()
     },
     onFieldChange () {
       if (!this.form.orderType && typeof this.form.orderType !== 'boolean') {
         this.form.orderType = 'ASC'
       }
+      this.onGlobalChange()
+    },
+    onOrderChange () {
+      this.onGlobalChange()
+    },
+    onGlobalChange () {
       this.onChange()
+      
+      // 遍历修改全局配置
+      if (this.cell && this.cell.configData.dataModelData) {
+        Object.keys(this.cell.configData.dataModelData).forEach(coord => {
+          this.cell.configData.dataModelData[coord] = {
+            ...this.cell.configData.dataModelData[coord],
+            isGroupBy: this.form.isGroupBy,
+            orderFieldId: this.form.orderFieldId,
+            orderType: this.form.orderType
+          }
+          // 不再聚合，删除指标乘除计算的聚合优先级配置
+          if (this.form.isGroupBy === '0') {
+            if (this.cell.configData.dataModelData[coord].calculate && this.cell.configData.dataModelData[coord].calculate.aggregatePriority) {
+              delete this.cell.configData.dataModelData[coord].calculate.aggregatePriority
+            }
+          }
+        })
+      }
     },
     onTypeChange (value) {
       if (value === 'text') {

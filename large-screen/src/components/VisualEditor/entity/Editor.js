@@ -362,8 +362,7 @@ class Editor {
       global: this.getGlobal(),
       layout: this.getLayout(),
       searchs: cell.searchs,
-      views: cell.views,
-      tables: cell.tables
+      views: { ...cell.views, ...cell.tables }
     }
 
     console.log('config', config)
@@ -510,9 +509,20 @@ class Editor {
   getTableCellData (data) {
     if (!data) return {}
 
+    let globalData = {
+      isGroupBy: null,
+      order: null
+    }
+
     Object.keys(data).forEach(coord => {
       let arr
-      if (data[coord].orderFieldId) {
+
+      // 聚合配置
+      globalData.isGroupBy = data[coord].isGroupBy
+      delete data[coord].isGroupBy
+
+      // 默认排序
+      if (!globalData.order && data[coord].orderFieldId) {
         arr = data[coord].orderFieldId.split('-')
         const order = {
           fieldId: arr[0],
@@ -521,13 +531,18 @@ class Editor {
         }
         delete data[coord].orderFieldId
         delete data[coord].orderType
-        data[coord].order = order
+        globalData.order = order
       }
 
+      // 字段配置
+      let fieldData = {}
       if (data[coord].fieldData) {
         arr = data[coord].fieldData.split('-')
-        const obj = {
+        fieldData = {
           type: data[coord].type,
+          // 文字类型
+          fieldData: arr.length > 1 ? undefined : arr[0],
+          // 字段类型
           filedId: arr.length > 1 ? arr[0] : undefined,
           filedType: arr.length > 1 ? arr[1] : undefined,
           aggregationType: data[coord].aggregationType,
@@ -539,11 +554,12 @@ class Editor {
         delete data[coord].aggregationType
         delete data[coord].calculate
         delete data[coord].point
-        data[coord].data = obj
       }
+
+      data[coord] = { ...data[coord], ...fieldData }
     })
 
-    return { ...data }
+    return { ...globalData, data }
   }
   setConfig () {
     

@@ -3,14 +3,14 @@ import color from '../color'
 // 操作按钮
 const sidebar = [
   { name: '返回', key: 'close', icon: 'rollback', active: false },
-  { name: '可视化组件', key: 'chart', icon: 'area-chart', active: true },
-  { name: '文本组件', key: 'text', icon: 'font-colors', active: true },
+  { name: '图表', key: 'chart', icon: 'area-chart', active: true },
+  { name: '文本', key: 'text', icon: 'font-colors', active: true },
   { name: '装饰', key: 'decoration', icon: 'star', active: true },
   { name: '图片', key: 'image', icon: 'picture', active: true },
   { name: '视频', key: 'video', icon: 'video-camera', active: true },
   { name: '音频', key: 'audio', icon: 'audio', active: true },
-  { name: '查询组件', key: 'search', icon: 'search', active: true },
-  { name: '表格组件', key: 'table', icon: 'table', active: true },
+  { name: '查询', key: 'search', icon: 'search', active: true },
+  { name: '表格', key: 'table', icon: 'table', active: true },
   { name: '剪贴板', key: 'clipBoard', icon: 'copy', active: true }
 ]
 const renderer = [

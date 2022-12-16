@@ -68,7 +68,7 @@ export default {
       // 更新数据模型面板配置
       if (!data.mutiple) {
         let { ci, ri } = data.dataProxy.selector
-        this.editor.instance['componentPanel'].onSheetChange({ ci, ri })
+        this.editor.instance['componentPanel'].onSheetChange({ ci, ri: !ri ? ri : 1 })
       }
     },
     resize () {

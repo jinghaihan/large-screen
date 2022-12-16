@@ -130,9 +130,9 @@ const search = {
       enable: false
     }
   },
-  'date-picker': {
-    name: '日期选择框',
-    type: 'date-picker',
+  'time-picker': {
+    name: '时间选择框',
+    type: 'time-picker',
     col: 12,
     w: 10,
     h: 5,
@@ -142,23 +142,7 @@ const search = {
     },
     props: {
       component: 'Search',
-      type: 'DatePicker',
-      enable: false
-    }
-  },
-  'range-picker': {
-    name: '时间范围选择框',
-    type: 'range-picker',
-    col: 12,
-    w: 10,
-    h: 5,
-    restriction: {
-      dependentInstance: 'searchPanel',
-      dependentInstanceName: '查询面板'
-    },
-    props: {
-      component: 'Search',
-      type: 'RangePicker',
+      type: 'TimePicker',
       enable: false
     }
   }

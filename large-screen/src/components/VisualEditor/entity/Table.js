@@ -46,10 +46,18 @@ class Table {
         }
         let data = modelData.dimensions.concat(modelData.measures)
         data.forEach((item, col) => {
+          // 表头
           this.configData.dataModelData['0-' + col] = {
             isGroupBy: '1',
+            type: 'text',
+            loop: false,
+            fieldData: item.name
+          }
+          // 表数据
+          this.configData.dataModelData['1-' + col] = {
+            isGroupBy: '1',
             type: 'field',
-            fieldData: item.id + '-' + (col > modelData.dimensions.length ? 'measure' : 'dimension') + '-' + item.name
+            fieldData: item.id + '-' + (col + 1 > modelData.dimensions.length ? 'measure' : 'dimension') + '-' + item.name
           }
         })
 

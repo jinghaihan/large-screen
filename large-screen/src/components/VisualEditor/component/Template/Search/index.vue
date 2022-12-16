@@ -14,8 +14,7 @@ import Select from './select.vue'
 import SelectMultiple from './selectMultiple.vue'
 import Radio from './radio.vue'
 import Checkbox from './checkbox.vue'
-import DatePicker from './datePicker.vue'
-import RangePicker from './rangePicker.vue'
+import TimePicker from './timePicker.vue'
 
 export default {
   props: {
@@ -33,8 +32,7 @@ export default {
     SelectMultiple,
     Radio,
     Checkbox,
-    DatePicker,
-    RangePicker
+    TimePicker
   }
 }
 </script>

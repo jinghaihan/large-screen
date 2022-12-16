@@ -1,22 +1,20 @@
 <template>
   <div ref="container" 
-       class="search-datepicker-container"
-       id="search-datepicker-container">
+       class="search-timepicker-container"
+       id="search-timepicker-container">
     <div v-if="!data.enable" class="mask"></div>
     <label v-if="props.label"
            class="label"
            :style="{ color: color.color }">
       {{props.label}}：
     </label>
-    <a-date-picker
-      class="datepicker"
-      v-bind="{ ...props, placeholder: data.enable ? '请选择日期' : '' }"
-      style="width: 100%"/>
+    <TimePicker :props="props"></TimePicker>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
+import TimePicker from '../../Widget/TimePicker'
 
 export default {
   props: {
@@ -25,6 +23,7 @@ export default {
       required: false
     }
   },
+  components: { TimePicker },
   data () {
     return {
       props: {
@@ -63,10 +62,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  #search-datepicker-container{
+  #search-timepicker-container{
     --color: #bfbfbf;
   }
-  .search-datepicker-container{
+  .search-timepicker-container{
     height: 100%;
     width: 100%;
     display: flex;

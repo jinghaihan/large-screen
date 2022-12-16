@@ -50,7 +50,7 @@
           </a-form-model-item>
         </a-col>
         <!-- 格式 -->
-        <a-col :span="24" v-if="cell.type === 'date-picker' || cell.type === 'range-picker'">
+        <a-col :span="24" v-if="cell.type === 'time-picker'">
           <a-form-model-item ref="format"
                              prop="format"
                              label="格式">
@@ -66,21 +66,13 @@
                              prop="defaultValue"
                              label="默认维度值">
             <!-- 非时间类型 -->
-            <a-input  v-if="cell.type !== 'date-picker' && cell.type !== 'range-picker'"
+            <a-input  v-if="cell.type !== 'time-picker'"
                       v-model="form.defaultValue"
                       placeholder="请输入默认维度值"
                       @change="onChange" >
             </a-input>
-            <!-- date-picker -->
-            <a-date-picker v-if="cell.type === 'date-picker'"
-                          v-model="form.defaultValue"
-                          @change="onChange">
-            </a-date-picker>
-            <!-- range-picker -->
-            <a-range-picker v-if="cell.type === 'range-picker'"
-                          v-model="form.defaultValue"
-                          @change="onChange">
-            </a-range-picker>
+            <!-- 时间类型 -->
+            <TimePicker v-else :format="form.format" @change="onTimeChange"></TimePicker>
           </a-form-model-item>
         </a-col>
         <!-- 关联父级维度 -->
@@ -143,6 +135,7 @@
 
 <script>
 import TooltipIcon from '../../Widget/TooltipIcon'
+import TimePicker from '../../Widget/TimePicker'
 
 export default {
   props: {
@@ -152,7 +145,7 @@ export default {
       required: true
     }
   },
-  components: { TooltipIcon },
+  components: { TooltipIcon, TimePicker },
   data () {
     return {
       cell: {},
@@ -224,7 +217,7 @@ export default {
     onDimensionChange () {
       let dimension = this.modelData['dimensions'].find(item => item.id === this.form.dimension)
       // 时间类型查询组件联动修改format
-      if (this.cell.type === 'date-picker' || this.cell.type === 'range-picker') {
+      if (this.cell.type === 'time-picker') {
         this.form.format = dimension.format
       }
       // 关联父维度
@@ -248,6 +241,10 @@ export default {
       this.cell.update(data)
       this.cell.setConfigData({ configData: data })
       
+      this.onChange()
+    },
+    onTimeChange (value) {
+      this.form.defaultValue = value
       this.onChange()
     },
     onChange () {

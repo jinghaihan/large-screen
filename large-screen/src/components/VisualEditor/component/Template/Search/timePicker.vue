@@ -8,7 +8,7 @@
            :style="{ color: color.color }">
       {{props.label}}：
     </label>
-    <TimePicker :props="props"></TimePicker>
+    <TimePicker :props="props" v-bind="propsData"></TimePicker>
   </div>
 </template>
 
@@ -35,7 +35,8 @@ export default {
         backgroundColor: '',
         borderColor: '',
         placeholderColor: ''
-      }
+      },
+      propsData: {}
     }
   },
   watch: {

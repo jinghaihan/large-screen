@@ -66,6 +66,9 @@ class Search {
       ...data
     })
   }
+  changeTimePicker (data) {
+    this.vm.$refs.component.propsData = data
+  }
 }
 
 export default Search

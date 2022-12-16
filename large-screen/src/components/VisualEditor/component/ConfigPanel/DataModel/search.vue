@@ -60,6 +60,16 @@
             </a-input>
           </a-form-model-item>
         </a-col>
+        <!-- 日期区间 -->
+        <a-col :span="24" v-if="cell.type === 'time-picker'">
+          <a-form-model-item ref="isRange"
+                             prop="isRange"
+                             label="日期区间">
+            <a-switch v-model="form.isRange"
+                      @change="onRangeChange" >
+            </a-switch>
+          </a-form-model-item>
+        </a-col>
         <!-- 默认维度值 -->
         <a-col :span="24" v-if="form.dimension">
           <a-form-model-item ref="defaultValue"
@@ -72,7 +82,11 @@
                       @change="onChange" >
             </a-input>
             <!-- 时间类型 -->
-            <TimePicker v-else :format="form.format" @change="onTimeChange"></TimePicker>
+            <TimePicker v-else
+                        :isRange="form.isRange"
+                        :dateOption="getDateOption()"
+                        @change="onTimeChange">
+            </TimePicker>
           </a-form-model-item>
         </a-col>
         <!-- 关联父级维度 -->
@@ -219,6 +233,7 @@ export default {
       // 时间类型查询组件联动修改format
       if (this.cell.type === 'time-picker') {
         this.form.format = dimension.format
+        this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.getDateOption() })
       }
       // 关联父维度
       if (this.config.hasParent.includes(this.cell.type)) {
@@ -245,6 +260,28 @@ export default {
     },
     onTimeChange (value) {
       this.form.defaultValue = value
+      this.onChange()
+    },
+    getDateOption () {
+      if (!this.form.format) {
+        return {}
+      }
+      let format = this.form.format.replace(/y/g, 'Y').replace(/d/g, 'D')
+      let timeSize = format.charAt(format.length - 1)
+      let dayOfWeek = this.timeSize === 'w' ? (this.dayOfWeek || 0) : undefined
+      let timeFormat
+      if (timeSize === 'H' || timeSize === 'm' || timeSize === 's') {
+        timeFormat = format.substring(format.indexOf('H'), format.length)
+      }
+      return {
+        format,
+        timeSize,
+        dayOfWeek,
+        timeFormat
+      }
+    },
+    onRangeChange () {
+      this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.getDateOption() })
       this.onChange()
     },
     onChange () {

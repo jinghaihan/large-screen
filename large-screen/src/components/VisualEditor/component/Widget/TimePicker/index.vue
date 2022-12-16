@@ -1,7 +1,8 @@
 <template>
-  <component v-if="!isRange"
+  <component  v-if="!isRange"
               :is="getComponent()"
               :showTime="false"
+              :showToday="false"
               v-model="value"
               @change="handleChange"
               v-bind="propsData" >
@@ -12,6 +13,35 @@
             class='ant-tag ant-tag-blue'>{{key}}</span>
     </template>
   </component>
+  <div class="range-time-picker" v-else>
+    <component  :is="getComponent()"
+                :showTime="false"
+                :showToday="false"
+                :disabled-date="disabledStartDate"
+                v-model="startValue"
+                v-bind="propsData" >
+      <template slot="renderExtraFooter">
+        <span v-for="(key, index) in Object.keys(ranges)"
+              :key="index"
+              @click="handleClick(ranges[key])"
+              class='ant-tag ant-tag-blue'>{{key}}</span>
+      </template>
+    </component>
+    <div> ～ </div>
+    <component  :is="getComponent()"
+                :showTime="false"
+                :showToday="false"
+                :disabled-date="disabledEndDate"
+                v-model="endValue"
+                v-bind="propsData" >
+      <template slot="renderExtraFooter">
+        <span v-for="(key, index) in Object.keys(ranges)"
+              :key="index"
+              @click="handleClick(ranges[key])"
+              class='ant-tag ant-tag-blue'>{{key}}</span>
+      </template>
+    </component>
+  </div>
 </template>
 
 <script>
@@ -23,11 +53,13 @@ export default {
       type: Boolean,
       default: false
     },
+    dateOption: {
+      type: Object
+    },
     props: {
       type: Object,
       required: false
-    },
-    format: null
+    }
   },
   data () {
     return {
@@ -36,28 +68,33 @@ export default {
       timeSize: null,
       dayOfWeek: null,
       timeFormat: null,
-      value: undefined
+      value: undefined,
+      startValue: undefined,
+      endValue: undefined
     }
   },
   created () {
     this.init()
+  },
+  watch: {
+    isRange: {
+      handler: function (value) {
+        this.value = undefined
+        this.startDate = undefined
+        this.endDate = undefined
+        this.init()
+      }
+    }
   },
   methods: {
     init () {
       if (this.props) {
         this.propsData = { ...this.props }
       }
-      if (this.format) {
-        let format = this.format.replace(/y/g, 'Y').replace(/d/g, 'D')
-        this.propsData.format = format
-        this.timeSize = format.charAt(format.length - 1)
-        this.dayOfWeek = this.timeSize === 'w' ? (this.dayOfWeek || 0) : undefined
-        if (this.timeSize === 'H' || this.timeSize === 'm' || this.timeSize === 's') {
-          this.timeFormat = format.substring(format.indexOf('H'), format.length)
-        }
-      }
+      let { timeSize, format } = this.dateOption || {}
+      this.propsData.format = format
       // 快捷选择
-      switch (this.timeSize) {
+      switch (timeSize) {
         case 'Y':
           if (this.isRange) {
             this.ranges = {
@@ -114,7 +151,8 @@ export default {
     },
     getComponent () {
       let component
-      switch (this.timeSize) {
+      let { timeSize } = this.dateOption || {}
+      switch (timeSize) {
         case 'Y':
           component = 'a-date-picker'
           this.propsData.mode = 'year'
@@ -130,12 +168,44 @@ export default {
           break
       }
       return component
+    },
+    disabledStartDate (startValue) {
+      let endValue = this.endValue
+      if (!startValue || !endValue) {
+        return false
+      }
+      let type
+      let { timeSize } = this.dateOption || {}
+      switch (timeSize) {
+        case 'Y':
+          type = 'year'
+          break
+        case 'M':
+          type = 'month'
+          break
+        default:
+          type = 'day'
+          break
+      }
+      return startValue.startOf(type).valueOf() > endValue.valueOf()
+    },
+    disabledEndDate (endValue) {
+      let startValue = this.startValue
+      if (!endValue || !startValue) {
+        return false
+      }
+      return startValue.valueOf() > endValue.valueOf()
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+  .range-time-picker{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .ant-tag{
     cursor: pointer;
   }

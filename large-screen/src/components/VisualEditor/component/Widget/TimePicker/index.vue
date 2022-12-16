@@ -4,12 +4,12 @@
               :showTime="false"
               :showToday="false"
               v-model="value"
-              @change="handleChange"
+              @change="onChange"
               v-bind="propsData" >
     <template slot="renderExtraFooter">
       <span v-for="(key, index) in Object.keys(ranges)"
             :key="index"
-            @click="handleClick(ranges[key])"
+            @click="onClick(ranges[key])"
             class='ant-tag ant-tag-blue'>{{key}}</span>
     </template>
   </component>
@@ -19,11 +19,12 @@
                 :showToday="false"
                 :disabled-date="disabledStartDate"
                 v-model="startValue"
-                v-bind="propsData" >
+                v-bind="propsData"
+                @change="onRangeChange" >
       <template slot="renderExtraFooter">
         <span v-for="(key, index) in Object.keys(ranges)"
               :key="index"
-              @click="handleClick(ranges[key])"
+              @click="onClick(ranges[key], 'start')"
               class='ant-tag ant-tag-blue'>{{key}}</span>
       </template>
     </component>
@@ -33,11 +34,12 @@
                 :showToday="false"
                 :disabled-date="disabledEndDate"
                 v-model="endValue"
-                v-bind="propsData" >
+                v-bind="propsData"
+                @change="onRangeChange" >
       <template slot="renderExtraFooter">
         <span v-for="(key, index) in Object.keys(ranges)"
               :key="index"
-              @click="handleClick(ranges[key])"
+              @click="onClick(ranges[key], 'end')"
               class='ant-tag ant-tag-blue'>{{key}}</span>
       </template>
     </component>
@@ -49,6 +51,7 @@ import moment from 'moment'
 
 export default {
   props: {
+    data: null,
     isRange: {
       type: Boolean,
       default: false
@@ -79,15 +82,28 @@ export default {
   watch: {
     isRange: {
       handler: function (value) {
-        this.value = undefined
-        this.startDate = undefined
-        this.endDate = undefined
+        this.initValue()
         this.init()
+        this.onChange()
+      }
+    },
+    props: {
+      deep: true,
+      handler: function (value) {
+        this.propsData = { ...this.propsData, ...this.props }
       }
     }
   },
   methods: {
     init () {
+      // 回显
+      if (this.data) {
+        if (this.data instanceof Array) {
+          this.startValue = this.data[0]
+          this.endValue = this.data[1]
+        }
+        this.value = this.data
+      }
       if (this.props) {
         this.propsData = { ...this.props }
       }
@@ -142,12 +158,26 @@ export default {
           break
       }
     },
-    handleChange (value) {
+    initValue () {
+      this.value = undefined
+      this.startValue = undefined
+      this.endValue = undefined
+    },
+    onChange (value, type) {
       this.value = value
       this.$emit('change', value)
     },
-    handleClick (date) {
-      this.handleChange(date)
+    onClick (date, type) {
+      if (type === 'start') {
+        this.startValue = date
+      }
+      if (type === 'end') {
+        this.endValue = date
+      }
+      this.onChange(date, type)
+    },
+    onRangeChange () {
+      this.onChange([this.startValue, this.endValue])
     },
     getComponent () {
       let component

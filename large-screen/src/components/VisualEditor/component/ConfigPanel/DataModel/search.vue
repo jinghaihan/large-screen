@@ -82,11 +82,55 @@
                       @change="onChange" >
             </a-input>
             <!-- 时间类型 -->
-            <TimePicker v-else
-                        :isRange="form.isRange"
-                        :dateOption="getDateOption()"
-                        @change="onTimeChange">
-            </TimePicker>
+            <template v-else>
+              <TimePicker ref="timePicker"
+                          :data="form.defaultValue"
+                          :isRange="form.isRange"
+                          :dateOption="dateOption"
+                          :props="{ disabled: isDisabled() }"
+                          @change="onTimeChange">
+              </TimePicker>
+              <!-- 日期区间 -->
+              <div class="range-container" v-if="form.isRange">
+                <div>
+                  近
+                  <a-input-number
+                    v-model="form.prevNumber"
+                    size="small"
+                    :min="0"
+                    :precision='0'
+                    @change='onChange'
+                    placeholder='>=1的数字'
+                    />
+                  <span v-if='dateOption.timeSize === "Y"'> 年</span>
+                  <span v-else-if='dateOption.timeSize === "M"'> 月</span>
+                  <span v-else-if='dateOption.timeSize === "w"'> 周</span>
+                  <span v-else> 天</span>
+                </div>
+                <div>
+                  包含
+                  <a-switch size="small"
+                            v-model="form.hasCurrent"
+                            @change="onChange" >
+                  </a-switch>
+                  <span v-if='dateOption.timeSize === "Y"'> 今年</span>
+                  <span v-else-if='dateOption.timeSize === "M"'> 本月</span>
+                  <span v-else-if='dateOption.timeSize === "w"'> 本周</span>
+                  <span v-else> 当天</span>
+                </div>
+              </div>
+              <!-- 非日期区间 -->
+              <div v-else>
+                <a-switch size="small"
+                          v-model="form.hasLast"
+                          @change="onChange" >
+                </a-switch>
+                <span v-if='dateOption.timeSize === "Y"'>去年</span>
+                <span v-else-if='dateOption.timeSize === "M"'>上月</span>
+                <span v-else-if='dateOption.timeSize === "w"'>上周</span>
+                <span v-else>昨天</span>
+              </div>
+            </template>
           </a-form-model-item>
         </a-col>
         <!-- 关联父级维度 -->
@@ -179,7 +223,8 @@ export default {
         { label: '否', value: false }
       ],
       parentDimOptions: [],
-      parentVisible: false
+      parentVisible: false,
+      dateOption: {}
     }
   },
   watch: {
@@ -233,7 +278,8 @@ export default {
       // 时间类型查询组件联动修改format
       if (this.cell.type === 'time-picker') {
         this.form.format = dimension.format
-        this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.getDateOption() })
+        this.dateOption = this.getDateOption()
+        this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.dateOption })
       }
       // 关联父维度
       if (this.config.hasParent.includes(this.cell.type)) {
@@ -281,11 +327,20 @@ export default {
       }
     },
     onRangeChange () {
-      this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.getDateOption() })
+      this.cell.changeTimePicker({ isRange: this.form.isRange, dateOption: this.dateOption })
+      delete this.form.hasLast
+      delete this.form.prevNumber
+      delete this.form.hasCurrent
       this.onChange()
     },
     onChange () {
+      if (this.isDisabled()) {
+        this.$refs.timePicker.initValue()
+      }
       this.$emit('change', this.form)
+    },
+    isDisabled () {
+      return this.form.hasLast || (this.form.prevNumber && this.form.prevNumber !== 0) || this.form.hasCurrent
     },
     getModelData () {
       this.modelData = this.editor.instance['modelPanel'].modelData
@@ -313,6 +368,11 @@ export default {
       .help{
         color: #1890ff;
       }
+    }
+    .range-container{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 </style>

@@ -12,18 +12,14 @@
         <div ref="grid"
             class="paper-grid-container"
             :style="gridStyle">
-          <div class="layer-content-container"
-              v-for="(data, index) in layout"
-              :key="data.key + '-' + index"
-              :style="getLayerStyle(index)">
-            <Layer v-show="data.visible"
-                  ref="layer"
+          <div class="layer-content-container">
+            <Layer ref="layer"
                   :editor="editor"
-                  :layoutData="data.layout"
+                  :layoutData="layout"
                   :ratio="ratio"
                   :grid="grid"
-                  :resizable="index === layer.current"
-                  :draggable="index === layer.current"
+                  :resizable="true"
+                  :draggable="true"
                   :rowHeight="rowHeight"
                   :component="component"
                   :transformScale="transformScale"
@@ -50,10 +46,6 @@ export default {
     },
     scale: {
       type: Number,
-      required: true
-    },
-    layer: {
-      type: Object,
       required: true
     },
     ratio: {
@@ -129,11 +121,6 @@ export default {
     },
     onTransformScaleChange (scale) {
       this.transformScale = scale
-    },
-    getLayerStyle (layer) {
-      return {
-        'z-index': this.layer.current === layer ? layer + this.layer.max : layer
-      }
     }
   }
 }

@@ -40,8 +40,7 @@
         <!-- 工具 -->
         <ToolBox :editor="editor"
                  :layout="layout"
-                 :scale="scale"
-                 :layer="layer">
+                 :scale="scale">
         </ToolBox>
         <!-- 操作按钮 -->
         <div class="action-container">
@@ -61,7 +60,6 @@
         <div ref="drag" class="drag-container">
           <DragPanel v-if="rendered"
                      :editor="editor"
-                     :layer="layer"
                      :config="config.component"
                      :type="activeKey">
           </DragPanel>
@@ -71,7 +69,6 @@
           <Paper :editor="editor"
                  :layout="layout"
                  :scale="scale"
-                 :layer="layer"
                  :ratio="ratio"
                  :grid="grid"
                  :component="component"
@@ -80,7 +77,6 @@
           <div ref="config" class="config-container">
             <ConfigPanel :editor="editor"
                          :layout="layout"
-                         :layer="layer"
                          :ratio="ratio"
                          :grid="grid"
                          :component="component">
@@ -123,7 +119,6 @@ export default {
       rendered: false,
       layout: [],
       scale: 1,
-      layer: { current: 0, max: 5 },
       ratio: { width: 16, height: 9 },
       grid: { show: false, count: 100, color: { r: 240, g: 240, b: 240, a: 1 } },
       component: {},
@@ -139,13 +134,6 @@ export default {
     init () {
       this.editor.setInstance({ editor: this })
       this.activeKey = this.editor.operation.sidebar.find(item => item.active).key
-
-      this.layout.push({
-        key: getUUID(),
-        name: '图层1',
-        visible: true,
-        layout: []
-      })
     },
     // 操作
     onOperation (operation) {

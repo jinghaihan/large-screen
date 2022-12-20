@@ -8,12 +8,6 @@
                   :ratio="ratio"
                   :grid="grid">
       </BasicPanel>
-      <!-- 图层配置 -->
-      <LayerPanel v-show="activeKey === 'layer'"
-                  :editor="editor"
-                  :layout="layout"
-                  :layer="layer">
-      </LayerPanel>
       <ModelPanel v-show="activeKey === 'model'"
                   :editor="editor"
       >
@@ -38,7 +32,6 @@
 
 <script>
 import BasicPanel from './Panel/basicPanel.vue'
-import LayerPanel from './Panel/layerPanel.vue'
 import ComponentPanel from './Panel/componentPanel.vue'
 import ModelPanel from './Panel/modelPanel.vue'
 
@@ -47,10 +40,6 @@ export default {
     editor: null,
     layout: {
       type: Array,
-      required: true
-    },
-    layer: {
-      type: Object,
       required: true
     },
     ratio: {
@@ -66,7 +55,7 @@ export default {
       required: true
     }
   },
-  components: { BasicPanel, LayerPanel, ComponentPanel, ModelPanel },
+  components: { BasicPanel, ComponentPanel, ModelPanel },
   data () {
     return {
       activeKey: null

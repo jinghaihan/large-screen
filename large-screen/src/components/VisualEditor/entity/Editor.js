@@ -84,101 +84,13 @@ class Editor {
   }
   deleteComponent (data) {
     if (this.instance.editor.component.key) {
-      this.instance['layout'].$refs['layer'][this.instance.editor.layer.current].onDelete(this.instance.editor.component)
+      this.instance['layout'].$refs['layer'].onDelete(this.instance.editor.component)
     }
-  }
-  createLayer (data) {
-    let instance = this.instance.editor
-    if (instance.layout.length >= instance.layer.max) {
-      instance.$notification.error({ message: '错误', description: `最多支持${instance.layer.max}个图层` })
-      return
-    }
-    instance.layout.push({
-      key: getUUID(),
-      name: data.name,
-      visible: true,
-      layout: []
-    })
-    instance.layer = _.cloneDeep({
-      ...instance.layer,
-      current: instance.layout.length - 1
-    })
-    this.changeComponent()
-    instance.$notification.success({ message: '成功', description: `新增成功` })
-  }
-  editLayer (data) {
-    let instance = this.instance.editor
-    let index = instance.layout.findIndex(item => item.key === data.key)
-    instance.layout[index].name = data.name
-  }
-  changeLayer (key) {
-    let instance = this.instance.editor
-    let index = instance.layout.findIndex(data => data.key === key)
-    instance.layer = _.cloneDeep({
-      ...instance.layer,
-      current: index
-    })
-    this.changeComponent()
-  }
-  deleteLayer (data) {
-    let _this = this
-    let instance = _this.instance.editor
-    if (instance.layout.length === 1) {
-      instance.$notification.error({ message: '错误', description: `请至少配置2个图层` })
-      return
-    }
-
-    instance.$confirm({
-      title: `您确定删除${data.name}吗？`,
-      content: '该图层配置数据将一同删除',
-      confirmLoading: true,
-      okText: '确定',
-      cancelText: '取消',
-      onOk () {
-        let index = instance.layout.findIndex(item => item.key === data.key)
-        let layout = _this.instance['layout'].$refs['layer'][index].layout
-        layout.forEach(item => {
-          _this.deleteCell(item.props)
-        })
-
-        instance.layout = instance.layout.filter(item => item.key !== data.key)
-        if (index === instance.layer.current) {
-          if (!index) {
-            instance.layer = _.cloneDeep({
-              ...instance.layer,
-              current: index + 1
-            })
-          } else {
-            instance.layer = _.cloneDeep({
-              ...instance.layer,
-              current: index - 1
-            })
-          }
-        }
-        instance.$notification.success({ message: '成功', description: `删除成功` })
-      },
-      onCancel () { }
-    })
-  }
-  updateLayer (data) {
-    this.instance.editor.layout = _.cloneDeep(data.layout)
-    this.instance.editor.layer = _.cloneDeep({
-      ...this.instance.editor.layer,
-      current: data.layer
-    })
   }
   async clear () {
     let instance = this.instance.editor
-    this.changeLayer(instance.layout[0].key)
-    instance.layout = instance.layout.filter((item, index) => !index).map(item => {
-      return {
-        ...item,
-        name: '图层1',
-        visible: true,
-        layout: []
-      }
-    })
-    this.instance['layout'].$refs['layer'][this.instance.editor.layer.current].layout = []
+    instance.layout = []
+    this.instance['layout'].$refs['layer'].layout = []
     this.cell = {}
   }
   setCell (data, cell) {
@@ -325,22 +237,17 @@ class Editor {
   async beforeExport () {
     let editor = this.instance.editor
     let grid = editor.grid
-    let layer = editor.layer
 
     this.changeComponent()
     editor.grid = _.cloneDeep({ ...editor.grid, show: false })
-    editor.layer = _.cloneDeep({ ...editor.layer, current: 0 })
     await editor.$nextTick()
 
-    return { grid, layer }
+    return { grid }
   }
   afterExport (data) {
     let editor = this.instance.editor
     if (data.grid.show) {
       editor.grid = _.cloneDeep({ ...editor.grid, show: true })
-    }
-    if (data.layer.current) {
-      editor.layer = _.cloneDeep({ ...editor.layer, current: data.layer.current })
     }
   }
   clearDataModelConfig () {
@@ -384,12 +291,7 @@ class Editor {
     return global
   }
   getLayout () {
-    const layout = _.cloneDeep(this.instance.editor.layout)
-    layout.forEach((item, index) => {
-      let data = this.instance.layout.$refs.layer[index].layout
-      layout[index].layout = data
-    })
-    return layout
+    return this.instance.layout.$refs.layer.layout
   }
   getCell () {
     const cell = {

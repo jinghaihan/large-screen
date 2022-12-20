@@ -1,7 +1,5 @@
 <template>
   <div class="toolbox-container">
-    <!-- 图层 -->
-    <LayerWidget :editor="editor" :layout="layout" :layer="layer"></LayerWidget>
     <a-divider type="vertical"></a-divider>
     <!-- 缩放 -->
     <ScaleWidget :editor="editor" :scale="scale"></ScaleWidget>
@@ -15,7 +13,6 @@
 </template>
 
 <script>
-import LayerWidget from './widget/LayerWidget'
 import ScaleWidget from './widget/scaleWidget.vue'
 import HotkeyWidget from './widget/hotkeyWidget.vue'
 import TooltipIcon from '../../Widget/TooltipIcon'
@@ -30,13 +27,9 @@ export default {
     scale: {
       type: Number,
       required: true
-    },
-    layer: {
-      type: Object,
-      required: true
     }
   },
-  components: { LayerWidget, ScaleWidget, TooltipIcon, HotkeyWidget },
+  components: { ScaleWidget, TooltipIcon, HotkeyWidget },
   methods: {
     onClear () {
       let _this = this

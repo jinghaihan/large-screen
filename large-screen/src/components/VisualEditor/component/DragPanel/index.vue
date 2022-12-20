@@ -62,10 +62,6 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 export default {
   props: {
     editor: null,
-    layer: {
-      type: Object,
-      required: true
-    },
     config: {
       type: Object,
       required: true
@@ -186,7 +182,7 @@ export default {
             this.$notification.error({ message: '错误', description: `画布仅可存在一个${data.restriction.instanceName}` })
             return
           } else {
-            this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+            this.instance = this.editor.instance['layout'].$refs['layer']
           }
         }
         // 依赖父级
@@ -198,7 +194,7 @@ export default {
           }
         }
       } else {
-        this.instance = this.editor.instance['layout'].$refs['layer'][this.layer.current]
+        this.instance = this.editor.instance['layout'].$refs['layer']
       }
       this.addListener()
     },

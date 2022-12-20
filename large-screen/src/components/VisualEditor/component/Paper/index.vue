@@ -3,7 +3,6 @@
     <Layout :editor="editor"
             :layout="layout"
             :scale="scale"
-            :layer="layer"
             :ratio="ratio"
             :grid="grid"
             :component="component">
@@ -24,10 +23,6 @@ export default {
     },
     scale: {
       type: Number,
-      required: true
-    },
-    layer: {
-      type: Object,
       required: true
     },
     ratio: {

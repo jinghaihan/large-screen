@@ -18,10 +18,6 @@ const renderer = [
   { name: '查看源码', key: 'viewSource', icon: 'eye', enable: ['chart'] },
   { name: '删除', key: 'delete', icon: 'delete' }
 ]
-const layer = [
-  { name: '修改名称', icon: 'edit', key: 'edit' },
-  { name: '删除图层', icon: 'delete', key: 'delete' }
-]
 const library = [
   { name: '模板库', icon: 'layout', key: 'template', type: 'primary' },
   { name: '主题库', icon: 'bg-colors', key: 'theme', type: 'danger' }
@@ -34,7 +30,6 @@ const navbar = [
 ]
 const configPanel = [
   { name: '基础配置', key: 'basic' },
-  { name: '图层配置', key: 'layer' },
   { name: '模型配置', key: 'model' },
   { name: '组件配置', key: 'component' }
 ]
@@ -159,4 +154,4 @@ const batch = [
   }
 ]
 
-export { sidebar, renderer, layer, library, navbar, configPanel, basic, model, batch }
+export { sidebar, renderer, library, navbar, configPanel, basic, model, batch }

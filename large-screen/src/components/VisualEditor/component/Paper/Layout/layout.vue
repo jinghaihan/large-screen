@@ -20,8 +20,7 @@
                 :i="item.i"
                 :maxW="maxW"
                 :maxH="maxH"
-                @move="onMove(item)"
-                @resize="onResize(item)">
+                :style="getGridItemStyle(item)">
         <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
       </GridItem>
     </GridLayout>
@@ -109,11 +108,13 @@ export default {
         onCancel () { }
       })
     },
-    onMove (data) {
-      this.editor.changeComponent(data)
-    },
-    onResize (data) {
-      this.editor.changeComponent(data)
+    getGridItemStyle (item) {
+      let cell = this.editor.cell[item.i]
+      if (cell) {
+        let zIndex = cell.configData.configData ? cell.configData.configData.zIndex : 0
+        return { zIndex }
+      }
+      return {}
     }
   }
 }

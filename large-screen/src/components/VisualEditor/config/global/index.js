@@ -2,6 +2,17 @@ import color from '../color'
 
 const globalConfig = {
   config: {
+    zIndex: {
+      type: 'config',
+      config: [
+        {
+          type: 'input-number',
+          label: '堆叠顺序',
+          key: 'zIndex',
+          defaultValue: 0
+        }
+      ]
+    },
     border: {
       type: 'collapse',
       name: '边框设置',

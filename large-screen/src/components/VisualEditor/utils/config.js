@@ -23,6 +23,7 @@ export function handleConfigData (config, configMap, type) {
       })
     })
   })
+  result[0].config = [_.cloneDeep(globalConfig.config['zIndex'])].concat(result[0].config)
   return result
 }
 

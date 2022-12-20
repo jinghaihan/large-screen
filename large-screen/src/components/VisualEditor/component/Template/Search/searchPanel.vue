@@ -18,8 +18,7 @@
                   :vertical-compact="false"
                   :prevent-collision="true"
                   :margin="[0, 0]"
-                  :transformScale="transformScale"
-                  :allowOverlap="false">
+                  :transformScale="transformScale">
         <GridItem v-for="item in layout"
                   :key="item.i"
                   :x="item.x"

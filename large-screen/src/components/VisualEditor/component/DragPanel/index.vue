@@ -182,7 +182,7 @@ export default {
             this.$notification.error({ message: '错误', description: `画布仅可存在一个${data.restriction.instanceName}` })
             return
           } else {
-            this.instance = this.editor.instance['layout'].$refs['layer']
+            this.instance = this.editor.instance['layout'].$refs.layout
           }
         }
         // 依赖父级
@@ -194,7 +194,7 @@ export default {
           }
         }
       } else {
-        this.instance = this.editor.instance['layout'].$refs['layer']
+        this.instance = this.editor.instance['layout'].$refs.layout
       }
       this.addListener()
     },

@@ -12,19 +12,19 @@
         <div ref="grid"
             class="paper-grid-container"
             :style="gridStyle">
-          <div class="layer-content-container">
-            <Layer ref="layer"
-                  :editor="editor"
-                  :layoutData="layout"
-                  :ratio="ratio"
-                  :grid="grid"
-                  :resizable="true"
-                  :draggable="true"
-                  :rowHeight="rowHeight"
-                  :component="component"
-                  :transformScale="transformScale"
+          <div class="layout-content-container">
+            <Layout ref="layout"
+                    :editor="editor"
+                    :layoutData="layout"
+                    :ratio="ratio"
+                    :grid="grid"
+                    :resizable="true"
+                    :draggable="true"
+                    :rowHeight="rowHeight"
+                    :component="component"
+                    :transformScale="transformScale"
             >
-            </Layer>
+            </Layout>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@
 
 <script>
 import _ from 'lodash'
-import Layer from './layer.vue'
+import Layout from './layout.vue'
 import ScaleBox from '../../Widget/ScaleBox'
 
 export default {
@@ -61,7 +61,7 @@ export default {
       required: true
     }
   },
-  components: { Layer, ScaleBox },
+  components: { Layout, ScaleBox },
   data () {
     return {
       rowHeight: 0,
@@ -140,14 +140,14 @@ export default {
       background: var(--primary-color);
       box-shadow: 0 0 12px var(--shadow-color);
       .paper-grid-container,
-      .layer-content-container{
+      .layout-content-container{
         height: 100%;
         width: 100%;
       }
       .paper-grid-container{
         position: relative;
       }
-      .layer-content-container{
+      .layout-content-container{
         position: absolute;
         top: 0;
         left: 0;

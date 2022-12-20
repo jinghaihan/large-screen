@@ -84,13 +84,13 @@ class Editor {
   }
   deleteComponent (data) {
     if (this.instance.editor.component.key) {
-      this.instance['layout'].$refs['layer'].onDelete(this.instance.editor.component)
+      this.instance['layout'].$refs.layout.onDelete(this.instance.editor.component)
     }
   }
   async clear () {
     let instance = this.instance.editor
     instance.layout = []
-    this.instance['layout'].$refs['layer'].layout = []
+    this.instance['layout'].$refs.layout.layout = []
     this.cell = {}
   }
   setCell (data, cell) {
@@ -291,7 +291,7 @@ class Editor {
     return global
   }
   getLayout () {
-    return this.instance.layout.$refs.layer.layout
+    return this.instance.layout.$refs.layout.layout
   }
   getCell () {
     const cell = {

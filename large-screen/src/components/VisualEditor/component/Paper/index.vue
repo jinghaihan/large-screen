@@ -12,7 +12,7 @@
 
 <script>
 import TickMark from './TickMark'
-import Layout from './Layout'
+import Layout from './Layout/container'
 
 export default {
   props: {

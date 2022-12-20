@@ -1,5 +1,5 @@
 <template>
-  <div class="layer-container" @click="onClick">
+  <div class="layout-container" @click="onClick">
     <GridLayout ref="gridLayout"
                 :layout.sync="layout"
                 :col-num="grid.count"
@@ -120,7 +120,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .layer-container{
+  .layout-container{
     height: 100%;
     .vue-grid-layout{
       height: 100% !important;

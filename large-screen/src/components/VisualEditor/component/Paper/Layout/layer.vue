@@ -30,7 +30,7 @@
 
 <script>
 import _ from 'lodash'
-import { GridLayout, GridItem } from 'vue-grid-layout'
+import { GridLayout, GridItem } from '../../lib/vue-grid-layout/components/index'
 import Renderer from '../../Renderer/index.vue'
 
 export default {

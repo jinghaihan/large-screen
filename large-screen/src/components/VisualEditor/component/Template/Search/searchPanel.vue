@@ -44,7 +44,7 @@
 
 <script>
 import $ from 'jquery'
-import { GridLayout, GridItem } from 'vue-grid-layout'
+import { GridLayout, GridItem } from '../../lib/vue-grid-layout/components/index'
 
 const Renderer = () => import('../../Renderer/index.vue')
 

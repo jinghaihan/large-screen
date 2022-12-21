@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
-import { getUUID, getImage, getPdf } from '../utils'
-import { downloadFile } from '../utils/output'
+import { getImage, getPdf, downloadFile } from '../utils/output'
 import config from '../config'
 
 // 字体颜色
@@ -220,7 +219,7 @@ class Editor {
     let base64
     switch (type) {
       case 'png':
-        base64 = await getImage(this.instance.layout.$el)
+        base64 = await getImage(this.instance.layout.$refs.paper, this.instance.layout.$refs.scale.transformScale)
         break
       case 'pdf':
         base64 = await getPdf(this.instance.layout.$el)
@@ -240,6 +239,7 @@ class Editor {
 
     this.changeComponent()
     editor.grid = _.cloneDeep({ ...editor.grid, show: false })
+
     await editor.$nextTick()
 
     return { grid }
@@ -272,7 +272,7 @@ class Editor {
       views: { ...cell.views, ...cell.tables }
     }
 
-    console.log('config', config)
+    return config
   }
   getGlobal () {
     const global = {

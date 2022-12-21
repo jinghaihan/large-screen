@@ -33,7 +33,8 @@
                     size="small"
                     :key="item.key"
                     :icon="item.icon"
-                    :type="item.type">
+                    :type="item.type"
+                    @click="onOperation(item)">
             {{item.name}}
           </a-button>
         </div>
@@ -93,6 +94,8 @@
     </div>
     <!-- 批量修改 -->
     <EditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></EditModal>
+    <!-- 模板库 -->
+    <TemplateModal v-if="templateVisible" :editor="editor" @close="onModalClose"></TemplateModal>
   </div>
 </template>
 
@@ -103,14 +106,22 @@ import DragPanel from './component/DragPanel'
 import Paper from './component/Paper'
 import ConfigPanel from './component/ConfigPanel'
 import ToolBox from './component/Widget/ToolBox'
-import EditModal from './component/Widget/EditModal'
 import TooltipIcon from './component/Widget/TooltipIcon'
+import EditModal from './component/Widget/EditModal'
+import TemplateModal from './component/Widget/TemplateModal'
 import config from './config'
-import { getUUID } from './utils'
 
 export default {
   name: 'VisualEditor',
-  components: { TooltipIcon, DragPanel, Paper, ToolBox, ConfigPanel, EditModal },
+  components: {
+    TooltipIcon,
+    DragPanel,
+    Paper,
+    ToolBox,
+    ConfigPanel,
+    EditModal,
+    TemplateModal
+  },
   data () {
     return {
       editor: new Editor(),
@@ -124,7 +135,9 @@ export default {
       component: {},
       config,
       // 弹窗
-      batchEditVisible: false
+      batchEditVisible: false,
+      templateVisible: false,
+      themeVisible: false
     }
   },
   created () {
@@ -142,20 +155,33 @@ export default {
         _this.activeKey = operation.key
       }
       switch (operation.key) {
+        // 批量修改
         case 'edit':
           _this.handleEdit()
           break
+        // 截图
         case 'screenshot':
           this.editor.output('png')
           break
+        // 导出pdf
         case 'pdf':
           this.editor.output('pdf')
           break
+        // 保存
         case 'save':
           _this.handleSave()
           break
+        // 退出
         case 'close':
           _this.handleClose()
+          break
+        // 模板库
+        case 'template':
+          _this.handleTemplate()
+          break
+        // 主题库
+        case 'theme':
+          _this.handleTheme()
           break
         default:
           break
@@ -167,6 +193,8 @@ export default {
     },
     handleSave () {
       let config = this.editor.getConfig()
+
+      console.log('handleSave', config)
     },
     handleClose () {
       let _this = this
@@ -181,6 +209,14 @@ export default {
         },
         onCancel () { }
       })
+    },
+    handleTemplate () {
+      this.editor.changeComponent()
+      this.templateVisible = true
+    },
+    handleTheme () {
+      this.editor.changeComponent()
+      this.themeVisible = true
     },
     // 展开/收缩
     onTrigger (type) {
@@ -220,6 +256,8 @@ export default {
     },
     onModalClose () {
       this.batchEditVisible = false
+      this.templateVisible = false
+      this.themeVisible = false
     }
   }
 }

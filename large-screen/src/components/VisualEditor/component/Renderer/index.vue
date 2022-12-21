@@ -48,7 +48,7 @@ import Table from '../../entity/Table'
 import Border from './Border'
 import ViewSourceModal from './sourceModal.vue'
 import color from '../../config/color'
-import { getImage } from '../../utils'
+import { getImage } from '../../utils/output'
 
 export default {
   name: 'Renderer',

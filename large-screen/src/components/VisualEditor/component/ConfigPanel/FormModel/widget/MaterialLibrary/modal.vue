@@ -11,36 +11,36 @@
     wrapClassName="visual-editor-modal"
   >
     <div class="container">
-    <a-spin :spinning="loading">
-      <a-row :gutter=[24,24]>
-        <a-col v-for="(item, index) in data"
-              :key="item.id + '-' + index"
-              :xl="6"
-              :md="8"
-              :sm="2">
-          <a-card hoverable @click="onClick(item)">
-            <!-- 数据 -->
-            <template v-if="item.type !== 'create'">
-              <!-- 缩略图 -->
-              <img
-                class="image"
-                slot="cover"
-                alt="example"
-                :src="item.image"
-              />
-            </template>
-            <!-- 新增 -->
-            <template v-else>
-              <div class="create" @click="onUpload">
-                <a-icon class="icon" type="plus"></a-icon>
-                <div class="text">上传</div>
-              </div>
-            </template>
-          </a-card>
-        </a-col>
-      </a-row>
-    </a-spin>
-  </div>
+      <a-spin :spinning="loading">
+        <a-row :gutter=[24,24]>
+          <a-col v-for="(item, index) in data"
+                :key="item.id + '-' + index"
+                :xl="6"
+                :md="8"
+                :sm="2">
+            <a-card hoverable @click="onClick(item)">
+              <!-- 数据 -->
+              <template v-if="item.type !== 'create'">
+                <!-- 缩略图 -->
+                <img
+                  class="image"
+                  slot="cover"
+                  alt="example"
+                  :src="item.image"
+                />
+              </template>
+              <!-- 新增 -->
+              <template v-else>
+                <div class="create" @click="onUpload">
+                  <a-icon class="icon" type="plus"></a-icon>
+                  <div class="text">上传</div>
+                </div>
+              </template>
+            </a-card>
+          </a-col>
+        </a-row>
+      </a-spin>
+    </div>
   </a-modal>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
   <div class="basic-panel-container">
     <FormModel v-if="visible"
+               ref="formModel"
                :config="config"
                @change="onModelChange">
     </FormModel>

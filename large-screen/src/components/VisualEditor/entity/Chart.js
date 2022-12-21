@@ -75,7 +75,7 @@ class Chart {
   resize () {
     this.chart.resize()
   }
-  change (data, type, switchKeys) {
+  change (data, switchKeys) {
     if (data.theme && data.theme !== this.configData.theme) {
       this.init(data.theme)
     }
@@ -87,7 +87,7 @@ class Chart {
     // 半径
     this.handleRadiusOption(data, option)
     // 清除无用配置
-    this.handleUselessOption(type, option, this.config, switchKeys)
+    this.handleUselessOption(this.type, option, this.config, switchKeys)
     // 边框样式
     handleVmData(data, this.vm)
     this.update(option)

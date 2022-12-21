@@ -166,20 +166,15 @@ class Editor {
       switch (componentType) {
         case 'chart':
           this.batchEditChart(data, formData)
-          this.cell[key].change(
-            formData,
-            this.cell[key].type,
-            this.cell[key].configData.switch
-          )
           break
         case 'text':
           this.batchEditText(data, formData)
-          this.cell[key].update(formData)
           break
         default:
           break
       }
       this.cell[key].configData.configData = formData
+      this.triggerCellUpdate(this.cell[key], componentType)
     })
   }
   batchEditChart (data, formData) {
@@ -213,6 +208,19 @@ class Editor {
           break
       }
     })
+  }
+  triggerCellUpdate (cell, componentType) {
+    switch (componentType) {
+      case 'chart':
+        cell.change(
+          cell.configData.configData,
+          cell.configData.switchKeys
+        )
+        break
+      default:
+        cell.update(cell.configData.configData)
+        break
+    }
   }
   async output (type) {
     let data = await this.beforeExport()
@@ -463,8 +471,36 @@ class Editor {
 
     return { ...globalData, data }
   }
-  setConfig () {
-    
+  async setConfig (config) {
+    // 清空配置
+    this.clear()
+
+    config = JSON.parse(config)
+    // 画布样式配置
+    this.instance.basicPanel.$refs.formModel.form = config.global.style
+    // 全局模型
+    if (this.instance.modelPanel) {
+      this.instance.modelPanel.model = config.global.data.dataModel.id
+    }
+
+    // TODO-全局过滤条件
+
+    // layout布局
+    this.instance.layout.$refs.layout.layout = config.layout
+
+    // Cell配置-TODO-dataModelData
+    await this.instance.editor.$nextTick()
+    Object.keys(this.cell).forEach(key => {
+      // 获取配置
+      let cell = config.searchs[key] || config.views[key]
+      this.cell[key].configData = {
+        ...this.cell[key].configData,
+        switchKeys: cell.style.switchKeys,
+        collapseKeys: cell.style.collapseKeys,
+        configData: cell.style.ui
+      }
+      this.triggerCellUpdate(this.cell[key], this.cell[key].componentType)
+    })
   }
 }
 

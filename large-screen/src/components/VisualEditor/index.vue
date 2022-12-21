@@ -95,7 +95,7 @@
     <!-- 批量修改 -->
     <EditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></EditModal>
     <!-- 模板库 -->
-    <TemplateModal v-if="templateVisible" :editor="editor" @close="onModalClose"></TemplateModal>
+    <TemplateModal v-if="templateVisible" :editor="editor" @submit="onTemplateSubmit" @close="onModalClose"></TemplateModal>
   </div>
 </template>
 
@@ -258,6 +258,10 @@ export default {
       this.batchEditVisible = false
       this.templateVisible = false
       this.themeVisible = false
+    },
+    // 加载模板
+    onTemplateSubmit (config) {
+      this.editor.setConfig(config)
     }
   }
 }

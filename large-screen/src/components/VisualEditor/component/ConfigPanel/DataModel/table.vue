@@ -227,7 +227,8 @@ export default {
             label: map[item.type],
             value: item.type,
             children: [],
-            isLeaf: false
+            isLeaf: false,
+            selectable: false
           })
           index = options.length - 1
         }

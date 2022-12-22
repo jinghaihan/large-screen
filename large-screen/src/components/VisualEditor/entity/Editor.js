@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { values } from 'lodash'
 import moment from 'moment'
 import hotkeys from 'hotkeys-js'
 import { getImage, getPdf, downloadFile } from '../utils/output'
@@ -26,6 +26,7 @@ class Editor {
     this.cell = {}
     this.clipBoard = {}
     this.maxClipBoard = 20
+    this.builtinConditions = null
   }
   setInstance (data) {
     Object.keys(data).forEach(key => {
@@ -260,6 +261,9 @@ class Editor {
     }
   }
   clearDataModelConfig () {
+    // 清除默认数据限制器配置
+    this.builtinConditions = null
+    // 清除组件数据模型配置
     Object.keys(this.cell).forEach(key => {
       delete this.cell[key].configData.dataModelData
     })
@@ -294,7 +298,15 @@ class Editor {
           type: 'dataModel',
           id: this.instance.modelPanel.model
         },
-        builtinConditions: {}
+        builtinConditions: this.builtinConditions.map(data => {
+          let arr = data.field.split('-')
+          return {
+            fieldId: arr[0],
+            fieldType: arr[1],
+            option: data.option,
+            values: data.values instanceof Array ? data.values : [data.values]
+          }
+        })
       }
     }
     return global
@@ -493,13 +505,17 @@ class Editor {
         this.instance.modelPanel.changeModel(config.global.data.dataModel.id)
       }
     }
-
-    // TODO-全局过滤条件
-
+    // 全局过滤条件
+    this.builtinConditions = config.global.data.builtinConditions.map(data => {
+      return {
+        field: data.fieldId + '-' + data.fieldType,
+        option: data.option,
+        values: data.values.length > 1 ? data.values : data.values[0]
+      }
+    })
     // layout布局
     await this.setLayoutConfig(config.layout)
     await this.instance.editor.$nextTick()
-
     // Cell配置
     this.setCellConfig(config)
   }

@@ -38,6 +38,18 @@
                 @change="onChange('change')">
       </a-select>
     </div>
+    <!-- 树形下拉框 -->
+    <div :class="getClassName('tree-select')"
+         v-if="config.type === 'tree-select'">
+      <a-tree-select class="form-item"
+                    :tree-data="config.options"
+                    :placeholder="config.placeholder"
+                    :disabled="formData.disabled"
+                    :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
+                    v-model="formData.value"
+                    @change="onChange('change')">
+      </a-tree-select>
+    </div>
     <!-- 级联下拉框 -->
     <div :class="getClassName('cascader')"
          v-if="config.type === 'cascader'"
@@ -304,7 +316,7 @@ export default {
       justify-content: center;
     }
     .action-wrapper{
-      color: #C40001;
+      color: #1890ff;
       .action-icon{
         margin: 0 6px;
       }

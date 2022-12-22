@@ -3,7 +3,8 @@
     <component ref="component"
                :is="data.component"
                v-bind="{ editor, component }"
-               @change="onChange">
+               @change="onChange"
+               @dimension="onDimension">
     </component>
   </div>
 </template>
@@ -39,6 +40,9 @@ export default {
       if (this.$refs.component) {
         this.$refs.component.init()
       }
+    },
+    onDimension () {
+      this.$emit('dimension')
     }
   }
 }

@@ -18,7 +18,8 @@
                   :vertical-compact="false"
                   :prevent-collision="true"
                   :margin="[0, 0]"
-                  :transformScale="transformScale">
+                  :transformScale="transformScale"
+                  @layout-updated="layoutUpdatedEvent">
         <GridItem v-for="item in layout"
                   :key="item.i"
                   :x="item.x"
@@ -151,6 +152,20 @@ export default {
         bottom: value.bottom || 0
       })
       $(this.$refs.button).find('.button').eq(0).css('margin-right', value.margin || (8 + 'px'))
+    },
+    // 回显
+    onUpdate (layout) {
+      this.updatePromise = {}
+      return new Promise((resolve, reject) => {
+        this.updatePromise.resolve = resolve
+        this.updatePromise.reject = reject
+        this.layout = layout
+      })
+    },
+    layoutUpdatedEvent () {
+      if (this.updatePromise) {
+        this.updatePromise.resolve()
+      }
     }
   }
 }

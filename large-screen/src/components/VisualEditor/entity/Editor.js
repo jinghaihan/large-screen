@@ -91,6 +91,7 @@ class Editor {
     instance.layout = []
     this.instance['layout'].$refs.layout.layout = []
     this.cell = {}
+    this.changeComponent()
   }
   setCell (data, cell) {
     this.cell[data.key] = cell
@@ -299,7 +300,14 @@ class Editor {
     return global
   }
   getLayout () {
-    return this.instance.layout.$refs.layout.layout
+    const layout = {
+      global: this.instance.layout.$refs.layout.layout
+    }
+    if (this.instance.searchPanel) {
+      layout.searchs = this.instance.searchPanel.layout
+    }
+
+    return layout
   }
   getCell () {
     const cell = {
@@ -480,19 +488,35 @@ class Editor {
     this.instance.basicPanel.$refs.formModel.form = config.global.style
     // 全局模型
     if (this.instance.modelPanel) {
-      this.instance.modelPanel.model = config.global.data.dataModel.id
+      if (config.global.data.dataModel.id) {
+        this.instance.modelPanel.model = config.global.data.dataModel.id
+        this.instance.modelPanel.changeModel(config.global.data.dataModel.id)
+      }
     }
 
     // TODO-全局过滤条件
 
     // layout布局
-    this.instance.layout.$refs.layout.layout = config.layout
-
-    // Cell配置-TODO-dataModelData
+    await this.setLayoutConfig(config.layout)
     await this.instance.editor.$nextTick()
+
+    // Cell配置
+    this.setCellConfig(config)
+  }
+  async setLayoutConfig (data) {
+    // 全局布局
+    await this.instance.layout.$refs.layout.onUpdate(data.global)
+    this.instance.layout.$refs.layout.updatePromise = null
+    // 查询面板布局
+    await this.instance.searchPanel.onUpdate(data.searchs)
+    this.instance.searchPanel.updatePromise = null
+  }
+  setCellConfig (config) {
+    // TODO-dataModelData
     Object.keys(this.cell).forEach(key => {
       // 获取配置
       let cell = config.searchs[key] || config.views[key]
+      console.log(cell)
       this.cell[key].configData = {
         ...this.cell[key].configData,
         switchKeys: cell.style.switchKeys,

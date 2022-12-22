@@ -45,7 +45,8 @@
                       editor,
                       component
                      }"
-                     @change="onChange">
+                     @change="onChange"
+                     @dimension="initConfig">
           </component>
         </div>
       </template>

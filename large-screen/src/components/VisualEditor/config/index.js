@@ -1,4 +1,4 @@
-import { sidebar, renderer, library, navbar, configPanel, basic, model, batch } from './editor'
+import { sidebar, renderer, library, navbar, configPanel, basic, model } from './editor'
 import { chart } from './chart'
 import { text } from './text'
 import { decoration } from './decoration'
@@ -9,8 +9,7 @@ const config = {
   component: { chart, text, decoration, search, table },
   operation: { sidebar, renderer, library, navbar, configPanel },
   basic,
-  model,
-  batch
+  model
 }
 
 export default config

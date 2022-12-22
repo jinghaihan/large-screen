@@ -24,6 +24,7 @@ const library = [
 ]
 const navbar = [
   { name: '批量修改', icon: 'edit', key: 'edit' },
+  { name: '默认数据限制器', icon: 'filter', key: 'limit' },
   { name: '截图', icon: 'file-image', key: 'screenshot' },
   { name: '生成PDf', icon: 'file-pdf', key: 'pdf' },
   { name: '保存', icon: 'save', key: 'save' }
@@ -86,72 +87,4 @@ const model = [
   }
 ]
 
-// 批量修改
-const batch = [
-  {
-    type: 'select',
-    label: '主题',
-    key: 'theme',
-    layout: {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 18 }
-    },
-    defaultValue: 'default',
-    props: {
-      options: [
-        { label: '默认', value: 'default' },
-        { label: 'light', value: 'light' },
-        { label: 'macarons', value: 'macarons' },
-        { label: 'infographic', value: 'infographic' },
-        { label: 'shine', value: 'shine' },
-        { label: 'roma', value: 'roma' }
-      ]
-    }
-  },
-  {
-    type: 'color-picker',
-    label: '字体颜色',
-    key: 'fontColor',
-    col: 12,
-    layout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    },
-    defaultValue: { hex: '#333' }
-  },
-  {
-    type: 'color-picker',
-    label: '边框主色',
-    key: 'vm-border-primaryColor',
-    col: 12,
-    layout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    },
-    defaultValue: { hex: color['dataV-primary-color'] }
-  },
-  {
-    type: 'color-picker',
-    label: '边框副色',
-    key: 'vm-border-deputyColor',
-    col: 12,
-    layout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    },
-    defaultValue: { hex: color['dataV-deputy-color'] }
-  },
-  {
-    type: 'color-picker',
-    label: '边框背景色',
-    key: 'vm-border-backgroundColor',
-    col: 12,
-    layout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    },
-    defaultValue: { hex: color['dataV-background-color'] }
-  }
-]
-
-export { sidebar, renderer, library, navbar, configPanel, basic, model, batch }
+export { sidebar, renderer, library, navbar, configPanel, basic, model }

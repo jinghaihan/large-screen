@@ -22,7 +22,7 @@ class Editor {
   constructor () {
     this.instance = {}
     this.operation = { ...config.operation }
-    this.config = { basic: config.basic, model: config.model, batch: config.batch }
+    this.config = { basic: config.basic, model: config.model }
     this.cell = {}
     this.clipBoard = {}
     this.maxClipBoard = 20
@@ -505,18 +505,19 @@ class Editor {
   }
   async setLayoutConfig (data) {
     // 全局布局
-    await this.instance.layout.$refs.layout.onUpdate(data.global)
+    await this.instance.layout.$refs.layout.onUpdate(data.global || [])
     this.instance.layout.$refs.layout.updatePromise = null
     // 查询面板布局
-    await this.instance.searchPanel.onUpdate(data.searchs)
-    this.instance.searchPanel.updatePromise = null
+    if (this.instance.searchPanel) {
+      await this.instance.searchPanel.onUpdate(data.searchs || [])
+      this.instance.searchPanel.updatePromise = null
+    }
   }
   setCellConfig (config) {
     // TODO-dataModelData
     Object.keys(this.cell).forEach(key => {
       // 获取配置
       let cell = config.searchs[key] || config.views[key]
-      console.log(cell)
       this.cell[key].configData = {
         ...this.cell[key].configData,
         switchKeys: cell.style.switchKeys,

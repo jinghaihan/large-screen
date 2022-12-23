@@ -27,6 +27,8 @@ class Editor {
     this.clipBoard = {}
     this.maxClipBoard = 20
     this.builtinConditions = null
+    // smartReport / complexReport / largeScreen / dashboard
+    this.type = 'smartReport'
   }
   setInstance (data) {
     Object.keys(data).forEach(key => {
@@ -94,7 +96,7 @@ class Editor {
     this.cell = {}
     this.changeComponent()
   }
-  setCell (data, cell) {
+  storeCell (data, cell) {
     this.cell[data.key] = cell
   }
   deleteCell (data) {
@@ -276,10 +278,12 @@ class Editor {
       }
     })
   }
+  // 保存
   getConfig () {
-    let cell = this.getCell()
+    let global = this.getGlobal()
+    let cell = this.getCell(global.data)
     let config = {
-      global: this.getGlobal(),
+      global: { style: global.style, data: global.data },
       layout: this.getLayout(),
       searchs: cell.searchs,
       views: { ...cell.views, ...cell.tables }
@@ -288,17 +292,20 @@ class Editor {
     return config
   }
   getGlobal () {
-    const global = {
-      style: this.instance.basicPanel.formData
-    }
+    let style = this.instance.basicPanel.formData
     // 全局模型
+    let data
     if (this.instance.modelPanel) {
-      global.data = {
+      data = {
         dataModel: {
           type: 'dataModel',
           id: this.instance.modelPanel.model
         },
-        builtinConditions: this.builtinConditions.map(data => {
+        builtinConditions: null
+      }
+      // 全局默认限制器
+      if (this.builtinConditions) {
+        data.builtinConditions = this.builtinConditions.map(data => {
           let arr = data.field.split('-')
           return {
             fieldId: arr[0],
@@ -309,11 +316,11 @@ class Editor {
         })
       }
     }
-    return global
+    return { style, data }
   }
   getLayout () {
     const layout = {
-      global: this.instance.layout.$refs.layout.layout
+      paper: this.instance.layout.$refs.layout.layout
     }
     if (this.instance.searchPanel) {
       layout.searchs = this.instance.searchPanel.layout
@@ -321,7 +328,7 @@ class Editor {
 
     return layout
   }
-  getCell () {
+  getCell (dataModel) {
     const cell = {
       searchs: {},
       views: {},
@@ -366,7 +373,13 @@ class Editor {
           break
       }
       
-      cell[target][key] = config
+      cell[target][key] = {
+        ...config,
+        data: {
+          ...config.data,
+          ...dataModel
+        }
+      }
     })
     return cell
   }
@@ -491,6 +504,7 @@ class Editor {
 
     return { ...globalData, data }
   }
+  // 回显
   async setConfig (config) {
     // 清空配置
     this.clear()
@@ -498,30 +512,39 @@ class Editor {
     config = JSON.parse(config)
     // 画布样式配置
     this.instance.basicPanel.$refs.formModel.form = config.global.style
-    // 全局模型
-    if (this.instance.modelPanel) {
-      if (config.global.data.dataModel.id) {
-        this.instance.modelPanel.model = config.global.data.dataModel.id
-        this.instance.modelPanel.changeModel(config.global.data.dataModel.id)
-      }
+    // 智能报表
+    if (this.type === 'smartReport') {
+      // 全局模型/全局过滤条件
+      this.setGlobal(config.global)
     }
-    // 全局过滤条件
-    this.builtinConditions = config.global.data.builtinConditions.map(data => {
-      return {
-        field: data.fieldId + '-' + data.fieldType,
-        option: data.option,
-        values: data.values.length > 1 ? data.values : data.values[0]
-      }
-    })
     // layout布局
-    await this.setLayoutConfig(config.layout)
+    await this.setLayout(config.layout)
     await this.instance.editor.$nextTick()
     // Cell配置
-    this.setCellConfig(config)
+    this.setCell(config)
   }
-  async setLayoutConfig (data) {
+  setGlobal (global) {
+    // 全局模型
+    if (this.instance.modelPanel) {
+      if (global.data.dataModel.id) {
+        this.instance.modelPanel.model = global.data.dataModel.id
+        this.instance.modelPanel.changeModel(global.data.dataModel.id)
+      }
+    }
+    // 全局默认限制器
+    if (global.data.builtinConditions) {
+      this.builtinConditions = global.data.builtinConditions.map(data => {
+        return {
+          field: data.fieldId + '-' + data.fieldType,
+          option: data.option,
+          values: data.values.length > 1 ? data.values : data.values[0]
+        }
+      })
+    }
+  }
+  async setLayout (data) {
     // 全局布局
-    await this.instance.layout.$refs.layout.onUpdate(data.global || [])
+    await this.instance.layout.$refs.layout.onUpdate(data.paper || [])
     this.instance.layout.$refs.layout.updatePromise = null
     // 查询面板布局
     if (this.instance.searchPanel) {
@@ -529,7 +552,7 @@ class Editor {
       this.instance.searchPanel.updatePromise = null
     }
   }
-  setCellConfig (config) {
+  setCell (config) {
     // TODO-dataModelData
     Object.keys(this.cell).forEach(key => {
       // 获取配置

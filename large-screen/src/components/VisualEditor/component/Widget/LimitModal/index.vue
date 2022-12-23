@@ -70,13 +70,15 @@ export default {
           }
         })
       }
-      
+      // 字段枚举值
       configData[0].options = options
       // 选择字段联动修改字段格式
       configData[0].relations.assign['format'] = function (value, formData) {
         let option = options[0].children.find(item => item.value === formData.field) || options[1].children.find(item => item.value === formData.field)
         return option.format
       }
+      // 限制条件
+      configData[2].relations.config = this.handleConfig
       this.config = configData
       this.visible = true
 
@@ -94,6 +96,7 @@ export default {
     },
     onSubmit () {
       this.$refs.form.validateFields().then(result => {
+        console.log(result)
         if (result.error) return
         this.editor.builtinConditions = result.value
         this.closeModal()
@@ -104,6 +107,40 @@ export default {
     },
     getContainer () {
       return () => document.getElementById('visual-editor-container')
+    },
+    handleConfig (value, formData) {
+      formData.value.value = undefined
+      let config = {
+        column: 8,
+        center: true
+      }
+      if (value === 'IS NULL' || value === 'IS NOT NULL') {
+        // 为空/非空
+        config = {
+          ...config,
+          type: 'text',
+          key: 'value',
+          rules: []
+        }
+      } else if (value === 'BETWEEN') {
+        // 介于
+        config = {
+          ...config,
+          type: 'input-between',
+          key: 'value',
+          placeholder: ['最小值', '最大值'],
+          rules: []
+        }
+      } else {
+        config = {
+          ...config,
+          type: 'input',
+          key: 'value',
+          placeholder: '请输入限制条件值',
+          rules: []
+        }
+      }
+      return { key: 'value', config }
     }
   }
 }

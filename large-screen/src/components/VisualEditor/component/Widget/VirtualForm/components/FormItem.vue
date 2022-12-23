@@ -116,6 +116,16 @@
               v-show="isShowAction(opt.event)">
       </a-icon>
     </div>
+    <!-- 比较输入框 -->
+    <div :class="getClassName('input-between')"
+         v-if="config.type === 'input-between'">
+      <InputBetween class="form-item"
+                    :placeholder="config.placeholder"
+                    :disabled="formData.disabled"
+                    :formData="formData"
+                    @change="onChange('change')">
+      </InputBetween>
+    </div>
 
     <!-- 错误信息 -->
     <div class="form-item-explain"
@@ -130,6 +140,7 @@
 <script>
 import { requiredValidate, maxValidate, minValidate, patternValidate, validatorValidate } from '../validate'
 import { getFieldsValue } from '../utils'
+import InputBetween from './widget/inputBetween.vue'
 
 export default {
   props: {
@@ -160,6 +171,7 @@ export default {
       required: true
     }
   },
+  components: { InputBetween },
   data () {
     return {
       formData: this.data

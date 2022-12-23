@@ -96,12 +96,15 @@ const config = [
     showSearch: true,
     rules: [
       { required: true, message: '请选择限制条件' }
-    ]
+    ],
+    relations: {
+      config: null
+    }
   },
   {
     column: 8,
     type: 'input',
-    key: 'values',
+    key: 'value',
     center: true,
     defaultValue: undefined,
     placeholder: '请输入限制条件值',

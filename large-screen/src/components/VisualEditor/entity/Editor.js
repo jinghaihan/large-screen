@@ -19,7 +19,7 @@ const fontColorList = [
 ]
 
 class Editor {
-  constructor () {
+  constructor (option) {
     this.instance = {}
     this.operation = { ...config.operation }
     this.config = { basic: config.basic, model: config.model }
@@ -311,7 +311,8 @@ class Editor {
             fieldId: arr[0],
             fieldType: arr[1],
             option: data.option,
-            values: data.values instanceof Array ? data.values : [data.values]
+            // 介于
+            values: data.option === 'BETWEEN' ? JSON.parse(data.values) : [data.values]
           }
         })
       }
@@ -537,7 +538,7 @@ class Editor {
         return {
           field: data.fieldId + '-' + data.fieldType,
           option: data.option,
-          values: data.values.length > 1 ? data.values : data.values[0]
+          values: data.values.length > 1 ? JSON.stringify(data.values) : data.values[0]
         }
       })
     }

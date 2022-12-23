@@ -3,7 +3,7 @@
     <div v-if="!data.enable" class="holder"> 复杂表格 </div>
     <div v-else class="content">
       <SpreadSheet ref="sheet"
-                   :sheetId="data.key"
+                   :sheetId="data.key + '-' + getUUID()"
                    :config="sheetConfig"
                    @init="onInit"
                    @change="onChange"
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { getUUID } from '../../../utils'
 import SpreadSheet from '../../SpreadSheet'
 
 export default {
@@ -46,13 +47,16 @@ export default {
     }
   },
   created () {
+    this.getUUID = getUUID
     if (this.data.enable) {
       this.init()
     }
   },
   methods: {
     init () {
-      this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
+      if (this.editor.instance['componentPanel']) {
+        this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
+      }
     },
     onInit () {
       
@@ -64,7 +68,9 @@ export default {
       // 更新数据模型面板配置
       if (!data.mutiple) {
         let { ci, ri } = data.dataProxy.selector
-        this.editor.instance['componentPanel'].onSheetChange({ ci, ri })
+        if (this.editor.instance['componentPanel']) {
+          this.editor.instance['componentPanel'].onSheetChange({ ci, ri })
+        }
       }
     },
     resize () {

@@ -96,7 +96,6 @@ export default {
     },
     onSubmit () {
       this.$refs.form.validateFields().then(result => {
-        console.log(result)
         if (result.error) return
         this.editor.builtinConditions = result.value
         this.closeModal()
@@ -112,15 +111,17 @@ export default {
       formData.value.value = undefined
       let config = {
         column: 8,
-        center: true
+        center: true,
+        rules: [
+          { required: true, message: '请输入限制条件值' }
+        ]
       }
       if (value === 'IS NULL' || value === 'IS NOT NULL') {
         // 为空/非空
         config = {
           ...config,
           type: 'text',
-          key: 'value',
-          rules: []
+          key: 'value'
         }
       } else if (value === 'BETWEEN') {
         // 介于
@@ -128,16 +129,14 @@ export default {
           ...config,
           type: 'input-between',
           key: 'value',
-          placeholder: ['最小值', '最大值'],
-          rules: []
+          placeholder: ['最小值', '最大值']
         }
       } else {
         config = {
           ...config,
           type: 'input',
           key: 'value',
-          placeholder: '请输入限制条件值',
-          rules: []
+          placeholder: '请输入限制条件值'
         }
       }
       return { key: 'value', config }

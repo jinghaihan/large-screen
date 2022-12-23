@@ -193,7 +193,9 @@ export default {
         // self.width = self.$el.offsetWidth;
         addWindowEventListener('resize', self.onWindowResize)
 
-        compact(self.layout, self.verticalCompact)
+        if (!this.allowOverlap) {
+          compact(self.layout, self.verticalCompact)
+        }
 
         self.$emit('layout-updated', self.layout)
 

@@ -31,12 +31,17 @@ export default {
     scale: {
       type: Number,
       required: true
+    },
+    proportion: {
+      type: Number,
+      required: false,
+      default: 0.9
     }
   },
   data () {
     return {
       transformScale: 1,
-      coefficient: 120,
+      basicPixel: 120,
       width: 0,
       height: 0
     }
@@ -56,8 +61,8 @@ export default {
     }
   },
   created () {
-    this.width = this.ratio.width * this.coefficient
-    this.height = this.ratio.height * this.coefficient
+    this.width = this.ratio.width * this.basicPixel
+    this.height = this.ratio.height * this.basicPixel
     this.setScale = _.debounce(this.setScale, 50)
   },
   mounted () {
@@ -69,15 +74,15 @@ export default {
   },
   methods: {
     handleChange () {
-      this.width = this.ratio.width * this.coefficient
-      this.height = this.ratio.height * this.coefficient
+      this.width = this.ratio.width * this.basicPixel
+      this.height = this.ratio.height * this.basicPixel
       this.setScale()
     },
     getScale () {
       if (this.container) {
         const { width, height } = this
-        const wh = (window.innerHeight - 95) * 0.9 / height
-        const ww = (window.innerWidth - 335) * 0.9 / width
+        const wh = (window.innerHeight - 95) * this.proportion / height
+        const ww = (window.innerWidth - 335) * this.proportion / width
         return ww < wh ? ww : wh
       }
     },

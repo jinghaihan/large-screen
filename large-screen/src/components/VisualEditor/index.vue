@@ -98,6 +98,8 @@
     <TemplateModal v-if="templateVisible" :editor="editor" @submit="onTemplateSubmit" @close="onModalClose"></TemplateModal>
     <!-- 默认数据限制器 -->
     <LimitModal v-if="limitVisible" :editor="editor" @close="onModalClose"></LimitModal>
+    <!-- 预览 -->
+    <ViewModal v-if="viewVisible" :editor="editor" :grid="grid" @close="onModalClose"></ViewModal>
   </div>
 </template>
 
@@ -112,6 +114,7 @@ import TooltipIcon from './component/Widget/TooltipIcon'
 import EditModal from './component/Widget/EditModal'
 import TemplateModal from './component/Widget/TemplateModal'
 import LimitModal from './component/Widget/LimitModal'
+import ViewModal from './component/Widget/ViewModal'
 import config from './config'
 
 export default {
@@ -124,7 +127,8 @@ export default {
     ConfigPanel,
     EditModal,
     TemplateModal,
-    LimitModal
+    LimitModal,
+    ViewModal
   },
   data () {
     return {
@@ -142,7 +146,8 @@ export default {
       batchEditVisible: false,
       templateVisible: false,
       themeVisible: false,
-      limitVisible: false
+      limitVisible: false,
+      viewVisible: false
     }
   },
   created () {
@@ -192,6 +197,9 @@ export default {
         case 'limit':
           _this.handleLimit()
           break
+        case 'view':
+          _this.handleView()
+          break
         default:
           break
       }
@@ -229,6 +237,9 @@ export default {
     },
     handleLimit () {
       this.limitVisible = true
+    },
+    handleView () {
+      this.viewVisible = true
     },
     // 展开/收缩
     onTrigger (type) {
@@ -271,6 +282,7 @@ export default {
       this.templateVisible = false
       this.themeVisible = false
       this.limitVisible = false
+      this.viewVisible = false
     },
     // 加载模板
     onTemplateSubmit (config) {

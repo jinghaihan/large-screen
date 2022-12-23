@@ -109,7 +109,7 @@ const config = [
     defaultValue: undefined,
     placeholder: '请输入限制条件值',
     rules: [
-      { required: false, message: '请输入限制条件值' }
+      { required: true, message: '请输入限制条件值' }
     ]
   },
   {

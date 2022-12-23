@@ -29,8 +29,7 @@
                   :i="item.i"
                   :maxW="grid.count"
                   :maxH="grid.maxRows"
-                  @move="onMove(item)"
-                  @resize="onResize(item)">
+                  :static="type === 'view'">
           <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
         </GridItem>
       </GridLayout>
@@ -50,6 +49,7 @@ import { GridLayout, GridItem } from '../../lib/vue-grid-layout/components/index
 const Renderer = () => import('../../Renderer/index.vue')
 
 export default {
+  name: 'SearchPanel',
   props: {
     editor: null,
     component: {
@@ -67,6 +67,11 @@ export default {
     transformScale: {
       type: Number,
       required: false
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'config'
     }
   },
   components: { GridLayout, GridItem, Renderer },
@@ -128,12 +133,6 @@ export default {
         },
         onCancel () { }
       })
-    },
-    onMove (data) {
-      this.editor.changeComponent(data)
-    },
-    onResize (data) {
-      this.editor.changeComponent(data)
     },
     resize () {
       this.calcGrid()

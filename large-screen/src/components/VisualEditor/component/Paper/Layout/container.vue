@@ -136,6 +136,7 @@ export default {
     z-index: 1;
     background: transparent;
     .paper-content-container{
+      height: 100%;
       width: 100%;
       background: var(--primary-color);
       box-shadow: 0 0 12px var(--shadow-color);

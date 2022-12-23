@@ -17,7 +17,8 @@
                       transformScale: transformScale,
                       item: data,
                       src: cell.src,
-                      data: cell.props
+                      data: cell.props,
+                      type
                     }">
           </component>
         </div>
@@ -65,6 +66,11 @@ export default {
     transformScale: {
       type: Number,
       required: true
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'config'
     }
   },
   components: { ViewSourceModal, Border },
@@ -87,17 +93,19 @@ export default {
   computed: {
     operation () {
       let data = []
-      if (this.component.componentType) {
-        data = this.editor.operation.renderer.filter(item => {
-          let flag
-          if (!item.enable || item.enable.includes(this.component.componentType)) {
-            flag = true
-          }
-          if (item.disable && item.disable.includes(this.component.componentType)) {
-            flag = false
-          }
-          return flag
-        })
+      if (this.type !== 'view') {
+        if (this.component.componentType) {
+          data = this.editor.operation.renderer.filter(item => {
+            let flag
+            if (!item.enable || item.enable.includes(this.component.componentType)) {
+              flag = true
+            }
+            if (item.disable && item.disable.includes(this.component.componentType)) {
+              flag = false
+            }
+            return flag
+          })
+        }
       }
       return data
     }
@@ -289,7 +297,9 @@ export default {
       _this.observer.observe(_this.$refs.render)
     },
     onClick (e) {
-      this.editor.changeComponent(this.data)
+      if (this.type !== 'view') {
+        this.editor.changeComponent(this.data)
+      }
     },
     async onOperation (operation) {
       switch (operation.key) {

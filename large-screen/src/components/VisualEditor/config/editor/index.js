@@ -23,6 +23,7 @@ const library = [
   { name: '主题库', icon: 'bg-colors', key: 'theme', type: 'danger' }
 ]
 const navbar = [
+  { name: '预览', icon: 'eye', key: 'view' },
   { name: '批量修改', icon: 'edit', key: 'edit' },
   { name: '默认数据限制器', icon: 'filter', key: 'limit' },
   { name: '截图', icon: 'file-image', key: 'screenshot' },

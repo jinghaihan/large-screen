@@ -30,7 +30,7 @@
                   :maxW="grid.count"
                   :maxH="grid.maxRows"
                   :static="type === 'view'">
-          <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
+          <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" :type="type" @delete="onDelete"></Renderer>
         </GridItem>
       </GridLayout>
       <!-- 按钮 -->
@@ -141,7 +141,7 @@ export default {
       if (this.$refs.content) {
         const rect = this.$refs.content.getBoundingClientRect()
         this.grid.count = this.item.w
-        this.grid.maxRows = Math.ceil(this.grid.count / rect.width * rect.height)
+        this.grid.maxRows = Math.floor(this.grid.count / rect.width * rect.height)
         this.grid.rowHeight = rect.width / this.grid.count / this.transformScale
       }
     },
@@ -176,7 +176,6 @@ export default {
     width: 100%;
     position: relative;
     overflow: hidden;
-    overflow-y: auto;
     .holder{
       height: 100%;
       width: 100%;

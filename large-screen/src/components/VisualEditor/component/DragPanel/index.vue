@@ -279,7 +279,7 @@ export default {
     validatePosition (el) {
       const gridSize = {
         x: this.editor.instance.editor.grid.count,
-        y: Math.ceil(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
+        y: Math.floor(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
       }
       if (DragPos.y + el.h > gridSize.y) {
         return false

@@ -1,33 +1,35 @@
 <template>
-  <div class="scale-container"
-       ref="scale"
-       :style="{
-          width: width + 'px',
-          height: height + 'px',
-        }">
-    <GridLayout ref="gridLayout"
-                :layout.sync="layout"
-                :col-num="grid.count"
-                :row-height="rowHeight"
-                :is-draggable="false"
-                :is-resizable="false"
-                :vertical-compact="false"
-                :prevent-collision="true"
-                :margin="[0, 0]"
-                :transformScale="scale"
-                :allowOverlap="true"
-                @layout-updated="layoutUpdatedEvent">
-      <GridItem v-for="item in layout"
-                :key="item.i"
-                :x="item.x"
-                :y="item.y"
-                :w="item.w"
-                :h="item.h"
-                :i="item.i"
-                :static="true">
-        <Renderer type="view" :editor="viewer" :data="item" :component="{}" :transformScale="scale"></Renderer>
-      </GridItem>
-    </GridLayout>
+  <div class="viewer-container" ref="container">
+    <div class="scale-container"
+        ref="scale"
+        :style="{
+            width: width + 'px',
+            height: height + 'px',
+          }">
+      <GridLayout ref="gridLayout"
+                  :layout.sync="layout"
+                  :col-num="grid.count"
+                  :row-height="rowHeight"
+                  :is-draggable="false"
+                  :is-resizable="false"
+                  :vertical-compact="false"
+                  :prevent-collision="true"
+                  :margin="[0, 0]"
+                  :transformScale="scale"
+                  :allowOverlap="true"
+                  @layout-updated="layoutUpdatedEvent">
+        <GridItem v-for="item in layout"
+                  :key="item.i"
+                  :x="item.x"
+                  :y="item.y"
+                  :w="item.w"
+                  :h="item.h"
+                  :i="item.i"
+                  :static="true">
+          <Renderer type="view" :editor="viewer" :data="item" :component="{}" :transformScale="scale"></Renderer>
+        </GridItem>
+      </GridLayout>
+    </div>
   </div>
 </template>
 
@@ -65,15 +67,19 @@ export default {
     this.init()
   },
   methods: {
-    init () {
+    async init () {
       this.viewer.setInstance({ layout: this })
+
+      let rect = this.$refs.container.getBoundingClientRect()
       this.width = this.config.global.style.ratioWidth * this.basicPixel
       this.height = this.config.global.style.ratioHeight * this.basicPixel
-      this.scale = window.innerWidth / this.width
+      // 减去滚动条宽度
+      this.scale = rect.width / this.width * (rect.width - 8) / rect.width
       this.$refs.scale.style.setProperty('--scale', this.scale)
       this.rowHeight = (this.container.getBoundingClientRect().width / this.grid.count) / this.scale
 
-      this.viewer.setLayout(this.config.layout)
+      await this.viewer.setConfig(this.config)
+      this.$emit('inited')
     },
     // 回显
     onUpdate (layout) {
@@ -98,11 +104,15 @@ export default {
     --scale: 1;
     flex-shrink: 0;
   }
-  .scale-container {
-    transform: scale(var(--scale));
-    transform-origin: 0 0;
-    .vue-grid-layout{
-      height: 100% !important;
+  .viewer-container{
+    height: 100%;
+    width: 100%;
+    .scale-container {
+      transform: scale(var(--scale));
+      transform-origin: 0 0;
+      .vue-grid-layout{
+        height: 100% !important;
+      }
     }
   }
 </style>

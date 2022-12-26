@@ -14,7 +14,17 @@
         <TooltipIcon title="退出" icon="close" @click="closeModal"></TooltipIcon>
       </template>
       <div ref="container" class="container">
-        <Viewer v-if="mounted" :container="$refs.container" :config="config" :grid="grid"></Viewer>
+        <Viewer v-if="mounted"
+                :container="$refs.container"
+                :config="config"
+                :grid="grid"
+                @inited="inited">
+        </Viewer>
+        <a-spin class="spin"
+                v-show="loading"
+                :spinning="loading"
+                size="large">
+        </a-spin>
       </div>
     </a-card>
   </a-modal>
@@ -37,19 +47,24 @@ export default {
   data () {
     return {
       config: null,
-      mounted: false
+      mounted: false,
+      loading: false
     }
   },
-  created () {
+  mounted () {
     this.init()
-  },
-  async mounted () {
-    await this.$nextTick()
-    this.mounted = true
   },
   methods: {
     init () {
+      this.loading = true
       this.config = this.editor.getConfig()
+      // 弹窗通过zoom展开，需要0.3s
+      setTimeout(() => {
+        this.mounted = true
+      }, 300)
+    },
+    inited () {
+      this.loading = false
     },
     closeModal (refresh) {
       this.$emit('close', refresh)
@@ -68,6 +83,17 @@ export default {
       .vue-grid-layout{
         height: 100% !important;
       }
+    }
+    .spin{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   /deep/.ant-card-body{

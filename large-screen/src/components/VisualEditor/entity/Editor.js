@@ -321,10 +321,10 @@ class Editor {
   }
   getLayout () {
     const layout = {
-      paper: this.instance.layout.$refs.layout.layout
+      paper: _.cloneDeep(this.instance.layout.$refs.layout.layout)
     }
     if (this.instance.searchPanel) {
-      layout.searchs = this.instance.searchPanel.layout
+      layout.searchs = _.cloneDeep(this.instance.searchPanel.layout)
     }
 
     return layout

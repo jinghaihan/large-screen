@@ -61,8 +61,8 @@ export default {
     onInit () {
       // 简单表格-回填维度/指标
       this.cell = this.editor.cell[this.data.key]
-      if (this.editor.instance['modelPanel']) {
-        this.cell.initDimensionAndMeasure(this.editor.instance['modelPanel'].modelData)
+      if (this.editor.instance['model']) {
+        this.cell.initDimensionAndMeasure(this.editor.instance['model'].modelData)
       }
     },
     onChange (data) {

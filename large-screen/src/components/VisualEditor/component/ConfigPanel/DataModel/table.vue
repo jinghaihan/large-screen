@@ -265,7 +265,7 @@ export default {
       this.handleForm()
 
       // 存在全局模型配置
-      if (this.editor.instance['modelPanel']) {
+      if (this.editor.instance['model']) {
         this.getModelData()
       }
       this.$forceUpdate()
@@ -283,7 +283,7 @@ export default {
       }
     },
     getModelData () {
-      this.modelData = this.editor.instance['modelPanel'].modelData
+      this.modelData = this.editor.instance['model'].modelData
       if (this.modelData.dimensions && this.modelData.measures) {
         this.fieldOptions = []
         this.dimensionMap = {}

@@ -55,6 +55,12 @@ export default {
     }
   },
   methods: {
+    setOptions (options) {
+      this.props = {
+        ...this.props,
+        options
+      }
+    },
     handleColor () {
       if (this.$refs.container) {
         const { color, backgroundColor, borderColor, placeholderColor } = this.color

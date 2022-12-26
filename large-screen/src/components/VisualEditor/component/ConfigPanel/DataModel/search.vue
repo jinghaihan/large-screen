@@ -253,7 +253,7 @@ export default {
       this.handleForm()
 
       // 存在全局模型配置
-      if (this.editor.instance['modelPanel']) {
+      if (this.editor.instance['model']) {
         this.getModelData()
       }
       this.$forceUpdate()
@@ -344,7 +344,7 @@ export default {
       return this.form.hasLast || (this.form.prevNumber && this.form.prevNumber !== 0) || this.form.hasCurrent
     },
     getModelData () {
-      this.modelData = this.editor.instance['modelPanel'].modelData
+      this.modelData = this.editor.instance['model'].modelData
     },
     filterOptions (input, option) {
       return (

@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     init () {
-      this.editor.setInstance({ configPanel: this })
       this.activeKey = this.editor.operation.configPanel[0].key
     },
     onChange (tab) {

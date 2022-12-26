@@ -31,13 +31,13 @@
 </template>
 
 <script>
+import { getConfigPaper, getConfigSearch } from '../../../service/config'
 import Viewer from '../../Viewer'
 import TooltipIcon from '../TooltipIcon'
 
 export default {
   name: 'viewModal',
   props: {
-    editor: null,
     grid: {
       type: Object,
       required: true
@@ -55,9 +55,17 @@ export default {
     this.init()
   },
   methods: {
-    init () {
+    async init () {
       this.loading = true
-      this.config = this.editor.getConfig()
+      // 获取paper配置
+      let res = await getConfigPaper()
+      let paper = JSON.parse(res.data.data)
+
+      // 获取查询条件默认值
+      res = await getConfigSearch()
+      let search = res.data.data
+      this.config = { paper, search }
+
       // 弹窗通过zoom展开，需要0.3s
       setTimeout(() => {
         this.mounted = true

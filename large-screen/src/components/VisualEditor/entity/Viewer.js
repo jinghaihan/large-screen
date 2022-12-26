@@ -1,7 +1,9 @@
+import _ from 'lodash'
 import { getModelData } from '../service/model'
 
 class Viewer {
-  constructor () {
+  constructor (vm) {
+    this.vm = vm
     this.instance = {}
     this.cell = {}
   }
@@ -17,15 +19,17 @@ class Viewer {
     // 全局模型/全局过滤条件
     await this.setGlobal(config.global)
     await this.setLayout(config.layout)
+
+    await this.vm.$nextTick()
     this.setCell(config)
   }
   async setGlobal (global) {
     if (global.data) {
-      this.instance.modelPanel = {}
       if (global.data.dataModel.id) {
-        this.instance.modelPanel.model = global.data.dataModel.id
+        if (!this.instance.model) this.instance.model = {}
+        this.instance.model.model = global.data.dataModel.id
         let res = await getModelData(global.data.dataModel.id)
-        this.instance.modelPanel.modelData = res.data.data
+        this.instance.model.modelData = res.data.data
       }
       // 全局默认限制器
       if (global.data.builtinConditions) {
@@ -77,6 +81,23 @@ class Viewer {
         cell.update(cell.configData.configData)
         break
     }
+  }
+  setSearch (config) {
+    Object.keys(config).forEach(key => {
+      let cell = this.cell[key]
+      switch (cell.type) {
+        case 'select':
+          cell.vm.$refs.component.setOptions(config[key].values.map(item => {
+            return {
+              label: item['DISPLAY'],
+              value: item['ACTUAL']
+            }
+          }))
+          break
+        default:
+          break
+      }
+    })
   }
 }
 

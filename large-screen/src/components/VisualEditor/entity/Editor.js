@@ -295,11 +295,11 @@ class Editor {
     let style = this.instance.basicPanel.formData
     // 全局模型
     let data
-    if (this.instance.modelPanel) {
+    if (this.instance['model']) {
       data = {
         dataModel: {
-          type: 'dataModel',
-          id: this.instance.modelPanel.model
+          type: 'model',
+          id: this.instance['model'].model
         },
         builtinConditions: null
       }
@@ -329,7 +329,7 @@ class Editor {
 
     return layout
   }
-  getCell (dataModel) {
+  getCell (global) {
     const cell = {
       searchs: {},
       views: {},
@@ -378,7 +378,9 @@ class Editor {
         ...config,
         data: {
           ...config.data,
-          ...dataModel
+          dataModel: config.data.dataModel
+            ? { ...config.data.dataModel, ...global.dataModel } : global.dataModel,
+          builtinConditions: global.builtinConditions
         }
       }
     })
@@ -526,10 +528,10 @@ class Editor {
   }
   setGlobal (global) {
     // 全局模型
-    if (this.instance.modelPanel) {
+    if (this.instance['model']) {
       if (global.data.dataModel.id) {
-        this.instance.modelPanel.model = global.data.dataModel.id
-        this.instance.modelPanel.changeModel(global.data.dataModel.id)
+        this.instance['model'].model = global.data.dataModel.id
+        this.instance['model'].changeModel(global.data.dataModel.id)
       }
     }
     // 全局默认限制器

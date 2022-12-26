@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async init () {
-      this.editor.setInstance({ modelPanel: this })
+      this.editor.setInstance({ model: this })
 
       this.loading = true
       let res = await getModelList()

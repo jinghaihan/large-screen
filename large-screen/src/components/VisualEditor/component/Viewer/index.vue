@@ -54,7 +54,7 @@ export default {
   components: { GridLayout, GridItem, Renderer },
   data () {
     return {
-      viewer: new Viewer(),
+      viewer: new Viewer(this),
       layout: [],
       basicPixel: 120,
       width: 0,
@@ -70,15 +70,18 @@ export default {
     async init () {
       this.viewer.setInstance({ layout: this })
 
+      let { paper, search } = this.config
+
       let rect = this.$refs.container.getBoundingClientRect()
-      this.width = this.config.global.style.ratioWidth * this.basicPixel
-      this.height = this.config.global.style.ratioHeight * this.basicPixel
+      this.width = paper.global.style.ratioWidth * this.basicPixel
+      this.height = paper.global.style.ratioHeight * this.basicPixel
       // 减去滚动条宽度
       this.scale = rect.width / this.width * (rect.width - 8) / rect.width
       this.$refs.scale.style.setProperty('--scale', this.scale)
       this.rowHeight = (this.container.getBoundingClientRect().width / this.grid.count) / this.scale
 
-      await this.viewer.setConfig(this.config)
+      await this.viewer.setConfig(paper)
+      this.viewer.setSearch(search)
       this.$emit('inited')
     },
     // 回显

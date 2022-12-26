@@ -47,8 +47,8 @@ export default {
     async init () {
       let configData = _.cloneDeep(config)
       let options = []
-      if (this.editor.instance.modelPanel) {
-        let modelData = this.editor.instance.modelPanel.modelData
+      if (this.editor.instance['model']) {
+        let modelData = this.editor.instance['model'].modelData
         let map = { 'dimension': '维度', 'measure': '指标' }
         Object.keys(map).forEach(key => {
           options.push({

@@ -98,7 +98,7 @@ export default {
       this.getModelConfig()
     },
     getModelConfig () {
-      let instance = this.editor.instance.modelPanel
+      let instance = this.editor.instance['model']
       if (instance) {
         this.model = instance.model
         this.modelData = instance.modelData

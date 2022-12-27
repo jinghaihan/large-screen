@@ -79,6 +79,50 @@ class Search {
       }
     }
   }
+  getConditionPanelParams (data, cell) {
+    let queryParmas = {}
+    // 维度
+    queryParmas.dimensionIds = Object.keys(data[0].checked).map(key => {
+      return key
+    }).filter(key => key !== 'all')
+
+    // 聚合配置
+    let tableKey = Object.keys(cell).find(key => {
+      if (cell[key].componentType === 'table') return true
+      return false
+    })
+    let tableCell = cell[tableKey]
+    let key = Object.keys(tableCell.configData.dataModelData)[0]
+    queryParmas.isGroupBy = tableCell.configData.dataModelData[key].isGroupBy
+
+    // 指标
+    queryParmas.measureInfos = Object.keys(data[2].checked).map(key => {
+      return {
+        id: key,
+        // 允许聚合-SUM
+        aggregationType: queryParmas.isGroupBy === '1' ? 'SUM' : ''
+      }
+    })
+
+    return queryParmas
+  }
+  getFilterConditions (cell) {
+    let filterConditions = []
+     
+    Object.keys(cell).forEach(key => {
+      if (cell[key].componentType === 'search') {
+        if (cell[key].type !== 'searchPanel' && cell[key].type !== 'conditionPanel') {
+          let value = cell[key].vm.$refs.component.value
+          filterConditions.push({
+            fieldId: cell[key].configData.dataModelData.dimension,
+            values: value instanceof Array ? value : [value]
+          })
+        }
+      }
+    })
+
+    return filterConditions
+  }
 }
 
 export default Search

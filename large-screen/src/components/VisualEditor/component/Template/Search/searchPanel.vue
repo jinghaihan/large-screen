@@ -35,8 +35,16 @@
       </GridLayout>
       <!-- 按钮 -->
       <div ref="button" class="button-container">
-        <a-button class="button" :size="button.size" :type="button.search">查询</a-button>
-        <a-button class="button" :size="button.size" :type="button.reset">重置</a-button>
+        <a-button class="button"
+                  icon="search"
+                  :size="button.size"
+                  :type="button.search"
+                  @click="onSearch">查询</a-button>
+        <a-button class="button"
+                  icon="redo"
+                  :size="button.size"
+                  :type="button.reset"
+                  @click="onReset">重置</a-button>
       </div>
     </div>
   </div>
@@ -113,6 +121,29 @@ export default {
     }
   },
   methods: {
+    onSearch () {
+      if (this.type === 'view') {
+        let queryParmas = {}
+
+        // 条件面板
+        if (this.editor.instance['conditionPanel']) {
+          let params = this.editor.cell[this.data.key].getConditionPanelParams(
+            this.editor.instance['conditionPanel'].condition,
+            this.editor.cell
+          )
+          queryParmas = params
+        }
+        // 查询参数
+        queryParmas.filterConditions = this.editor.cell[this.data.key].getFilterConditions(this.editor.cell)
+
+        console.log('onSearch', queryParmas)
+      }
+    },
+    onReset () {
+      if (this.type === 'view') {
+        
+      }
+    },
     init () {
       if (this.data.enable) {
         this.editor.setInstance({ searchPanel: this })

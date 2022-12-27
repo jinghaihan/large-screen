@@ -167,13 +167,14 @@ class Viewer {
     let dataModelData = {}
     let globalData = {
       isGroupBy: data.isGroupBy,
-      order: data.order || {}
+      order: data.order
     }
 
     Object.keys(data.data).forEach(coord => {
       dataModelData[coord] = {
-        orderType: globalData.order.orderType,
-        orderFieldId: globalData.order.filedId + '-' + globalData.order.filedType,
+        isGroupBy: globalData.isGroupBy,
+        orderType: globalData.order ? globalData.order.orderType : undefined,
+        orderFieldId: globalData.order ? globalData.order.filedId + '-' + globalData.order.filedType : undefined,
         type: data.data[coord].type,
         fieldData: data.data[coord].type === 'text' ? data.data[coord].fieldData : data.data[coord].fieldId + '-' + data.data[coord].filedType,
         aggregationType: data.data[coord].aggregationType,

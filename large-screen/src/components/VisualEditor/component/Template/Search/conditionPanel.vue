@@ -97,12 +97,19 @@ export default {
       }
       this.getModelConfig()
     },
-    getModelConfig () {
+    async getModelConfig () {
       let instance = this.editor.instance['model']
       if (instance) {
         this.model = instance.model
         this.modelData = instance.modelData
+        // 默认全选
+        this.checkAll()
       }
+    },
+    async checkAll () {
+      await this.$nextTick()
+      this.handleChecked(true, this.condition[0], { id: 'all' })
+      this.handleChecked(true, this.condition[2], { id: 'all' })
     },
     onMore (data) {
       if (this.collapse.includes(data.key)) {

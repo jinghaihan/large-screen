@@ -1,5 +1,7 @@
 <template>
-  <a-tabs v-model="activeKey" v-if="configData.length">
+  <a-tabs v-model="activeKey"
+          v-if="configData.length"
+          @change="onTabChange">
     <a-tab-pane v-for="tab in configData"
                 :key="tab.key"
                 :tab="tab.name">
@@ -45,8 +47,7 @@
                       editor,
                       component
                      }"
-                     @change="onChange"
-                     @dimension="initConfig">
+                     @change="onChange">
           </component>
         </div>
       </template>
@@ -79,6 +80,7 @@ export default {
       activeKey: null,
       collapseKeys: [],
       switchKeys: [],
+      // 简单表格/复杂表格选择
       sheetSelector: {}
     }
   },
@@ -108,6 +110,11 @@ export default {
   },
   methods: {
     onChange (value, fromComponent) {
+      // 由维度变化更新label导致的change事件
+      if (this.dimensionChangeFlag) {
+        this.dimensionChangeFlag = false
+        return
+      }
       let formData = {}
       if (!fromComponent) {
         const formType = ['basicForm', 'collapseForm']
@@ -203,6 +210,9 @@ export default {
           }
         })
       }
+    },
+    onTabChange () {
+      this.initConfig()
     },
     async onSwitch (checked, collapse, index) {
       if (checked) {

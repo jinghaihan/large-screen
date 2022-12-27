@@ -42,7 +42,8 @@ export default {
         backgroundColor: '',
         borderColor: '',
         placeholderColor: ''
-      }
+      },
+      options: []
     }
   },
   watch: {
@@ -56,6 +57,7 @@ export default {
   },
   methods: {
     setOptions (options) {
+      this.options = options
       this.props = {
         ...this.props,
         options

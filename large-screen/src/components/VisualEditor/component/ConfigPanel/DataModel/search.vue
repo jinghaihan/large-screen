@@ -301,7 +301,6 @@ export default {
       // 修改查询组件标签
       this.cell.update(data)
       this.cell.setConfigData({ configData: data })
-      this.$emit('dimension')
       
       this.onChange()
     },

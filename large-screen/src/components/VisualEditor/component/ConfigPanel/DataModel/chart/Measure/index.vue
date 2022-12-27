@@ -145,7 +145,7 @@ export default {
     onPoint (data) {
       this.modalData = _.cloneDeep(data)
       let id = data.measure.split('-')[0]
-      this.modalData.measureName = this.modelData['measures'].filter(item => item.id === id).name
+      this.modalData.measureName = this.modelData['measures'].find(item => item.id === id).name
       this.modalData.isGroupBy = this.form.isGroupBy
       this.pointVisible = true
     },

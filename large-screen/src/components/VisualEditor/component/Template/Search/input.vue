@@ -9,10 +9,13 @@
       {{props.label}}：
     </label>
     <a-input class="input"
+      v-model="value"
       v-bind="{
-      ...props,
-      placeholder: props.placeholder || '请输入'
-    }"></a-input>
+        ...props,
+        placeholder: props.placeholder || '请输入'
+      }"
+      @change="onChange">
+    </a-input>
   </div>
 </template>
 
@@ -21,6 +24,7 @@ import $ from 'jquery'
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: false
@@ -38,7 +42,8 @@ export default {
         backgroundColor: '',
         borderColor: '',
         placeholderColor: ''
-      }
+      },
+      value: undefined
     }
   },
   watch: {
@@ -59,6 +64,9 @@ export default {
         })
         this.$refs.container.style.setProperty('--color', placeholderColor)
       }
+    },
+    onChange () {
+      this.editor.cell[this.data.key].triggerObserver(this.editor.searchObserver, this.value)
     }
   }
 }
@@ -90,5 +98,8 @@ export default {
     left: 0;
     background: transparent;
     z-index: 1;
+  }
+  /deep/.ant-input-disabled{
+    background-color: #f5f5f5 !important;
   }
 </style>

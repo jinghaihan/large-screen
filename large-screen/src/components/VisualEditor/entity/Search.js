@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { overSome } from 'lodash'
 import { config, configMap } from '../config/search'
 import { upperCaseFirst } from '../utils'
 import { handleConfigData, handleVmData } from '../utils/config'
@@ -68,6 +68,16 @@ class Search {
   }
   changeTimePicker (data) {
     this.vm.$refs.component.propsData = data
+  }
+  triggerObserver (observer, value) {
+    if (observer) {
+      let dimension = this.configData.dataModelData.dimension
+      if (observer[dimension]) {
+        Object.keys(observer[dimension]).forEach(key => {
+          observer[dimension][key](value)
+        })
+      }
+    }
   }
 }
 

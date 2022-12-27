@@ -9,7 +9,7 @@
       {{props.label}}：
     </label>
     <a-checkbox-group :value="value">
-      <a-checkbox v-for="opt in options" :key="opt.value" :value="opt.value" @click="onClick">{{opt.label}}</a-checkbox>
+      <a-checkbox v-for="opt in props.options" :key="opt.value" :value="opt.value" @click="onClick">{{opt.label}}</a-checkbox>
     </a-checkbox-group>
   </div>
 </template>
@@ -18,12 +18,12 @@
 import $ from 'jquery'
 
 const options = [
-  { label: 'A', value: 'A' },
-  { label: 'B', value: 'B' }
+  { label: 'A', value: 'A' }
 ]
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: false
@@ -32,7 +32,8 @@ export default {
   data () {
     return {
       props: {
-        label: ''
+        label: '',
+        options
       },
       color: {
         color: '',
@@ -41,7 +42,7 @@ export default {
         checkedBorderColor: '',
         checkedBackgroundColor: ''
       },
-      options: this.data.enable ? options : [options[0]],
+      options: [],
       value: []
     }
   },
@@ -55,6 +56,19 @@ export default {
     }
   },
   methods: {
+    observerCallback (value) {
+      this.value = undefined
+      this.setProps({
+        disabled: !value && value !== 0,
+        options: this.options.filter(opt => opt.parent === value)
+      })
+    },
+    setProps (props) {
+      this.props = {
+        ...this.props,
+        ...props
+      }
+    },
     handleColor () {
       if (this.$refs.container) {
         const { color, backgroundColor, borderColor, checkedBorderColor, checkedBackgroundColor } = this.color
@@ -74,6 +88,8 @@ export default {
       } else {
         this.value = this.value.filter(item => item !== e.target.value)
       }
+
+      this.editor.cell[this.data.key].triggerObserver(this.editor.searchObserver, this.value)
     }
   }
 }
@@ -111,5 +127,10 @@ export default {
     left: 0;
     background: transparent;
     z-index: 2;
+  }
+  /deep/.ant-checkbox-disabled{
+    .ant-checkbox-inner{
+      background-color: #f5f5f5 !important;
+    }
   }
 </style>

@@ -10,6 +10,7 @@
     </label>
     <a-select
       class="select"
+      v-model="value"
       mode="tags"
       v-bind="{
         ...props,
@@ -19,6 +20,7 @@
       :getPopupContainer="triggerNode => {
         return triggerNode.parentNode || document.body;
       }"
+      @change="onChange"
     >
     </a-select>
   </div>
@@ -29,6 +31,7 @@ import $ from 'jquery'
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: false
@@ -46,7 +49,8 @@ export default {
         backgroundColor: '',
         borderColor: '',
         placeholderColor: ''
-      }
+      },
+      value: undefined
     }
   },
   watch: {
@@ -72,6 +76,9 @@ export default {
           color: placeholderColor
         })
       }
+    },
+    onChange () {
+      this.editor.cell[this.data.key].triggerObserver(this.editor.searchObserver, this.value)
     }
   }
 }
@@ -97,5 +104,11 @@ export default {
     left: 0;
     background: transparent;
     z-index: 1;
+  }
+  /deep/.ant-select-disabled{
+    color: rgba(0,0,0,.25) !important;
+    .ant-select-selection{
+      background: #f5f5f5 !important;
+    }
   }
 </style>

@@ -6,6 +6,8 @@ class Viewer {
     this.vm = vm
     this.instance = {}
     this.cell = {}
+    // 父子维度联动
+    this.searchObserver = {}
   }
   setInstance (data) {
     Object.keys(data).forEach(key => {
@@ -205,19 +207,37 @@ class Viewer {
   setSearch (config) {
     Object.keys(config).forEach(key => {
       let cell = this.cell[key]
-      switch (cell.type) {
-        case 'select':
-          cell.vm.$refs.component.setOptions(config[key].values.map(item => {
-            return {
-              label: item['DISPLAY'],
-              value: item['ACTUAL'],
-              title: item['DISPLAY'],
-              parent: item['PARENT']
-            }
-          }))
-          break
-        default:
-          break
+      // 枚举值
+      let optionsType = ['select', 'select-multiple', 'radio', 'checkbox']
+      if (optionsType.includes(cell.type)) {
+        let options = config[key].values.map(item => {
+          return {
+            label: item['DISPLAY'],
+            value: item['ACTUAL'],
+            title: item['DISPLAY'],
+            parent: item['PARENT']
+          }
+        })
+        // 全量枚举值
+        cell.vm.$refs.component.options = options
+        cell.vm.$refs.component.setProps({ options })
+      }
+      
+      // 父子维度联动
+      let dataModelData = cell.configData.dataModelData
+      if (dataModelData.hasParent) {
+        if (!this.searchObserver[dataModelData.parentDim]) {
+          this.searchObserver[dataModelData.parentDim] = {}
+        }
+        // 绑定事件回调
+        this.searchObserver[dataModelData.parentDim][key] = cell.vm.$refs.component.observerCallback
+
+        // 判断父维度当前值，获取父维度对应cell
+        let parentKey = Object.keys(this.cell).find(key => {
+          if (this.cell[key].configData.dataModelData.dimension === dataModelData.parentDim) return true
+          return false
+        })
+        cell.vm.$refs.component.observerCallback(this.cell[parentKey].vm.$refs.component.value)
       }
     })
   }

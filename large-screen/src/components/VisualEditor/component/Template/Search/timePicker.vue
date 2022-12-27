@@ -18,6 +18,7 @@ import TimePicker from '../../Widget/TimePicker'
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: false

@@ -10,12 +10,14 @@
     </label>
     <a-select
       class="select"
+      v-model="value"
       mode="multiple"
       v-bind="{
         ...props,
         placeholder: props.placeholder || '请选择'
       }"
       style="width: 100%"
+      @change="onChange"
     >
     </a-select>
   </div>
@@ -26,6 +28,7 @@ import $ from 'jquery'
 
 export default {
   props: {
+    editor: null,
     data: {
       type: Object,
       required: false
@@ -43,7 +46,9 @@ export default {
         backgroundColor: '',
         borderColor: '',
         placeholderColor: ''
-      }
+      },
+      options: [],
+      value: undefined
     }
   },
   watch: {
@@ -56,6 +61,19 @@ export default {
     }
   },
   methods: {
+    observerCallback (value) {
+      this.value = undefined
+      this.setProps({
+        disabled: !value && value !== 0,
+        options: this.options.filter(opt => opt.parent === value)
+      })
+    },
+    setProps (props) {
+      this.props = {
+        ...this.props,
+        ...props
+      }
+    },
     handleColor () {
       if (this.$refs.container) {
         const { color, backgroundColor, borderColor, placeholderColor } = this.color
@@ -69,6 +87,9 @@ export default {
           color: placeholderColor
         })
       }
+    },
+    onChange () {
+      this.editor.cell[this.data.key].triggerObserver(this.editor.searchObserver, this.value)
     }
   }
 }
@@ -94,5 +115,11 @@ export default {
     left: 0;
     background: transparent;
     z-index: 1;
+  }
+  /deep/.ant-select-disabled{
+    color: rgba(0,0,0,.25) !important;
+    .ant-select-selection{
+      background: #f5f5f5 !important;
+    }
   }
 </style>

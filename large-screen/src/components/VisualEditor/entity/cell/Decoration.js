@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { config, configMap } from '../config/decoration'
-import { handleConfigData, handleVmData } from '../utils/config'
+import { config, configMap } from '../../config/decoration'
+import { handleConfigData } from '../../utils/config'
 
 class Decoration {
   constructor (data) {
@@ -22,7 +22,7 @@ class Decoration {
     this.init()
   }
   init () {
-    this.component = require(`../component/Template/Decoration/index.vue`).default
+    this.component = require(`../../component/Template/Decoration/index.vue`).default
   }
   update (data) {
     this.props = {

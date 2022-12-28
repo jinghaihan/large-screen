@@ -123,20 +123,7 @@ export default {
   methods: {
     onSearch () {
       if (this.type === 'view') {
-        let queryParmas = {}
-
-        // 条件面板
-        if (this.editor.instance['conditionPanel']) {
-          let params = this.editor.cell[this.data.key].getConditionPanelParams(
-            this.editor.instance['conditionPanel'].condition,
-            this.editor.cell
-          )
-          queryParmas = params
-        }
-        // 查询参数
-        queryParmas.filterConditions = this.editor.cell[this.data.key].getFilterConditions(this.editor.cell)
-
-        console.log('onSearch', queryParmas)
+        this.editor.cell[this.data.key].handleSearch(this.editor)
       }
     },
     onReset () {

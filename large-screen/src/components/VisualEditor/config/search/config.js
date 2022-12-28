@@ -7,13 +7,13 @@ const config = {
           type: 'input-number',
           label: '按钮右偏移量',
           key: 'vm-button-right?pixel',
-          defaultValue: 0
+          defaultValue: 8
         },
         {
           type: 'input-number',
           label: '按钮下偏移量',
           key: 'vm-button-bottom?pixel',
-          defaultValue: 0
+          defaultValue: 8
         },
         {
           type: 'input-number',

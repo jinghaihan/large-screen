@@ -8,8 +8,8 @@ import 'echarts/theme/roma'
 // Echarts地图
 import chinaMap from '@/assets/VisualEditor/map/china.json'
 
-import { option, config, configMap } from '../config/chart'
-import { handleConfigData, handleVmData } from '../utils/config'
+import { option, config, configMap } from '../../config/chart'
+import { handleConfigData, handleVmData } from '../../utils/config'
 
 Echarts.registerMap('china', chinaMap)
 

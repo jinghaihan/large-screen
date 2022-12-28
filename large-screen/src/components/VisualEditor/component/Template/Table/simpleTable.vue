@@ -1,15 +1,28 @@
 <template>
-  <div class="simple-table-container">
-    <div v-if="!data.enable" class="holder"> 简单表格 </div>
-    <div v-else class="content">
-      <SpreadSheet ref="sheet"
-                   :sheetId="data.key + '-' + getUUID()"
-                   :config="sheetConfig"
-                   @init="onInit"
-                   @change="onChange"
-                   @select="onSelect">
-      </SpreadSheet>
-    </div>
+  <div class="simple-table-container" ref="container">
+    <!-- sheet类型 -->
+    <template v-if="type !== 'view'">
+      <div v-if="!data.enable" class="holder"> 简单表格 </div>
+      <div v-else class="content">
+        <SpreadSheet ref="sheet"
+                    :sheetId="data.key + '-' + getUUID()"
+                    :config="sheetConfig"
+                    @init="onInit"
+                    @select="onSelect">
+        </SpreadSheet>
+      </div>
+    </template>
+    <!-- table类型 -->
+    <template v-else>
+      <a-table :columns="columns"
+               :data-source="rows"
+               :loading="loading"
+               :pagination="pagination"
+               :row-key="(data, index) => index"
+               :scroll="scroll"
+               size="small">
+      </a-table>
+    </template>
   </div>
 </template>
 
@@ -23,12 +36,18 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'config'
     }
   },
   components: { SpreadSheet },
   data () {
     return {
       cell: {},
+      // excel
       sheetConfig: {
         mode: 'read',
         showToolbar: false,
@@ -43,7 +62,24 @@ export default {
           width: 100,
           indexWidth: 60
         }
-      }
+      },
+      // table
+      loading: false,
+      rows: [],
+      columns: [],
+      pagination: {
+        size: 'small',
+        current: 1,
+        pageSize: 50,
+        total: 0,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showLessItems: true,
+        showTotal (total, range) {
+          return `共${total}条`
+        }
+      },
+      scroll: { x: 0, y: 0 }
     }
   },
   created () {
@@ -65,9 +101,6 @@ export default {
         this.cell.initDimensionAndMeasure(this.editor.instance['model'].modelData)
       }
     },
-    onChange (data) {
-      // console.log('onChange', data)
-    },
     onSelect (data) {
       // 更新数据模型面板配置
       if (!data.mutiple) {
@@ -78,7 +111,9 @@ export default {
       }
     },
     resize () {
-      this.$refs.sheet.xsSheet.sheet.reload()
+      if (this.type !== 'view') {
+        this.$refs.sheet.xsSheet.sheet.reload()
+      }
     }
   }
 }

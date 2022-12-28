@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { config, configMap } from '../config/text'
-import { upperCaseFirst } from '../utils'
-import { handleConfigData, handleVmData } from '../utils/config'
+import { config, configMap } from '../../config/text'
+import { upperCaseFirst } from '../../utils'
+import { handleConfigData, handleVmData } from '../../utils/config'
 class Text {
   constructor (data) {
     let { vm, key, el, type, parentConfig, parentConfigData } = data
@@ -29,7 +29,7 @@ class Text {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Template/Text/${value}.vue`).default
+    this.component = require(`../../component/Template/Text/${value}.vue`).default
   }
   update (data) {
     if (!data) return

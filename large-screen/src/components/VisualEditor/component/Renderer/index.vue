@@ -40,12 +40,12 @@
 
 <script>
 import _ from 'lodash'
-import Chart from '../../entity/Chart'
-import Text from '../../entity/Text'
-import Media from '../../entity/Media'
-import Decoration from '../../entity/Decoration'
-import Search from '../../entity/Search'
-import Table from '../../entity/Table'
+import Chart from '../../entity/cell/Chart'
+import Text from '../../entity/cell/Text'
+import Media from '../../entity/cell/Media'
+import Decoration from '../../entity/cell/Decoration'
+import Search from '../../entity/cell/Search'
+import Table from '../../entity/cell/Table'
 import Border from './Border'
 import ViewSourceModal from './sourceModal.vue'
 import color from '../../config/color'

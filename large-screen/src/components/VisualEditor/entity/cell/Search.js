@@ -1,7 +1,8 @@
-import _, { overSome } from 'lodash'
-import { config, configMap } from '../config/search'
-import { upperCaseFirst } from '../utils'
-import { handleConfigData, handleVmData } from '../utils/config'
+import _ from 'lodash'
+import { config, configMap } from '../../config/search'
+import { upperCaseFirst } from '../../utils'
+import { handleConfigData, handleVmData } from '../../utils/config'
+import { postChartData, postTableData } from '../../service/report'
 
 class Search {
   constructor (data) {
@@ -34,7 +35,7 @@ class Search {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Template/Search/${value}.vue`).default
+    this.component = require(`../../component/Template/Search/${value}.vue`).default
   }
   update (data) {
     if (!data) return
@@ -69,6 +70,7 @@ class Search {
   changeTimePicker (data) {
     this.vm.$refs.component.propsData = data
   }
+  // 触发监听回调函数
   triggerObserver (observer, value) {
     if (observer) {
       let dimension = this.configData.dataModelData.dimension
@@ -78,6 +80,91 @@ class Search {
         })
       }
     }
+  }
+  handleSearch (entity) {
+    let queryParmas = this.getQueryParams(entity)
+    let queryTypes = ['table', 'chart']
+
+    return Promise.all(Object.keys(entity.cell).map(key => {
+      return new Promise(async (resolve, reject) => {
+        let cell = entity.cell[key]
+        // 非查询类型组件直接执行resolve
+        if (!queryTypes.includes(cell.componentType)) {
+          resolve()
+          return
+        }
+        let params = { ...queryParmas }
+        let response
+        // 表格类型数据量
+        let dataCount
+        // 表格类型
+        if (cell.componentType === 'table') {
+          params.currentPage = cell.vm.$refs.component.pagination.current - 1
+          params.numberPerPage = cell.vm.$refs.component.pagination.pageSize
+
+          // 先请求count-再请求报表内容
+          if (cell.type === 'complexTable') {
+            params.tableId = cell.key
+            response = await postTableData({ ...params, isCount: true })
+            if (!this.responseHandler(response, reject)) return
+            dataCount = response.data.data
+            // 复杂报表
+            response = await postTableData(params)
+          } else {
+            params.chartId = cell.key
+            response = await postChartData({ ...params, isCount: true })
+            if (!this.responseHandler(response, reject)) return
+            dataCount = response.data.data
+            // 简单报表
+            response = await postChartData(params)
+          }
+        } else {
+          params.chartId = cell.key
+          params.currentPage = 0
+          params.numberPerPage = 100
+          response = await postChartData(params)
+        }
+
+        let data = this.responseHandler(response, reject, resolve, dataCount)
+        cell.handleData(data, entity)
+
+        resolve()
+      })
+    }))
+  }
+  responseHandler (response, reject, resolve, dataCount) {
+    let flag = true
+    if (!response.data.success) {
+      this.vm.$notification.error({ message: '错误', description: response.data.desc, duration: 0 })
+      reject(new Error(response.data.desc))
+      flag = false
+    } else {
+      if (resolve) {
+        let data = { ...response.data.data }
+        if (dataCount) {
+          data.dataCount = dataCount.dataCount
+          data.nextPageCount = dataCount.nextPageCount
+        }
+        return data
+      }
+    }
+    return flag
+  }
+  getQueryParams (entity) {
+    let queryParmas = {}
+
+    // 条件面板
+    if (entity.instance['conditionPanel']) {
+      let params = this.getConditionPanelParams(
+        entity.instance['conditionPanel'].condition,
+        entity.cell
+      )
+      queryParmas = params
+    }
+    // 查询参数
+    queryParmas.filterConditions = this.getFilterConditions(entity.cell)
+
+    return queryParmas
   }
   getConditionPanelParams (data, cell) {
     let queryParmas = {}
@@ -102,7 +189,7 @@ class Search {
         // 允许聚合-SUM
         aggregationType: queryParmas.isGroupBy === '1' ? 'SUM' : ''
       }
-    })
+    }).filter(item => item.id !== 'all')
 
     return queryParmas
   }

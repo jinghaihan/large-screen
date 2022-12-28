@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { config, configMap } from '../config/media'
-import { upperCaseFirst } from '../utils'
-import { handleConfigData, handleVmData } from '../utils/config'
+import { config, configMap } from '../../config/media'
+import { upperCaseFirst } from '../../utils'
+import { handleConfigData, handleVmData } from '../../utils/config'
 
 class Meida {
   constructor (data) {
@@ -32,7 +32,7 @@ class Meida {
         value += upperCaseFirst(item)
       }
     })
-    this.component = require(`../component/Template/Media/${value}.vue`).default
+    this.component = require(`../../component/Template/Media/${value}.vue`).default
   }
   update (data) {
     let instance = this.vm.$refs.component

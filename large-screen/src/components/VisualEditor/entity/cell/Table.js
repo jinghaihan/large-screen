@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { config, configMap } from '../config/table'
-import { upperCaseFirst } from '../utils'
-import { handleConfigData, handleVmData } from '../utils/config'
+import { config, configMap } from '../../config/table'
+import { upperCaseFirst } from '../../utils'
+import { handleConfigData, handleVmData } from '../../utils/config'
 
 class Table {
   constructor (data) {
@@ -34,7 +34,7 @@ class Table {
         value += upperCaseFirst(text)
       }
     })
-    this.component = require(`../component/Template/Table/${value}.vue`).default
+    this.component = require(`../../component/Template/Table/${value}.vue`).default
   }
   initDimensionAndMeasure (modelData) {
     if (this.type === 'simpleTable') {
@@ -123,6 +123,46 @@ class Table {
     })
 
     this.loadData()
+  }
+  handleData (data, entity) {
+    let modelData = {}
+    if (entity.instance['model']) {
+      modelData = entity.instance['model'].modelData
+    }
+    
+    // 获取维度/指标字段colNum
+    let fields = {}
+    if (modelData.dimensions && modelData.measures) {
+      modelData.dimensions.concat(modelData.measures).forEach(field => {
+        fields[field.colNum] = field
+      })
+    }
+
+    let rows = []
+    let columns = []
+
+    rows = data.data
+    columns = Object.keys(rows[0] || {}).map(key => {
+      return {
+        title: fields[key].name,
+        dataIndex: key,
+        ellipsis: true,
+        sorter: true,
+        width: 150
+      }
+    })
+
+    // 更新表格数据
+    this.vm.$refs.component.rows = rows
+    this.vm.$refs.component.columns = columns
+    this.vm.$refs.component.pagination.total = data.dataCount
+
+    // 计算scroll宽高
+    let rect = this.vm.$refs.component.$refs.container.getBoundingClientRect()
+    // 容器宽度
+    this.vm.$refs.component.scroll.x = rect.width + 100
+    // 容器高度 - 分页组件高度
+    this.vm.$refs.component.scroll.y = rect.height - 85
   }
 }
 

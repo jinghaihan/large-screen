@@ -389,41 +389,50 @@ class Editor {
   // chart / decoration / media / text
   getViewsCellData (data) {
     if (!data) return {}
+    let dimension
+    let measure
+    let order
 
     // 维度配置
-    const dimension = data.dimension.map(item => {
-      let arr = item.split('-')
-      return {
-        fieldId: arr[2],
-        id: arr[0],
-        name: arr[1]
-      }
-    })
-    delete data.dimension
+    if (data.dimension) {
+      dimension = data.dimension.map(item => {
+        let arr = item.split('-')
+        return {
+          fieldId: arr[2],
+          id: arr[0],
+          name: arr[1]
+        }
+      })
+      delete data.dimension
+    }
 
     // 指标配置
-    const measure = data.measure.map(item => {
-      let arr = item.measure.split('-')
-      return {
-        fieldId: item.fieldId,
-        id: arr[0],
-        name: arr[1],
-        aggregationType: item.aggregationType,
-        ...item.calculate,
-        ...item.point
-      }
-    })
-    delete data.measure
+    if (data.measure) {
+      measure = data.measure.map(item => {
+        let arr = item.measure.split('-')
+        return {
+          fieldId: item.fieldId,
+          id: arr[0],
+          name: arr[1],
+          aggregationType: item.aggregationType,
+          ...item.calculate,
+          ...item.point
+        }
+      })
+      delete data.measure
+    }
 
     // 默认排序配置
-    let arr = data.orderFieldId.split('-')
-    const order = {
-      fieldId: arr[2],
-      fieldType: arr[3],
-      orderType: data.orderType
+    if (data.orderFieldId) {
+      let arr = data.orderFieldId.split('-')
+      order = {
+        fieldId: arr[2],
+        fieldType: arr[3],
+        orderType: data.orderType
+      }
+      delete data.orderType
+      delete data.orderFieldId
     }
-    delete data.orderType
-    delete data.orderFieldId
 
     return { ...data, dimension, measure, order } 
   }

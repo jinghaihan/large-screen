@@ -128,7 +128,7 @@ export default {
     },
     onReset () {
       if (this.type === 'view') {
-        
+        this.editor.handleReset()
       }
     },
     init () {

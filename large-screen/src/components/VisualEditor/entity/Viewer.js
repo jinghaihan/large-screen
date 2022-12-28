@@ -64,6 +64,7 @@ class Viewer {
     triggerCellUpdate(cell, componentType)
   }
   setSearch (config) {
+    this.defaultValue = {}
     Object.keys(config).forEach(key => {
       let cell = this.cell[key]
       // 枚举值
@@ -81,8 +82,18 @@ class Viewer {
         cell.vm.$refs.component.options = options
         cell.vm.$refs.component.setProps({ options })
       }
+      this.defaultValue[key] = cell.configData.dataModelData.defaultValue
       
       // 父子维度联动
+      this.triggerObserverCallback()
+    })
+  }
+  triggerObserverCallback () {
+    Object.keys(this.cell).forEach(key => {
+      if (this.cell[key].componentType !== 'search') return
+      if (this.cell[key].type === 'searchPanel' || this.cell[key].type === 'conditionPanel') return
+
+      let cell = this.cell[key]
       let dataModelData = cell.configData.dataModelData
       if (dataModelData.hasParent) {
         if (!this.searchObserver[dataModelData.parentDim]) {
@@ -232,6 +243,13 @@ class Viewer {
     })
 
     return filterConditions
+  }
+  // 重置
+  handleReset () {
+    Object.keys(this.defaultValue).forEach(key => {
+      this.cell[key].vm.$refs.component.value = (!this.defaultValue[key] && this.defaultValue[key] !== 0) ? undefined : this.defaultValue
+    })
+    this.triggerObserverCallback()
   }
 }
 

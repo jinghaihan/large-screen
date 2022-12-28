@@ -147,7 +147,8 @@ class Table {
         dataIndex: key,
         ellipsis: true,
         sorter: true,
-        width: 150
+        width: 150,
+        slots: { title: 'customTitle' }
       }
     })
 

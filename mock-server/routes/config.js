@@ -80,6 +80,9 @@ router.get('/search', (request, response) => {
               'PARENT': '2'
             }
           ]
+        },
+        'bc6539b8773b40a9983afa8d93a89788': {
+          'values': []
         }
       }
     }

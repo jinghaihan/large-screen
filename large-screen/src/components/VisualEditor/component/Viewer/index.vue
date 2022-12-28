@@ -83,6 +83,8 @@ export default {
       await this.viewer.setConfig(paper)
       this.viewer.setSearch(search)
       this.$emit('inited')
+      
+      this.viewer.handleSearch()
     },
     // 回显
     onUpdate (layout) {

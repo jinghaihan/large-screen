@@ -20,6 +20,7 @@
                :pagination="pagination"
                :row-key="(data, index) => index"
                :scroll="scroll"
+               @change='handleTableChange'
                size="small">
       </a-table>
     </template>
@@ -77,7 +78,8 @@ export default {
         showLessItems: true,
         showTotal (total, range) {
           return `共${total}条`
-        }
+        },
+        sorterParmas: {}
       },
       scroll: { x: 0, y: 0 }
     }
@@ -114,6 +116,33 @@ export default {
       if (this.type !== 'view') {
         this.$refs.sheet.xsSheet.sheet.reload()
       }
+    },
+    handleTableChange (pagination, filters, sorter) {
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
+      this.pagination.sorterParmas = {
+        field: sorter.order ? sorter.field : undefined,
+        order: sorter.order ? (sorter.order === 'ascend' ? 'ASC' : 'DESC') : undefined
+      }
+      this.onSearch()
+    },
+    onSearch () {
+      let queryParams = this.editor.getQueryParams()
+      new Promise((resolve, reject) => {
+        let fields = this.editor.cell[this.data.key].fields
+        let { field, order } = this.pagination.sorterParmas
+        this.editor.searchComponent(
+          this.editor.cell[this.data.key],
+          {
+            ...queryParams,
+            indexOrders: order ? [
+              { fieldId: fields[field].id, fieldType: fields[field].fieldType, type: order }
+            ] : undefined
+          },
+          resolve,
+          reject
+        )
+      }).then(result => {})
     }
   }
 }

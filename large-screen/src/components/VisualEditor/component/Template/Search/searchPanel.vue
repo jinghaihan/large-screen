@@ -123,7 +123,7 @@ export default {
   methods: {
     onSearch () {
       if (this.type === 'view') {
-        this.editor.cell[this.data.key].handleSearch(this.editor)
+        this.editor.handleSearch()
       }
     },
     onReset () {

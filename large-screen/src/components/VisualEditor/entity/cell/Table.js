@@ -131,11 +131,10 @@ class Table {
     }
     
     // 获取维度/指标字段colNum
-    let fields = {}
+    this.fields = {}
     if (modelData.dimensions && modelData.measures) {
-      modelData.dimensions.concat(modelData.measures).forEach(field => {
-        fields[field.colNum] = field
-      })
+      modelData.dimensions.forEach(field => { this.fields[field.colNum] = { ...field, fieldType: 'dimension' } })
+      modelData.measures.forEach(field => { this.fields[field.colNum] = { ...field, fieldType: 'measure' } })
     }
 
     let rows = []
@@ -144,7 +143,7 @@ class Table {
     rows = data.data
     columns = Object.keys(rows[0] || {}).map(key => {
       return {
-        title: fields[key].name,
+        title: this.fields[key].name,
         dataIndex: key,
         ellipsis: true,
         sorter: true,
@@ -163,6 +162,9 @@ class Table {
     this.vm.$refs.component.scroll.x = rect.width + 100
     // 容器高度 - 分页组件高度
     this.vm.$refs.component.scroll.y = rect.height - 85
+  }
+  handleLoading (loading) {
+    this.vm.$refs.component.loading = loading
   }
 }
 

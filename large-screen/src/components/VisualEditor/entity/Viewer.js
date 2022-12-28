@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import { getModelData } from '../service/model'
+import { setCell, triggerCellUpdate } from '../utils/config'
+import { postChartData, postTableData } from '../service/report'
 
 class Viewer {
   constructor (vm) {
@@ -21,7 +23,7 @@ class Viewer {
     // 全局模型/全局过滤条件
     await this.setGlobal(config.global)
     await this.setLayout(config.layout)
-
+    // 组件配置
     await this.vm.$nextTick()
     this.setCell(config)
   }
@@ -56,154 +58,10 @@ class Viewer {
     }
   }
   setCell (config) {
-    Object.keys(this.cell).forEach(key => {
-      // 获取配置
-      let cell = config.searchs[key] || config.views[key]
-      // 样式配置
-      this.cell[key].configData = {
-        ...this.cell[key].configData,
-        switchKeys: cell.style.switchKeys,
-        collapseKeys: cell.style.collapseKeys,
-        configData: cell.style.ui
-      }
-
-      // 数据模型配置
-      switch (this.cell[key].componentType) {
-        // 查询组件
-        case 'search':
-          if (this.cell[key].type !== 'searchPanel' && this.cell[key].type !== 'conditionPanel') {
-            this.setSearchCellData(this.cell[key].configData, _.cloneDeep(cell.data))
-          } else {
-            this.setViewsCellData(this.cell[key].configData, _.cloneDeep(cell.data))
-          }
-          break
-        // 表格组件
-        case 'table':
-          this.setTableCellData(this.cell[key].configData, _.cloneDeep(cell.data))
-          break
-        // 其余组件
-        default:
-          this.setViewsCellData(this.cell[key].configData, _.cloneDeep(cell.data))
-          break
-      }
-
-      this.triggerCellUpdate(this.cell[key], this.cell[key].componentType)
-    })
-  }
-  // chart / decoration / media / text
-  setViewsCellData (config, data) {
-    let dataModelData = {}
-    let fields = {}
-
-    // 维度配置
-    if (data.dimension) {
-      dataModelData.dimension = data.dimension.map(item => {
-        fields[item.fieldId] = {
-          id: item.id,
-          name: item.name
-        }
-        return item.id + '-' + item.name + '-' + item.fieldId
-      })
-      delete data.dimension
-    }
-
-    // 指标配置
-    if (data.measure) {
-      dataModelData.measure = data.measure.map(item => {
-        fields[item.fieldId] = {
-          id: item.id,
-          name: item.name
-        }
-        return {
-          fieldId: item.fieldId,
-          measure: item.id + '-' + item.name,
-          aggregationType: item.aggregationType,
-          calculate: {
-            calculation: item.calculation,
-            number: item.number,
-            aggregatePriority: item.aggregatePriority
-          },
-          point: {
-            decimalPlace: item.decimalPlace,
-            truncType: item.truncType
-          }
-        }
-      })
-      delete data.measure
-    }
-
-    // 默认排序配置
-    if (data.order) {
-      dataModelData.orderType = data.order.orderType
-      dataModelData.orderFieldId = fields[data.order.fieldId].id + '-' + fields[data.order.fieldId].name + '-' + data.order.fieldId + '-' + data.order.fieldType
-      delete data.order
-    }
-
-    config.dataModelData = { ...data, ...dataModelData }
-  }
-  // 除searchPanel和conditionPanel以为的查询组件
-  setSearchCellData (config, data) {
-    let dataModelData = {}
-
-    // 数据模型
-    if (data.dataModel) {
-      dataModelData.dimension = data.dataModel.dimensionId
-      dataModelData.defaultValue = data.dataModel.values.length > 1 ? data.dataModel.values : data.dataModel.values[0]
-      delete data.dataModel
-    }
-
-    // 外链
-    if (data.open) {
-      dataModelData.isOpen = data.open.isOpen
-      dataModelData.isLock = data.open.isLock
-      dataModelData.isHide = data.open.isHide
-      delete data.open
-    }
-
-    config.dataModelData = { ...data, ...dataModelData }
-  }
-  // table
-  setTableCellData (config, data) {
-    let dataModelData = {}
-    let globalData = {
-      isGroupBy: data.isGroupBy,
-      order: data.order
-    }
-
-    Object.keys(data.data).forEach(coord => {
-      dataModelData[coord] = {
-        isGroupBy: globalData.isGroupBy,
-        orderType: globalData.order ? globalData.order.orderType : undefined,
-        orderFieldId: globalData.order ? globalData.order.filedId + '-' + globalData.order.filedType : undefined,
-        type: data.data[coord].type,
-        fieldData: data.data[coord].type === 'text' ? data.data[coord].fieldData : data.data[coord].fieldId + '-' + data.data[coord].filedType,
-        aggregationType: data.data[coord].aggregationType,
-        calculate: {
-          calculation: data.data[coord].calculation,
-          number: data.data[coord].number,
-          aggregatePriority: data.data[coord].aggregatePriority
-        },
-        point: {
-          decimalPlace: data.data[coord].decimalPlace,
-          truncType: data.data[coord].truncType
-        }
-      }
-    })
-
-    config.dataModelData = dataModelData
+    setCell(config, this)
   }
   triggerCellUpdate (cell, componentType) {
-    switch (componentType) {
-      case 'chart':
-        cell.change(
-          cell.configData.configData,
-          cell.configData.switchKeys
-        )
-        break
-      default:
-        cell.update(cell.configData.configData)
-        break
-    }
+    triggerCellUpdate(cell, componentType)
   }
   setSearch (config) {
     Object.keys(config).forEach(key => {
@@ -241,6 +99,139 @@ class Viewer {
         cell.vm.$refs.component.observerCallback(this.cell[parentKey].vm.$refs.component.value)
       }
     })
+  }
+  // 查询
+  handleSearch () {
+    let queryParmas = this.getQueryParams()
+    let queryTypes = ['table', 'chart']
+
+    return Promise.all(Object.keys(this.cell).map(key => {
+      return new Promise(async (resolve, reject) => {
+        let cell = this.cell[key]
+        // 非查询类型组件直接执行resolve
+        if (!queryTypes.includes(cell.componentType)) {
+          resolve()
+          return
+        }
+        this.searchComponent(cell, queryParmas, resolve, reject)
+        resolve()
+      })
+    }))
+  }
+  async searchComponent (cell, queryParmas, resolve, reject) {
+    cell.handleLoading(true)
+    let params = { ...queryParmas }
+    let response
+    // 表格类型数据量
+    let dataCount
+    // 表格类型
+    if (cell.componentType === 'table') {
+      params.currentPage = cell.vm.$refs.component.pagination.current - 1
+      params.numberPerPage = cell.vm.$refs.component.pagination.pageSize
+
+      // 先请求count-再请求报表内容
+      if (cell.type === 'complexTable') {
+        params.tableId = cell.key
+        response = await postTableData({ ...params, isCount: true })
+        if (!this.responseHandler(response, reject)) return
+        dataCount = response.data.data
+        // 复杂报表
+        response = await postTableData(params)
+      } else {
+        params.chartId = cell.key
+        response = await postChartData({ ...params, isCount: true })
+        if (!this.responseHandler(response, reject)) return
+        dataCount = response.data.data
+        // 简单报表
+        response = await postChartData(params)
+      }
+    } else {
+      params.chartId = cell.key
+      params.currentPage = 0
+      params.numberPerPage = 100
+      response = await postChartData(params)
+    }
+
+    cell.handleData(this.responseHandler(response, reject, resolve, dataCount), this)
+    cell.handleLoading(false)
+  }
+  responseHandler (response, reject, resolve, dataCount) {
+    let flag = true
+    if (!response.data.success) {
+      this.vm.$notification.error({ message: '错误', description: response.data.desc, duration: 0 })
+      reject(new Error(response.data.desc))
+      flag = false
+    } else {
+      if (resolve) {
+        let data = { ...response.data.data }
+        if (dataCount) {
+          data.dataCount = dataCount.dataCount
+          data.nextPageCount = dataCount.nextPageCount
+        }
+        return data
+      }
+    }
+    return flag
+  }
+  getQueryParams () {
+    let queryParmas = {}
+
+    // 条件面板
+    if (this.instance['conditionPanel']) {
+      let params = this.getConditionPanelParams(
+        this.instance['conditionPanel'].condition,
+        this.cell
+      )
+      queryParmas = params
+    }
+    // 查询参数
+    queryParmas.filterConditions = this.getFilterConditions(this.cell)
+
+    return queryParmas
+  }
+  getConditionPanelParams (data, cell) {
+    let queryParmas = {}
+    // 维度
+    queryParmas.dimensionIds = Object.keys(data[0].checked).map(key => {
+      return key
+    }).filter(key => key !== 'all')
+
+    // 聚合配置
+    let tableKey = Object.keys(cell).find(key => {
+      if (cell[key].componentType === 'table') return true
+      return false
+    })
+    let tableCell = cell[tableKey]
+    let key = Object.keys(tableCell.configData.dataModelData)[0]
+    queryParmas.isGroupBy = tableCell.configData.dataModelData[key].isGroupBy
+
+    // 指标
+    queryParmas.measureInfos = Object.keys(data[2].checked).map(key => {
+      return {
+        id: key,
+        // 允许聚合-SUM
+        aggregationType: queryParmas.isGroupBy === '1' ? 'SUM' : ''
+      }
+    }).filter(item => item.id !== 'all')
+
+    return queryParmas
+  }
+  getFilterConditions (cell) {
+    let filterConditions = []
+     
+    Object.keys(cell).forEach(key => {
+      if (cell[key].componentType === 'search') {
+        if (cell[key].type !== 'searchPanel' && cell[key].type !== 'conditionPanel') {
+          let value = cell[key].vm.$refs.component.value
+          filterConditions.push({
+            fieldId: cell[key].configData.dataModelData.dimension,
+            values: value instanceof Array ? value : [value]
+          })
+        }
+      }
+    })
+
+    return filterConditions
   }
 }
 

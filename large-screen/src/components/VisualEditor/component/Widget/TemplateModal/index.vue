@@ -45,7 +45,7 @@ import { getUUID } from '../../../utils'
 
 export default {
   props: {
-    editor: null
+    entity: null
   },
   data () {
     return {

@@ -2,7 +2,7 @@
   <div class="toolbox-container">
     <a-divider type="vertical"></a-divider>
     <!-- 缩放 -->
-    <ScaleWidget :editor="editor" :scale="scale"></ScaleWidget>
+    <ScaleWidget :entity="entity" :scale="scale"></ScaleWidget>
     <a-divider type="vertical"></a-divider>
     <!-- 清空 -->
     <TooltipIcon class="action delete-action" title="清空" icon="delete" placement="bottom" @click="onClear"></TooltipIcon>
@@ -19,7 +19,7 @@ import TooltipIcon from '../../Widget/TooltipIcon'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     layout: {
       type: Array,
       required: true
@@ -40,7 +40,7 @@ export default {
         okText: '确定',
         cancelText: '取消',
         async onOk () {
-          _this.editor.clear()
+          _this.entity.clear()
         },
         onCancel () { }
       })

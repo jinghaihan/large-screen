@@ -26,7 +26,7 @@
                   :h="item.h"
                   :i="item.i"
                   :static="true">
-          <Renderer type="view" :editor="viewer" :data="item" :component="{}" :transformScale="scale"></Renderer>
+          <Renderer type="view" :entity="viewer" :data="item" :component="{}" :transformScale="scale"></Renderer>
         </GridItem>
       </GridLayout>
     </div>

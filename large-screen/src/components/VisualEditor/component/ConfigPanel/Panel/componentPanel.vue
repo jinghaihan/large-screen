@@ -44,7 +44,7 @@
                      :is="comp.component"
                      v-bind="{
                       data: { component: comp.config },
-                      editor,
+                      entity,
                       component
                      }"
                      @change="onChange">
@@ -66,7 +66,7 @@ import DataModel from '../DataModel'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     component: {
       type: Object,
       required: true
@@ -105,7 +105,7 @@ export default {
     }
   },
   created () {
-    this.editor.setInstance({ componentPanel: this })
+    this.entity.setInstance({ componentPanel: this })
     this.onChange = _.debounce(this.onChange, 50)
   },
   methods: {
@@ -153,7 +153,7 @@ export default {
       this.configData = []
       this.collapseKeys = []
       this.switchKeys = []
-      this.cell = this.editor.cell[this.component.key]
+      this.cell = this.entity.cell[this.component.key]
 
       if (this.cell.config && this.cell.config.length) {
         this.initConfig()

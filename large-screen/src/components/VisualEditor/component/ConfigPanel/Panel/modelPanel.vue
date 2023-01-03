@@ -35,7 +35,7 @@ import { getModelList, getModelData } from '../../../service/model'
 
 export default {
   props: {
-    editor: null
+    entity: null
   },
   data () {
     return {
@@ -43,7 +43,7 @@ export default {
       loading: false,
       // 模型选择
       model: undefined,
-      config: _.cloneDeep(this.editor.config.model)[0],
+      config: _.cloneDeep(this.entity.config.model)[0],
       // 模型数据
       modelData: {},
       content: [
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async init () {
-      this.editor.setInstance({ model: this })
+      this.entity.setInstance({ model: this })
 
       this.loading = true
       let res = await getModelList()
@@ -93,7 +93,7 @@ export default {
           cancelText: '取消',
           async onOk () {
             // 清空数据模型配置
-            _this.editor.clearDataModelConfig()
+            _this.entity.clearDataModelConfig()
             await _this.changeModel(value)
           },
           onCancel () { }
@@ -113,15 +113,15 @@ export default {
       this.loading = false
       this.model = value
       // 通知条件面板实例
-      if (this.editor.instance['conditionPanel']) {
-        this.editor.instance['conditionPanel'].getModelConfig()
+      if (this.entity.instance['conditionPanel']) {
+        this.entity.instance['conditionPanel'].getModelConfig()
       }
       // 通知组件面板实例
-      if (this.editor.instance['componentPanel']) {
-        this.editor.instance['componentPanel'].onModelChange()
+      if (this.entity.instance['componentPanel']) {
+        this.entity.instance['componentPanel'].onModelChange()
       }
       // 通知表格组件
-      this.editor.notifyTableComponent(this.modelData)
+      this.entity.notifyTableComponent(this.modelData)
     },
     filterOptions (input, option) {
       return (

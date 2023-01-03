@@ -1,7 +1,7 @@
 <template>
   <component class="component"
              :is="data.type"
-             :editor="editor"
+             :entity="entity"
              :data="data">
 </component>
 </template>
@@ -12,7 +12,7 @@ import ComplexTable from './complexTable.vue'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: true

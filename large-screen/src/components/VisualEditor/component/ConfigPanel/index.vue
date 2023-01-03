@@ -4,24 +4,24 @@
     <div class="config-container">
       <!-- 基础配置 -->
       <BasicPanel v-show="activeKey === 'basic'"
-                  :editor="editor"
+                  :entity="entity"
                   :ratio="ratio"
                   :grid="grid">
       </BasicPanel>
       <ModelPanel v-show="activeKey === 'model'"
-                  :editor="editor"
+                  :entity="entity"
       >
       </ModelPanel>
       <!-- 组件配置 -->
       <ComponentPanel v-show="activeKey === 'component'"
-                      :editor="editor"
+                      :entity="entity"
                       :component="component">
       </ComponentPanel>
     </div>
     <!-- Tab切换 -->
     <div class="tab-container">
       <div :class="activeKey !== tab.key? 'tab' : 'tab tab-selected'"
-           v-for="tab in editor.operation.configPanel"
+           v-for="tab in entity.operation.configPanel"
            :key="tab.key"
            @click="onChange(tab)">
         {{tab.name}}
@@ -37,7 +37,7 @@ import ModelPanel from './Panel/modelPanel.vue'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     layout: {
       type: Array,
       required: true
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     init () {
-      this.activeKey = this.editor.operation.configPanel[0].key
+      this.activeKey = this.entity.operation.configPanel[0].key
     },
     onChange (tab) {
       this.activeKey = tab.key

@@ -39,7 +39,7 @@
           </a-button>
         </div>
         <!-- 工具 -->
-        <ToolBox :editor="editor"
+        <ToolBox :entity="editor"
                  :layout="layout"
                  :scale="scale">
         </ToolBox>
@@ -60,14 +60,14 @@
         <!-- 拖拽面板 -->
         <div ref="drag" class="drag-container">
           <DragPanel v-if="rendered"
-                     :editor="editor"
+                     :entity="editor"
                      :config="config.component"
                      :type="activeKey">
           </DragPanel>
         </div>
         <div ref="paper" class="paper-container">
           <!-- 画布 -->
-          <Paper :editor="editor"
+          <Paper :entity="editor"
                  :layout="layout"
                  :scale="scale"
                  :ratio="ratio"
@@ -76,7 +76,7 @@
                  @rendered="onRendered"></Paper>
           <!-- 配置面板 -->
           <div ref="config" class="config-container">
-            <ConfigPanel :editor="editor"
+            <ConfigPanel :entity="editor"
                          :layout="layout"
                          :ratio="ratio"
                          :grid="grid"
@@ -93,13 +93,13 @@
       </div>
     </div>
     <!-- 批量修改 -->
-    <EditModal v-if="batchEditVisible" :editor="editor" @close="onModalClose"></EditModal>
+    <EditModal v-if="batchEditVisible" :entity="editor" @close="onModalClose"></EditModal>
     <!-- 模板库 -->
-    <TemplateModal v-if="templateVisible" :editor="editor" @submit="onTemplateSubmit" @close="onModalClose"></TemplateModal>
+    <TemplateModal v-if="templateVisible" :entity="editor" @submit="onTemplateSubmit" @close="onModalClose"></TemplateModal>
     <!-- 默认数据限制器 -->
-    <LimitModal v-if="limitVisible" :editor="editor" @close="onModalClose"></LimitModal>
+    <LimitModal v-if="limitVisible" :entity="editor" @close="onModalClose"></LimitModal>
     <!-- 预览 -->
-    <ViewModal v-if="viewVisible" :editor="editor" :grid="grid" @close="onModalClose"></ViewModal>
+    <ViewModal v-if="viewVisible" :entity="editor" :grid="grid" @close="onModalClose"></ViewModal>
   </div>
 </template>
 

@@ -164,7 +164,7 @@ const typeOptions = [
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     component: {
       type: Object,
       required: true
@@ -261,17 +261,17 @@ export default {
   },
   methods: {
     async init () {
-      this.cell = this.editor.cell[this.component.key]
+      this.cell = this.entity.cell[this.component.key]
       this.handleForm()
 
       // 存在全局模型配置
-      if (this.editor.instance['model']) {
+      if (this.entity.instance['model']) {
         this.getModelData()
       }
       this.$forceUpdate()
     },
     handleForm () {
-      this.selector = this.editor.instance['componentPanel'].sheetSelector
+      this.selector = this.entity.instance['componentPanel'].sheetSelector
       // 配置回显
       let data = this.cell.configData.dataModelData ? this.cell.configData.dataModelData[this.selector.ri + '-' + this.selector.ci] : null
       if (data) {
@@ -283,7 +283,7 @@ export default {
       }
     },
     getModelData () {
-      this.modelData = this.editor.instance['model'].modelData
+      this.modelData = this.entity.instance['model'].modelData
       if (this.modelData.dimensions && this.modelData.measures) {
         this.fieldOptions = []
         this.dimensionMap = {}

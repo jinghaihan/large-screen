@@ -14,7 +14,7 @@
             :style="gridStyle">
           <div class="layout-content-container">
             <Layout ref="layout"
-                    :editor="editor"
+                    :entity="entity"
                     :layoutData="layout"
                     :ratio="ratio"
                     :grid="grid"
@@ -39,7 +39,7 @@ import ScaleBox from '../../Widget/ScaleBox'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     layout: {
       type: Array,
       required: true
@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     init () {
-      this.editor.setInstance({ layout: this })
+      this.entity.setInstance({ layout: this })
     },
     onScaleChange (scale) {
       this.onGridChange()

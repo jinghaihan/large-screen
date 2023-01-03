@@ -28,7 +28,7 @@ import { header, config } from './config'
 
 export default {
   props: {
-    editor: null
+    entity: null
   },
   components: { VirtualForm },
   data () {
@@ -47,8 +47,8 @@ export default {
     async init () {
       let configData = _.cloneDeep(config)
       let options = []
-      if (this.editor.instance['model']) {
-        let modelData = this.editor.instance['model'].modelData
+      if (this.entity.instance['model']) {
+        let modelData = this.entity.instance['model'].modelData
         let map = { 'dimension': '维度', 'measure': '指标' }
         Object.keys(map).forEach(key => {
           options.push({
@@ -83,12 +83,12 @@ export default {
       this.visible = true
 
       await this.$nextTick()
-      if (!this.editor.builtinConditions) {
+      if (!this.entity.builtinConditions) {
         // 新增一行
         this.onAdd()
       } else {
         // 回显数据
-        this.$refs.form.onUpdate(this.editor.builtinConditions)
+        this.$refs.form.onUpdate(this.entity.builtinConditions)
       }
     },
     onAdd () {
@@ -97,7 +97,7 @@ export default {
     onSubmit () {
       this.$refs.form.validateFields().then(result => {
         if (result.error) return
-        this.editor.builtinConditions = result.value
+        this.entity.builtinConditions = result.value
         this.closeModal()
       })
     },

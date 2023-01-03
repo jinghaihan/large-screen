@@ -27,7 +27,7 @@ import $ from 'jquery'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: false
@@ -88,7 +88,7 @@ export default {
       }
     },
     onChange () {
-      this.editor.cell[this.data.key].triggerObserver(this.editor.searchObserver, this.value)
+      this.entity.cell[this.data.key].triggerObserver(this.entity.searchObserver, this.value)
     }
   }
 }

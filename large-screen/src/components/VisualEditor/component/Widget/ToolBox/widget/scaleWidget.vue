@@ -11,7 +11,7 @@ import TooltipIcon from '../../../Widget/TooltipIcon'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     scale: {
       type: Number,
       required: true
@@ -20,7 +20,7 @@ export default {
   components: { TooltipIcon },
   methods: {
     onScale (direction) {
-      this.editor.changeScale(direction)
+      this.entity.changeScale(direction)
     }
   }
 }

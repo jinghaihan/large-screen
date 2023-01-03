@@ -13,7 +13,7 @@ import FormModel from '../FormModel/formModel.vue'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     ratio: {
       type: Object,
       required: true
@@ -36,8 +36,8 @@ export default {
   },
   methods: {
     init () {
-      this.editor.setInstance({ basicPanel: this })
-      this.config = this.editor.config.basic.map(item => {
+      this.entity.setInstance({ basicPanel: this })
+      this.config = this.entity.config.basic.map(item => {
         switch (item.key) {
           case 'ratioWidth':
             item.defaultValue = this.ratio.width
@@ -56,18 +56,18 @@ export default {
       this.visible = true
     },
     onModelChange (data) {
-      if (this.editor) {
+      if (this.entity) {
         // 画布尺寸
         if (data['ratioWidth'] && data['ratioHeight']) {
-          this.editor.changeRatio({ height: data['ratioHeight'], width: data['ratioWidth'] })
+          this.entity.changeRatio({ height: data['ratioHeight'], width: data['ratioWidth'] })
         }
         // 网格线颜色
         if (data['gridColor']) {
-          this.editor.changeGrid(data['gridColor'].rgba)
+          this.entity.changeGrid(data['gridColor'].rgba)
         }
         // 背景
         if (data['background']) {
-          this.editor.changeBackground(data['background'])
+          this.entity.changeBackground(data['background'])
         }
         this.formData = data
       }

@@ -33,7 +33,7 @@ import SpreadSheet from '../../SpreadSheet'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: true
@@ -92,23 +92,23 @@ export default {
   },
   methods: {
     init () {
-      if (this.editor.instance['componentPanel']) {
-        this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
+      if (this.entity.instance['componentPanel']) {
+        this.entity.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
       }
     },
     onInit () {
       // 简单表格-回填维度/指标
-      this.cell = this.editor.cell[this.data.key]
-      if (this.editor.instance['model']) {
-        this.cell.initDimensionAndMeasure(this.editor.instance['model'].modelData)
+      this.cell = this.entity.cell[this.data.key]
+      if (this.entity.instance['model']) {
+        this.cell.initDimensionAndMeasure(this.entity.instance['model'].modelData)
       }
     },
     onSelect (data) {
       // 更新数据模型面板配置
       if (!data.mutiple) {
         let { ci, ri } = data.dataProxy.selector
-        if (this.editor.instance['componentPanel']) {
-          this.editor.instance['componentPanel'].onSheetChange({ ci, ri: !ri ? ri : 1 })
+        if (this.entity.instance['componentPanel']) {
+          this.entity.instance['componentPanel'].onSheetChange({ ci, ri: !ri ? ri : 1 })
         }
       }
     },
@@ -127,12 +127,12 @@ export default {
       this.onSearch()
     },
     onSearch () {
-      let queryParams = this.editor.getQueryParams()
+      let queryParams = this.entity.getQueryParams()
       new Promise((resolve, reject) => {
-        let fields = this.editor.cell[this.data.key].fields
+        let fields = this.entity.cell[this.data.key].fields
         let { field, order } = this.pagination.sorterParmas
-        this.editor.searchComponent(
-          this.editor.cell[this.data.key],
+        this.entity.searchComponent(
+          this.entity.cell[this.data.key],
           {
             ...queryParams,
             indexOrders: order ? [

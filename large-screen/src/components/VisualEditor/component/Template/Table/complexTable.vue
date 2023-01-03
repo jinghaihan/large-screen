@@ -19,7 +19,7 @@ import SpreadSheet from '../../SpreadSheet'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: true
@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     init () {
-      if (this.editor.instance['componentPanel']) {
-        this.editor.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
+      if (this.entity.instance['componentPanel']) {
+        this.entity.instance['componentPanel'].onSheetChange({ ci: 0, ri: 0 })
       }
     },
     onInit () {
@@ -68,8 +68,8 @@ export default {
       // 更新数据模型面板配置
       if (!data.mutiple) {
         let { ci, ri } = data.dataProxy.selector
-        if (this.editor.instance['componentPanel']) {
-          this.editor.instance['componentPanel'].onSheetChange({ ci, ri })
+        if (this.entity.instance['componentPanel']) {
+          this.entity.instance['componentPanel'].onSheetChange({ ci, ri })
         }
       }
     },

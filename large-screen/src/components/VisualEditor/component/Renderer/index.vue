@@ -12,7 +12,7 @@
                     v-if="cell && cell.component"
                     :is="cell.component"
                     v-bind="{
-                      editor: editor,
+                      entity,
                       component: component,
                       transformScale: transformScale,
                       item: data,
@@ -54,7 +54,7 @@ import { getImage } from '../../utils/output'
 export default {
   name: 'Renderer',
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: true
@@ -95,7 +95,7 @@ export default {
       let data = []
       if (this.type !== 'view') {
         if (this.component.componentType) {
-          data = this.editor.operation.renderer.filter(item => {
+          data = this.entity.operation.renderer.filter(item => {
             let flag
             if (!item.enable || item.enable.includes(this.component.componentType)) {
               flag = true
@@ -152,13 +152,13 @@ export default {
           default:
             break
         }
-        this.editor.storeCell(this.data.props, this.cell)
+        this.entity.storeCell(this.data.props, this.cell)
         this.observe()
       }
     },
     // Chart类型
     handleChartComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
         this.cell.changeAttr({
@@ -167,7 +167,7 @@ export default {
         })
         this.cell.init()
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
         this.cell = new Chart({
           vm: this,
           key: this.data.props.key,
@@ -181,11 +181,11 @@ export default {
     },
     // 文本类型
     handleTextComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
 
         this.cell = new Text({
           vm: this,
@@ -199,11 +199,11 @@ export default {
     },
     // 多媒体类型
     handleMediaComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
         this.cell = new Media({
           vm: this,
           key: this.data.props.key,
@@ -218,11 +218,11 @@ export default {
     },
     // 装饰类型
     handleDecorationComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
         this.cell = new Decoration({
           vm: this,
           key: this.data.props.key,
@@ -236,11 +236,11 @@ export default {
     },
     // 查询类型
     handleSearchComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
         this.cell = new Search({
           vm: this,
           key: this.data.props.key,
@@ -254,11 +254,11 @@ export default {
     },
     // 表格类型
     handleTableComponent () {
-      let cell = this.editor.cell[this.data.props.key]
+      let cell = this.entity.cell[this.data.props.key]
       if (cell) {
         this.cell = cell
       } else {
-        let cell = this.editor.cell[this.data.props.parentKey] || {}
+        let cell = this.entity.cell[this.data.props.parentKey] || {}
         this.cell = new Table({
           vm: this,
           key: this.data.props.key,
@@ -298,7 +298,7 @@ export default {
     },
     onClick (e) {
       if (this.type !== 'view') {
-        this.editor.changeComponent(this.data)
+        this.entity.changeComponent(this.data)
       }
     },
     async onOperation (operation) {
@@ -307,7 +307,7 @@ export default {
           this.$emit('delete', this.data.props)
           break
         case 'copy':
-          this.editor.copyCell({
+          this.entity.copyCell({
             ...this.data,
             props: {
               ...this.data.props,

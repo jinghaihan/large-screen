@@ -43,7 +43,7 @@
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     data: {
       type: Object,
       required: false
@@ -93,12 +93,12 @@ export default {
   methods: {
     init () {
       if (this.data.enable) {
-        this.editor.setInstance({ conditionPanel: this })
+        this.entity.setInstance({ conditionPanel: this })
       }
       this.getModelConfig()
     },
     async getModelConfig () {
-      let instance = this.editor.instance['model']
+      let instance = this.entity.instance['model']
       if (instance) {
         this.model = instance.model
         this.modelData = instance.modelData

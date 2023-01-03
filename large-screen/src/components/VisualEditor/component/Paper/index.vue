@@ -1,6 +1,6 @@
 <template>
   <TickMark :scale="scale">
-    <Layout :editor="editor"
+    <Layout :entity="entity"
             :layout="layout"
             :scale="scale"
             :ratio="ratio"
@@ -16,7 +16,7 @@ import Layout from './Layout/container'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     layout: {
       type: Array,
       required: true
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     init () {
-      this.editor.setInstance({ paper: this })
+      this.entity.setInstance({ paper: this })
     }
   }
 }

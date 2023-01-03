@@ -30,7 +30,7 @@
                   :maxW="grid.count"
                   :maxH="grid.maxRows"
                   :static="type === 'view'">
-          <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" :type="type" @delete="onDelete"></Renderer>
+          <Renderer :entity="entity" :data="item" :component="component" :transformScale="transformScale" :type="type" @delete="onDelete"></Renderer>
         </GridItem>
       </GridLayout>
       <!-- 按钮 -->
@@ -59,7 +59,7 @@ const Renderer = () => import('../../Renderer/index.vue')
 export default {
   name: 'SearchPanel',
   props: {
-    editor: null,
+    entity: null,
     component: {
       type: Object,
       required: false
@@ -117,23 +117,23 @@ export default {
   },
   beforeDestroy () {
     if (this.data.enable) {
-      delete this.editor.instance['searchPanel']
+      delete this.entity.instance['searchPanel']
     }
   },
   methods: {
     onSearch () {
       if (this.type === 'view') {
-        this.editor.handleSearch()
+        this.entity.handleSearch()
       }
     },
     onReset () {
       if (this.type === 'view') {
-        this.editor.handleReset()
+        this.entity.handleReset()
       }
     },
     init () {
       if (this.data.enable) {
-        this.editor.setInstance({ searchPanel: this })
+        this.entity.setInstance({ searchPanel: this })
       }
     },
     onDelete (data) {
@@ -146,8 +146,8 @@ export default {
         cancelText: '取消',
         onOk () {
           _this.layout = _this.layout.filter(item => item.i !== data.key)
-          _this.editor.deleteCell(data)
-          _this.editor.changeComponent()
+          _this.entity.deleteCell(data)
+          _this.entity.changeComponent()
         },
         onCancel () { }
       })

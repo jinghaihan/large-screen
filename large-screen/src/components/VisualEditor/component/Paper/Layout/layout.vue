@@ -22,7 +22,7 @@
                 :maxW="maxW"
                 :maxH="maxH"
                 :style="getGridItemStyle(item)">
-        <Renderer :editor="editor" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
+        <Renderer :entity="entity" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
       </GridItem>
     </GridLayout>
   </div>
@@ -35,7 +35,7 @@ import Renderer from '../../Renderer/index.vue'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     layoutData: {
       type: Array,
       required: true
@@ -90,7 +90,7 @@ export default {
     onClick (e) {
       let srcElement = e.srcElement
       if (srcElement.getAttribute('class') === 'vue-grid-layout') {
-        this.editor.changeComponent()
+        this.entity.changeComponent()
       }
     },
     onDelete (data) {
@@ -103,14 +103,14 @@ export default {
         cancelText: '取消',
         onOk () {
           _this.layout = _this.layout.filter(item => item.i !== data.key)
-          _this.editor.deleteCell(data)
-          _this.editor.changeComponent()
+          _this.entity.deleteCell(data)
+          _this.entity.changeComponent()
         },
         onCancel () { }
       })
     },
     getGridItemStyle (item) {
-      let cell = this.editor.cell[item.i]
+      let cell = this.entity.cell[item.i]
       if (cell) {
         let zIndex = cell.configData.configData ? cell.configData.configData.zIndex : 0
         return { zIndex }

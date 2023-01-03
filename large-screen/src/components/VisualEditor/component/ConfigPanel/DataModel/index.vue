@@ -2,7 +2,7 @@
   <div class="data-model-container">
     <component ref="component"
                :is="data.component"
-               v-bind="{ editor, component }"
+               v-bind="{ entity, component }"
                @change="onChange">
     </component>
   </div>
@@ -15,7 +15,7 @@ import TableDataModel from './table.vue'
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     component: {
       type: Object,
       required: true

@@ -20,7 +20,7 @@ import config from './config'
 
 export default {
   props: {
-    editor: null
+    entity: null
   },
   components: { FormModel },
   data () {
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.editor.batchEdit(this.formData)
+      this.entity.batchEdit(this.formData)
       this.closeModal()
     },
     onChange (data) {

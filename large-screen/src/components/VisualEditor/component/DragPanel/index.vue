@@ -61,7 +61,7 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 
 export default {
   props: {
-    editor: null,
+    entity: null,
     config: {
       type: Object,
       required: true
@@ -92,7 +92,7 @@ export default {
     }
   },
   created () {
-    this.editor.setInstance({ dragPanel: this })
+    this.entity.setInstance({ dragPanel: this })
   },
   beforeDestroy () {
     try {
@@ -104,7 +104,7 @@ export default {
       if (this.mediaTypeList.includes(this.type)) {
         this.handleRequest(this.type)
       } else {
-        let data = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
+        let data = this.type === 'clipBoard' ? this.entity.clipBoard : this.config[this.type]
         if (!data) {
           this.configData = {}
           return
@@ -178,23 +178,23 @@ export default {
       if (data && data.restriction) {
         // 限制个数
         if (data.restriction.unique) {
-          if (this.editor.instance[data.restriction.instance]) {
+          if (this.entity.instance[data.restriction.instance]) {
             this.$notification.error({ message: '错误', description: `画布仅可存在一个${data.restriction.instanceName}` })
             return
           } else {
-            this.instance = this.editor.instance['layout'].$refs.layout
+            this.instance = this.entity.instance['layout'].$refs.layout
           }
         }
         // 依赖父级
         if (data.restriction.dependentInstance) {
-          this.instance = this.editor.instance[data.restriction.dependentInstance]
+          this.instance = this.entity.instance[data.restriction.dependentInstance]
           if (!this.instance) {
             this.$notification.error({ message: '错误', description: `请先拖入${data.restriction.dependentInstanceName}` })
             return
           }
         }
       } else {
-        this.instance = this.editor.instance['layout'].$refs.layout
+        this.instance = this.entity.instance['layout'].$refs.layout
       }
       this.addListener()
     },
@@ -269,7 +269,7 @@ export default {
               src: item.props.src
             }
           })
-          this.editor.changeComponent(this.instance.layout[this.instance.layout.length - 1])
+          this.entity.changeComponent(this.instance.layout[this.instance.layout.length - 1])
           try {
             this.instance.$refs.gridLayout.$children[this.instance.layout.length].$refs.item.style.display = 'block'
           } catch (error) { }
@@ -278,8 +278,8 @@ export default {
     },
     validatePosition (el) {
       const gridSize = {
-        x: this.editor.instance.editor.grid.count,
-        y: Math.floor(this.editor.instance.editor.grid.count / this.editor.instance.editor.ratio.width * this.editor.instance.editor.ratio.height)
+        x: this.entity.instance['editor'].grid.count,
+        y: Math.floor(this.entity.instance['editor'].grid.count / this.entity.instance['editor'].ratio.width * this.entity.instance['editor'].ratio.height)
       }
       if (DragPos.y + el.h > gridSize.y) {
         return false
@@ -287,7 +287,7 @@ export default {
       return true
     },
     onDelete (data) {
-      this.editor.deleteClipBoardCell(data)
+      this.entity.deleteClipBoardCell(data)
     }
   }
 }

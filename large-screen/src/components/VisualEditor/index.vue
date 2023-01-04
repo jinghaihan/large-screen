@@ -40,7 +40,6 @@
         </div>
         <!-- 工具 -->
         <ToolBox :entity="editor"
-                 :layout="layout"
                  :scale="scale">
         </ToolBox>
         <!-- 操作按钮 -->
@@ -49,9 +48,9 @@
               :key="item.key"
               class="action">
             <TooltipIcon :title="item.name"
-                        :icon="item.icon"
-                        placement="bottom"
-                        @click="onOperation(item)">
+                         :icon="item.icon"
+                         placement="bottom"
+                         @click="onOperation(item)">
             </TooltipIcon>
           </div>
         </div>
@@ -59,28 +58,54 @@
       <div class="content">
         <!-- 拖拽面板 -->
         <div ref="drag" class="drag-container">
-          <DragPanel v-if="rendered"
-                     :entity="editor"
-                     :config="config.component"
-                     :type="activeKey">
+          <DragPanel :editor="editor"
+                    :entity="paper.entity[paper.current]"
+                    :config="config.component"
+                    :type="activeKey">
           </DragPanel>
         </div>
         <div ref="paper" class="paper-container">
           <!-- 画布 -->
-          <Paper :entity="editor"
-                 :layout="layout"
-                 :scale="scale"
-                 :ratio="ratio"
-                 :grid="grid"
-                 :component="component"
-                 @rendered="onRendered"></Paper>
+          <a-tabs v-model="paper.current"
+                  @change="onReportChange">
+            <!-- 新增 -->
+            <a-button slot="tabBarExtraContent"
+                      icon="plus"
+                      @click="onReportEdit(null, 'add')"
+                      size="small">
+            </a-button>
+            <!-- Tab面板 -->
+            <a-tab-pane v-for="tab in paperOption"
+                        :key="tab.value">
+              <div class="tab-label-container" slot="tab">
+                <div class="label">{{tab.label}}</div>
+                <TooltipIcon title="删除"
+                             icon="close"
+                             placement="bottom"
+                             @click="onReportEdit(tab.value, 'remove')"
+                             v-show="paperOption.length > 1">
+                </TooltipIcon>
+              </div>
+              <!-- 画布 -->
+              <PaperPanel :entity="paper.entity[tab.value]"
+                          :layout="paper.layout[tab.value] ? paper.layout[tab.value] : []"
+                          :scale="scale"
+                          :ratio="ratio"
+                          :grid="grid"
+                          :component="component"
+                          @rendered="onRendered">
+              </PaperPanel>
+            </a-tab-pane>
+          </a-tabs>
           <!-- 配置面板 -->
           <div ref="config" class="config-container">
-            <ConfigPanel :entity="editor"
-                         :layout="layout"
+            <ConfigPanel :editor="editor"
+                         :entity="paper.entity[paper.current]"
+                         :paper="paper.current"
                          :ratio="ratio"
                          :grid="grid"
-                         :component="component">
+                         :component="component"
+                         :tabBasicName="tabBasicName">
             </ConfigPanel>
             <!-- 展开/收缩 -->
             <div class="trigger" @click="onTrigger('config')">
@@ -93,21 +118,22 @@
       </div>
     </div>
     <!-- 批量修改 -->
-    <EditModal v-if="batchEditVisible" :entity="editor" @close="onModalClose"></EditModal>
+    <EditModal v-if="batchEditVisible" :entity="paper.entity[paper.current]" @close="onModalClose"></EditModal>
     <!-- 模板库 -->
-    <TemplateModal v-if="templateVisible" :entity="editor" @submit="onTemplateSubmit" @close="onModalClose"></TemplateModal>
+    <TemplateModal v-if="templateVisible" :entity="editor" @close="onModalClose"></TemplateModal>
     <!-- 默认数据限制器 -->
-    <LimitModal v-if="limitVisible" :entity="editor" @close="onModalClose"></LimitModal>
+    <LimitModal v-if="limitVisible" :entity="paper.entity[paper.current]" @close="onModalClose"></LimitModal>
     <!-- 预览 -->
-    <ViewModal v-if="viewVisible" :entity="editor" :grid="grid" @close="onModalClose"></ViewModal>
+    <ViewModal v-if="viewVisible" :grid="grid" @close="onModalClose"></ViewModal>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import $ from 'jquery'
 import Editor from './entity/Editor'
 import DragPanel from './component/DragPanel'
-import Paper from './component/Paper'
+import PaperPanel from './component/Paper'
 import ConfigPanel from './component/ConfigPanel'
 import ToolBox from './component/Widget/ToolBox'
 import TooltipIcon from './component/Widget/TooltipIcon'
@@ -122,7 +148,7 @@ export default {
   components: {
     TooltipIcon,
     DragPanel,
-    Paper,
+    PaperPanel,
     ToolBox,
     ConfigPanel,
     EditModal,
@@ -135,11 +161,10 @@ export default {
       editor: new Editor(),
       activeKey: null,
       trigger: { drag: 'left', config: 'right' },
-      rendered: false,
-      layout: [],
+      paper: { current: null, entity: {}, layout: {}, name: {} },
       scale: 1,
       ratio: { width: 16, height: 9 },
-      grid: { show: false, count: 100, color: { r: 240, g: 240, b: 240, a: 1 } },
+      grid: { show: true, count: 100, color: { r: 240, g: 240, b: 240, a: 1 } },
       component: {},
       config,
       // 弹窗
@@ -147,16 +172,34 @@ export default {
       templateVisible: false,
       themeVisible: false,
       limitVisible: false,
-      viewVisible: false
+      viewVisible: false,
+      // Tab基础名称
+      tabBasicName: '子报表'
+    }
+  },
+  computed: {
+    paperOption () {
+      let options = Object.keys(this.paper.name).map((key, index) => {
+        let label = this.paper.name[key] || this.tabBasicName + (index + 1)
+        return {
+          label: label,
+          value: key,
+          title: label
+        }
+      })
+      return options
     }
   },
   created () {
+    this.onReportEdit = _.debounce(this.onReportEdit, 100)
     this.init()
   },
   methods: {
     init () {
       this.editor.setInstance({ editor: this })
+      this.editor.initHotKey()
       this.activeKey = this.editor.operation.sidebar.find(item => item.active).key
+      this.editor.createPaper()
     },
     // 操作
     onOperation (operation) {
@@ -241,6 +284,18 @@ export default {
     handleView () {
       this.viewVisible = true
     },
+    onReportChange (activeKey) {
+      this.editor.changeComponent()
+      this.paper.entity[activeKey].onTabChange()
+    },
+    onReportEdit (targetKey, action) {
+      if (action === 'add') {
+        this.editor.createPaper()
+        this.onReportChange(this.paper.current)
+      } else {
+        this.editor.removePaper(targetKey, this.paperOption)
+      }
+    },
     // 展开/收缩
     onTrigger (type) {
       switch (type) {
@@ -273,9 +328,7 @@ export default {
     },
     // 画布渲染完毕
     onRendered () {
-      this.rendered = true
-      this.editor.initHotKey()
-      this.grid.show = true
+      this.grid = { ...this.grid }
     },
     onModalClose () {
       this.batchEditVisible = false
@@ -283,10 +336,6 @@ export default {
       this.themeVisible = false
       this.limitVisible = false
       this.viewVisible = false
-    },
-    // 加载模板
-    onTemplateSubmit (config) {
-      this.editor.setConfig(config)
     }
   }
 }
@@ -357,6 +406,28 @@ export default {
           height: 100%;
           width: calc(~"100% - 240px");
           display: flex;
+          /deep/.ant-tabs {
+            width: 100%;
+            .ant-tabs-bar{
+              margin: 0;
+              padding-right: 8px;
+              background: var(--normal-color);
+            }
+            .ant-tabs-content {
+              height: calc(~"100% - 40px");
+              .ant-tabs-tabpane-active{
+                height: 100%;
+              }
+            }
+            .tab-label-container{
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .label{
+                margin-right: 8px;
+              }
+            }
+          }
         }
         .config-container{
           height: 100%;

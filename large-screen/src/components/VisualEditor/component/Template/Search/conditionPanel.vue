@@ -122,25 +122,27 @@ export default {
       return data ? [{ id: 'all', name: '全选' }].concat(data) : []
     },
     handleChecked (checked, condition, column) {
-      if (column.id === 'all') {
-        this.modelData[condition.key].forEach(item => {
-          condition.checked[item.id] = checked
-        })
-      }
-      condition.checked[column.id] = checked
+      try {
+        if (column.id === 'all') {
+          this.modelData[condition.key].forEach(item => {
+            condition.checked[item.id] = checked
+          })
+        }
+        condition.checked[column.id] = checked
 
-      // 判断全选选中状态
-      if (column.id !== 'all') {
-        let flag = true
-        condition.checked['all'] = true
-        this.modelData[condition.key].forEach(item => {
-          if (!condition.checked[item.id]) {
-            flag = false
-          }
-        })
-        condition.checked['all'] = flag
-      }
-      this.$forceUpdate()
+        // 判断全选选中状态
+        if (column.id !== 'all') {
+          let flag = true
+          condition.checked['all'] = true
+          this.modelData[condition.key].forEach(item => {
+            if (!condition.checked[item.id]) {
+              flag = false
+            }
+          })
+          condition.checked['all'] = flag
+        }
+        this.$forceUpdate()
+      } catch (error) { }
     },
     getDimensionsSelected () {
       if (!this.modelData['dimensions']) return

@@ -58,6 +58,14 @@ export default {
       handler: function (ratio) {
         this.handleChange()
       }
+    },
+    container: {
+      immediate: true,
+      handler: function (value, prevValue) {
+        if (!prevValue && value) {
+          this.setScale()
+        }
+      }
     }
   },
   created () {
@@ -87,20 +95,22 @@ export default {
       }
     },
     setScale () {
-      this.transformScale = this.getScale() * this.scale
-      this.$emit('scale', this.transformScale)
+      try {
+        this.transformScale = this.getScale() * this.scale
+        this.$emit('scale', this.transformScale)
 
-      if (this.$refs.scale) {
-        this.$refs.scale.style.setProperty('--scale', this.transformScale)
-        if (this.scale > 1) {
-          $(this.$refs.zoom).css({ position: 'relative' })
-          $(this.container).css({ overflow: 'auto' })
-        } else {
-          this.container.scrollTo(0, 0)
-          $(this.$refs.zoom).css({ position: 'static' })
-          $(this.container).css({ overflow: 'hidden' })
+        if (this.$refs.scale) {
+          this.$refs.scale.style.setProperty('--scale', this.transformScale)
+          if (this.scale > 1) {
+            $(this.$refs.zoom).css({ position: 'relative' })
+            $(this.container).css({ overflow: 'auto' })
+          } else {
+            this.container.scrollTo(0, 0)
+            $(this.$refs.zoom).css({ position: 'static' })
+            $(this.container).css({ overflow: 'hidden' })
+          }
         }
-      }
+      } catch (error) {}
     }
   }
 }

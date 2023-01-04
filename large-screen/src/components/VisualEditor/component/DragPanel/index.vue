@@ -61,6 +61,7 @@ let DragPos = { 'x': null, 'y': null, 'i': null }
 
 export default {
   props: {
+    editor: null,
     entity: null,
     config: {
       type: Object,
@@ -92,7 +93,7 @@ export default {
     }
   },
   created () {
-    this.entity.setInstance({ dragPanel: this })
+    this.editor.setInstance({ dragPanel: this })
   },
   beforeDestroy () {
     try {
@@ -104,7 +105,7 @@ export default {
       if (this.mediaTypeList.includes(this.type)) {
         this.handleRequest(this.type)
       } else {
-        let data = this.type === 'clipBoard' ? this.entity.clipBoard : this.config[this.type]
+        let data = this.type === 'clipBoard' ? this.editor.clipBoard : this.config[this.type]
         if (!data) {
           this.configData = {}
           return

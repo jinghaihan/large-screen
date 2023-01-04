@@ -35,7 +35,11 @@ import { getModelList, getModelData } from '../../../service/model'
 
 export default {
   props: {
-    entity: null
+    entity: null,
+    paper: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
@@ -58,13 +62,24 @@ export default {
       }
     }
   },
+  watch: {
+    paper: {
+      immediate: true,
+      handler: function (value) {
+        if (!this.entity.instance['model']) {
+          this.model = undefined
+          this.modelData = {}
+          this.entity.setInstance({ model: this })
+          this.update()
+        }
+      }
+    }
+  },
   created () {
     this.init()
   },
   methods: {
     async init () {
-      this.entity.setInstance({ model: this })
-
       this.loading = true
       let res = await getModelList()
       if (!res.data.success) {
@@ -93,7 +108,7 @@ export default {
           cancelText: '取消',
           async onOk () {
             // 清空数据模型配置
-            _this.entity.clearDataModelConfig()
+            _this.entity.clearModelConfig()
             await _this.changeModel(value)
           },
           onCancel () { }
@@ -112,21 +127,23 @@ export default {
       this.modelData = res.data.data
       this.loading = false
       this.model = value
-      // 通知条件面板实例
-      if (this.entity.instance['conditionPanel']) {
-        this.entity.instance['conditionPanel'].getModelConfig()
-      }
-      // 通知组件面板实例
-      if (this.entity.instance['componentPanel']) {
-        this.entity.instance['componentPanel'].onModelChange()
-      }
-      // 通知表格组件
-      this.entity.notifyTableComponent(this.modelData)
+
+      // 通知组件
+      this.entity.notifyComponent(this.modelData)
+      this.update()
     },
     filterOptions (input, option) {
       return (
         option.componentOptions.children[0].text.includes(input)
       )
+    },
+    update () {
+      this.entity.update({
+        model: {
+          model: this.model,
+          modelData: this.modelData
+        }
+      })
     }
   }
 }

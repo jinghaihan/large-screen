@@ -21,6 +21,14 @@ export default {
     grid: {
       type: Object,
       required: true
+    },
+    paper: {
+      type: String,
+      required: true
+    },
+    tabBasicName: {
+      type: String,
+      required: true
     }
   },
   components: { FormModel },
@@ -29,6 +37,17 @@ export default {
       visible: false,
       config: [],
       formData: null
+    }
+  },
+  watch: {
+    paper: {
+      immediate: true,
+      handler: function (value) {
+        if (!this.entity.instance['basicPanel']) {
+          this.visible = false
+          this.init()
+        }
+      }
     }
   },
   created () {
@@ -48,6 +67,11 @@ export default {
           case 'gridColor':
             item.defaultValue = { rgba: this.grid.color }
             break
+          case 'name':
+            let keys = Object.keys(this.entity.instance['editor'].paper.name)
+            let index = keys.findIndex(key => key === this.entity.key)
+            item.defaultValue = this.tabBasicName + (index + 1)
+            break
           default:
             break
         }
@@ -57,6 +81,10 @@ export default {
     },
     onModelChange (data) {
       if (this.entity) {
+        // 名称
+        if (data['name']) {
+          this.entity.changeName(data['name'])
+        }
         // 画布尺寸
         if (data['ratioWidth'] && data['ratioHeight']) {
           this.entity.changeRatio({ height: data['ratioHeight'], width: data['ratioWidth'] })
@@ -70,6 +98,7 @@ export default {
           this.entity.changeBackground(data['background'])
         }
         this.formData = data
+        this.entity.update({ basic: this.formData })
       }
     }
   }

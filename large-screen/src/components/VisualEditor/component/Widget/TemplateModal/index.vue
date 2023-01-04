@@ -71,7 +71,7 @@ export default {
       this.loading = false
     },
     onClick (data) {
-      this.$emit('submit', data.config)
+      this.entity.setPaperConfig(data.config)
       this.closeModal()
     },
     closeModal (data) {

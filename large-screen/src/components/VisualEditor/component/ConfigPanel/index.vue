@@ -6,15 +6,18 @@
       <BasicPanel v-show="activeKey === 'basic'"
                   :entity="entity"
                   :ratio="ratio"
-                  :grid="grid">
+                  :grid="grid"
+                  :paper="paper"
+                  :tabBasicName="tabBasicName">
       </BasicPanel>
       <ModelPanel v-show="activeKey === 'model'"
                   :entity="entity"
+                  :paper="paper"
       >
       </ModelPanel>
       <!-- 组件配置 -->
       <ComponentPanel v-show="activeKey === 'component'"
-                      :entity="entity"
+                      :entity="editor"
                       :component="component">
       </ComponentPanel>
     </div>
@@ -37,11 +40,8 @@ import ModelPanel from './Panel/modelPanel.vue'
 
 export default {
   props: {
+    editor: null,
     entity: null,
-    layout: {
-      type: Array,
-      required: true
-    },
     ratio: {
       type: Object,
       required: true
@@ -52,6 +52,14 @@ export default {
     },
     component: {
       type: Object,
+      required: true
+    },
+    paper: {
+      type: String,
+      required: true
+    },
+    tabBasicName: {
+      type: String,
       required: true
     }
   },

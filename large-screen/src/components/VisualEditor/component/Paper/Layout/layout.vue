@@ -22,7 +22,7 @@
                 :maxW="maxW"
                 :maxH="maxH"
                 :style="getGridItemStyle(item)">
-        <Renderer :entity="entity" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
+        <Renderer :id="item.i" :entity="entity" :data="item" :component="component" :transformScale="transformScale" @delete="onDelete"></Renderer>
       </GridItem>
     </GridLayout>
   </div>

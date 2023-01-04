@@ -39,6 +39,24 @@ const configPanel = [
 // 表单配置
 const basic = [
   {
+    type: 'input',
+    label: '名称',
+    key: 'name',
+    defaultValue: null,
+    rules: [
+      { required: true, message: '请输入名称' }
+    ]
+  },
+  {
+    type: 'textarea',
+    label: '描述',
+    key: 'description',
+    defaultValue: null,
+    rules: [
+      { required: false, message: '请输入描述' }
+    ]
+  },
+  {
     type: 'input-number',
     label: '长比例',
     key: 'ratioWidth',

@@ -20,10 +20,6 @@ import TooltipIcon from '../../Widget/TooltipIcon'
 export default {
   props: {
     entity: null,
-    layout: {
-      type: Array,
-      required: true
-    },
     scale: {
       type: Number,
       required: true

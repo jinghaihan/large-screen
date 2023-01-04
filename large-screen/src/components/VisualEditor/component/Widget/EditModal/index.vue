@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.entity.batchEdit(this.formData)
+      this.entity.edit(this.formData)
       this.closeModal()
     },
     onChange (data) {

@@ -149,7 +149,7 @@ export default {
     },
     async init () {
       await this.$nextTick()
-
+      
       this.configData = []
       this.collapseKeys = []
       this.switchKeys = []
